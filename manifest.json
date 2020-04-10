@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "New Tab",
+  "version": "0.1.0",
+  "author": "seankhliao",
+  "icons": {
+    "48": "icon-48.png",
+    "192": "icon-192.png"
+  },
+  "offline_enabled": true,
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  }
+}

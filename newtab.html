@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1" />
+    <title>newtab | seankhliao</title>
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="" />
+    <style>
+      @font-face {
+        font-family: "Inconsolata";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local("Inconsolata Regular"), local("Inconsolata-Regular"),
+          url(https://fonts.gstatic.com/s/inconsolata/v18/QldKNThLqRwH-OJ1UHjlKGlZ5q0.ttf) format("truetype");
+      }
+      @font-face {
+        font-family: "Inconsolata";
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: local("Inconsolata Bold"), local("Inconsolata-Bold"),
+          url(https://fonts.gstatic.com/s/inconsolata/v18/QldXNThLqRwH-OJ1UHjlKGHiw71p5_k.ttf) format("truetype");
+      }
+      @font-face {
+        font-family: "Lora";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local("Lora Regular"), local("Lora-Regular"),
+          url(https://fonts.gstatic.com/s/lora/v14/0QIvMX1D_JOuMwr7Jg.ttf) format("truetype");
+      }
+      @font-face {
+        font-family: "Lora";
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: local("Lora Bold"), local("Lora-Bold"),
+          url(https://fonts.gstatic.com/s/lora/v14/0QIgMX1D_JOuO7HeNtxunw.ttf) format("truetype");
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      :root {
+        background: #000;
+        color: #eceff1;
+        font: 24px "Inconsolata", monospace;
+      }
+
+      /* ===== layout general ===== */
+      body {
+        display: flex;
+        flex-flow: column nowrap;
+        margin: 0;
+        font: 18px "Inconsolata", monospace;
+      }
+
+      /* ===== layout header ===== */
+      header {
+        display: grid;
+        grid:
+          [r1-s] ".    .    .    title title" 1fr [r1-e]
+          [r1-s] ".    .    .    tag   tag" 1fr [r2-e]
+          [r3-s] ".    .    .    .     ." 1fr [r3-e]
+          [r4-s] "logo logo logo logo  logo" 1fr [r4-e]
+          / 1fr 1fr 1fr 1fr 1fr;
+        height: 80vh;
+        padding: 2vmin;
+      }
+      header h1 {
+        font: 700 5vmin "Lora", serif;
+        grid-area: logo;
+        margin: 0;
+        place-self: stretch start;
+      }
+      header h1 a {
+        display: grid;
+        grid: repeat(2, 10vmin) / repeat(8, 10vmin);
+        place-content: center center;
+      }
+      header h1 *:nth-child(n + 5) {
+        grid-row: 2 / span 1;
+      }
+      header h2 {
+        font-size: 4.5vmin;
+        grid-area: title;
+        margin: 0;
+        place-self: end;
+      }
+      header p {
+        color: #999;
+        font-size: 3.5vmin;
+        grid-area: tag;
+        place-self: start end;
+        text-align: right;
+      }
+
+      /* ===== layout main ===== */
+      main {
+        display: grid;
+        grid: auto-flow / 1fr minmax(280px, 840px) 1fr;
+        grid-gap: 0 1em;
+        margin: 20vh 0;
+      }
+      main > * {
+        grid-column: 2 / span 1;
+      }
+      main > picture,
+      main > amp-img,
+      main > pre {
+        grid-column: 1 / span 3;
+      }
+      picture img {
+        width: 100%;
+      }
+
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin: 1.5em 0 0.25em 0;
+      }
+      h3 {
+        font-size: 2.441em;
+      }
+      h4 {
+        font-size: 1.953em;
+      }
+      h5 {
+        font-size: 1.563em;
+      }
+      h6 {
+        font-size: 1.25em;
+      }
+      p {
+        line-height: 1.5;
+        margin: 0 0 0.5em 0;
+      }
+
+      /* ===== layout footer ===== */
+      footer {
+        margin: 10vh auto 3vh;
+      }
+
+      /* ===== style ===== */
+      a,
+      a:visited {
+        color: inherit;
+        font-weight: 700;
+        text-decoration: underline;
+      }
+      a:hover {
+        color: #a06be0;
+        transition: color 0.16s;
+      }
+
+      header a,
+      header a:hover,
+      header a:visited {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+      }
+      ul > * {
+        margin: 0.5em;
+      }
+      ul > li:before {
+        content: "»";
+        margin: 0 1ch 0 -3ch;
+        position: absolute;
+      }
+
+      ol > * {
+        line-height: 1.75em;
+      }
+
+      blockquote {
+        margin: 1em;
+        padding: 0.25em 1em;
+        border-left: 1ch solid #999;
+      }
+
+      code {
+        background: #404040;
+        font: 1em "Inconsolata", monospace;
+        padding: 0.1em;
+      }
+      pre {
+        background: #404040;
+        overflow-x: scroll;
+        padding: 1em;
+      }
+      pre::-webkit-scrollbar {
+        display: none;
+      }
+      pre code {
+        padding: 0;
+      }
+
+      em {
+        color: #a06be0;
+        background-color: unset;
+        font-style: normal;
+        font-weight: 700;
+      }
+      time {
+        color: #999;
+      }
+
+      /* ===== hide recaptcha ===== */
+      .grecaptcha-badge {
+        visibility: hidden;
+      }
+
+      header {
+        display: none;
+      }
+      main {
+        margin-top: 0;
+      }
+      h3 {
+        margin-top: 5vh;
+      }
+      ul > li {
+        display: inline;
+      }
+      ul > li:before {
+        content: "";
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="/">
+          <span>S</span>
+          <span>E</span>
+          <span>A</span>
+          <span>N</span>
+          <em>K</em>
+          <em>.</em>
+          <em>H</em>
+          <em>.</em>
+          <span>L</span>
+          <span>I</span>
+          <span>A</span>
+          <span>O</span>
+        </a>
+      </h1>
+    </header>
+    <main>
+      <h3><em>current</em> focus</h3>
+      <p>
+        <em>{</em>
+        <a href="https://repo.new">repo</a>
+        <a href="https://playlist.new">playlist</a>
+        <a href="https://doc.new">doc</a>
+        <a href="https://slide.new">slide</a>
+        <a href="https://sheet.new">sheet</a>
+        <a href="https://keep.new">keep</a>
+        <em>}.new</em>
+      </p>
+      <p>
+        <em>chat:</em>
+        <a href="https://messenger.com">fb</a>
+        <a href="https://web.telegram.org">telegram</a>
+        <a href="https://web.whatsapp.com">whatsapp</a>
+        <a href="https://messages.google.com">sms</a>
+      </p>
+      <p>
+        <em>slack:</em>
+        <a href="https://app.slack.com/client/T029RQSE6/C029RQSEE">gophers</a>
+        <a href="https://app.slack.com/client/T09NY5SBT/C9T0QMNG4">k8s</a>
+        <a href="https://app.slack.com/client/T047L58T5/C0C8VHELQ">hangops</a>
+        <a href="https://app.slack.com/client/T05675Y01/C05675Y4F">grafana</a>
+        <a href="https://app.slack.com/client/TK6BPU3V2/CK6SVMPU0">pomerium</a>
+      </p>
+      <p>
+        <em>sne:</em>
+        <a href="https://github.com/seankhliao/uva-sne">gh</a>
+        <a href="https://github.com/seankhliao/uva-as">gh-as</a>
+        <a href="https://github.com/seankhliao/uva-ot">gh-ot</a>
+        <a href="https://chat.students.os3.nl">chat</a>
+        <a href="https://bbb5.os3.nl">bbb5</a>
+        <a href="https://www.os3.nl/2019-2020/courses/as/start">as</a>
+        <a href="https://www.os3.nl/2019-2020/courses/ot/start">ot</a>
+        <a href="https://www.os3.nl/2019-2020/students/davide_pucci/ot">ot-davide</a>
+      </p>
+      <p>
+        <em>dash:</em>
+        <a href="https://console.cloud.google.com">gcp</a>
+        <a href="https://console.cloud.google.com/cloud-build">build</a>
+        <a href="https://dash.cloudflare.com">cloudflare</a>
+        <a href="https://analytics.google.com">analytics</a>
+        <a href="https://search.google.com/search-console">search</a>
+      </p>
+      <p>
+        <em>api:</em>
+        <a href="https://grafana.seankhliao.com/">grafana</a>
+        <a href="https://jaeger.seankhliao.com/">jaeger</a>
+        <a href="https://tekton.seankhliao.com/">tekton</a>
+      </p>
+      <h3><em>to</em> read</h3>
+      <p>
+        <em>blogs:</em>
+        <a href="https://jbd.dev">Jaana</a>
+        <a href="https://rakyll.org">Janna 2</a>
+        <a href="https://jess.dev">Jess</a>
+        <a href="https://meowni.ca">Monica</a>
+        <a href="https://azeria-labs.com">azeria</a>
+      </p>
+      <p>
+        <em>comics:</em>
+        <a href="https://xkcd.com">xkcd</a>
+        <a href="https://www.smbc-comics.com">smbc</a>
+        <a href="https://www.webtoons.com/en/comedy/adventures-of-god/list?title_no=853">god</a>
+      </p>
+
+      <p><em>webshit:</em> <a href="http://n-gate.com">n-gate</a></p>
+    </main>
+    <footer>
+      <a href="/">home</a>
+      |
+      <a href="/privacy/">privacy</a>
+      |
+      <a href="/terms/">terms</a>
+      |
+      <a href="https://github.com/seankhliao/com-seankhliao">github</a>
+    </footer>
+  </body>
+</html>
