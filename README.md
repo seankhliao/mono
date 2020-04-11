@@ -1,11 +1,11 @@
-# newtab
+# chrome-newtab
 
 Custom new tab page, remote version [seankhliao.com/newtab][ntp]
 
 [ntp]: https://seankhliao.com/newtab/
 
-[![License](https://img.shields.io/github/license/seankhliao/newtab.svg?style=flat-square)](LICENSE)
-![Version](https://img.shields.io/github/v/tag/seankhliao/newtab?sort=semver&style=flat-square)
+[![License](https://img.shields.io/github/license/seankhliao/chrome-newtab.svg?style=flat-square)](LICENSE)
+![Version](https://img.shields.io/github/v/tag/seankhliao/chrome-newtab?sort=semver&style=flat-square)
 
 ## Install
 
