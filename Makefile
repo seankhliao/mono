@@ -1,3 +1,3 @@
 .PHONY: *
 all:
-	webrender -single -in newtab.md -out newtab.html
+	webrender -single -ga="" -in newtab.md -out newtab.html
