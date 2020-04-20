@@ -5,7 +5,7 @@
     
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src *; connect-src *.seankhliao.com  www.google-analytics.com; font-src 'self' https://fonts.gstatic.com; manifest-src 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'; script-src-elem  'unsafe-inline' 'www.google-analytics.com'; font-src 'self' https://fonts.gstatic.com; connect-src *.seankhliao.com  www.google-analytics.com; img-src *;">
 
 <title>newtab | seankhliao</title>
 
@@ -303,7 +303,6 @@ content: "";
 
 <p><em>dash:</em>
 <a href="https://console.cloud.google.com">gcp</a>
-<a href="https://console.cloud.google.com/cloud-build">build</a>
 <a href="https://dash.cloudflare.com">cloudflare</a>
 <a href="https://analytics.google.com">analytics</a>
 <a href="https://search.google.com/search-console">search</a></p>
@@ -319,7 +318,8 @@ content: "";
 <a href="https://rakyll.org">rakyll</a>
 <a href="https://jess.dev">jess</a>
 <a href="https://meowni.ca">monica</a>
-<a href="https://azeria-labs.com">azeria</a></p>
+<a href="https://azeria-labs.com">azeria</a>
+<a href="https://utcc.utoronto.ca/~cks/space/blog/__IndexChron">cks</a></p>
 
 <p><em>comics:</em>
 <a href="https://xkcd.com">xkcd</a>
@@ -341,13 +341,15 @@ content: "";
 
     
 <footer>
-  <a href="{/">home</a>
+  <a href="https://seankhliao.com/">home</a>
   |
-  <a href="/privacy/">privacy</a>
+  <a href="https://seankhliao.com/blog/">blog</a>
   |
-  <a href="/terms/">terms</a>
+  <a href="https://seankhliao.com/privacy/">privacy</a>
+  &amp;
+  <a href="https://seankhliao.com/terms/">terms</a>
   |
-  <a href="https://github.com/seankhliao/com-seankhliao">github</a>
+  <a href="https://github.com/seankhliao">github</a>
 </footer>
 
 
@@ -361,7 +363,7 @@ content: "";
       });
       window.addEventListener("unload", () => {
         ts1 = new Date();
-        navigator.sendBeacon(`https://statslogger.seankhliao.com/api?trigger=beacon&src=https://seankhliao.com/newtab/&dst=${dst}&dur=${ts1 - ts0}ms`);
+        navigator.sendBeacon(`https://statslogger.seankhliao.com/form?trigger=beacon&src=https://seankhliao.com/newtab/&dst=${dst}&dur=${ts1 - ts0}ms`);
       });
     </script>
 

@@ -47,7 +47,6 @@ _sne:_
 
 _dash:_
 [gcp](https://console.cloud.google.com)
-[build](https://console.cloud.google.com/cloud-build)
 [cloudflare](https://dash.cloudflare.com)
 [analytics](https://analytics.google.com)
 [search](https://search.google.com/search-console)
@@ -64,6 +63,7 @@ _blogs:_
 [jess](https://jess.dev)
 [monica](https://meowni.ca)
 [azeria](https://azeria-labs.com)
+[cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
 
 _comics:_
 [xkcd](https://xkcd.com)
