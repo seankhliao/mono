@@ -41,19 +41,33 @@ _sne:_
 [chat](https://chat.students.os3.nl)
 [rooms](https://www.os3.nl/2019-2020/services/green_light)
 [as](https://www.os3.nl/2019-2020/courses/as/start)
+[-labs](https://www.os3.nl/2019-2020/students/sean_liao/as)
 [ot](https://www.os3.nl/2019-2020/courses/ot/start)
-[as-labs](https://www.os3.nl/2019-2020/students/sean_liao/as)
-[ot-labs](https://www.os3.nl/2019-2020/students/sean_liao/ot)
+[-labs](https://www.os3.nl/2019-2020/students/sean_liao/ot)
 
 _dash:_
 [gcp](https://console.cloud.google.com)
-[cloudflare](https://dash.cloudflare.com)
-[analytics](https://analytics.google.com)
+[cf](https://dash.cloudflare.com)
+[ga](https://analytics.google.com)
 [search](https://search.google.com/search-console)
-
-_site:_
 [tekton](https://tekton.seankhliao.com/)
 [grafana](https://grafana.seankhliao.com/)
+
+_gh:_
+[calproxy](https://github.com/seankhliao/calproxy)
+[com-seankhliao](https://github.com/seankhliao/com-seankhliao)
+[http-server](https://github.com/seankhliao/http-server)
+[kluster](https://github.com/seankhliao/kluster)
+[statslogger](https://github.com/seankhliao/statslogger)
+[vanity](https://github.com/seankhliao/vanity)
+[webstyle](https://github.com/seankhliao/webstyle)
+
+_autobuild:_
+[ci-firebase](https://github.com/seankhliao/ci-firebase)
+[ci-imagemagick](https://github.com/seankhliao/ci-imagemagick)
+[ci-staticcheck](https://github.com/seankhliao/ci-staticcheck)
+[rebuilderd](https://github.com/seankhliao/rebuilderd)
+[wggo](https://github.com/seankhliao/wggo)
 
 ### _to_ read
 
@@ -63,6 +77,9 @@ _blogs:_
 [jess](https://jess.dev)
 [monica](https://meowni.ca)
 [azeria](https://azeria-labs.com)
+
+_read:_
+[n-gate](http://n-gate.com)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
 
 _comics:_
@@ -76,7 +93,3 @@ _comics:_
 [meme](https://www.webtoons.com/en/challenge/meme-girls/list?title_no=304446)
 [ie](https://www.webtoons.com/en/challenge/internet-explorer/list?title_no=219164)
 -->
-
-_read:_
-[n-gate](http://n-gate.com)
-[typeset-md](https://dave.autonoma.ca/blog/)

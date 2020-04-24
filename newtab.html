@@ -5,7 +5,6 @@
     
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'; script-src-elem  'unsafe-inline' 'www.google-analytics.com'; font-src 'self' https://fonts.gstatic.com; connect-src *.seankhliao.com  www.google-analytics.com; img-src *;">
 
 <title>newtab | seankhliao</title>
 
@@ -127,8 +126,8 @@ main > * {
   grid-column: 2 / span 1;
 }
 main > picture,
-main > amp-img,
-main > pre {
+main > pre,
+main > table {
   grid-column: 1 / span 3;
 }
 picture img {
@@ -232,6 +231,26 @@ time {
   color: #999;
 }
 
+table {
+  border-collapse: collapse;
+  border-style: hidden;
+}
+th,
+td {
+  padding: 0.4em;
+  text-align: left;
+}
+th {
+  font-weight: 700;
+  border-bottom: 0.2em solid #999;
+}
+tr:nth-child(5n) td {
+  border-bottom: 0.1em solid #999;
+}
+tbody tr:hover {
+  background: #404040;
+}
+
 header {
 display: none;
 }
@@ -297,19 +316,33 @@ content: "";
 <a href="https://chat.students.os3.nl">chat</a>
 <a href="https://www.os3.nl/2019-2020/services/green_light">rooms</a>
 <a href="https://www.os3.nl/2019-2020/courses/as/start">as</a>
+<a href="https://www.os3.nl/2019-2020/students/sean_liao/as">-labs</a>
 <a href="https://www.os3.nl/2019-2020/courses/ot/start">ot</a>
-<a href="https://www.os3.nl/2019-2020/students/sean_liao/as">as-labs</a>
-<a href="https://www.os3.nl/2019-2020/students/sean_liao/ot">ot-labs</a></p>
+<a href="https://www.os3.nl/2019-2020/students/sean_liao/ot">-labs</a></p>
 
 <p><em>dash:</em>
 <a href="https://console.cloud.google.com">gcp</a>
-<a href="https://dash.cloudflare.com">cloudflare</a>
-<a href="https://analytics.google.com">analytics</a>
-<a href="https://search.google.com/search-console">search</a></p>
-
-<p><em>site:</em>
+<a href="https://dash.cloudflare.com">cf</a>
+<a href="https://analytics.google.com">ga</a>
+<a href="https://search.google.com/search-console">search</a>
 <a href="https://tekton.seankhliao.com/">tekton</a>
 <a href="https://grafana.seankhliao.com/">grafana</a></p>
+
+<p><em>gh:</em>
+<a href="https://github.com/seankhliao/com-seankhliao">com-seankhliao</a>
+<a href="https://github.com/seankhliao/kluster">kluster</a>
+<a href="https://github.com/seankhliao/webstyle">webstyle</a>
+<a href="https://github.com/seankhliao/statslogger">statslogger</a>
+<a href="https://github.com/seankhliao/calproxy">calproxy</a>
+<a href="https://github.com/seankhliao/vanity">vanity</a>
+<a href="https://github.com/seankhliao/http-server">http-server</a></p>
+
+<p><em>autobuild:</em>
+<a href="https://github.com/seankhliao/ci-staticcheck">ci-staticcheck</a>
+<a href="https://github.com/seankhliao/ci-imagemagick">ci-imagemagick</a>
+<a href="https://github.com/seankhliao/ci-firebase">ci-firebase</a>
+<a href="https://github.com/seankhliao/rebuilderd">rebuilderd</a>
+<a href="https://github.com/seankhliao/wggo">wggo</a></p>
 
 <h3><em>to</em> read</h3>
 
@@ -318,7 +351,10 @@ content: "";
 <a href="https://rakyll.org">rakyll</a>
 <a href="https://jess.dev">jess</a>
 <a href="https://meowni.ca">monica</a>
-<a href="https://azeria-labs.com">azeria</a>
+<a href="https://azeria-labs.com">azeria</a></p>
+
+<p><em>read:</em>
+<a href="http://n-gate.com">n-gate</a>
 <a href="https://utcc.utoronto.ca/~cks/space/blog/__IndexChron">cks</a></p>
 
 <p><em>comics:</em>
@@ -332,10 +368,6 @@ content: "";
 [meme](https://www.webtoons.com/en/challenge/meme-girls/list?title_no=304446)
 [ie](https://www.webtoons.com/en/challenge/internet-explorer/list?title_no=219164)
 -->
-
-<p><em>read:</em>
-<a href="http://n-gate.com">n-gate</a>
-<a href="https://dave.autonoma.ca/blog/">typeset-md</a></p>
 
     </main>
 
