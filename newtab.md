@@ -87,6 +87,13 @@ _comics:_
 [smbc](https://www.smbc-comics.com)
 [god](https://www.webtoons.com/en/comedy/adventures-of-god/list?title_no=853)
 
+_maillist:_
+[arch-announce](https://lists.archlinux.org/pipermail/arch-announce/)
+[arch-dev](https://lists.archlinux.org/pipermail/arch-dev-public/)
+[go-dev](https://groups.google.com/forum/#!forum/golang-dev)
+[go-nuts](https://groups.google.com/forum/#!forum/golang-nuts)
+[filippo](https://buttondown.email/cryptography-dispatches/archive)
+
 <!--
 [olympus](https://www.webtoons.com/en/romance/lore-olympus/list?title_no=1320)
 [clinic](https://www.webtoons.com/en/challenge/clinic-of-horrors/list?title_no=274661)
