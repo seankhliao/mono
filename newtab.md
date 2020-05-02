@@ -56,20 +56,18 @@ _dash:_
 _gh:_
 [com-seankhliao](https://github.com/seankhliao/com-seankhliao)
 [kluster](https://github.com/seankhliao/kluster)
+[http-server](https://github.com/seankhliao/http-server)
+[webstyle](https://github.com/seankhliao/webstyle)
 
 _run:_
 [calproxy](https://github.com/seankhliao/calproxy)
 [ghdefaults](https://github.com/seankhliao/ghdefaults)
-[http-server](https://github.com/seankhliao/http-server)
 [statslogger](https://github.com/seankhliao/statslogger)
 [vanity](https://github.com/seankhliao/vanity)
-[webstyle](https://github.com/seankhliao/webstyle)
 
-_autobuild:_
+_auto:_
 [ci-firebase](https://github.com/seankhliao/ci-firebase)
 [ci-imagemagick](https://github.com/seankhliao/ci-imagemagick)
-[ci-staticcheck](https://github.com/seankhliao/ci-staticcheck)
-[rebuilderd](https://github.com/seankhliao/rebuilderd)
 [wggo](https://github.com/seankhliao/wggo)
 
 ### _to_ read
@@ -79,11 +77,14 @@ _blogs:_
 [rakyll](https://rakyll.org)
 [jess](https://jess.dev)
 [monica](https://meowni.ca)
-[azeria](https://azeria-labs.com)
+[foxboron](https://linderud.dev/blog/)
 
 _read:_
 [n-gate](http://n-gate.com)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
+[azeria](https://azeria-labs.com)
+[postmortems](https://github.com/danluu/post-mortems)
+[secure boot](https://cacm.acm.org/magazines/2020/3/243026-securing-the-boot-process/fulltext)
 
 _comics:_
 [xkcd](https://xkcd.com)
