@@ -34,7 +34,6 @@ _chat:_
 [telegram](https://web.telegram.org)
 [whatsapp](https://web.whatsapp.com)
 [sms](https://messages.google.com)
-[gophers](https://app.slack.com/client/T029RQSE6/C029RQSEE)
 
 _sne:_
 [gh](https://github.com/seankhliao/uva-sne)
@@ -76,27 +75,34 @@ _blogs:_
 [jaana](https://jbd.dev)
 [rakyll](https://rakyll.org)
 [jess](https://jess.dev)
-[monica](https://meowni.ca)
-[foxboron](https://linderud.dev/blog/)
 
 _read:_
 [n-gate](http://n-gate.com)
-[cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
 [azeria](https://azeria-labs.com)
-[postmortems](https://github.com/danluu/post-mortems)
-[secure boot](https://cacm.acm.org/magazines/2020/3/243026-securing-the-boot-process/fulltext)
+[postmort](https://github.com/danluu/post-mortems)
+[secboot](https://cacm.acm.org/magazines/2020/3/243026-securing-the-boot-process/fulltext)
 
 _comics:_
 [xkcd](https://xkcd.com)
 [smbc](https://www.smbc-comics.com)
 [god](https://www.webtoons.com/en/comedy/adventures-of-god/list?title_no=853)
 
-_maillist:_
-[arch-announce](https://lists.archlinux.org/pipermail/arch-announce/)
-[arch-dev](https://lists.archlinux.org/pipermail/arch-dev-public/)
-[go-dev](https://groups.google.com/forum/#!forum/golang-dev)
-[go-nuts](https://groups.google.com/forum/#!forum/golang-nuts)
+_infreq:_
+[monica](https://meowni.ca)
 [filippo](https://buttondown.email/cryptography-dispatches/archive)
+[foxboron](https://linderud.dev/blog/)
+[cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
+[aws](https://www.lastweekinaws.com/podcast/aws-morning-brief/)
+
+_maillist:_
+arch-{
+[ann](https://lists.archlinux.org/pipermail/arch-announce/)
+[dev](https://lists.archlinux.org/pipermail/arch-dev-public/)
+}
+go-{
+[dev](https://groups.google.com/forum/#!forum/golang-dev)
+[nuts](https://groups.google.com/forum/#!forum/golang-nuts)
+}
 
 <!--
 [olympus](https://www.webtoons.com/en/romance/lore-olympus/list?title_no=1320)

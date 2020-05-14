@@ -79,12 +79,11 @@ body {
 header {
   display: grid;
   grid:
-    [r1-s] ".    .    .    title title" 1fr [r1-e]
-    [r1-s] ".    .    .    tag   tag" 1fr [r2-e]
-    [r3-s] ".    .    .    .     ." 1fr [r3-e]
-    [r4-s] "logo logo logo logo  logo" 1fr [r4-e]
+    [r1-s] ".    .    .    title title" 20vh [r1-e]
+    [r1-s] ".    .    .    tag   tag" 20vh [r2-e]
+    [r3-s] ".    .    .    .     ." 20vh [r3-e]
+    [r4-s] "logo logo logo logo  logo" 20vh [r4-e]
     / 1fr 1fr 1fr 1fr 1fr;
-  height: 80vh;
   padding: 2vmin;
 }
 header h1 {
@@ -125,6 +124,7 @@ main {
 main > * {
   grid-column: 2 / span 1;
 }
+main > iframe,
 main > picture,
 main > pre,
 main > table {
@@ -221,6 +221,10 @@ pre code {
   padding: 0;
 }
 
+iframe {
+  margin: auto;
+}
+
 em {
   color: #a06be0;
   background-color: unset;
@@ -308,8 +312,7 @@ content: "";
 <a href="https://messenger.com">fb</a>
 <a href="https://web.telegram.org">telegram</a>
 <a href="https://web.whatsapp.com">whatsapp</a>
-<a href="https://messages.google.com">sms</a>
-<a href="https://app.slack.com/client/T029RQSE6/C029RQSEE">gophers</a></p>
+<a href="https://messages.google.com">sms</a></p>
 
 <p><em>sne:</em>
 <a href="https://github.com/seankhliao/uva-sne">gh</a>
@@ -350,28 +353,35 @@ content: "";
 <p><em>blogs:</em>
 <a href="https://jbd.dev">jaana</a>
 <a href="https://rakyll.org">rakyll</a>
-<a href="https://jess.dev">jess</a>
-<a href="https://meowni.ca">monica</a>
-<a href="https://linderud.dev/blog/">foxboron</a></p>
+<a href="https://jess.dev">jess</a></p>
 
 <p><em>read:</em>
 <a href="http://n-gate.com">n-gate</a>
-<a href="https://utcc.utoronto.ca/~cks/space/blog/__IndexChron">cks</a>
 <a href="https://azeria-labs.com">azeria</a>
-<a href="https://github.com/danluu/post-mortems">postmortems</a>
-<a href="https://cacm.acm.org/magazines/2020/3/243026-securing-the-boot-process/fulltext">secure boot</a></p>
+<a href="https://github.com/danluu/post-mortems">postmort</a>
+<a href="https://cacm.acm.org/magazines/2020/3/243026-securing-the-boot-process/fulltext">secboot</a></p>
 
 <p><em>comics:</em>
 <a href="https://xkcd.com">xkcd</a>
 <a href="https://www.smbc-comics.com">smbc</a>
 <a href="https://www.webtoons.com/en/comedy/adventures-of-god/list?title_no=853">god</a></p>
 
+<p><em>infreq:</em>
+<a href="https://meowni.ca">monica</a>
+<a href="https://buttondown.email/cryptography-dispatches/archive">filippo</a>
+<a href="https://linderud.dev/blog/">foxboron</a>
+<a href="https://utcc.utoronto.ca/~cks/space/blog/__IndexChron">cks</a>
+<a href="https://www.lastweekinaws.com/podcast/aws-morning-brief/">aws</a></p>
+
 <p><em>maillist:</em>
-<a href="https://lists.archlinux.org/pipermail/arch-announce/">arch-announce</a>
-<a href="https://lists.archlinux.org/pipermail/arch-dev-public/">arch-dev</a>
-<a href="https://groups.google.com/forum/#!forum/golang-dev">go-dev</a>
-<a href="https://groups.google.com/forum/#!forum/golang-nuts">go-nuts</a>
-<a href="https://buttondown.email/cryptography-dispatches/archive">filippo</a></p>
+arch-{
+<a href="https://lists.archlinux.org/pipermail/arch-announce/">ann</a>
+<a href="https://lists.archlinux.org/pipermail/arch-dev-public/">dev</a>
+}
+go-{
+<a href="https://groups.google.com/forum/#!forum/golang-dev">dev</a>
+<a href="https://groups.google.com/forum/#!forum/golang-nuts">nuts</a>
+}</p>
 
 <!--
 [olympus](https://www.webtoons.com/en/romance/lore-olympus/list?title_no=1320)
