@@ -1,3 +1,3 @@
 .PHONY: *
 all:
-	webrender -ga="" -in newtab.md
+	webrender -analytics=false -in newtab.md

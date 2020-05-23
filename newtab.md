@@ -22,18 +22,12 @@ title: newtab | seankhliao
 
 _{_
 [repo](https://repo.new)
+[keep](https://keep.new)
 [playlist](https://playlist.new)
 [doc](https://doc.new)
 [slide](https://slide.new)
 [sheet](https://sheet.new)
-[keep](https://keep.new)
 _}.new_
-
-_chat:_
-[fb](https://messenger.com)
-[telegram](https://web.telegram.org)
-[whatsapp](https://web.whatsapp.com)
-[sms](https://messages.google.com)
 
 _sne:_
 [gh](https://github.com/seankhliao/uva-sne)
@@ -55,8 +49,8 @@ _dash:_
 _gh:_
 [com-seankhliao](https://github.com/seankhliao/com-seankhliao)
 [kluster](https://github.com/seankhliao/kluster)
-[http-server](https://github.com/seankhliao/http-server)
 [webstyle](https://github.com/seankhliao/webstyle)
+[wggo](https://github.com/seankhliao/wggo)
 
 _run:_
 [calproxy](https://github.com/seankhliao/calproxy)
@@ -64,42 +58,69 @@ _run:_
 [statslogger](https://github.com/seankhliao/statslogger)
 [vanity](https://github.com/seankhliao/vanity)
 
-_auto:_
-[ci-firebase](https://github.com/seankhliao/ci-firebase)
-[ci-imagemagick](https://github.com/seankhliao/ci-imagemagick)
-[wggo](https://github.com/seankhliao/wggo)
-
 ### _to_ read
 
 _blogs:_
 [jaana](https://jbd.dev)
 [rakyll](https://rakyll.org)
+[@rakyll](https://medium.com/@rakyll)
 [jess](https://jess.dev)
 
-_read:_
-[n-gate](http://n-gate.com)
-[azeria](https://azeria-labs.com)
-[postmort](https://github.com/danluu/post-mortems)
-[secboot](https://cacm.acm.org/magazines/2020/3/243026-securing-the-boot-process/fulltext)
-
 _comics:_
-[xkcd](https://xkcd.com)
-[smbc](https://www.smbc-comics.com)
 [god](https://www.webtoons.com/en/comedy/adventures-of-god/list?title_no=853)
+[smbc](https://www.smbc-comics.com)
+[xkcd](https://xkcd.com)
 
-_infreq:_
+_weekly:_
+[awsweekly](https://www.lastweekinaws.com/podcast/aws-morning-brief/)
+[highscalability](http://highscalability.com/)
+[kubeweekly](https://kubeweekly.io/)
+[n-gate](http://n-gate.com)
+[sreweekly](https://sreweekly.com/)
+[thesharpend](https://sharpend.io/)
+
+_blogs2:_
+[acolyer](https://blog.acolyer.org/)
+[brendangregg](http://www.brendangregg.com/blog/)
+[cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
+[danluu](http://danluu.com/)
+[deterministic](https://deterministic.space/)
+[evanjones](https://www.evanjones.ca/chronological.html)
+[jxnblk](https://jxnblk.com/blog)
 [monica](https://meowni.ca)
+[sivoahava](https://www.simoahava.com/)
+
+_blogs3:_
+[apenwarr](https://apenwarr.ca/log/)
+[asampson](https://www.cs.cornell.edu/~asampson/blog/)
+[benjojo](https://blog.benjojo.co.uk/)
+[carlosbecker](https://carlosbecker.com/posts)
+[catonmat](https://catonmat.net/)
+[daemonology](http://www.daemonology.net/blog/)
+[dollarsdata](https://ofdollarsanddata.com/popular-posts/)
+[evilsocket](https://www.evilsocket.net/)
 [filippo](https://buttondown.email/cryptography-dispatches/archive)
 [foxboron](https://linderud.dev/blog/)
-[cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
-[aws](https://www.lastweekinaws.com/podcast/aws-morning-brief/)
+[genodians](https://genodians.org/)
+[juliaevans](https://jvns.ca/)
+[macwright](https://macwright.org/)
+[madhouse](https://asylum.madhouse-project.org/blog/archives/)
+[marcbrooker](https://brooker.co.za/blog/)
+[mnot](https://www.mnot.net/blog/)
+[mrmrs](http://mrmrs.cc/writing/)
+[nullprogram](https://nullprogram.com/)
+[polymorphic](https://reasonablypolymorphic.com/blog/archives/)
+[popcount](https://idea.popcount.org/)
+[schneems](https://www.schneems.com/)
+[tedu](https://flak.tedunangst.com/)
+[zserge](https://zserge.com/)
 
-_maillist:_
-arch-{
+_mail:_
+arch{
 [ann](https://lists.archlinux.org/pipermail/arch-announce/)
 [dev](https://lists.archlinux.org/pipermail/arch-dev-public/)
 }
-go-{
+go{
 [dev](https://groups.google.com/forum/#!forum/golang-dev)
 [nuts](https://groups.google.com/forum/#!forum/golang-nuts)
 }
