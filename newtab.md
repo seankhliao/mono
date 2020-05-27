@@ -112,6 +112,7 @@ _blogs3:_
 [popcount](https://idea.popcount.org/)
 [schneems](https://www.schneems.com/)
 [sharpend](https://sharpend.io/)
+[soatok](https://soatok.blog/b/)
 [tedu](https://flak.tedunangst.com/)
 [zserge](https://zserge.com/)
 
