@@ -67,17 +67,16 @@ _blogs:_
 [jess](https://jess.dev)
 
 _comics:_
+[clinic](https://www.webtoons.com/en/challenge/clinic-of-horrors/list?title_no=274661)
 [god](https://www.webtoons.com/en/comedy/adventures-of-god/list?title_no=853)
 [smbc](https://www.smbc-comics.com)
 [xkcd](https://xkcd.com)
 
 _weekly:_
-[awsweekly](https://www.lastweekinaws.com/podcast/aws-morning-brief/)
 [highscalability](http://highscalability.com/)
 [kubeweekly](https://kubeweekly.io/)
 [n-gate](http://n-gate.com)
 [sreweekly](https://sreweekly.com/)
-[thesharpend](https://sharpend.io/)
 
 _blogs2:_
 [acolyer](https://blog.acolyer.org/)
@@ -112,6 +111,7 @@ _blogs3:_
 [polymorphic](https://reasonablypolymorphic.com/blog/archives/)
 [popcount](https://idea.popcount.org/)
 [schneems](https://www.schneems.com/)
+[sharpend](https://sharpend.io/)
 [tedu](https://flak.tedunangst.com/)
 [zserge](https://zserge.com/)
 
@@ -120,14 +120,3 @@ arch{
 [ann](https://lists.archlinux.org/pipermail/arch-announce/)
 [dev](https://lists.archlinux.org/pipermail/arch-dev-public/)
 }
-go{
-[dev](https://groups.google.com/forum/#!forum/golang-dev)
-[nuts](https://groups.google.com/forum/#!forum/golang-nuts)
-}
-
-<!--
-[olympus](https://www.webtoons.com/en/romance/lore-olympus/list?title_no=1320)
-[clinic](https://www.webtoons.com/en/challenge/clinic-of-horrors/list?title_no=274661)
-[meme](https://www.webtoons.com/en/challenge/meme-girls/list?title_no=304446)
-[ie](https://www.webtoons.com/en/challenge/internet-explorer/list?title_no=219164)
--->
