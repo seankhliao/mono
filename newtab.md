@@ -29,15 +29,6 @@ _{_
 [sheet](https://sheet.new)
 _}.new_
 
-_sne:_
-[gh](https://github.com/seankhliao/uva-sne)
-[chat](https://chat.students.os3.nl)
-[rooms](https://www.os3.nl/2019-2020/services/green_light)
-[as](https://www.os3.nl/2019-2020/courses/as/start)
-[-labs](https://www.os3.nl/2019-2020/students/sean_liao/as)
-[ot](https://www.os3.nl/2019-2020/courses/ot/start)
-[-labs](https://www.os3.nl/2019-2020/students/sean_liao/ot)
-
 _dash:_
 [gcp](https://console.cloud.google.com)
 [build](https://console.cloud.google.com/cloud-build/builds?project=com-seankhliao)
@@ -105,13 +96,10 @@ _blogs3:_
 [macwright](https://macwright.org/)
 [madhouse](https://asylum.madhouse-project.org/blog/archives/)
 [marcbrooker](https://brooker.co.za/blog/)
-[mnot](https://www.mnot.net/blog/)
-[mrmrs](http://mrmrs.cc/writing/)
 [nullprogram](https://nullprogram.com/)
 [polymorphic](https://reasonablypolymorphic.com/blog/archives/)
 [popcount](https://idea.popcount.org/)
 [schneems](https://www.schneems.com/)
-[sharpend](https://sharpend.io/)
 [soatok](https://soatok.blog/b/)
 [tedu](https://flak.tedunangst.com/)
 [zserge](https://zserge.com/)
@@ -121,3 +109,4 @@ arch{
 [ann](https://lists.archlinux.org/pipermail/arch-announce/)
 [dev](https://lists.archlinux.org/pipermail/arch-dev-public/)
 }
+[google](https://groups.google.com/my-groups)
