@@ -75,6 +75,7 @@ _blogs2:_
 [dollarsdata](https://ofdollarsanddata.com/popular-posts/)
 [evilsocket](https://www.evilsocket.net/)
 [foxboron](https://linderud.dev/blog/)
+[industrialempathy](https://www.industrialempathy.com/)
 [marcbrooker](https://brooker.co.za/blog/)
 [monica](https://meowni.ca)
 [polymorphic](https://reasonablypolymorphic.com/blog/archives/)
