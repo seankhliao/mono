@@ -29,6 +29,11 @@ _{_
 [sheet](https://sheet.new)
 _}.new_
 
+_current:_
+[job1](https://docs.google.com/spreadsheets/d/1bEir7geFARtqd4gr52rB9f5EEWpPlsGSPVdAmAQkdbI/edit#gid=0)
+[gh](https://github.com/seankhliao)
+[li](https://www.linkedin.com/in/seankhliao/)
+
 _dash:_
 [gcp](https://console.cloud.google.com)
 [build](https://console.cloud.google.com/cloud-build/builds?project=com-seankhliao)
@@ -62,9 +67,6 @@ _comics:_
 [god](https://www.webtoons.com/en/comedy/adventures-of-god/list?title_no=853)
 [smbc](https://www.smbc-comics.com)
 [xkcd](https://xkcd.com)
-
-_weekly:_
-[n-gate](http://n-gate.com)
 
 _blogs2:_
 [brendangregg](http://www.brendangregg.com/blog/)
