@@ -49,7 +49,6 @@ _gh:_
 [wggo](https://github.com/seankhliao/wggo)
 
 _run:_
-[calproxy](https://github.com/seankhliao/calproxy)
 [ghdefaults](https://github.com/seankhliao/ghdefaults)
 [statslogger](https://github.com/seankhliao/statslogger)
 [vanity](https://github.com/seankhliao/vanity)
