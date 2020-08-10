@@ -39,6 +39,7 @@ _dash:_
 [build](https://console.cloud.google.com/cloud-build/builds?project=com-seankhliao)
 [run](https://console.cloud.google.com/run?project=com-seankhliao)
 [cf](https://dash.cloudflare.com)
+[report](https://datastudio.google.com/reporting/91bc28c3-a44f-4bcc-a838-58cf6a56ca04/page/BMLbB)
 [ga](https://analytics.google.com)
 [search](https://search.google.com/search-console)
 
@@ -72,18 +73,12 @@ _blogs2:_
 [carlosbecker](https://carlosbecker.com/posts)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
 [daemonology](http://www.daemonology.net/blog/)
-[danluu](http://danluu.com/)
 [dollarsdata](https://ofdollarsanddata.com/popular-posts/)
-[evilsocket](https://www.evilsocket.net/)
 [foxboron](https://linderud.dev/blog/)
 [industrialempathy](https://www.industrialempathy.com/)
 [marcbrooker](https://brooker.co.za/blog/)
 [monica](https://meowni.ca)
-[polymorphic](https://reasonablypolymorphic.com/blog/archives/)
-[sivoahava](https://www.simoahava.com/)
 [soatok](https://soatok.blog/b/)
-[tedu](https://flak.tedunangst.com/)
-[zserge](https://zserge.com/)
 
 _mail:_
 arch{
