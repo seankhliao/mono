@@ -77,12 +77,8 @@ _comics2:_
 
 _blogs2:_
 [brendangregg](http://www.brendangregg.com/blog/)
-[carlosbecker](https://carlosbecker.com/posts)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
-[daemonology](http://www.daemonology.net/blog/)
-[dollarsdata](https://ofdollarsanddata.com/popular-posts/)
 [foxboron](https://linderud.dev/blog/)
-[industrialempathy](https://www.industrialempathy.com/)
 [marcbrooker](https://brooker.co.za/blog/)
 [monica](https://meowni.ca)
 [soatok](https://soatok.blog/b/)
