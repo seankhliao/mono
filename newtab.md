@@ -29,11 +29,6 @@ _{_
 [sheet](https://sheet.new)
 _}.new_
 
-_current:_
-[job1](https://docs.google.com/spreadsheets/d/1bEir7geFARtqd4gr52rB9f5EEWpPlsGSPVdAmAQkdbI/edit#gid=0)
-[gh](https://github.com/seankhliao)
-[li](https://www.linkedin.com/in/seankhliao/)
-
 _dash:_
 [gcp](https://console.cloud.google.com)
 [build](https://console.cloud.google.com/cloud-build/builds?project=com-seankhliao)
