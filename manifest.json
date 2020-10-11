@@ -9,6 +9,6 @@
   },
   "offline_enabled": true,
   "chrome_url_overrides": {
-    "newtab": "newtab.html"
+    "newtab": "index.html"
   }
 }

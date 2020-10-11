@@ -1,3 +1,3 @@
 .PHONY: *
 all:
-	webrender -analytics=false -in newtab.md
+	webrender -disableanalytics -embedstyle -src=newtab.md -dst=index.html

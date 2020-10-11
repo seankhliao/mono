@@ -1,6 +1,9 @@
 ---
 style: |-
-  header {
+  body {
+    grid: auto / 1fr repeat(3, minmax(90px, 280px)) 1fr;
+  }
+  h1, h2, hgroup {
   display: none;
   }
   main {
@@ -40,13 +43,10 @@ _dash:_
 
 _gh:_
 [com-seankhliao](https://github.com/seankhliao/com-seankhliao)
+[terrable](https://github.com/seankhliao/terrable)
 [kluster](https://github.com/seankhliao/kluster)
-[webstyle](https://github.com/seankhliao/webstyle)
-[wggo](https://github.com/seankhliao/wggo)
 
 _run:_
-[ghdefaults](https://github.com/seankhliao/ghdefaults)
-[statslogger](https://github.com/seankhliao/statslogger)
 [vanity](https://github.com/seankhliao/vanity)
 
 ### _to_ read
@@ -56,19 +56,7 @@ _blogs:_
 [rakyll](https://rakyll.org)
 [@rakyll](https://medium.com/@rakyll)
 [jess](https://jess.dev)
-
-_comics:_
-[clinic](https://www.webtoons.com/en/challenge/clinic-of-horrors/list?title_no=274661)
-[god](https://www.webtoons.com/en/comedy/adventures-of-god/list?title_no=853)
-[smbc](https://www.smbc-comics.com)
 [xkcd](https://xkcd.com)
-
-_comics2:_
-[mage&demon](https://www.webtoons.com/en/comedy/mage-and-demon-queen/list?title_no=1438)
-[witch&bull](https://www.webtoons.com/en/fantasy/the-witch-and-the-bull/list?title_no=1892)
-[poppy](https://www.webtoons.com/en/romance/midnight-poppy-land/list?title_no=1798)
-[olympus](https://www.webtoons.com/en/romance/lore-olympus/list?title_no=1320)
-[letsplay](https://www.webtoons.com/en/romance/letsplay/list?title_no=1218)
 
 _blogs2:_
 [brendangregg](http://www.brendangregg.com/blog/)
