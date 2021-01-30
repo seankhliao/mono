@@ -21,7 +21,7 @@ style: |-
 title: newtab | seankhliao
 ---
 
-### _current_ focus
+### _quick_ links
 
 _{_
 [repo](https://repo.new)
@@ -32,21 +32,19 @@ _{_
 [sheet](https://sheet.new)
 _}.new_
 
-_dash:_
-[gcp](https://console.cloud.google.com)
-[build](https://console.cloud.google.com/cloud-build/builds?project=com-seankhliao)
-[run](https://console.cloud.google.com/run?project=com-seankhliao)
-[cf](https://dash.cloudflare.com)
-[report](https://datastudio.google.com/reporting/91bc28c3-a44f-4bcc-a838-58cf6a56ca04/page/BMLbB)
-[ga](https://analytics.google.com)
-[search](https://search.google.com/search-console)
+_{_
+[analytics](https://analytics.google.com)
+[cloud](https://console.cloud.google.com)
+[datastudio](https://datastudio.google.com/reporting/91bc28c3-a44f-4bcc-a838-58cf6a56ca04/page/BMLbB)
+[domains](https://domains.google.com)
+[search](https://search.google.com)
+_}.google.com_
 
-_gh:_
+[_build_](https://console.cloud.google.com/cloud-build/builds?project=com-seankhliao)
+_/_
+[_run_](https://console.cloud.google.com/run?project=com-seankhliao)
+_:_
 [com-seankhliao](https://github.com/seankhliao/com-seankhliao)
-[terrable](https://github.com/seankhliao/terrable)
-[kluster](https://github.com/seankhliao/kluster)
-
-_run:_
 [vanity](https://github.com/seankhliao/vanity)
 
 ### _to_ read
@@ -65,10 +63,8 @@ _blogs2:_
 [marcbrooker](https://brooker.co.za/blog/)
 [monica](https://meowni.ca)
 [soatok](https://soatok.blog/b/)
+[rachel](https://rachelbythebay.com/w/)
 
 _mail:_
-arch{
-[ann](https://lists.archlinux.org/pipermail/arch-announce/)
-[dev](https://lists.archlinux.org/pipermail/arch-dev-public/)
-}
+[arch-dev](https://lists.archlinux.org/pipermail/arch-dev-public/)
 [groups](https://groups.google.com/my-groups)
