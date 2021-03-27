@@ -44,11 +44,9 @@ _blogs:_
 [jaana](https://jbd.dev)
 [rakyll](https://rakyll.org)
 [@rakyll](https://medium.com/@rakyll)
-[jess](https://jess.dev)
 [xkcd](https://xkcd.com)
 
 _blogs2:_
-[brendangregg](http://www.brendangregg.com/blog/)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
 [soatok](https://soatok.blog/b/)
 
