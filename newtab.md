@@ -35,7 +35,7 @@ _}.google.com_
 _/_
 [_run_](https://console.cloud.google.com/run?project=com-seankhliao)
 _:_
-[com-seankhliao](https://github.com/seankhliao/com-seankhliao)
+[w](https://github.com/seankhliao/w)
 [vanity](https://github.com/seankhliao/vanity)
 
 ### _to_ read
