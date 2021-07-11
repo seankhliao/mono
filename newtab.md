@@ -27,8 +27,8 @@ title: newtab | seankhliao
 _/_
 [seankhliao](https://github.com/seankhliao)
 _/ {_
-[w](https://github.com/seankhliao/w)
-[vanity](https://github.com/seankhliao/vanity)
+[config](https://github.com/seankhliao/config)
+[mono](https://github.com/seankhliao/mono)
 _}_
 
 [gcp](https://console.cloud.google.com)
@@ -50,7 +50,6 @@ _blogs:_
 [@rakyll](https://medium.com/@rakyll)
 [xkcd](https://xkcd.com)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
-[soatok](https://soatok.blog/b/)
 
 _mail:_
 [arch-dev](https://lists.archlinux.org/pipermail/arch-dev-public/)

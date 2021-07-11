@@ -1,3 +1,3 @@
 .PHONY: *
 all:
-	webrender -disableanalytics -embedstyle -src=newtab.md -dst=index.html
+	webrender -compact -src=newtab.md -dst=index.html
