@@ -1,46 +1,26 @@
----
-style: |-
-  body {
-    grid: auto / 1fr repeat(3, minmax(90px, 280px)) 1fr;
-  }
-  h1, h2, hgroup {
-  display: none;
-  }
-  main {
-  margin-top: 0;
-  }
-  h3 {
-  margin-top: 5vh;
-  }
-  ul > li {
-  display: inline;
-  }
-  ul > li:before {
-  content: "";
-  }
-title: newtab | seankhliao
----
+# newtab | seankhliao
 
 ### _quick_ links
 
-[github.com](https://github.com)
-_/_
+_github:_
 [seankhliao](https://github.com/seankhliao)
 _/ {_
 [config](https://github.com/seankhliao/config)
-[mono](https://github.com/seankhliao/mono)
 _}_
 
+_compute:_
 [gcp](https://console.cloud.google.com)
-_:_
+_/ {_
 [build](https://console.cloud.google.com/cloud-build/builds?project=com-seankhliao)
 [run](https://console.cloud.google.com/run?project=com-seankhliao)
+_}_
+[hetzner](https://accounts.hetzner.com/login)
 
 _google:_
 [analytics](https://analytics.google.com)
-[datastudio](https://datastudio.google.com/reporting/91bc28c3-a44f-4bcc-a838-58cf6a56ca04/page/BMLbB)
+[datastudio](https://datastudio.google.com/reporting/5a9726a1-3811-4859-a14d-2e12c3973c28/page/0TlrC)
 [domains](https://domains.google.com)
-[search](https://search.google.com)
+[search](https://search.google.com/search-console/)
 
 ### _to_ read
 
@@ -51,6 +31,6 @@ _blogs:_
 [xkcd](https://xkcd.com)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
 
-_mail:_
-[arch-dev](https://lists.archlinux.org/pipermail/arch-dev-public/)
-[groups](https://groups.google.com/my-groups)
+_comics:_
+[your throne](https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009)
+[ghostblade](https://tapas.io/series/GhostBlade/info)
