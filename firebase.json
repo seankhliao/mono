@@ -1,0 +1,8 @@
+{
+  "hosting": {
+    "site": "liaodev",
+    "public": "dst",
+    "cleanUrls": true,
+    "trailingSlash": true
+  }
+}
