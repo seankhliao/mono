@@ -1,0 +1,12 @@
+steps:
+  - id: generate
+    name: 'us-central1-docker.pkg.dev/com-seankhliao/build/blogengine'
+    args:
+      - '-style=compact'
+      - '-src=newtab.md'
+      - '-dst=dst/index.html'
+  - id: deploy
+    name: 'us-central1-docker.pkg.dev/com-seankhliao/build/firebase'
+    args:
+      - 'deploy'
+      - '--only=hosting'

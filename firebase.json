@@ -1,0 +1,8 @@
+{
+  "hosting": {
+    "site": "newtabliaodev",
+    "public": "dst",
+    "cleanUrls": true,
+    "trailingSlash": true
+  }
+}

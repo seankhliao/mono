@@ -1,11 +1,9 @@
 # chrome-newtab
 
-1. go to [chrome://extensions][ce]
+1. go to [chrome://extensions](chrome://extensions)
 2. enable developer mode
-3. load upacked
+3. load unpacked
 4. select this directory
-
-[ce]: chrome://extensions
 
 ## Notes
 
