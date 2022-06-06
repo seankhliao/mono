@@ -1,19 +1,25 @@
-# newtab | seankhliao
+# newtab
 
-### _quick_ links
+### _gcp_
 
-_code:_
-[buildkite](https://buildkite.com/seankhliao)
-[config](https://github.com/seankhliao/config)
+[console](https://console.cloud.google.com/home/dashboard?project=com-seankhliao)
 
-_compute:_
-[gcp](https://console.cloud.google.com)
-_/ {_
+_run:_
 [build](https://console.cloud.google.com/cloud-build/builds?project=com-seankhliao)
-[dns](https://console.cloud.google.com/net-services/dns/zones/liao-dev/details?project=com-seankhliao)
 [run](https://console.cloud.google.com/run?project=com-seankhliao)
-_}_
-[hetzner](https://accounts.hetzner.com/login)
+[vm](https://console.cloud.google.com/compute/instances?project=com-seankhliao)
+
+_storage:_
+[artifacts](https://console.cloud.google.com/artifacts?project=com-seankhliao)
+[secrets](https://console.cloud.google.com/security/secret-manager?project=com-seankhliao)
+[storage](https://console.cloud.google.com/storage/browser?project=com-seankhliao)
+
+_network:_
+[dns](https://console.cloud.google.com/net-services/dns/zones/liao-dev/details?project=com-seankhliao)
+[firewall](https://console.cloud.google.com/networking/firewalls/list?project=com-seankhliao)
+
+_other:_
+[scheduler](https://console.cloud.google.com/cloudscheduler?project=com-seankhliao)
 
 _google:_
 [analytics](https://analytics.google.com)
