@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "newtabliaodev",
+    "site": "newtab-liao-dev",
     "public": "dst",
     "cleanUrls": true,
     "trailingSlash": true
