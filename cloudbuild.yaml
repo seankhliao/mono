@@ -1,8 +1,8 @@
 steps:
-  - name: 'us-central1-docker.pkg.dev/com-seankhliao/build/blogengine'
+  - name: "us-central1-docker.pkg.dev/com-seankhliao/build/blogengine"
     args:
-      - '-base-url=https://liao.dev'
-  - name: 'us-central1-docker.pkg.dev/com-seankhliao/build/firebase'
+      - "-base-url=https://liao.dev"
+  - name: "us-central1-docker.pkg.dev/com-seankhliao/build/firebase"
     args:
-      - 'deploy'
-      - '--only=hosting'
+      - "deploy"
+      - "--only=hosting"
