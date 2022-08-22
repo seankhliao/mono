@@ -67,14 +67,20 @@ func main() {
 	}
 	d.Selectors = strings.Join(sels, ",")
 
+	var main strings.Builder
 	links := make([]string, 0, len(c.Links))
 	for txt, link := range c.Links {
 		class := rep.Replace(txt)
 		a := fmt.Sprintf(`<a class="%s" href="%s">%s</a>`, class, link, txt)
 		links = append(links, a)
+
+		// ensure first link
+		if txt == "seankhliao.com" {
+			main.WriteString(a)
+			main.WriteString("\n")
+		}
 	}
 
-	var main strings.Builder
 	for r := 0; r < c.Repeat; r++ {
 		rand.Shuffle(len(links), func(i, j int) {
 			links[i], links[j] = links[j], links[i]
