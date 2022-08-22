@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"
+  />
+  <title>{{ .Title }}</title>
+
+  <link rel="icon" href="https://seankhliao.com/favicon.ico" />
+  <link
+    rel="icon"
+    href="https://seankhliao.com/static/icon.svg"
+    type="image/svg+xml"
+    sizes="any"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="https://seankhliao.com/static/icon-192.png"
+  />
+
+  {{ with .GTM }}
+  <script>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+      var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != "dataLayer" ? "&l=" + l : "";
+      j.async = true; j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, "script", "dataLayer", "{{ . }}");
+  </script>
+  {{ end }}
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    :root {
+      --background: #000000;
+      --background-light: #303030;
+      --primary: #a06be0;
+      --text: #eceff1;
+      --text-dark: #999999;
+      --decoration: #707070;
+
+      background: var(--background);
+      color: var(--text);
+      font: 18px "Inconsolata", monospace;
+    }
+
+    @font-face {
+      font-family: "Inconsolata";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: local("Inconsolata"), local("Inconsolata-Regular"),
+        url(/static/inconsolata-var.woff2) format("woff2-variations"),
+        url(/static/inconsolata-400.woff2) format("woff2"),
+        url(https://seankhliao.com/static/inconsolata-var.woff2) format("woff2-variations"),
+        url(https://seankhliao.com/static/inconsolata-400.woff2) format("woff2");
+    }
+    @font-face {
+      font-family: "Inconsolata";
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: local("Inconsolata Bold"), local("Inconsolata-Bold"),
+        url(/static/inconsolata-var.woff2) format("woff2-variations"),
+        url(/static/inconsolata-700.woff2) format("woff2"),
+        url(https://seankhliao.com/static/inconsolata-var.woff2) format("woff2-variations"),
+        url(https://seankhliao.com/static/inconsolata-700.woff2) format("woff2");
+    }
+  
+    body {
+      display: grid;
+      place-items: center;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      overflow-y: hidden;
+    }
+    main {
+      text-align: center;
+      max-height: 100vh;
+    }
+    span {
+      font-style: normal;
+      font-weight: 700;
+    }
+    em {
+      color: var(--primary);
+      background-color: unset;
+      font-style: normal;
+      font-weight: 700;
+    }
+    a, a:visited {
+      color: var(--text-dark);
+      font-weight: 400;
+      text-decoration: none;
+    }
+    
+    {{ .Selectors }} {
+      color: var(--primary);
+      transition: color 0.16s;
+      text-decoration: underline 1px var(--primary);
+    }
+  </style>
+
+  {{ with .GTM }}<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ . }}" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>{{ end }}
+
+  <main>
+  {{ .Main }}
+  </main>
