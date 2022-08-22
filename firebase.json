@@ -1,0 +1,8 @@
+{
+  "hosting": {
+    "site": "sean-liao-dev",
+    "public": "dst",
+    "cleanUrls": true,
+    "trailingSlash": true
+  }
+}
