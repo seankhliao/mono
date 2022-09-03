@@ -13,6 +13,11 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _12022-08-25_ Nadeah
+
+A cozy little bar, a little reminiscent of times past.
+Halfway bwteen acoustic and rock.
+
 ##### _12022-07-29_ London Grammar
 
 Outdoor festival, and with a song catalogue that's a bit ethereal.
