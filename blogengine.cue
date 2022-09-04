@@ -4,5 +4,5 @@ render: {
 }
 
 firebase: {
-	site: "liao-dev"
+	site: "liaodev"
 }
