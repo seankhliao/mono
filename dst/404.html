@@ -43,7 +43,8 @@
   src: local("Inconsolata"), local("Inconsolata-Regular"),
     url(/static/inconsolata-var.woff2) format("woff2-variations"),
     url(/static/inconsolata-400.woff2) format("woff2"),
-    url(https://seankhliao.com/static/inconsolata-var.woff2) format("woff2-variations"),
+    url(https://seankhliao.com/static/inconsolata-var.woff2)
+      format("woff2-variations"),
     url(https://seankhliao.com/static/inconsolata-400.woff2) format("woff2");
 }
 @font-face {
@@ -54,7 +55,8 @@
   src: local("Inconsolata Bold"), local("Inconsolata-Bold"),
     url(/static/inconsolata-var.woff2) format("woff2-variations"),
     url(/static/inconsolata-700.woff2) format("woff2"),
-    url(https://seankhliao.com/static/inconsolata-var.woff2) format("woff2-variations"),
+    url(https://seankhliao.com/static/inconsolata-var.woff2)
+      format("woff2-variations"),
     url(https://seankhliao.com/static/inconsolata-700.woff2) format("woff2");
 }
 @font-face {
@@ -75,7 +77,7 @@
   font-display: swap;
   src: local("Lora Bold"), local("Lora-Bold"),
     url(/static/lora-var.woff2) format("woff2-variations"),
-    url(/static/lora-700.woff2) format("woff2");
+    url(/static/lora-700.woff2) format("woff2"),
     url(https://seankhliao.com/static/lora-var.woff2) format("woff2-variations"),
     url(https://seankhliao.com/static/lora-700.woff2) format("woff2");
 }
@@ -128,21 +130,29 @@ hgroup *:nth-child(n + 5) {
   grid-row: 2 / span 1;
 }
 /* ===== full bleed ===== */
-footer, iframe, pre, table, picture, textarea {
+footer,
+iframe,
+pre,
+table,
+picture,
+textarea {
   grid-column: 1 / span 5;
 }
 picture img {
   width: 100%;
+  height: 100%;
   margin: auto;
 }
 
 /* ===== layout main ===== */
-h3, h4,
+h3,
+h4,
 picture {
   margin: 25vh 0 0.5rem 0;
 }
 
-h5, h6 {
+h5,
+h6 {
   margin: 1.5rem 0 0.25rem 0;
 }
 h3 {
@@ -168,7 +178,8 @@ footer {
 }
 
 /* ===== style ===== */
-a, a:visited {
+a,
+a:visited {
   color: inherit;
   font-weight: 700;
   text-decoration: underline 1px var(--decoration);
@@ -179,7 +190,12 @@ a:hover {
   text-decoration: underline 1px var(--primary);
 }
 
-h1 a, h1 a:hover, h1 a:visited, hgroup a, hgroup a:hover, hgroup a:visited {
+h1 a,
+h1 a:hover,
+h1 a:visited,
+hgroup a,
+hgroup a:hover,
+hgroup a:visited {
   color: inherit;
   text-decoration: none;
 }
@@ -243,7 +259,8 @@ table {
   border-collapse: collapse;
   border-style: hidden;
 }
-td, th {
+td,
+th {
   padding: 0.4rem;
   text-align: left;
 }
@@ -287,7 +304,8 @@ input {
   transition: 0.4s;
   width: 100%;
 }
-input:hover, input:focus {
+input:hover,
+input:focus {
   appearance: none;
   border: none;
   border-bottom: 0.2em solid var(--primary);
@@ -296,7 +314,8 @@ input:hover, input:focus {
 }
 
 /* == buttons == */
-input[type="button"], input[type="submit"] {
+input[type="button"],
+input[type="submit"] {
   border-radius: 0;
   font: inherit;
   font-weight: 700;
@@ -304,14 +323,17 @@ input[type="button"], input[type="submit"] {
   padding: 0.15rem 0.75rem;
   width: auto;
 }
-input[type="button"]:focus, input[type="button"]:hover input[type="submit"]:focus, input[type="submit"]:hover {
+input[type="button"]:focus,
+input[type="button"]:hover input[type="submit"]:focus,
+input[type="submit"]:hover {
   cursor: pointer;
 }
 input[type="button"] {
   background-color: var(--background-light);
   border: 2px solid var(--primary);
 }
-input[type="button"]:focus, input[type="button"]:hover {
+input[type="button"]:focus,
+input[type="button"]:hover {
   background-color: var(--primary);
 }
 input[type="submit"] {
@@ -319,12 +341,14 @@ input[type="submit"] {
   float: right;
   border: 2px solid var(--primary);
 }
-input[type="submit"]:focus, input[type="submit"]:hover {
+input[type="submit"]:focus,
+input[type="submit"]:hover {
   background-color: var(--background-light);
 }
 
 /* == boxes ==*/
-input[type="checkbox"], input[type="radio"] {
+input[type="checkbox"],
+input[type="radio"] {
   appearance: none;
   font-size: 1em;
   height: 1em;
@@ -333,10 +357,11 @@ input[type="checkbox"], input[type="radio"] {
   transition: 0.2s;
   width: 1em;
 }
-input[type="checkbox"]:checked, input[type="radio"]:checked {
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
   background-color: var(--primary);
   border: unset;
-  transition: 0.2s
+  transition: 0.2s;
 }
 
 input[type="checkbox"] {
@@ -384,7 +409,8 @@ hgroup {
 hgroup a {
   grid: repeat(2, 3vmin) / repeat(8, 4vmin);
 }
-h3, h4,
+h3,
+h4,
 picture {
   margin: 1rem 0 0.5rem 0;
 }

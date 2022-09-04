@@ -13,5 +13,5 @@ Links: {
 	"linkedin":       "https://linkedin.com/in/seankhliao"
 	"seankhliao.com": "https://seankhliao.com/"
 	"sean.liao.dev":  "https://sean.liao.dev/"
-	// "twitter":        "https://twitter.com/seankhliao"
+	"twitter":        "https://twitter.com/seankhliao"
 }
