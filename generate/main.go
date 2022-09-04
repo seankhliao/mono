@@ -36,9 +36,9 @@ func handle(msg string, err error) {
 
 func main() {
 	var templateFile, configFile, outputFile string
-	flag.StringVar(&templateFile, "tmpl", "src/index.tmpl", "input template file")
-	flag.StringVar(&configFile, "config", "config.cue", "input config file")
-	flag.StringVar(&outputFile, "out", "dst/index.html", "output file")
+	flag.StringVar(&templateFile, "tmpl", "index.tmpl", "input template file")
+	flag.StringVar(&configFile, "config", "generate.cue", "input config file")
+	flag.StringVar(&outputFile, "out", "src/index.html", "output file")
 	flag.Parse()
 
 	t := template.New("")

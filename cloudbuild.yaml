@@ -1,2 +1,2 @@
 steps:
-  - name: "us-central1-docker.pkg.dev/com-seankhliao/build/fbhuploader"
+  - name: "us-central1-docker.pkg.dev/com-seankhliao/build/blogengine"
