@@ -13,6 +13,15 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _12022-09-16_ BANKS
+
+The roundhouse, as the name suggests, is round, and gives off circus vibes.
+This is the second show I've been to where there are 2 backup dancers dancing around,
+they still feel a bit weird...
+The lighting felt on point, cementing our focus on Banks.
+Alternating between high energy and slow (love?) songs,
+overall a bit of a throwback for me (Gemini Feed).
+
 ##### _12022-08-25_ Nadeah
 
 A cozy little bar, a little reminiscent of times past.
