@@ -1,5 +1,10 @@
 # newtab
 
+[gophers](https://gophers.slack.com/)
+[hangops](https://hangops.slack.com/)
+[cncf](https://cloud-native.slack.com/)
+[k8s](https://kubernetes.slack.com/)
+
 ### _google_
 
 [gcp](https://console.cloud.google.com/home/dashboard?project=com-seankhliao)
