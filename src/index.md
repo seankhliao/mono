@@ -13,6 +13,22 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _12022-11-05_ The Pretty Reckless
+
+They were amazing.
+For once, I felt the music pull its weight, 
+and going to the show is a balance of the music and the experience.
+The songs were revitalizing and the crowd was hyped for them.
+I think this is the frequency I'm on, I havent changed much since I found them.
+O2 Academy, circle front center off right.
+
+##### _12022-11-03_ The Rasmus
+
+It was okay for the night, but a bit bland.
+The songs sound like they should have energy,
+but I just wasn't really in tune with them.
+O2 Forum, balcony center.
+
 ##### _12022-09-16_ BANKS
 
 The roundhouse, as the name suggests, is round, and gives off circus vibes.
