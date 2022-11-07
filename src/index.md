@@ -13,6 +13,14 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _12022-11-06_ Frayle
+
+Another small bar / music venue,
+all the scary looking people outside made me wonder if I had walked down the wrong alley.
+2 heavy metal bands, then... witch metal? alchemy?
+For all 3 bands, many of the songs just felt the same,
+with no real differentiation.
+
 ##### _12022-11-05_ The Pretty Reckless
 
 They were amazing.
