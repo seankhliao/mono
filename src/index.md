@@ -13,6 +13,13 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _12022-11-10_ renforshort
+
+Such an exciting little show.
+Not sure what I was expecting but this was fun and energetic and actually knew most of the songs.
+Maybe a bit of it is just standing in with the crowd instead of sitting up somewhere far away,
+but I loved it either way.
+
 ##### _12022-11-06_ Frayle
 
 Another small bar / music venue,
