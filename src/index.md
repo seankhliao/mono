@@ -13,6 +13,11 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _12022-11-15_ Nina Nesbitt
+
+It counts as pop (I think), but it's slower than I expected.
+Not bad, but not amazing either.
+
 ##### _12022-11-10_ renforshort
 
 Such an exciting little show.
