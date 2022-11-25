@@ -13,6 +13,13 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _12022-11-24_ UPSAHL
+
+Someone certainly knows how to leverage a live show to create an experience.
+Apparently I liked a lot of her songs.
+The live versions don't aim to be pitch perfect recreations of the studio versions,
+but emotion filled variants enhanced by the stage presence.
+
 ##### _12022-11-15_ Nina Nesbitt
 
 It counts as pop (I think), but it's slower than I expected.
