@@ -13,6 +13,24 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _12022-12-09_ Pierce the Veil and Against the Current
+
+Pierce the Veil was the headliner, and they obviously had a very excited crowd.
+The performance felt more spectacle than music,
+with smoke screens, confetti, flying guitars, and general acting out.
+Something I've noticed with support acts is
+they usually get the short end of the stick in terms of lighting,
+and it detracts from the experience a bit.
+I also felt like Against the Current weren't quite all in for this show...
+
+##### _12022-12-03_ Halocene and Halflives
+
+This was fun, and I was jumping around quite a bit for both of these.
+I witnessed crowdsurfing and playing a song again for the music video.
+As the final show of the tour, you can see them all letting go and just enjoying it.
+Halflives' music seemed most aligned to my taste,
+while Halocene seemed a bit more all over the place.
+
 ##### _12022-11-24_ UPSAHL
 
 Someone certainly knows how to leverage a live show to create an experience.
@@ -43,7 +61,7 @@ with no real differentiation.
 ##### _12022-11-05_ The Pretty Reckless
 
 They were amazing.
-For once, I felt the music pull its weight, 
+For once, I felt the music pull its weight,
 and going to the show is a balance of the music and the experience.
 The songs were revitalizing and the crowd was hyped for them.
 I think this is the frequency I'm on, I havent changed much since I found them.
