@@ -11,6 +11,7 @@ Links: {
 	"oftc":           "ircs://irc.oftc.net:6697/seankhliao,isuser"
 	"liao.dev":       "https://liao.dev/"
 	"linkedin":       "https://linkedin.com/in/seankhliao"
+	"mastodon":       "https://hachyderm.io/@seankhliao"
 	"seankhliao.com": "https://seankhliao.com/"
 	"sean.liao.dev":  "https://sean.liao.dev/"
 	"twitter":        "https://twitter.com/seankhliao"
