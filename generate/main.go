@@ -71,7 +71,7 @@ func main() {
 	links := make([]string, 0, len(c.Links))
 	for txt, link := range c.Links {
 		class := rep.Replace(txt)
-		a := fmt.Sprintf(`<a class="%s" href="%s">%s</a>`, class, link, txt)
+		a := fmt.Sprintf(`<a class="%s" rel="me" href="%s">%s</a>`, class, link, txt)
 		links = append(links, a)
 
 		// ensure first link
