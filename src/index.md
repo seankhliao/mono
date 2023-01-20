@@ -13,6 +13,19 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _12023-01-17_ Sofar Sounds
+
+An impulse decision to go in the middle of a
+[work kickoff week](https://seankhliao.com/blog/12023-01-15-snyk-kickoff-2023/#-day--3).
+Last minute reveals of location and artists to try and build an air of mystery?
+60 people in a bar, all seated.
+Michael Bird - singer guitarist: not bad, but not really memorable either.
+Woodzy - poet: I wasn't expecting a poet for the night,
+but with puns abound, it was the best part of the night.
+Ruth Brown - singer: a powerful voice,
+but I did wonder if the tonal variations were in there just for the sake of it.
+Also, way too loud with the audio systems turned up.
+
 ##### _12022-12-09_ Pierce the Veil and Against the Current
 
 Pierce the Veil was the headliner, and they obviously had a very excited crowd.
