@@ -13,6 +13,48 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+##### _upcoming_ plans
+
+- 12023-01-27 Kimbra
+- 12023-02-09 Sonia Stein
+- 12023-02-11 XYLO
+- 12023-02-14 Caroline Polachek
+- 12023-02-17 Anna of the North
+- 12023-03-22 Ashe
+- 12023-04-22 Delain
+- 12023-04-26 girli
+
+##### _12023-01-26_ PVRIS 
+
+With Maggie Lindemann and Charlotte Sands
+
+One of the shows where I loved every part.
+Charlotte Sands opened with what felt like boundless energy,
+I expected nothing less and wasn't disappointed.
+Maggie Lindemann was in comparison more muted.
+A softer performance that ramped up as it went on,
+I think slightly hindered by "not my audience".
+And PVRIS, I'd been looking forward to this for almost a year.
+By the second song there was a mosh pit which generally didn't let up until the very end.
+It felt like every song was a hit,
+bringing back good memories and making new ones.
+
+##### _12023-01-24_ Kings Elliot
+
+With Sophia Alexa
+
+An evening of sad, but not depressing, songs.
+The show opened with someone quite forgettable.
+Act II by Sophia Alexa felt refreshingly better, 
+upbeat in contrast with the lyrics, 
+mixing in a hint of country.
+The headliner, Kings Elliot, brought a much fuller experience.
+A rich sound that draws in your attention.
+I don't think there could have been a better end 
+than the final song with strings accompaniment.
+It rounded off the night so well, 
+like everything before but turned up to 11.
+
 ##### _12023-01-17_ Sofar Sounds
 
 An impulse decision to go in the middle of a
@@ -26,7 +68,9 @@ Ruth Brown - singer: a powerful voice,
 but I did wonder if the tonal variations were in there just for the sake of it.
 Also, way too loud with the audio systems turned up.
 
-##### _12022-12-09_ Pierce the Veil and Against the Current
+##### _12022-12-09_ Pierce the Veil
+
+With Against the Current
 
 Pierce the Veil was the headliner, and they obviously had a very excited crowd.
 The performance felt more spectacle than music,
@@ -46,6 +90,8 @@ while Halocene seemed a bit more all over the place.
 
 ##### _12022-11-24_ UPSAHL
 
+With Lizzie Esau and Eyelar
+
 Someone certainly knows how to leverage a live show to create an experience.
 Apparently I liked a lot of her songs.
 The live versions don't aim to be pitch perfect recreations of the studio versions,
@@ -53,10 +99,14 @@ but emotion filled variants enhanced by the stage presence.
 
 ##### _12022-11-15_ Nina Nesbitt
 
+With LonelyTwin and Katelyn Tarver
+
 It counts as pop (I think), but it's slower than I expected.
 Not bad, but not amazing either.
 
 ##### _12022-11-10_ renforshort
+
+With Valencia Grace
 
 Such an exciting little show.
 Not sure what I was expecting but this was fun and energetic and actually knew most of the songs.
@@ -73,6 +123,8 @@ with no real differentiation.
 
 ##### _12022-11-05_ The Pretty Reckless
 
+With The Cruel Knives
+
 They were amazing.
 For once, I felt the music pull its weight,
 and going to the show is a balance of the music and the experience.
@@ -82,12 +134,16 @@ O2 Academy, circle front center off right.
 
 ##### _12022-11-03_ The Rasmus
 
+With Overlaps
+
 It was okay for the night, but a bit bland.
 The songs sound like they should have energy,
 but I just wasn't really in tune with them.
 O2 Forum, balcony center.
 
 ##### _12022-09-16_ BANKS
+
+With Maeve
 
 The roundhouse, as the name suggests, is round, and gives off circus vibes.
 This is the second show I've been to where there are 2 backup dancers dancing around,
@@ -120,6 +176,8 @@ just a box, chairs and actors who never leave the stage.
 
 ##### _12022-06-29_ Billie Eilish
 
+With girl in red
+
 Seated centre back in an arena full of screaming teenage girls (and their guardians)...
 The songs flowed well into each other,
 and even with the high production experience, it didn't feel artificial or detached.
@@ -130,6 +188,8 @@ Bonus points for coming out much closer to the crowds in a swinging crane arm.
 
 ##### _12022-05-19_ Charli XCX
 
+With Yeule
+
 We're into the more mainstream hyperpop territory, and it shows.
 Polished high production with more focus on the performance and spectacle,
 less on the music and crowd.
@@ -137,12 +197,16 @@ Front centre right.
 
 ##### _12022-05-15_ Fletcher
 
+With Gracey and UPSAHL
+
 In a female domninated (90+%?) audience,
 I stuck towards the back of the crowd near the sound tech.
 _Fletcher_ certainly knew who her fans were,
 addressing the crowd directly.
 
 ##### _12022-04-10_ Against the Current
+
+With Halflives and Yours Truly
 
 After a pandemic and a move to country with way more events,
 guess who's back first?
