@@ -15,40 +15,49 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-01-27 Kimbra
 - 12023-02-09 Sonia Stein
-- 12023-02-11 XYLO
+- 12023-02-11 XYLØ
 - 12023-02-14 Caroline Polachek
 - 12023-02-17 Anna of the North
 - 12023-03-22 Ashe
 - 12023-04-22 Delain
 - 12023-04-26 girli
+- 12023-05-27 Slam Dunk Festival
+- 12023-12-01 Against the Current
+
+##### _12023-01-27_ Kimbra
+
+A very synthetic(?) show.
+Lots of effects up to a point 
+where I couldn't quite tell associate the action I saw with the sounds I heard.
+Also, quite a bit of talk about inner self and reflection,
+but I guess that's par for the course for album launch events.
 
 ##### _12023-01-26_ PVRIS 
 
-With Maggie Lindemann and Charlotte Sands
+With _Maggie Lindemann_ and _Charlotte Sands_
 
 One of the shows where I loved every part.
-Charlotte Sands opened with what felt like boundless energy,
+_Charlotte Sands_ opened with what felt like boundless energy,
 I expected nothing less and wasn't disappointed.
-Maggie Lindemann was in comparison more muted.
+_Maggie Lindemann_ was in comparison more muted.
 A softer performance that ramped up as it went on,
 I think slightly hindered by "not my audience".
-And PVRIS, I'd been looking forward to this for almost a year.
+And _PVRIS_, I'd been looking forward to this for almost a year.
 By the second song there was a mosh pit which generally didn't let up until the very end.
 It felt like every song was a hit,
 bringing back good memories and making new ones.
 
 ##### _12023-01-24_ Kings Elliot
 
-With Sophia Alexa
+With _Sophia Alexa_
 
 An evening of sad, but not depressing, songs.
 The show opened with someone quite forgettable.
-Act II by Sophia Alexa felt refreshingly better, 
+Act II by _Sophia Alexa_ felt refreshingly better, 
 upbeat in contrast with the lyrics, 
 mixing in a hint of country.
-The headliner, Kings Elliot, brought a much fuller experience.
+The headliner, _Kings Elliot_, brought a much fuller experience.
 A rich sound that draws in your attention.
 I don't think there could have been a better end 
 than the final song with strings accompaniment.
@@ -70,27 +79,27 @@ Also, way too loud with the audio systems turned up.
 
 ##### _12022-12-09_ Pierce the Veil
 
-With Against the Current
+With _Against the Current_
 
-Pierce the Veil was the headliner, and they obviously had a very excited crowd.
+_Pierce the Veil_ was the headliner, and they obviously had a very excited crowd.
 The performance felt more spectacle than music,
 with smoke screens, confetti, flying guitars, and general acting out.
 Something I've noticed with support acts is
 they usually get the short end of the stick in terms of lighting,
 and it detracts from the experience a bit.
-I also felt like Against the Current weren't quite all in for this show...
+I also felt like _Against the Current_ weren't quite all in for this show...
 
 ##### _12022-12-03_ Halocene and Halflives
 
 This was fun, and I was jumping around quite a bit for both of these.
 I witnessed crowdsurfing and playing a song again for the music video.
 As the final show of the tour, you can see them all letting go and just enjoying it.
-Halflives' music seemed most aligned to my taste,
-while Halocene seemed a bit more all over the place.
+_Halflives_' music seemed most aligned to my taste,
+while _Halocene_ seemed a bit more all over the place.
 
 ##### _12022-11-24_ UPSAHL
 
-With Lizzie Esau and Eyelar
+With _Lizzie Esau_ and _Eyelar_
 
 Someone certainly knows how to leverage a live show to create an experience.
 Apparently I liked a lot of her songs.
@@ -99,14 +108,14 @@ but emotion filled variants enhanced by the stage presence.
 
 ##### _12022-11-15_ Nina Nesbitt
 
-With LonelyTwin and Katelyn Tarver
+With _LonelyTwin_ and _Katelyn Tarver_
 
 It counts as pop (I think), but it's slower than I expected.
 Not bad, but not amazing either.
 
 ##### _12022-11-10_ renforshort
 
-With Valencia Grace
+With _Valencia Grace_
 
 Such an exciting little show.
 Not sure what I was expecting but this was fun and energetic and actually knew most of the songs.
@@ -123,7 +132,7 @@ with no real differentiation.
 
 ##### _12022-11-05_ The Pretty Reckless
 
-With The Cruel Knives
+With _The Cruel Knives_
 
 They were amazing.
 For once, I felt the music pull its weight,
@@ -134,7 +143,7 @@ O2 Academy, circle front center off right.
 
 ##### _12022-11-03_ The Rasmus
 
-With Overlaps
+With _Overlaps_
 
 It was okay for the night, but a bit bland.
 The songs sound like they should have energy,
@@ -143,7 +152,7 @@ O2 Forum, balcony center.
 
 ##### _12022-09-16_ BANKS
 
-With Maeve
+With _Maeve_
 
 The roundhouse, as the name suggests, is round, and gives off circus vibes.
 This is the second show I've been to where there are 2 backup dancers dancing around,
@@ -160,7 +169,7 @@ Halfway bwteen acoustic and rock.
 ##### _12022-07-29_ London Grammar
 
 Outdoor festival, and with a song catalogue that's a bit ethereal.
-Hannah forgetting the lyrics to a song (and feeling bad about it) is fine,
+_Hannah_ forgetting the lyrics to a song (and feeling bad about it) is fine,
 the joy she shows when the crowd also forgets the lyrics to another song
 makes it much more human.
 Front centre.
@@ -176,7 +185,7 @@ just a box, chairs and actors who never leave the stage.
 
 ##### _12022-06-29_ Billie Eilish
 
-With girl in red
+With _girl in red_
 
 Seated centre back in an arena full of screaming teenage girls (and their guardians)...
 The songs flowed well into each other,
@@ -188,7 +197,7 @@ Bonus points for coming out much closer to the crowds in a swinging crane arm.
 
 ##### _12022-05-19_ Charli XCX
 
-With Yeule
+With _Yeule_
 
 We're into the more mainstream hyperpop territory, and it shows.
 Polished high production with more focus on the performance and spectacle,
@@ -197,7 +206,7 @@ Front centre right.
 
 ##### _12022-05-15_ Fletcher
 
-With Gracey and UPSAHL
+With _Gracey_ and _UPSAHL_
 
 In a female domninated (90+%?) audience,
 I stuck towards the back of the crowd near the sound tech.
@@ -206,11 +215,11 @@ addressing the crowd directly.
 
 ##### _12022-04-10_ Against the Current
 
-With Halflives and Yours Truly
+With _Halflives_ and _Yours Truly_
 
 After a pandemic and a move to country with way more events,
 guess who's back first?
-Around mid centre in the crowds, the enegery is as high as ever.
+Around mid centre in the crowds, the energy is as high as ever.
 
 This time I actually knew the openers:
 _Halflives_ were very similar to _ATC_,
@@ -229,4 +238,4 @@ the energy levels are high.
 
 One of the first bands I learned to recognize by name,
 for this show I sat on the upper floot and mostly just enjoyed the music.
-Chrissy is a bundle of energy bouncing around the front of the stage.
+_Chrissy_ is a bundle of energy bouncing around the front of the stage.
