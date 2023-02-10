@@ -24,6 +24,14 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-05-27 Slam Dunk Festival
 - 12023-12-01 Against the Current
 
+##### _12023-02-09_ Sonia Stein
+
+We start with a singer songwriter, she was good.
+Then a band, which.... 
+had a feel of compressed audio where everything is just full blast all the time.
+And finally, the star of the show, _Sonia_.
+I think it was pretty much what I heard from spotify, but live.
+
 ##### _12023-01-27_ Kimbra
 
 A very synthetic(?) show.
