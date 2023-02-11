@@ -15,10 +15,11 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-02-09 Sonia Stein
 - 12023-02-11 XYLØ
 - 12023-02-14 Caroline Polachek
 - 12023-02-17 Anna of the North
+- 12023-03-29 emlyn
+- 12023-04-15 Eva Under Fire
 - 12023-04-22 Delain
 - 12023-04-26 girli
 - 12023-05-27 Slam Dunk Festival
