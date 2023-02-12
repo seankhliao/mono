@@ -15,7 +15,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-02-11 XYLØ
 - 12023-02-14 Caroline Polachek
 - 12023-02-17 Anna of the North
 - 12023-03-29 emlyn
@@ -24,6 +23,16 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-04-26 girli
 - 12023-05-27 Slam Dunk Festival
 - 12023-12-01 Against the Current
+
+##### _ 12023-02-11_ XYLØ
+
+This was a much smaller show than I expected, with no support act.
+Also, I happened to be surrounded by the friends and family group, 
+which was interesting.
+The show itself was great,
+though the start/end of it all was sudden.
+Mostly what I remember from the released versions,
+and it didn't hurt that I was right up at the edge of the stage.
 
 ##### _12023-02-09_ Sonia Stein
 
