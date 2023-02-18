@@ -15,14 +15,43 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-02-14 Caroline Polachek
-- 12023-02-17 Anna of the North
 - 12023-03-29 emlyn
 - 12023-04-15 Eva Under Fire
 - 12023-04-22 Delain
 - 12023-04-26 girli
 - 12023-05-27 Slam Dunk Festival
+- 12023-11-02 Fall Out Boy
 - 12023-12-01 Against the Current
+
+##### _12023-02-17_ Anna of the North
+
+With _Rebmoe_ and _Eden Hunter_
+
+We start with a digiatl bedroom vibe,
+feels a bit like a throwback.
+Then into some pop, which was fine.
+Finally, we have _Anna_.
+There's a nervous/excited energy in the air and I'm there for it.
+The only reason I'm here has been Youtube's constant recommendations of her music videos,
+I guess they were worth it.
+
+#####_12023-02-16_ Zoey Lily
+
+With _Elena Flury_
+
+Best described as a chill night out,
+away from the banging drums I've been hearing for the past few weeks.
+Both are beautiful voices,
+makes me want to look for more acoustic sessions.
+
+##### _12023-02-14_ Caroline Polachek
+
+Heavy on the visual imagery,
+this was I think a night of pop music.
+There was a DJ set as support,
+still don't know who it was.
+As for the main event,
+it felt good, but not amazingly memorable.
 
 ##### _ 12023-02-11_ XYLØ
 
