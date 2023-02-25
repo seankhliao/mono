@@ -35,7 +35,7 @@ There's a nervous/excited energy in the air and I'm there for it.
 The only reason I'm here has been Youtube's constant recommendations of her music videos,
 I guess they were worth it.
 
-#####_12023-02-16_ Zoey Lily
+##### _12023-02-16_ Zoey Lily
 
 With _Elena Flury_
 
@@ -53,7 +53,7 @@ still don't know who it was.
 As for the main event,
 it felt good, but not amazingly memorable.
 
-##### _ 12023-02-11_ XYLØ
+##### _12023-02-11_ XYLØ
 
 This was a much smaller show than I expected, with no support act.
 Also, I happened to be surrounded by the friends and family group, 
