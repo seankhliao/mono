@@ -17,10 +17,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 - 12023-03-29 emlyn
 - 12023-04-15 Eva Under Fire
+- 12023-04-19 Ava Max
 - 12023-04-22 Delain
 - 12023-04-26 girli
+- 12023-05-17 Nessa Barrett
+- 12023-05-25 Cherry Dream
 - 12023-05-27 Slam Dunk Festival
+- 12023-08-28 All Points East
 - 12023-11-02 Fall Out Boy
+- 12023-11-03 Maisie Peters
 - 12023-12-01 Against the Current
 
 ##### _12023-02-17_ Anna of the North
