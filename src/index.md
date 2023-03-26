@@ -29,6 +29,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-08-28 All Points East
 - 12023-11-02 Fall Out Boy
 - 12023-11-03 Maisie Peters
+- 12023-11-30 Ashnikko
 - 12023-12-01 Against the Current
 
 ##### _12023-02-17_ Anna of the North
