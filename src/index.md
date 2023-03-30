@@ -24,6 +24,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-05-17 Nessa Barrett
 - 12023-05-25 Cherry Dream
 - 12023-05-27 Slam Dunk Festival
+- 12023-06-20 Beth McCarthy
 - 12023-07-02 Blackpint / Sabrina Carpenter
 - 12023-08-19 Field Day
 - 12023-08-28 All Points East
