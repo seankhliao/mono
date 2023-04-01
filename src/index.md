@@ -33,6 +33,19 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-11-30 Ashnikko
 - 12023-12-01 Against the Current
 
+##### _12023-03-29_ emlyn
+
+With _Beth McCarthy_
+
+I loved the support act, 
+enegetic, excited, yet it gave off a relaxed overall vibe
+that was just pleasant to be around.
+On the other hand,
+from the moment _Emlyn_ came on,
+it was a full on intense barrage.
+It felt a bit too much for a full night,
+but it was great for the more popular songs where the audience sang along.
+
 ##### _12023-02-17_ Anna of the North
 
 With _Rebmoe_ and _Eden Hunter_
