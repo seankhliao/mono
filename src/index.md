@@ -15,7 +15,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-03-29 emlyn
 - 12023-04-15 Eva Under Fire
 - 12023-04-19 Ava Max
 - 12023-04-22 Delain
