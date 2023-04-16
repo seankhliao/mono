@@ -15,7 +15,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-04-15 Eva Under Fire
 - 12023-04-19 Ava Max
 - 12023-04-22 Delain
 - 12023-04-26 girli
@@ -31,6 +30,19 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-11-03 Maisie Peters
 - 12023-11-30 Ashnikko
 - 12023-12-01 Against the Current
+
+##### _12023-04-15_ skillet
+
+With _Eva Under Fire_ and _Like a Storm_
+
+I think _Eva Under Fire_ was one of the bands that YouTube just decided I must like one day,
+and it wasn't wrong.
+Their live performance was a pretty faithful rendition of the recorded versions.
+_Like a storm_ was... meh. I never really got into it,
+and it sort of just blended together into the background.
+_Skillet_ started off strong with energy and flashy visuals,
+but somewhere around the halfway point,
+they lost of a bit of momentum and never quite recovered.
 
 ##### _12023-03-29_ emlyn
 
