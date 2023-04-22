@@ -15,7 +15,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-04-19 Ava Max
 - 12023-04-22 Delain
 - 12023-04-26 girli
 - 12023-04-30 Clean Bandit
@@ -30,6 +29,16 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-11-03 Maisie Peters
 - 12023-11-30 Ashnikko
 - 12023-12-01 Against the Current
+
+##### _12023-04-19_ Ava Max
+
+With _emlyn_
+
+_Ava Max_ was quite an enjoyable show,
+fun and energetic throughout,
+though it did seem to lean more heavily into dance compared to a pure music show.
+The music was a pretty faithful reproduction of the recorded versions,
+with a heavy mix of backing vocals.
 
 ##### _12023-04-15_ skillet
 
