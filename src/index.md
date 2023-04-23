@@ -15,7 +15,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-04-22 Delain
 - 12023-04-26 girli
 - 12023-04-30 Clean Bandit
 - 12023-05-17 Nessa Barrett
@@ -30,15 +29,29 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-11-30 Ashnikko
 - 12023-12-01 Against the Current
 
+##### _12023-04-22_ Delain
+
+With _Xandria_
+
+_Xandria_ was... noise like a stormy day,
+with a ray of sunshine piercing through the clouds.
+Or at least that was what I thought of the vocals,
+and a bonus point of the voice being more like an instrument
+is that they don't ask the audience to sing along.
+Compartively, _Delain_ was a more rowdy,
+less contrasty affair.
+Popular sounding, but less distinct.
+
 ##### _12023-04-19_ Ava Max
 
 With _emlyn_
 
-_Ava Max_ was quite an enjoyable show,
+_Ava Max_ was pure pop ecstasy,
 fun and energetic throughout,
 though it did seem to lean more heavily into dance compared to a pure music show.
 The music was a pretty faithful reproduction of the recorded versions,
 with a heavy mix of backing vocals.
+Oh, and for some reason, there was a dense population of gay male couples.
 
 ##### _12023-04-15_ skillet
 
