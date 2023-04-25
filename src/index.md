@@ -17,6 +17,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 - 12023-04-26 girli
 - 12023-04-30 Clean Bandit
+- 12023-05-07 Avril Lavigne
 - 12023-05-17 Nessa Barrett
 - 12023-05-25 Cherry Dream
 - 12023-05-27 Slam Dunk Festival
