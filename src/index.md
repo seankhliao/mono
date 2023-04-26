@@ -15,9 +15,8 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-04-26 girli
 - 12023-04-30 Clean Bandit
-- 12023-05-07 Avril Lavigne
+- 12023-05-09 Avril Lavigne
 - 12023-05-17 Nessa Barrett
 - 12023-05-25 Cherry Dream
 - 12023-05-27 Slam Dunk Festival
@@ -29,6 +28,17 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-11-03 Maisie Peters
 - 12023-11-30 Ashnikko
 - 12023-12-01 Against the Current
+
+
+##### _12023-04-26_ girli
+
+With _Louis III_
+
+Chill, smooth were the vibes I got out of _Louis III_,
+good, but doesn't really hook me in.
+_girli_ on the other hand felt better than expected,
+with contrast between the quiet and loud parts.
+It was... therapeutic.
 
 ##### _12023-04-22_ Delain
 
