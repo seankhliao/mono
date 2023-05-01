@@ -15,7 +15,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-04-30 Clean Bandit
 - 12023-05-09 Avril Lavigne
 - 12023-05-17 Nessa Barrett
 - 12023-05-25 Cherry Dream
@@ -29,6 +28,19 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-11-30 Ashnikko
 - 12023-12-01 Against the Current
 
+##### _12023-04-30_ Harvey Parker trust: love in mind
+
+With _Clean Bandit_, _Chineke Orchestra_, _National Children's Orchestra_, and more
+
+The launch event for a trust dedicated to the mental health of artists (musicians).
+There was a wide range of shows,
+some things that I can appreciate, like orchestras,
+and others that I wouldn't go see on its own (spoken word, solo instruments).
+Of course the highlight was the final performance,
+a combination of the orchestras, a choir or two,
+and _Clean Bandit_.
+It was a full, rich sound,
+but I can't help but feel the distinctness I expected was drowned out by everything else.
 
 ##### _12023-04-26_ girli
 
@@ -81,7 +93,7 @@ they lost of a bit of momentum and never quite recovered.
 
 With _Beth McCarthy_
 
-I loved the support act, 
+I loved the support act,
 enegetic, excited, yet it gave off a relaxed overall vibe
 that was just pleasant to be around.
 On the other hand,
@@ -123,7 +135,7 @@ it felt good, but not amazingly memorable.
 ##### _12023-02-11_ XYLØ
 
 This was a much smaller show than I expected, with no support act.
-Also, I happened to be surrounded by the friends and family group, 
+Also, I happened to be surrounded by the friends and family group,
 which was interesting.
 The show itself was great,
 though the start/end of it all was sudden.
@@ -133,7 +145,7 @@ and it didn't hurt that I was right up at the edge of the stage.
 ##### _12023-02-09_ Sonia Stein
 
 We start with a singer songwriter, she was good.
-Then a band, which.... 
+Then a band, which....
 had a feel of compressed audio where everything is just full blast all the time.
 And finally, the star of the show, _Sonia_.
 I think it was pretty much what I heard from spotify, but live.
@@ -141,12 +153,12 @@ I think it was pretty much what I heard from spotify, but live.
 ##### _12023-01-27_ Kimbra
 
 A very synthetic(?) show.
-Lots of effects up to a point 
+Lots of effects up to a point
 where I couldn't quite tell associate the action I saw with the sounds I heard.
 Also, quite a bit of talk about inner self and reflection,
 but I guess that's par for the course for album launch events.
 
-##### _12023-01-26_ PVRIS 
+##### _12023-01-26_ PVRIS
 
 With _Maggie Lindemann_ and _Charlotte Sands_
 
@@ -167,14 +179,14 @@ With _Sophia Alexa_
 
 An evening of sad, but not depressing, songs.
 The show opened with someone quite forgettable.
-Act II by _Sophia Alexa_ felt refreshingly better, 
-upbeat in contrast with the lyrics, 
+Act II by _Sophia Alexa_ felt refreshingly better,
+upbeat in contrast with the lyrics,
 mixing in a hint of country.
 The headliner, _Kings Elliot_, brought a much fuller experience.
 A rich sound that draws in your attention.
-I don't think there could have been a better end 
+I don't think there could have been a better end
 than the final song with strings accompaniment.
-It rounded off the night so well, 
+It rounded off the night so well,
 like everything before but turned up to 11.
 
 ##### _12023-01-17_ Sofar Sounds
