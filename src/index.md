@@ -15,7 +15,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-05-09 Avril Lavigne
 - 12023-05-17 Nessa Barrett
 - 12023-05-25 Cherry Dream
 - 12023-05-27 Slam Dunk Festival
@@ -27,6 +26,23 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - 12023-11-03 Maisie Peters
 - 12023-11-30 Ashnikko
 - 12023-12-01 Against the Current
+
+##### _12023-05-09_ Avril Lavigne
+
+With _phem_
+
+_phem_ was... fine?
+Not bad, but also not especially memorable,
+besides the oversized mask she came on stage with.
+_Avril_ on the other hand... so many memories.
+Someone next to me said:
+"everyone here either has Avril as a childhood hero or childhood crush",
+and i could totally believe that.
+There were a lot of throwbacks in the music,
+and they weren't perfect deliveries of the studio versions,
+they all had that live twist.
+Every song was a hit,
+and i think this ranks among the best show i've been to this year along with _PVRIS_.
 
 ##### _12023-04-30_ Harvey Parker trust: love in mind
 
