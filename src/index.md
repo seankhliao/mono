@@ -15,17 +15,27 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-05-17 Nessa Barrett
 - 12023-05-25 Cherry Dream
 - 12023-05-27 Slam Dunk Festival
 - 12023-06-20 Beth McCarthy
-- 12023-07-02 Blackpint / Sabrina Carpenter
+- 12023-07-02 Blackpink / Sabrina Carpenter
 - 12023-08-19 Field Day
 - 12023-08-28 All Points East
 - 12023-11-02 Fall Out Boy
 - 12023-11-03 Maisie Peters
 - 12023-11-30 Ashnikko
 - 12023-12-01 Against the Current
+
+##### _12023-05-17_ Nessa Barrett
+
+With _briskin_
+
+In a narrow room with bright lights (Heaven is a nightclub after all...),
+I could barely see _Nessa_ through the crowd,
+but the show itself was still great.
+Sad-ish pop songs hits the feels,
+and the audience sang along for almost all of it.
+An experience for sure.
 
 ##### _12023-05-09_ Avril Lavigne
 
