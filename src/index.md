@@ -15,16 +15,51 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
-- 12023-05-25 Cherry Dream
-- 12023-05-27 Slam Dunk Festival
-- 12023-06-20 Beth McCarthy
-- 12023-07-02 Blackpink / Sabrina Carpenter
-- 12023-08-19 Field Day
-- 12023-08-28 All Points East
-- 12023-11-02 Fall Out Boy
-- 12023-11-03 Maisie Peters
-- 12023-11-30 Ashnikko
-- 12023-12-01 Against the Current
+- _12023-12-01_ Against the Current
+- _12023-11-30_ Ashnikko
+- _12023-11-03_ Maisie Peters
+- _12023-11-02_ Fall Out Boy
+- _12023-08-28_ All Points East
+- _12023-08-19_ Field Day
+- _12023-07-02_ Blackpink / Sabrina Carpenter
+- _12023-06-22_ House of Women
+- _12023-06-20_ Beth McCarthy
+- _12023-06-13_ Taylor Acorns
+- _12023-06-09_ PRINS
+- _12023-06-06_ Royal Philharmonic Orchestra
+
+##### _12023-06-03_ PVRIS
+
+Apparently already my third _PVRIS_ show of the year.
+This time an acoustic solo session by Lynn.
+It's lovely to hear the focals so clearly.
+And the contrast between her voice in talking (soothing),
+and singing (strong?), is just so cute.
+
+##### _12023-05-27_ Slam Dunk Festival
+
+With _LØLØ_, _Scene Queen_, _Charlotte Sands_, _Maggie Lindemann_, and _PVRIS_
+
+With 5 main stages (3 of which were double stages with to minimize downtime),
+I thought I'd have a nice variety,
+but I pretty much ended up just staying at a single stage for most of the day.
+_LØLØ_ was a fun, energetic performance that set the mood.
+_Scene Queen_ was interesting (bimbocore?),
+though I'm not sure if I'd voluntarily listen to it again.
+_Charlotte Sands_ was once again a set I loved,
+noticeably messier this time.
+_Maggie Lindemann_ was who I came for (front row anyone??).
+A solid, powerful voice, though with less deviation from studio versions.
+And finally, _PVRIS_ on the main stage,
+maybe I was too far on the edge but the crowd didn't feel as into it,
+but I enjoyed it.
+
+##### _12023-05-25_ Cherry Dream
+
+I think the real audience was just me and 4 other people,
+with everyone else being either one of the performances
+or staff.
+Slightly uncomfortable experience tbh.
 
 ##### _12023-05-17_ Nessa Barrett
 
@@ -104,7 +139,7 @@ Oh, and for some reason, there was a dense population of gay male couples.
 
 ##### _12023-04-15_ skillet
 
-With _Eva Under Fire_ and _Like a Storm_
+With _Eva Under Fire_, and _Like a Storm_
 
 I think _Eva Under Fire_ was one of the bands that YouTube just decided I must like one day,
 and it wasn't wrong.
@@ -130,7 +165,7 @@ but it was great for the more popular songs where the audience sang along.
 
 ##### _12023-02-17_ Anna of the North
 
-With _Rebmoe_ and _Eden Hunter_
+With _Rebmoe_, and _Eden Hunter_
 
 We start with a digiatl bedroom vibe,
 feels a bit like a throwback.
@@ -186,7 +221,7 @@ but I guess that's par for the course for album launch events.
 
 ##### _12023-01-26_ PVRIS
 
-With _Maggie Lindemann_ and _Charlotte Sands_
+With _Maggie Lindemann_, and _Charlotte Sands_
 
 One of the shows where I loved every part.
 _Charlotte Sands_ opened with what felt like boundless energy,
@@ -250,7 +285,7 @@ while _Halocene_ seemed a bit more all over the place.
 
 ##### _12022-11-24_ UPSAHL
 
-With _Lizzie Esau_ and _Eyelar_
+With _Lizzie Esau_, and _Eyelar_
 
 Someone certainly knows how to leverage a live show to create an experience.
 Apparently I liked a lot of her songs.
@@ -259,7 +294,7 @@ but emotion filled variants enhanced by the stage presence.
 
 ##### _12022-11-15_ Nina Nesbitt
 
-With _LonelyTwin_ and _Katelyn Tarver_
+With _LonelyTwin_, and _Katelyn Tarver_
 
 It counts as pop (I think), but it's slower than I expected.
 Not bad, but not amazing either.
@@ -357,7 +392,7 @@ Front centre right.
 
 ##### _12022-05-15_ Fletcher
 
-With _Gracey_ and _UPSAHL_
+With _Gracey_, and _UPSAHL_
 
 In a female domninated (90+%?) audience,
 I stuck towards the back of the crowd near the sound tech.
@@ -366,7 +401,7 @@ addressing the crowd directly.
 
 ##### _12022-04-10_ Against the Current
 
-With _Halflives_ and _Yours Truly_
+With _Halflives_, and _Yours Truly_
 
 After a pandemic and a move to country with way more events,
 guess who's back first?
