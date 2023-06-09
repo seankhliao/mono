@@ -25,8 +25,28 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-06-22_ House of Women
 - _12023-06-20_ Beth McCarthy
 - _12023-06-13_ Taylor Acorns
-- _12023-06-09_ PRINS
-- _12023-06-06_ Royal Philharmonic Orchestra
+
+##### _12023-06-09_ PRINS
+
+With _Jayd Marie_, _Detweiler_, and _Lekna_
+
+My hopes weren't high when I saw the venue was one of the smaller ones,
+but it was surprisingly good.
+Catchy and enegertic,
+with a cooperative audience that danced along.
+
+##### _12023-06-06_ Royal Philharmonic Orchestra
+
+With _Aisling McGlynn_
+
+A concert of video game music played by an orchestra,
+it was as amazing as it sounds.
+Having been to way too many rock converts recently,
+it was a good reminder that there are a lot of other instruments
+than a guitar, bass, and drums.
+A few moments were, "oh so that's how those sounds were made".
+To top it off was the ethereal voice of _Aisling McGlynn_
+for some truly memorable songs.
 
 ##### _12023-06-03_ PVRIS
 
