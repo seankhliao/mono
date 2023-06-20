@@ -24,7 +24,14 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-07-02_ Blackpink / Sabrina Carpenter
 - _12023-06-22_ House of Women
 - _12023-06-20_ Beth McCarthy
-- _12023-06-13_ Taylor Acorns
+
+##### _12023-06-13_ Taylor Acorns
+
+With _Uninvited_
+
+Active, intense.
+I don't think I've heard much of her songs before then,
+but it was good fun for the night.
 
 ##### _12023-06-09_ PRINS
 
