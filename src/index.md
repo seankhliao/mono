@@ -19,6 +19,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-11-30_ Ashnikko
 - _12023-11-03_ Maisie Peters
 - _12023-11-02_ Fall Out Boy
+- _12023-08-29_ UPSAHL
 - _12023-08-28_ All Points East
 - _12023-08-19_ Field Day
 - _12023-07-02_ Blackpink / Sabrina Carpenter
