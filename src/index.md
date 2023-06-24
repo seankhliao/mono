@@ -23,7 +23,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-08-28_ All Points East
 - _12023-08-19_ Field Day
 - _12023-07-02_ Blackpink / Sabrina Carpenter
-- _12023-06-22_ House of Women
 
 ##### _12023-06-20_ Beth McCarthy
 
