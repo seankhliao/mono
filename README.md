@@ -7,4 +7,4 @@
 
 ## Notes
 
-chrome (google-chrome-unstable) injects `font-family: Cantarell, Arial, sans-serif;` and `font-size: 75%` that overrided default `:root` styles :facepalm:
+chrome (google-chrome-unstable) injects `font-family: Cantarell, Arial, sans-serif;` and `font-size: 75%` that overrode default `:root` styles :facepalm:
