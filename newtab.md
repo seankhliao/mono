@@ -2,7 +2,7 @@
 
 ### _links_
 
-_connectivity:_
+_wifi:_
 [google](http://connectivitycheck.android.com/generate_204)
 [neverssl](http://neverssl.com)
 
