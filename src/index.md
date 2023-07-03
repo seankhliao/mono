@@ -22,7 +22,31 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-08-29_ UPSAHL
 - _12023-08-28_ All Points East
 - _12023-08-19_ Field Day
-- _12023-07-02_ Blackpink / Sabrina Carpenter
+
+##### _12023-07-02_ Blackpink
+
+With _Sabrina Carpenter_, _Rebecca Black_, _The Rose_, _Peach PRC_, _Caity Baser_, and _Annika Bennett_
+
+_Annika Bennett_, the sad songs set of the festival,
+but I liked it.
+Cool and relaxing.
+_Caity Baser_ had a joyous african/caribbean vibe(?)
+Not bad, but not my jam.
+_Peach PRC_ was, by contrast, wilder, with fairy wings and catchy songs (I think).
+_The Rose_, a K-POP boy band,
+it was fine I think.
+Just fine.
+_Rebecca Black_ felt like forever trying to outrun a dark history (Friday...),
+which came back as a remix(?) in the penultimate song.
+I'm not sure what I was expecting, but she gave off a feeling of wanting to be more mature.
+_Sabrina Carpenter_ I could barely see her on stage (sooo many people),
+but I still loved the set.
+I think her speaking voice was slightly deeper than expected,
+singing was just like the records.
+_Blackpink_ was... so much screaming and singing from the fans.
+I think I recognized a surprising number of their songs,
+and the visuals were over the top in a good way.
+High production at its best.
 
 ##### _12023-06-20_ Beth McCarthy
 
