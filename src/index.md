@@ -23,6 +23,18 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-08-28_ All Points East
 - _12023-08-19_ Field Day
 
+##### _12023-07-04_ Oslo Danse Ensemble
+
+A ballet performance in Oslo.
+GONE felt like a collection of scenes,
+no strong single thread of a narrative,
+but pretty overall.
+THE RING felt stronger story wise,
+though I can't say I enjoyed the music as much.
+Both felt modern-ish,
+with a bit more focus on expression,
+and less on precision choreography.
+
 ##### _12023-07-02_ Blackpink
 
 With _Sabrina Carpenter_, _Rebecca Black_, _The Rose_, _Peach PRC_, _Caity Baser_, and _Annika Bennett_
