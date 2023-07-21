@@ -30,5 +30,5 @@ _txt:_
 _img:_
 [your throne](https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009)
 [hero killer](https://www.webtoons.com/en/action/hero-killer/list?title_no=2745)
-[infinite mage](https://www.asurascans.com/manga/4569947261-infinite-mage/)
+[infinite mage](https://asura.gg/?s=infinite+mage)
 [ghostblade](https://tapas.io/series/GhostBlade/info)
