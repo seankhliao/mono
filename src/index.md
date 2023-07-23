@@ -17,6 +17,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 - _12023-12-01_ Against the Current
 - _12023-11-30_ Ashnikko
+- _12023-11-20_ Echosmith
 - _12023-11-03_ Maisie Peters
 - _12023-11-02_ Fall Out Boy
 - _12023-08-29_ UPSAHL
