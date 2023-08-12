@@ -10,6 +10,7 @@ _slack:_
 [gophers](https://gophers.slack.com/)
 [cncf](https://cloud-native.slack.com/)
 [k8s](https://kubernetes.slack.com/)
+[rls](https://rands-leadership.slack.com/)
 
 _console:_
 [analytics](https://analytics.google.com)
