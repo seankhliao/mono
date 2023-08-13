@@ -21,6 +21,8 @@
   - Cold Weather
     - [ ] Scarf
     - [ ] Hat
+    - [ ] Gloves
+    - [ ] Thick Coat
   - Hot Weather
     - [ ] Hat
     - [ ] Sunglasses
@@ -33,17 +35,21 @@
   - [ ] Phone
   - [ ] Battery Bank
   - [ ] Headphones
-  - [ ] Laptop
-    - [ ] Torx T5
   - [ ] Watch
-    - [ ] Watch Charger
+  - [ ] Watch Charger
+  - [ ] Laptop
+  - [ ] Torx T5
 - Care
   - [ ] Toothbrush
-    - [ ] Toothpaste
+  - [ ] Toothpaste
   - [ ] Shaver
-    - [ ] Shaver Charger
+  - [ ] Shaver Charger
   - [ ] Lip Balm
   - [ ] Hair Band
   - [ ] Hair Clip
   - [ ] Purple Shampoo
   - [ ] Hair Conditioner
+
+<script>
+document.querySelectorAll("input[type=checkbox]").forEach(e => e.disabled = false)
+</script>
