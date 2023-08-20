@@ -25,7 +25,13 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-10-03_ ari abdul
 - _12023-08-29_ UPSAHL
 - _12023-08-28_ All Points East
-- _12023-08-19_ Field Day
+
+##### _12023-08-19_ Field Day
+
+My legs were sore after this.
+I feel like I could sort of distinguish between things I liked
+and things I didn't,
+but it did sort of all blur together a bit too much.
 
 ##### _12023-07-04_ Oslo Danse Ensemble
 
