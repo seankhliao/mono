@@ -4,6 +4,8 @@
 
 ### Packing
 
+- Pre-travel
+  - [ ] Trim Nails
 - Travel
   - [ ] Passport
   - [ ] UK BRP
