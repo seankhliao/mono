@@ -23,7 +23,21 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-11-02_ Fall Out Boy
 - _12023-10-25_ deathbyromy
 - _12023-10-03_ ari abdul
-- _12023-08-29_ UPSAHL
+
+##### _12023-08-29_ UPSAHL
+
+With _clarence_
+
+_UPSAHL_ was one of my favourite shows last year,
+and it is most definitely making the list this year.
+The atmosphere was what can only be described as electric,
+even the slow songs turned into energetic dances.
+The crowd sang almost every song,
+thankfully we didn't have to jump for every one,
+but when we did, it was fun.
+Standing at the front edge,
+there's definitely peer (crowd?) pressure to join in,
+plus you get to have Taylor lean into your personal space...
 
 ##### _12023-08-28_ All Points East
 
