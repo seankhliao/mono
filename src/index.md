@@ -24,7 +24,28 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-10-25_ deathbyromy
 - _12023-10-03_ ari abdul
 - _12023-08-29_ UPSAHL
-- _12023-08-28_ All Points East
+
+##### _12023-08-28_ All Points East
+
+With _Kaeto_, _Unflirt_, _Mae Stephens_, _Isabel LaRosa_, _Valencia Gtace_, _Nieve Ella_, _Griff_,
+_Paris Paloma_, _girl in red_, and _HAIM_
+
+I wandered into the festival grounds and saw an empty main stage,
+wondering where everyone was and if I got there too early.
+Making my way to the other end,
+I saw _Kaeto_ who set the mood for the rest of the day.
+_Mae Stephens_ I was wondering who that was until she got to her last song,
+If We Ever Broke Up, and I doubted if I could ever escape the repetitive tiktok musoc.
+
+_Isabel LaRosa_ was coverying BABYDOLL as I approached the stage,
+in the set were quite a few covers of songs currently at the top of my playlist,
+I loved it.
+_girl in red_ was just as good as I remember,
+maybe slightly more relaxed than last time,
+still very active and jumpy.
+_HAIM_ sort of had a face of shock for most of their performance,
+I didn't really know their songs,
+but it was still enjoyable.
 
 ##### _12023-08-19_ Field Day
 
