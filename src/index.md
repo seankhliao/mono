@@ -15,6 +15,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
+- _12024-05-01_ Spirited Away
 - _12023-12-01_ Against the Current
 - _12023-11-30_ Ashnikko
 - _12023-11-24_ Chloe Adams
@@ -23,6 +24,12 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-11-02_ Fall Out Boy
 - _12023-10-25_ deathbyromy
 - _12023-10-03_ ari abdul
+- _12023-09-13_ eundohee
+
+##### _12023-09-07_ flamenco
+
+Lively, and loud clapping,
+but I can't say I understood the singing parts.
 
 ##### _12023-08-29_ UPSAHL
 
