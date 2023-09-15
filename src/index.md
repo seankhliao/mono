@@ -16,6 +16,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12024-05-01_ Spirited Away
+- _12023-12-09_ Halestorm
 - _12023-12-01_ Against the Current
 - _12023-11-30_ Ashnikko
 - _12023-11-24_ Chloe Adams
@@ -24,7 +25,16 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-11-02_ Fall Out Boy
 - _12023-10-25_ deathbyromy
 - _12023-10-03_ ari abdul
-- _12023-09-13_ eundohee
+
+##### _12023-09-13_ eundohee
+
+With _Sadie Fine_, and _Chloe Levaillant_
+
+_Sadie Fine_ was... fine? I came for the one song on my spotify playlist (Detox),
+and got it. Others sounded a bit rougher than expected.
+_Chloe Levaillant_ was my favourite of the trio,
+it felt calm and relaxing, giving off ocean or forest vibes.
+_eundohee_ was ok? It took a bit for me to catch on what language I was listening to...
 
 ##### _12023-09-07_ flamenco
 
