@@ -25,7 +25,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-11-03_ Maisie Peters
 - _12023-11-02_ Fall Out Boy
 - _12023-10-25_ deathbyromy
-- _12023-10-03_ ari abdul
+
+##### _12023-10-03_ ari abdul
+
+With _Deadbeat girl_
+
+babydoll was the song stuck in my head all summer,
+and it was great seeing it live.
+There was definitely a difference between the sweet quiet parts
+and the louder, coarser parts we don't get in the recorded version.
 
 ##### _12023-09-13_ eundohee
 
