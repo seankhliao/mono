@@ -16,7 +16,9 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12024-05-01_ Spirited Away
+- _12024-03-19_ Cannons
 - _12024-02-29_ Mother Mother
+- _12024-02-16_ Alessandra
 - _12023-12-09_ Halestorm
 - _12023-12-01_ Against the Current
 - _12023-11-30_ Ashnikko
