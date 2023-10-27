@@ -26,7 +26,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-11-20_ Echosmith
 - _12023-11-03_ Maisie Peters
 - _12023-11-02_ Fall Out Boy
-- _12023-10-25_ deathbyromy
+
+##### _12023-10-25_ deathbyromy
+
+With _July Jones_
+
+I might have stood too close to the stage and half the time all I heard were drums...
+Halfway through I really did wonder if I was at the right place,
+I obviously hadn't gone through their discography beforehand,
+but it was still an interesting evening of loud alt music.
 
 ##### _12023-10-03_ ari abdul
 

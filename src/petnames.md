@@ -11,4 +11,4 @@
 - Lapis - [The Dark Lord's Confession](https://www.webtoons.com/en/fantasy/the-dark-lords-confession/list?title_no=4464)
 - Ihwa - [Hero Killer](https://www.webtoons.com/en/action/hero-killer/list?title_no=2745)
 - Medea - [Your Throne](https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009)
-- Hwaryun - [Tower of God](https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95)
+- Hwaryun - [Towe of God](https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95)
