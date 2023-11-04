@@ -1,0 +1,25 @@
+body {
+  grid: 3.5vh 3.5vh / 1fr repeat(3, minmax(90px, 280px)) 1fr;
+}
+h1 {
+  font-size: 3vmin;
+  grid-area: 1 / 4 / span 1 / span 1;
+}
+h2 {
+  font-size: 2.5vmin;
+  grid-area: 2 / 4 / span 1 / span 1;
+}
+hgroup {
+  font:
+    700 2.5vmin "Lora",
+    serif;
+  grid-area: 1 / 2 / span 2 / span 1;
+}
+hgroup a {
+  grid: repeat(2, 3vmin) / repeat(8, 4vmin);
+}
+h3,
+h4,
+picture {
+  margin: 1rem 0 0.5rem 0;
+}
