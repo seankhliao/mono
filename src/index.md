@@ -24,8 +24,39 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-11-30_ Ashnikko
 - _12023-11-24_ Chloe Adams
 - _12023-11-20_ Echosmith
-- _12023-11-03_ Maisie Peters
-- _12023-11-02_ Fall Out Boy
+- _12023-11-09_ Melanie Martinez
+
+##### _12023-11-03_ Maisie Peters
+
+With _Gretta Ray_
+
+_Gretta Ray_ was slow(er) sad(der) pop.
+What went through my head was:
+she looks a bit like taylor swift?
+_Maisie Peters_ was way better than I expected.
+Usually I don't care too much for the talk between the songs,
+but the cute, bubbly energy she gave off was infectious.
+The music was different from the recordings,
+but in a richer kind of way,
+and I was pleasantly surprised by how many songs I knew.
+
+##### _12023-11-02_ Fall Out Boy
+
+With _Nothing,Nowhere_ and _PVRIS_
+
+_PVRIS_ felt a bit off...
+compared to the many times I saw them this year.
+The start of each song felt a but raw,
+but generally ended strong.
+_Fall Out Boy_ was very flashy.
+Lots of big sets and props,
+like a spinning starfish, a giant talking dog, and just stuff on stage.
+Also plenty of fireworks and flames.
+As for the music,
+I felt a distinct lack of bass or just lower frequencies in general.
+Being around for as long as they have,
+there was quite a bit I've never hear of,
+the ones I knew were just the popular ones that bookended the set.
 
 ##### _12023-10-25_ deathbyromy
 
