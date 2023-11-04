@@ -1,0 +1,29 @@
+LICENSE
+10:46:furnished to do so, subject to the following conditions:
+19:36:LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+20:14:OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+
+example.txt
+1:29:Lorem ipsum dolor sit amet, consectetur adipiscing elit
+3:20:Ut a diam at metus condimentum fermentum et quis est
+10:19:Integer hendrerit consectetur aliquet
+11:9:Vivamus consequat convallis dolor, eu lobortis ligula condimentum ut
+12:30:Praesent quis ante bibendum, congue nunc vel, facilisis dui
+13:35:Morbi interdum efficitur erat sed consectetur.
+
+final.txt
+8:29:Lorem ipsum dolor sit amet, consectetur adipiscing elit
+9:39:Suspendisse semper felis id malesuada convallis
+
+four.txt
+3:33:Morbi maximus facilisis ipsum a condimentum
+13:8:Aenean convallis faucibus consequat.
+
+input.txt
+6:5:Nam consequat orci leo, eget lobortis ex semper vel
+9:20:Quisque vestibulum condimentum tincidunt
+
+two.txt
+1:48:Nullam auctor felis nulla, non suscipit tortor convallis vel
+2:14:Maecenas vel convallis ante
+7:51:Proin venenatis tellus pretium arcu pellentesque, congue mattis risus posuere

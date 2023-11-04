@@ -1,0 +1,29 @@
+[0m[35mLICENSE[0m
+[0m[32m10[0m:[0m46[0m:furnished to do so, subject to the following [0m[1m[31mcon[0mditions:
+[0m[32m19[0m:[0m36[0m:LIABILITY, WHETHER IN AN ACTION OF [0m[1m[31mCON[0mTRACT, TORT OR OTHERWISE, ARISING FROM,
+[0m[32m20[0m:[0m14[0m:OUT OF OR IN [0m[1m[31mCON[0mNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+
+[0m[35mexample.txt[0m
+[0m[32m1[0m:[0m29[0m:Lorem ipsum dolor sit amet, [0m[1m[31mcon[0msectetur adipiscing elit
+[0m[32m3[0m:[0m20[0m:Ut a diam at metus [0m[1m[31mcon[0mdimentum fermentum et quis est
+[0m[32m10[0m:[0m19[0m:Integer hendrerit [0m[1m[31mcon[0msectetur aliquet
+[0m[32m11[0m:[0m9[0m:Vivamus [0m[1m[31mcon[0msequat [0m[1m[31mcon[0mvallis dolor, eu lobortis ligula [0m[1m[31mcon[0mdimentum ut
+[0m[32m12[0m:[0m30[0m:Praesent quis ante bibendum, [0m[1m[31mcon[0mgue nunc vel, facilisis dui
+[0m[32m13[0m:[0m35[0m:Morbi interdum efficitur erat sed [0m[1m[31mcon[0msectetur.
+
+[0m[35mfinal.txt[0m
+[0m[32m8[0m:[0m29[0m:Lorem ipsum dolor sit amet, [0m[1m[31mcon[0msectetur adipiscing elit
+[0m[32m9[0m:[0m39[0m:Suspendisse semper felis id malesuada [0m[1m[31mcon[0mvallis
+
+[0m[35mfour.txt[0m
+[0m[32m3[0m:[0m33[0m:Morbi maximus facilisis ipsum a [0m[1m[31mcon[0mdimentum
+[0m[32m13[0m:[0m8[0m:Aenean [0m[1m[31mcon[0mvallis faucibus [0m[1m[31mcon[0msequat.
+
+[0m[35minput.txt[0m
+[0m[32m6[0m:[0m5[0m:Nam [0m[1m[31mcon[0msequat orci leo, eget lobortis ex semper vel
+[0m[32m9[0m:[0m20[0m:Quisque vestibulum [0m[1m[31mcon[0mdimentum tincidunt
+
+[0m[35mtwo.txt[0m
+[0m[32m1[0m:[0m48[0m:Nullam auctor felis nulla, non suscipit tortor [0m[1m[31mcon[0mvallis vel
+[0m[32m2[0m:[0m14[0m:Maecenas vel [0m[1m[31mcon[0mvallis ante
+[0m[32m7[0m:[0m51[0m:Proin venenatis tellus pretium arcu pellentesque, [0m[1m[31mcon[0mgue mattis risus posuere
