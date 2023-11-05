@@ -18,6 +18,8 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-05-01_ Spirited Away
 - _12024-03-19_ Cannons
 - _12024-02-29_ Mother Mother
+- _12024-02-22_ Zara Larsson
+- _12024-02-20_ Poppy
 - _12024-02-16_ Alessandra
 - _12023-12-09_ Halestorm
 - _12023-12-01_ Against the Current
