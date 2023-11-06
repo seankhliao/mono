@@ -1,0 +1,128 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: earbug
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: earbug
+  namespace: earbug
+spec:
+  loadBalancerClass: tailscale
+  ports:
+    - appProtocol: HTTP
+      name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: earbug
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: earbug
+  namespace: earbug
+spec:
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: earbug
+  serviceName: earbug
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: earbug
+    spec:
+      containers:
+        - env:
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app.kubernetes.io/name']
+            - name: POD_UID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: k8s.pod.uid=$(POD_UID),k8s.cluster.name=ihwa,k8s.container.name=earbug
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://ingest.otelcol.svc:4317
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/run/secrets/google/key.json
+          image: ghcr.io/seankhliao/earbug
+          livenessProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+          name: earbug
+          ports:
+            - containerPort: 8080
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          startupProbe:
+            httpGet:
+              path: /-/ready
+              port: http
+          volumeMounts:
+            - mountPath: /var/run/secrets/google
+              name: gcp
+            - mountPath: /data
+              name: data
+      enableServiceLinks: false
+      volumes:
+        - name: gcp
+          secret:
+            secretName: gcp
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        labels:
+          app.kubernetes.io/name: earbug
+          app.kubernetes.io/version: v0.0.1
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: local-path
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: earbug
+spec:
+  hostnames:
+    - earbug.ihwa.liao.dev
+  parentRefs:
+    - name: default
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - name: earbug
+          port: 80
+      matches:
+        - path:
+            type: Exact
+            value: /
+        - path:
+            type: Exact
+            value: /artists
+        - path:
+            type: Exact
+            value: /playbacks
+        - path:
+            type: Exact
+            value: /tracks

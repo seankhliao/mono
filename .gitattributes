@@ -1,0 +1,3 @@
+buf.lock linguist-generated=true
+go.sum linguist-generated=true
+*.sopsecret.yaml diff=sopsdiffer

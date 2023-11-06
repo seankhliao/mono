@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package seankhliao.earbug.v4;
+
+import "google/protobuf/duration.proto";
+
+message Store {
+  reserved 1, 5, 6;
+  bytes token = 2 [deprecated = true];
+
+  // rfc3339 timestamp : playback
+  map<string, Playback> playbacks = 3;
+  // track id : track
+  map<string, Track> tracks = 4;
+
+  // cached auth credentials
+  Auth auth = 7;
+}
+
+message Auth {
+  bytes token = 1;
+  string client_id = 2;
+  string client_secret = 3;
+}
+
+message Playback {
+  string track_id = 1;
+  string track_uri = 2;
+  string context_type = 3;
+  string context_uri = 4;
+}
+
+message Track {
+  string id = 1;
+  string uri = 2;
+  string type = 3;
+  string name = 4;
+  google.protobuf.Duration duration = 5;
+  repeated Artist artists = 6;
+}
+
+message Artist {
+  string id = 1;
+  string uri = 2;
+  string name  = 3;
+}

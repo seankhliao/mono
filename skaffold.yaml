@@ -1,0 +1,150 @@
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: earbug
+build:
+  artifacts:
+    - image: ghcr.io/seankhliao/earbug
+      ko:
+        main: ./cmd/earbug
+        env:
+          - CGO_ENABLED=0
+        ldflags:
+          - -s
+          - -w
+  tagPolicy:
+    inputDigest: {}
+  platforms:
+    - linux/amd64
+    - linux/arm64
+manifests:
+  rawYaml:
+    - cmd/earbug/kubernetes.yaml
+    - cmd/earbug/secrets.sopssecret.yaml
+deploy:
+  kubeContext: ihwa
+  kubectl:
+    defaultNamespace: earbug
+---
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: fin
+build:
+  artifacts:
+    - image: ghcr.io/seankhliao/fin
+      ko:
+        main: ./cmd/fin
+        env:
+          - CGO_ENABLED=0
+        flags:
+          - -trimpath
+        ldflags:
+          - -s
+          - -w
+        dependencies:
+          paths:
+            - "go.mod"
+            - "**/*.go"
+  tagPolicy:
+    inputDigest: {}
+  platforms:
+    - linux/amd64
+    - linux/arm64
+manifests:
+  rawYaml:
+    - cmd/fin/kubernetes.yaml
+deploy:
+  kubeContext: ihwa
+  kubectl:
+    defaultNamespace: fin
+---
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: ghdefaults
+build:
+  artifacts:
+    - image: ghcr.io/seankhliao/ghdefaults
+      ko:
+        main: ./cmd/ghdefaults
+        env:
+          - CGO_ENABLED=0
+        flags:
+          - -trimpath
+        ldflags:
+          - -s
+          - -w
+        dependencies:
+          paths:
+            - "go.mod"
+            - "**/*.go"
+  tagPolicy:
+    inputDigest: {}
+  platforms:
+    - linux/amd64
+    - linux/arm64
+manifests:
+  rawYaml:
+    - cmd/ghdefaults/kubernetes.yaml
+    - cmd/ghdefaults/secrets.sopssecret.yaml
+deploy:
+  kubeContext: ihwa
+  kubectl:
+    defaultNamespace: ghdefaults
+---
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: ihwa-liao-dev
+build:
+  artifacts:
+    - image: ghcr.io/seankhliao/ihwa-liao-dev
+      ko:
+        main: ./cmd/ihwa.liao.dev
+        env:
+          - CGO_ENABLED=0
+        flags:
+          - -trimpath
+        ldflags:
+          - -s
+          - -w
+  tagPolicy:
+    inputDigest: {}
+  platforms:
+    - linux/amd64
+    - linux/arm64
+manifests:
+  rawYaml:
+    - cmd/ihwa.liao.dev/kubernetes.yaml
+deploy:
+  kubeContext: ihwa
+  kubectl:
+    defaultNamespace: ihwa-liao-dev
+---
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: vanity
+build:
+  artifacts:
+    - image: us-central1-docker.pkg.dev/com-seankhliao/run/vanity
+      ko:
+        main: ./cmd/vanity
+        env:
+          - CGO_ENABLED=0
+        flags:
+          - -trimpath
+        ldflags:
+          - -s
+          - -w
+  tagPolicy:
+    inputDigest: {}
+  platforms:
+    - linux/amd64
+manifests:
+  rawYaml:
+    - cmd/vanity/cloudrun.yaml
+deploy:
+  cloudrun:
+    region: us-central1

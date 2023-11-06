@@ -1,0 +1,31 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+  labels:
+    cloud.googleapis.com/location: us-central1
+  name: go-seankhliao-com
+  namespace: "330311169810"
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: "1"
+    spec:
+      containerConcurrency: 80
+      containers:
+        - image: us-central1-docker.pkg.dev/com-seankhliao/run/vanity
+          ports:
+            - containerPort: 8080
+              name: http1
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 128Mi
+      serviceAccountName: go-seankhliao-com@com-seankhliao.iam.gserviceaccount.com
+      timeoutSeconds: 5
+  traffic:
+    - latestRevision: true
+      percent: 100
