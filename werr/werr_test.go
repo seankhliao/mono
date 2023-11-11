@@ -23,21 +23,12 @@ func TestNew(t *testing.T) {
 		}
 	})
 
-	t.Run("extract", func(t *testing.T) {
+	t.Run("attrs", func(t *testing.T) {
 		t.Parallel()
 
 		e1 := New("wrap1", base, a1, a2)
 		e2 := New("wrap2", e1, a3, a4)
-		checkAttrs(t, e2.(Error).attrs, []slog.Attr{a1, a2, a3, a4})
-	})
-
-	t.Run("extract_multi", func(t *testing.T) {
-		t.Parallel()
-
-		e1 := New("wrap1", base, a1, a2)
-		e2 := fmt.Errorf("fmtWrap: %w", e1)
-		e3 := New("wrap2", e2, a3, a4)
-		checkAttrs(t, e3.(Error).attrs, []slog.Attr{a1, a2, a3, a4})
+		checkAttrs(t, e2.(Error).attrs, []slog.Attr{a3, a4})
 	})
 }
 
@@ -102,15 +93,46 @@ func TestError_LogValue(t *testing.T) {
 	t.Parallel()
 
 	base := errors.New("base error")
-	a1, a2 := slog.String("a", "b"), slog.Int("c", 4)
-	wrapped := New("wrapping", base, a1, a2)
-	logValue := wrapped.(slog.LogValuer).LogValue()
+	a1, a2, a3, a4 := slog.String("a", "b"), slog.Int("c", 4), slog.String("e", "f"), slog.Int("g", 8)
 
-	if logValue.Kind() != slog.KindGroup {
-		t.Fatalf("e.LogValue kind = %s kind not group", logValue.Kind())
-	}
+	t.Run("simple", func(t *testing.T) {
+		t.Parallel()
 
-	checkAttrs(t, logValue.Group(), []slog.Attr{a1, a2, slog.String("msg", "wrapping: "+base.Error())})
+		e1 := New("wrap1", base)
+		val := e1.(slog.LogValuer).LogValue()
+
+		if val.Kind() != slog.KindGroup {
+			t.Fatalf("e.LogValue kind = %v, want %v", val.Kind(), slog.KindGroup)
+		}
+	})
+
+	t.Run("attrs", func(t *testing.T) {
+		t.Parallel()
+
+		e1 := New("wrap1", base, a1, a2)
+		e2 := New("wrap2", e1, a3, a4)
+		val := e2.(slog.LogValuer).LogValue()
+
+		if val.Kind() != slog.KindGroup {
+			t.Fatalf("e.LogValue kind = %v, want %v", val.Kind(), slog.KindGroup)
+		}
+		checkAttrs(t, val.Group(), []slog.Attr{a1, a2, a3, a4})
+	})
+
+	t.Run("nested", func(t *testing.T) {
+		t.Parallel()
+
+		e1 := New("wrap1", base, a1, a2)
+		e2 := fmt.Errorf("fmtWrap: %w", e1)
+		e3 := New("wrap2", e2, a3, a4)
+
+		val := e3.(slog.LogValuer).LogValue()
+
+		if val.Kind() != slog.KindGroup {
+			t.Fatalf("e.LogValue kind = %v, want %v", val.Kind(), slog.KindGroup)
+		}
+		checkAttrs(t, val.Group(), []slog.Attr{a1, a2, a3, a4})
+	})
 }
 
 func checkAttrs(t *testing.T, output, want []slog.Attr) {
