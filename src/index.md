@@ -21,12 +21,31 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-02-22_ Zara Larsson
 - _12024-02-20_ Poppy
 - _12024-02-16_ Alessandra
-- _12023-12-09_ Halestorm
+- _12023-12-09_ Halestorm with Black Veil Brides, Mothica
 - _12023-12-01_ Against the Current
 - _12023-11-30_ Ashnikko
 - _12023-11-24_ Chloe Adams
 - _12023-11-20_ Echosmith
-- _12023-11-09_ Melanie Martinez
+
+##### _12023-11-09_ Melanie Martinez
+
+With _UPSAHL_
+
+I get to see _UPSAHL_ again,
+what's not to love?
+We open with a barrage of pop,
+slow down for a few sad songs,
+then get back into fast paced music.
+_Melanie Martinez_ on the other hand felt quite different.
+It felt less about the music
+(whuch was different from the more dreamy style in recordings),
+and more the entire experience of the show.
+Every single moment felt planned and choreograhed,
+there was no small talk besides a thank you to mark the encore,
+and more thank yous at then end;
+each piece flowed into the next,
+and the use of the digital backdrop in combination with physical setpieces
+was quite impressive.
 
 ##### _12023-11-03_ Maisie Peters
 
