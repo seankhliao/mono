@@ -26,10 +26,7 @@ function t() {
 `
 )
 
-var (
-	lineNumberRe = regexp.MustCompile(`^(\d+):(\d+):.*`)
-	ansi         = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
-)
+var ansi = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
 
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "--help" {
