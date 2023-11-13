@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"io"
 	"log/slog"
 	"net/http"
 	"time"
@@ -23,6 +25,15 @@ func main() {
 					o.L.LogAttrs(ctx, slog.LevelInfo, "ping db", slog.Any("err", conn.Ping(ctx)))
 				}
 			}()
+
+			sm.HandleFunc("/dump", func(w http.ResponseWriter, r *http.Request) {
+				ctx := r.Context()
+				var obj map[string]any
+				b, _ := io.ReadAll(r.Body)
+				err := json.Unmarshal(b, &obj)
+				o.L.LogAttrs(ctx, slog.LevelInfo, "dump", slog.Any("obj", obj), slog.Any("err", err))
+			})
+
 			return func() { conn.Close() }, nil
 		},
 	})

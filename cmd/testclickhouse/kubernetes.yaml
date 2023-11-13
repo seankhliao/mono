@@ -3,6 +3,18 @@ kind: Namespace
 metadata:
   name: testclickhouse
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testclickhouse
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: testclickhouse
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
