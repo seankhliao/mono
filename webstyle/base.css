@@ -142,6 +142,9 @@ h3,
 h4,
 picture {
   margin: 25vh 0 0.5rem 0;
+}
+
+picture {
   display: flex;
 }
 
