@@ -7,13 +7,14 @@
   {{ .Head }}
 
   {{ with .GTM }}
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
   <script>
-    (function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-      var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != "dataLayer" ? "&l=" + l : "";
-      j.async = true; j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, "script", "dataLayer", "{{ . }}");
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '{{ . }}');
   </script>
   {{ end }}
 
@@ -45,8 +46,6 @@
       width: 5em;
     }
   </style>
-
-  {{ with .GTM }}<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ . }}" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>{{ end }}
 
   <h1>{{ .Title }}</h1>
   {{ with .Subtitle }}<h2>{{ . }}</h2>{{ end }}
@@ -84,6 +83,11 @@
       await navigator.clipboard.writeText(codeText);
 
       button.innerText = "Copied";
+
+      gtag('event', 'code_block_copy', {
+        'location': window.location.href,
+        'block_id': block.querySelector('.ln').id.split('-')[0],
+      });
 
       setTimeout(() => {
         button.innerText = "Copy";
