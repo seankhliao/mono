@@ -65,10 +65,14 @@
     |
     <a href="https://seankhliao.com/blog/">blog</a>
     |
-    <a href="https://github.com/seankhliao">github</a>
+    <a href="https://sean.liao.dev/">elsewhere</a>
   </footer>
 
   <script>
+  // click headers updates url bar
+  document.querySelectorAll('h3,h4,h5,h6').forEach((n) => n.addEventListener('click', (e) => document.location.hash = n.id ));
+
+  // copy button on code blocks
   document.querySelectorAll(".chroma").forEach((block) => {
     if (!navigator.clipboard) {
       return;
