@@ -30,6 +30,20 @@
   <style>
     {{ template "basecss" . }}
     {{ .Style }}
+
+    .chroma {
+      position: relative;
+    }
+    .chroma > button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      color: var(--primary);
+      background: #000;
+      border: 1px solid var(--primary);
+      padding: 1em;
+      width: 5em;
+    }
   </style>
 
   {{ with .GTM }}<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ . }}" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>{{ end }}
@@ -54,4 +68,29 @@
     |
     <a href="https://github.com/seankhliao">github</a>
   </footer>
+
+  <script>
+  const copyButtonLabel = "Copy";
+
+  document.querySelectorAll(".chroma").forEach((block) => {
+    if (!navigator.clipboard) {
+      return;
+    }
+
+    let button = document.createElement("button");
+    button.innerText = copyButtonLabel;
+    block.appendChild(button);
+
+    button.addEventListener("click", async () => {
+      let codeText = [...block.querySelectorAll('.cl')].map((n) => n.innerText).join("")
+      await navigator.clipboard.writeText(codeText);
+
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 2000);
+    });
+  });
+  </script>
 </html>
