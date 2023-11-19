@@ -70,7 +70,16 @@
 
   <script>
   // click headers updates url bar
-  document.querySelectorAll('h3,h4,h5,h6').forEach((n) => n.addEventListener('click', (e) => document.location.hash = n.id ));
+  document.querySelectorAll('h3,h4,h5,h6').forEach((node) => {
+    n.addEventListener('click', (event) => {
+      document.location.hash = node.id;
+
+      gtag('event', 'header_link_click', {
+        'location': window.location.href,
+        'header_id': node.id,
+      });
+    });
+  });
 
   // copy button on code blocks
   document.querySelectorAll(".chroma").forEach((block) => {
@@ -85,17 +94,15 @@
     button.addEventListener("click", async () => {
       let codeText = [...block.querySelectorAll('.cl')].map((n) => n.innerText).join("")
       await navigator.clipboard.writeText(codeText);
-
       button.innerText = "Copied";
+      setTimeout(() => {
+        button.innerText = "Copy";
+      }, 2000);
 
       gtag('event', 'code_block_copy', {
         'location': window.location.href,
         'block_id': block.querySelector('.ln').id.split('-')[0],
       });
-
-      setTimeout(() => {
-        button.innerText = "Copy";
-      }, 2000);
     });
   });
   </script>
