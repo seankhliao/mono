@@ -70,15 +70,13 @@
   </footer>
 
   <script>
-  const copyButtonLabel = "Copy";
-
   document.querySelectorAll(".chroma").forEach((block) => {
     if (!navigator.clipboard) {
       return;
     }
 
     let button = document.createElement("button");
-    button.innerText = copyButtonLabel;
+    button.innerText = "Copy";
     block.appendChild(button);
 
     button.addEventListener("click", async () => {
@@ -88,7 +86,7 @@
       button.innerText = "Copied";
 
       setTimeout(() => {
-        button.innerText = copyButtonLabel;
+        button.innerText = "Copy";
       }, 2000);
     });
   });
