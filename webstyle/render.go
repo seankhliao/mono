@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"fmt"
 	"io"
+	"slices"
 	"text/template"
 
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
@@ -13,6 +14,7 @@ import (
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/text"
 	"go.seankhliao.com/mono/webstyle/picture"
@@ -31,28 +33,6 @@ var (
 
 	TemplateFull    = template.Must(templateBase.New("").Parse(layoutTpl))
 	TemplateCompact = template.Must(templateCompact.New("").Parse(layoutTpl))
-
-	defaultMarkdown = goldmark.New(
-		goldmark.WithExtensions(
-			extension.Strikethrough,
-			extension.Table,
-			extension.TaskList,
-			picture.Picture,
-			highlighting.NewHighlighting(
-				highlighting.WithStyle("borland"),
-				highlighting.WithFormatOptions(
-					chromahtml.WithLineNumbers(true),
-					chromahtml.WithLinkableLineNumbers(true, "code"),
-					// chromahtml.WithClasses(true),
-				),
-			),
-		),
-		goldmark.WithParserOptions(
-			parser.WithHeadingAttribute(), // {#some-id}
-			parser.WithAutoHeadingID(),    // based on heading
-		),
-		goldmark.WithRendererOptions(html.WithUnsafe()),
-	)
 )
 
 // Data holds the metadata to render a given page
@@ -70,14 +50,28 @@ type Data struct {
 }
 
 type Renderer struct {
-	Markdown goldmark.Markdown
-	Template *template.Template
+	extensions []goldmark.Extender
+	parserOpts []parser.Option
+	renderOpts []renderer.Option
+	Template   *template.Template
 }
 
 // NewRenderer creates a rendered with default options
 func NewRenderer(t *template.Template) Renderer {
 	return Renderer{
-		Markdown: defaultMarkdown,
+		extensions: []goldmark.Extender{
+			extension.Strikethrough,
+			extension.Table,
+			extension.TaskList,
+			picture.Picture,
+		},
+		parserOpts: []parser.Option{
+			parser.WithHeadingAttribute(), // {#some-id}
+			parser.WithAutoHeadingID(),    // based on heading
+		},
+		renderOpts: []renderer.Option{
+			html.WithUnsafe(),
+		},
 		Template: t,
 	}
 }
@@ -88,20 +82,31 @@ func (r Renderer) Render(w io.Writer, src io.Reader, d Data) error {
 		return err
 	}
 
+	var block int
 	highlightCSS := bytes.NewBufferString(d.Style)
 	highlightCSS.WriteString("\n")
-	highlighting.NewHighlighting(
+	hl := highlighting.NewHighlighting(
 		highlighting.WithStyle("borland"),
 		highlighting.WithCSSWriter(highlightCSS),
 		highlighting.WithFormatOptions(
 			chromahtml.WithLineNumbers(true),
-			// TODO: unique block prefix
-			chromahtml.WithLinkableLineNumbers(true, "code"),
 			chromahtml.WithClasses(true),
 		),
+		highlighting.WithCodeBlockOptions(func(c highlighting.CodeBlockContext) []chromahtml.Option {
+			block++
+			return []chromahtml.Option{
+				chromahtml.WithLinkableLineNumbers(true, fmt.Sprintf("block%d-", block)),
+			}
+		}),
 	)
 
-	node := r.Markdown.Parser().Parse(text.NewReader(b))
+	Markdown := goldmark.New(
+		goldmark.WithExtensions(append(slices.Clone(r.extensions), hl)...),
+		goldmark.WithParserOptions(r.parserOpts...),
+		goldmark.WithRendererOptions(r.renderOpts...),
+	)
+
+	node := Markdown.Parser().Parse(text.NewReader(b))
 	for n := node.FirstChild(); n != nil; n = n.NextSibling() {
 		if hd, ok := n.(*ast.Heading); ok {
 			if hd.Level == 1 && d.Title == "" {
@@ -116,7 +121,7 @@ func (r Renderer) Render(w io.Writer, src io.Reader, d Data) error {
 	}
 
 	var mdBuf bytes.Buffer
-	err = r.Markdown.Renderer().Render(&mdBuf, b, node)
+	err = Markdown.Renderer().Render(&mdBuf, b, node)
 	if err != nil {
 		return fmt.Errorf("render markdown: %w", err)
 	}
