@@ -42,6 +42,8 @@ var (
 				highlighting.WithStyle("borland"),
 				highlighting.WithFormatOptions(
 					chromahtml.WithLineNumbers(true),
+					chromahtml.WithLinkableLineNumbers(true, "code"),
+					// chromahtml.WithClasses(true),
 				),
 			),
 		),
@@ -85,6 +87,20 @@ func (r Renderer) Render(w io.Writer, src io.Reader, d Data) error {
 	if err != nil {
 		return err
 	}
+
+	highlightCSS := bytes.NewBufferString(d.Style)
+	highlightCSS.WriteString("\n")
+	highlighting.NewHighlighting(
+		highlighting.WithStyle("borland"),
+		highlighting.WithCSSWriter(highlightCSS),
+		highlighting.WithFormatOptions(
+			chromahtml.WithLineNumbers(true),
+			// TODO: unique block prefix
+			chromahtml.WithLinkableLineNumbers(true, "code"),
+			chromahtml.WithClasses(true),
+		),
+	)
+
 	node := r.Markdown.Parser().Parse(text.NewReader(b))
 	for n := node.FirstChild(); n != nil; n = n.NextSibling() {
 		if hd, ok := n.(*ast.Heading); ok {
@@ -98,12 +114,15 @@ func (r Renderer) Render(w io.Writer, src io.Reader, d Data) error {
 			}
 		}
 	}
+
 	var mdBuf bytes.Buffer
 	err = r.Markdown.Renderer().Render(&mdBuf, b, node)
 	if err != nil {
 		return fmt.Errorf("render markdown: %w", err)
 	}
 	d.Main = mdBuf.String() + d.Main
+	d.Style = highlightCSS.String()
+
 	err = r.Template.Execute(w, d)
 	if err != nil {
 		return fmt.Errorf("render template: %w", err)
