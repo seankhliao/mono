@@ -112,12 +112,12 @@ func getRequiredUploads(ctx context.Context, lg *slog.Logger, client *firebaseho
 		return nil, "", err
 	}
 
-	lg.LogAttrs(ctx, slog.LevelError, "got required uploads", slog.Int("to_upload", len(populateResponse.UploadRequiredHashes)))
+	lg.LogAttrs(ctx, slog.LevelInfo, "got required uploads", slog.Int("to_upload", len(populateResponse.UploadRequiredHashes)))
 	return populateResponse.UploadRequiredHashes, populateResponse.UploadUrl, nil
 }
 
 func uploadFiles(ctx context.Context, lg *slog.Logger, client *firebasehosting.Service, httpClient *http.Client, version string, toUpload []string, uploadURL string, hashToGzip map[string]io.Reader) error {
-	lg.LogAttrs(ctx, slog.LevelError, "uploading required files", slog.Int("to_upload", len(toUpload)), slog.Int("total", len(hashToGzip)))
+	lg.LogAttrs(ctx, slog.LevelInfo, "uploading required files", slog.Int("to_upload", len(toUpload)), slog.Int("total", len(hashToGzip)))
 	for _, uploadHash := range toUpload {
 		endpoint := uploadURL + "/" + uploadHash
 		req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, hashToGzip[uploadHash])
