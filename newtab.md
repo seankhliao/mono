@@ -31,6 +31,6 @@ _txt:_
 _img:_
 [your throne](https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009)
 [hero killer](https://www.webtoons.com/en/action/hero-killer/list?title_no=2745)
-[infinite mage](https://asura.gg/?s=infinite+mage)
+[infinite mage](https://infinitemage.online/)
 [can we become a family](https://coffeemanga.io/manga/can-we-become-a-family-online-reading-1/)
 [ghostblade](https://tapas.io/series/GhostBlade/info)

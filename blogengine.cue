@@ -1,7 +1,7 @@
 render: {
 	baseUrl: "https://newtab.liao.dev"
 	dst:     "index.html"
-	gtm:     "GTM-TLVN7D6"
+	gtm:     "G-9GLEE4YLNC"
 	src:     "newtab.md"
 	style:   "compact"
 }
