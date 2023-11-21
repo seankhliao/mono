@@ -25,7 +25,25 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12023-12-01_ Against the Current
 - _12023-11-30_ Ashnikko
 - _12023-11-24_ Chloe Adams
-- _12023-11-20_ Echosmith
+
+##### _12023-11-20_ Echosmith
+
+With _McKenna Michels_ and _Larkins_
+
+I think _McKenna Michels_ was fine?
+Slightly on the slower, sadder side,
+which was in contrast to the positive personality.
+_Larkins_ sounded like a typical pop/rock band,
+not very memorable, I may have drifted off for a bit.
+It really was a dream for me to see _Echosmith_,
+they were one of the first bands I was into,
+and by the time I got around to seeing live shows,
+I didn't think they were still active.
+Anyway, the music was amazing,
+brought back so many memories.
+Though I did think I should have refreshed my memory of their discography beforehand.
+Soft pop/rock, it felt like a gentle embrace,
+and throwback to a more carefree time.
 
 ##### _12023-11-09_ Melanie Martinez
 
