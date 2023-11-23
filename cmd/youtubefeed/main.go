@@ -4,7 +4,6 @@ package main
 
 import (
 	_ "embed"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -107,13 +106,8 @@ func runLookup(ctx context.Context, lg *slog.Logger, yt *youtube.Service, config
 		}
 	}
 
-	b, err := json.MarshalIndent(results, "", "  ")
-	if err != nil {
-		lg.LogAttrs(ctx, slog.LevelError, "marshal results", slog.String("error", err.Error()))
-		return err
-	}
-
-	fmt.Println(string(b))
+	cuectx := cuecontext.New()
+	fmt.Println(cuectx.Encode(results))
 	return nil
 }
 
@@ -153,7 +147,7 @@ type ConfigFeed struct {
 	Channels    map[string]ConfigChannel `json:"channels"`
 }
 type ConfigChannel struct {
-	Title     string
+	Title     string `json:"title"`
 	ChannelID string `json:"channel_id"`
 	UploadsID string `json:"uploads_id"`
 }
