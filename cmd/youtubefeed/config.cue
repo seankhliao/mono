@@ -1,6 +1,6 @@
 import "time"
 
-maxAge:  2 * 30 * 24 * time.Hour
+maxAge:  3 * 30 * 24 * time.Hour
 refresh: 10 * time.Minute
 
 feeds: {
@@ -141,10 +141,11 @@ feeds: {
 			}
 		}
 		exclude: {
-			lyrics:      "lyric video"
-			visualizers: "visualizer"
-			audio:       "official audio"
-			live:        "live from "
+			lyrics:     "(?i)lyric video"
+			audio:      "(?i)official audio"
+			live:       "(?i)live (at|from)"
+			livestream: "(?i)livestream"
+			// visualizers: "(?i)visualizer"
 		}
 	}
 

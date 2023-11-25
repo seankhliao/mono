@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"regexp"
 	"time"
 
 	"cuelang.org/go/cue"
@@ -59,14 +60,29 @@ func (c *Config) setConfig(configGiven []byte) error {
 	if err != nil {
 		return fmt.Errorf("unify config with schema: %w", err)
 	}
+
+	for feed, fc := range c.Feeds {
+		m := make(map[string]*regexp.Regexp)
+		for name, expr := range c.Feeds[feed].Exclude {
+			r, err := regexp.Compile(expr)
+			if err != nil {
+				return fmt.Errorf("compile regex for feed=%v exlude=%v err=%w", feed, name, err)
+			}
+			m[name] = r
+		}
+		fc.exclude = m
+		c.Feeds[feed] = fc
+	}
+
 	return nil
 }
 
 type ConfigFeed struct {
 	Name        string                   `json:"name"`
 	Description string                   `json:"description"`
-	Exclude     map[string]string        `json:"exclude"`
 	Channels    map[string]ConfigChannel `json:"channels"`
+	Exclude     map[string]string        `json:"exclude"`
+	exclude     map[string]*regexp.Regexp
 }
 type ConfigChannel struct {
 	Title     string `json:"title"`

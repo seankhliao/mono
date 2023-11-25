@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
 	"slices"
 	"strings"
 	"sync"
@@ -206,7 +207,7 @@ func (a *App) refreshFeed(ctx context.Context, cutoff time.Time, feed string, co
 	}
 
 	for username, channel := range config.Channels {
-		fd.Videos = append(fd.Videos, a.refreshChannel(ctx, cutoff, username, channel.UploadsID)...)
+		fd.Videos = append(fd.Videos, a.refreshChannel(ctx, cutoff, config.exclude, username, channel.UploadsID)...)
 	}
 
 	slices.SortFunc(fd.Videos, func(a, b FeedVideo) int {
@@ -216,7 +217,7 @@ func (a *App) refreshFeed(ctx context.Context, cutoff time.Time, feed string, co
 	return fd
 }
 
-func (a *App) refreshChannel(ctx context.Context, cutoff time.Time, username, playlistID string) []FeedVideo {
+func (a *App) refreshChannel(ctx context.Context, cutoff time.Time, excludes map[string]*regexp.Regexp, username, playlistID string) []FeedVideo {
 	ctx, span := a.o.T.Start(ctx, "refresh channel",
 		trace.WithAttributes(attribute.String("username", username)),
 	)
@@ -239,10 +240,17 @@ func (a *App) refreshChannel(ctx context.Context, cutoff time.Time, username, pl
 	}
 
 	var videos []FeedVideo
+itemLoop:
 	for _, it := range res.Items {
 		if it.Snippet.ResourceId.Kind != "youtube#video" {
 			continue
 		}
+		for _, r := range excludes {
+			if r.MatchString(it.Snippet.Title) {
+				continue itemLoop
+			}
+		}
+
 		dt, err := time.Parse(time.RFC3339, it.Snippet.PublishedAt)
 		if err != nil {
 			a.o.Err(ctx, "parse time as rfc3339", err,
@@ -254,6 +262,7 @@ func (a *App) refreshChannel(ctx context.Context, cutoff time.Time, username, pl
 		if dt.Before(cutoff) {
 			continue
 		}
+
 		videos = append(videos, FeedVideo{
 			Published:    dt,
 			ChannelTitle: escapeMDTable(it.Snippet.ChannelTitle),
