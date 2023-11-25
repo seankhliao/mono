@@ -277,19 +277,19 @@ func (a *App) handleLookup(rw http.ResponseWriter, r *http.Request) {
 ### _lookup_ config
 
 <form action="/lookup" method="post">
-<label for="user">User:</label>
-<input type="text" placehandler="some youtube user" id="user" name="user" />
+<label for="term">search term:</label>
+<input type="text" placehandler="some youtube term" id="term" name="term" />
 
 <input type="submit" />
 </form>
 
 `)
 
-	if r.Method == http.MethodPost {
+	searchTerm := r.PostFormValue("term")
+	if r.Method == http.MethodPost && searchTerm != "" {
 		content.WriteString("```cue\n")
 
-		searchUser := r.PostFormValue("user")
-		res, err := a.runLookup(ctx, []string{searchUser})
+		res, err := a.runLookup(ctx, searchTerm)
 		if err != nil {
 			fmt.Fprintln(content, err.Error())
 		} else {

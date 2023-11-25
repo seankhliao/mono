@@ -11,7 +11,7 @@ import (
 )
 
 func (a *App) lookupFromConfig(ctx context.Context) (string, error) {
-	results, err := a.runLookup(ctx, a.startupConfig.lookup)
+	results, err := a.runLookup(ctx, a.startupConfig.lookup...)
 	if err != nil {
 		return "", err
 	}
@@ -22,7 +22,7 @@ func (a *App) lookupFromConfig(ctx context.Context) (string, error) {
 	return fmt.Sprintf("%v\n", cuectx.Encode(results)), nil
 }
 
-func (a *App) runLookup(ctx context.Context, usernames []string) (map[string]ConfigChannel, error) {
+func (a *App) runLookup(ctx context.Context, usernames ...string) (map[string]ConfigChannel, error) {
 	ctx, span := a.o.T.Start(ctx, "run lookup")
 	defer span.End()
 
