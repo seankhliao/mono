@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -13,6 +14,9 @@ import (
 	"sync"
 	"time"
 
+	"cuelang.org/go/cue/cuecontext"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
 	"google.golang.org/api/option"
@@ -81,19 +85,24 @@ type App struct {
 func (a *App) Register(mux *http.ServeMux) {
 	mux.HandleFunc("GET /{$}", a.handleIndex)
 	mux.HandleFunc("GET /feeds/{feed}", a.handleFeed)
-	// mux.HandleFunc("GET /lookup", a.handleLookup)
+	mux.HandleFunc("GET /lookup", a.handleLookup)
+	mux.HandleFunc("POST /lookup", a.handleLookup)
 
-	// mux.HandleFunc("POST /api/v1/lookup", a.handleAPILookup)
 	// mux.HandleFunc("POST /api/v1/refresh", a.handleAPIRefresh)
 }
 
 func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
+	_, span := a.o.T.Start(r.Context(), "serve index")
+	defer span.End()
+
 	http.ServeContent(rw, r, "index.html", a.startupTime, bytes.NewReader(a.indexRendered))
 }
 
 func (a *App) handleFeed(rw http.ResponseWriter, r *http.Request) {
-	feed := r.PathValue("feed")
+	ctx, span := a.o.T.Start(r.Context(), "handle feed")
+	defer span.End()
 
+	feed := r.PathValue("feed")
 	fd, ok := func(feed string) (FeedData, bool) {
 		a.feedMu.Lock()
 		defer a.feedMu.Unlock()
@@ -101,7 +110,7 @@ func (a *App) handleFeed(rw http.ResponseWriter, r *http.Request) {
 		return fd, ok
 	}(feed)
 	if !ok {
-		http.Error(rw, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+		a.o.HTTPErr(ctx, "feed not found", errors.New("unknown feed"), rw, http.StatusNotFound)
 		return
 	}
 
@@ -158,72 +167,132 @@ func (a *App) RunPeriodicRefresh(ctx context.Context, period time.Duration) {
 }
 
 func (a *App) runRefresh(ctx context.Context) {
+	ctx, span := a.o.T.Start(ctx, "refresh feeds")
+	defer span.End()
+
 	cutoff := time.Now().Add(-a.startupConfig.MaxAge)
 
 	a.o.L.LogAttrs(ctx, slog.LevelDebug, "running refresh")
 
 	feeds := make(map[string]FeedData)
 	for feed, feedConfig := range a.startupConfig.Feeds {
-		a.o.L.LogAttrs(ctx, slog.LevelDebug, "refreshing feed", slog.String("feed", feed))
-
-		fd := FeedData{
-			Name:        feed,
-			Description: feedConfig.Description,
-			Updated:     time.Now(),
-		}
-
-		for username, channelConfig := range feedConfig.Channels {
-			a.o.L.LogAttrs(ctx, slog.LevelDebug, "refreshing user",
-				slog.String("feed", feed),
-				slog.String("username", username),
-				slog.String("playlist_id", channelConfig.UploadsID),
-			)
-
-			res, err := a.yt.PlaylistItems.List([]string{"id", "snippet"}).
-				PlaylistId(channelConfig.UploadsID).
-				Context(ctx).
-				Do()
-			if err != nil {
-				a.o.Err(ctx, "list playlist", err,
-					slog.String("feed", feed),
-					slog.String("username", username),
-				)
-				continue
-			}
-
-			for _, it := range res.Items {
-				dt, err := time.Parse(time.RFC3339, it.Snippet.PublishedAt)
-				if err != nil {
-					a.o.Err(ctx, "parse time as rfc3339", err,
-						slog.String("feed", feed),
-						slog.String("username", username),
-						slog.String("input_time", it.Snippet.PublishedAt),
-					)
-					continue
-				}
-				if dt.Before(cutoff) {
-					continue
-				}
-				fd.Videos = append(fd.Videos, FeedVideo{
-					Published:    dt,
-					ChannelTitle: escapeMDTable(it.Snippet.ChannelTitle),
-					ChannelLink:  urlChannel + it.Snippet.ChannelId,
-					VideoTitle:   escapeMDTable(it.Snippet.Title),
-					VideoLink:    urlVideo + url.Values{"q": []string{it.Id}}.Encode(),
-				})
-			}
-		}
-
-		slices.SortFunc(fd.Videos, func(a, b FeedVideo) int {
-			return b.Published.Compare(a.Published)
-		})
-
-		feeds[feed] = fd
+		feeds[feed] = a.refreshFeed(ctx, cutoff, feed, feedConfig)
 	}
 
 	a.feedMu.Lock()
 	a.feeds = feeds
 	a.feedMu.Unlock()
+}
+
+func (a *App) refreshFeed(ctx context.Context, cutoff time.Time, feed string, config ConfigFeed) FeedData {
+	ctx, span := a.o.T.Start(ctx, "refresh feed",
+		trace.WithAttributes(attribute.String("feed", feed)),
+	)
+	defer span.End()
+
+	a.o.L.LogAttrs(ctx, slog.LevelDebug, "refreshing feed", slog.String("feed", feed))
+
+	fd := FeedData{
+		Name:        feed,
+		Description: config.Description,
+		Updated:     time.Now(),
+	}
+
+	for username, channel := range config.Channels {
+		fd.Videos = append(fd.Videos, a.refreshChannel(ctx, cutoff, username, channel.UploadsID)...)
+	}
+
+	slices.SortFunc(fd.Videos, func(a, b FeedVideo) int {
+		return b.Published.Compare(a.Published)
+	})
+
+	return fd
+}
+
+func (a *App) refreshChannel(ctx context.Context, cutoff time.Time, username, playlistID string) []FeedVideo {
+	ctx, span := a.o.T.Start(ctx, "refresh channel",
+		trace.WithAttributes(attribute.String("username", username)),
+	)
+	defer span.End()
+
+	a.o.L.LogAttrs(ctx, slog.LevelDebug, "refreshing user",
+		slog.String("username", username),
+		slog.String("playlist_id", playlistID),
+	)
+
+	res, err := a.yt.PlaylistItems.List([]string{"id", "snippet"}).
+		PlaylistId(playlistID).
+		Context(ctx).
+		Do()
+	if err != nil {
+		a.o.Err(ctx, "list playlist", err,
+			slog.String("username", username),
+		)
+		return nil
+	}
+
+	var videos []FeedVideo
+	for _, it := range res.Items {
+		dt, err := time.Parse(time.RFC3339, it.Snippet.PublishedAt)
+		if err != nil {
+			a.o.Err(ctx, "parse time as rfc3339", err,
+				slog.String("username", username),
+				slog.String("input_time", it.Snippet.PublishedAt),
+			)
+			continue
+		}
+		if dt.Before(cutoff) {
+			continue
+		}
+		videos = append(videos, FeedVideo{
+			Published:    dt,
+			ChannelTitle: escapeMDTable(it.Snippet.ChannelTitle),
+			ChannelLink:  urlChannel + it.Snippet.ChannelId,
+			VideoTitle:   escapeMDTable(it.Snippet.Title),
+			VideoLink:    urlVideo + url.Values{"q": []string{it.Id}}.Encode(),
+		})
+	}
+	return videos
+}
+
+func (a *App) handleLookup(rw http.ResponseWriter, r *http.Request) {
+	ctx, span := a.o.T.Start(r.Context(), "handle lookup")
+	defer span.End()
+
+	content := bytes.NewBufferString(`
+# lookup
+
+## [youtube feeds](/)
+
+### _lookup_ config
+
+<form action="/lookup" method="post">
+<label for="user">User:</label>
+<input type="text" placehandler="some youtube user" id="user" name="user" />
+
+<input type="submit" />
+</form>
+
+`)
+
+	if r.Method == http.MethodPost {
+		content.WriteString("```cue\n")
+
+		searchUser := r.PostFormValue("user")
+		res, err := a.runLookup(ctx, []string{searchUser})
+		if err != nil {
+			fmt.Fprintln(content, err.Error())
+		} else {
+			cuectx := cuecontext.New()
+			fmt.Fprintln(content, cuectx.Encode(res))
+		}
+
+		content.WriteString("```\n")
+	}
+
+	a.render.Render(rw, content, webstyle.Data{
+		Desc: "generate config for a user",
+	})
 }
 
 func escapeMDTable(s string) string {
