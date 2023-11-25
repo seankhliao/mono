@@ -6,6 +6,8 @@ import (
 	"fmt"
 
 	"cuelang.org/go/cue/cuecontext"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 )
 
 func (a *App) lookupFromConfig(ctx context.Context) (string, error) {
@@ -21,57 +23,65 @@ func (a *App) lookupFromConfig(ctx context.Context) (string, error) {
 }
 
 func (a *App) runLookup(ctx context.Context, usernames []string) (map[string]ConfigChannel, error) {
+	ctx, span := a.o.T.Start(ctx, "run lookup")
+	defer span.End()
+
 	results := make(map[string]ConfigChannel)
 	var errs []error
 
 	for _, username := range usernames {
-		// lg := a.o.L.With(slog.String("username", username))
-
-		// lookup channel id
-		res, err := a.yt.Search.
-			List([]string{"id", "snippet"}).
-			Q(username).
-			Type("channel").
-			Do()
+		username, channel, err := a.lookupUser(ctx, username)
 		if err != nil {
-			errs = append(errs, LookupError{"search for", username, err})
-			continue
-		} else if len(res.Items) == 0 {
-			errs = append(errs, LookupError{"results for", username, ErrNoResults})
+			errs = append(errs, err)
 			continue
 		}
-
-		result := res.Items[0]
-		// lg = lg.With(
-		// 	slog.String("channel_id", result.Id.ChannelId),
-		// 	slog.String("channel_title", result.Snippet.Title),
-		// )
-
-		channels, err := a.yt.Channels.
-			List([]string{"snippet", "contentDetails"}).
-			Id(result.Id.ChannelId).
-			Do()
-		if err != nil {
-			errs = append(errs, LookupError{"channel detailts for", username, err})
-			continue
-		} else if len(channels.Items) == 0 {
-			errs = append(errs, LookupError{"no channels for", username, ErrNoResults})
-			continue
-		}
-
-		channel := channels.Items[0]
-
-		results[channel.Snippet.CustomUrl] = ConfigChannel{
-			Title:     channel.Snippet.Title,
-			ChannelID: channel.Id,
-			UploadsID: channel.ContentDetails.RelatedPlaylists.Uploads,
-		}
+		results[username] = channel
 	}
 
 	if len(errs) > 0 {
 		return nil, errors.Join(errs...)
 	}
 	return results, nil
+}
+
+func (a *App) lookupUser(ctx context.Context, username string) (string, ConfigChannel, error) {
+	ctx, span := a.o.T.Start(ctx, "lookup user",
+		trace.WithAttributes(attribute.String("username", username)),
+	)
+	defer span.End()
+
+	// lookup channel id
+	res, err := a.yt.Search.
+		List([]string{"id", "snippet"}).
+		Q(username).
+		Type("channel").
+		Context(ctx).
+		Do()
+	if err != nil {
+		return "", ConfigChannel{}, LookupError{"search for", username, err}
+	} else if len(res.Items) == 0 {
+		return "", ConfigChannel{}, LookupError{"results for", username, ErrNoResults}
+	}
+
+	result := res.Items[0]
+	channels, err := a.yt.Channels.
+		List([]string{"snippet", "contentDetails"}).
+		Id(result.Id.ChannelId).
+		Context(ctx).
+		Do()
+	if err != nil {
+		return "", ConfigChannel{}, LookupError{"channel detailts for", username, err}
+	} else if len(channels.Items) == 0 {
+		return "", ConfigChannel{}, LookupError{"no channels for", username, ErrNoResults}
+	}
+
+	channel := channels.Items[0]
+
+	return channel.Snippet.CustomUrl, ConfigChannel{
+		Title:     channel.Snippet.Title,
+		ChannelID: channel.Id,
+		UploadsID: channel.ContentDetails.RelatedPlaylists.Uploads,
+	}, nil
 }
 
 var ErrNoResults = errors.New("no results found")
