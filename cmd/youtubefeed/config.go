@@ -28,7 +28,6 @@ type Config struct {
 
 	lookup []string
 	mode   string
-	file   string
 }
 
 func (c *Config) SetFlags(fset *flag.FlagSet) {
