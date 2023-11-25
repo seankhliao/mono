@@ -230,6 +230,7 @@ func (a *App) refreshChannel(ctx context.Context, cutoff time.Time, excludes map
 
 	res, err := a.yt.PlaylistItems.List([]string{"id", "snippet"}).
 		PlaylistId(playlistID).
+		MaxResults(50).
 		Context(ctx).
 		Do()
 	if err != nil {
