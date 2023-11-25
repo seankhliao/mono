@@ -8,6 +8,8 @@ kind: Service
 metadata:
   name: youtubefeed
   namespace: youtubefeed
+  annotations:
+    tailscale.com/hostname: youtubefeed-ihwa
 spec:
   loadBalancerClass: tailscale
   ports:
