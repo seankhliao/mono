@@ -207,7 +207,9 @@ feeds: {
 	junk: {
 		name: "junk food"
 		description: """
-			best watched after turning off history
+			Mainly gaming related videos,
+			purely for entertainment.
+			Best watched after [turning off history](https://www.youtube.com/feed/history).
 			"""
 		channels: {
 			"@filmtheory": {
@@ -264,7 +266,15 @@ feeds: {
 	}
 	minecraft: {
 		name: "minecraft"
+		description: """
+			Dedicated section for minecraft related videos.
+			"""
 		channels: {
+			"@ethoslab": {
+				title:      "EthosLab"
+				channel_id: "UCFKDEp9si4RmHFWJW1vYsMA"
+				uploads_id: "UUFKDEp9si4RmHFWJW1vYsMA"
+			}
 			"@geminitaymc": {
 				title:      "GeminiTay"
 				channel_id: "UCUBsjvdHcwZd3ztdY1Zadcw"

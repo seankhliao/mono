@@ -53,6 +53,9 @@ func New(ctx context.Context, o *observability.O, conf *Config) (*App, error) {
 ## things to watch
 
 ### _feeds_
+
+To update config: [lookup](./lookup)
+
 `)
 	var feeds []string
 	for feed := range a.startupConfig.Feeds {
@@ -127,9 +130,13 @@ Updated: %v
 
 | time | channel | video |
 | --- | --- | --- |
-`, fd.Name, fd.Name, fd.Description, fd.Updated))
+`, fd.Name, fd.Name, fd.Description, fd.Updated.Format(time.DateTime)))
 	for _, video := range fd.Videos {
-		fmt.Fprintf(content, "| %v | [%s](%s) | [%s](%s) |\n", video.Published, video.ChannelTitle, video.ChannelLink, video.VideoTitle, video.VideoLink)
+		fmt.Fprintf(content, "| %s | [%s](%s) | [%s](%s) |\n",
+			video.Published.Format(time.DateTime),
+			video.ChannelTitle, video.ChannelLink,
+			video.VideoTitle, video.VideoLink,
+		)
 	}
 
 	a.render.Render(rw, content, webstyle.Data{
@@ -233,6 +240,9 @@ func (a *App) refreshChannel(ctx context.Context, cutoff time.Time, username, pl
 
 	var videos []FeedVideo
 	for _, it := range res.Items {
+		if it.Snippet.ResourceId.Kind != "youtube#video" {
+			continue
+		}
 		dt, err := time.Parse(time.RFC3339, it.Snippet.PublishedAt)
 		if err != nil {
 			a.o.Err(ctx, "parse time as rfc3339", err,
@@ -249,7 +259,7 @@ func (a *App) refreshChannel(ctx context.Context, cutoff time.Time, username, pl
 			ChannelTitle: escapeMDTable(it.Snippet.ChannelTitle),
 			ChannelLink:  urlChannel + it.Snippet.ChannelId,
 			VideoTitle:   escapeMDTable(it.Snippet.Title),
-			VideoLink:    urlVideo + url.Values{"q": []string{it.Id}}.Encode(),
+			VideoLink:    urlVideo + url.Values{"v": []string{it.Snippet.ResourceId.VideoId}}.Encode(),
 		})
 	}
 	return videos
