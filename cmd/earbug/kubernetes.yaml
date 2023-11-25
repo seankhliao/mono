@@ -8,6 +8,8 @@ kind: Service
 metadata:
   name: earbug
   namespace: earbug
+  annotations:
+    tailscale.com/hostname: earbug-ihwa
 spec:
   loadBalancerClass: tailscale
   ports:

@@ -8,6 +8,8 @@ kind: Service
 metadata:
   name: fin
   namespace: fin
+  annotations:
+    tailscale.com/hostname: fin-ihwa
 spec:
   loadBalancerClass: tailscale
   ports:
