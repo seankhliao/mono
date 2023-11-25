@@ -1,4 +1,7 @@
-lookup: ["upsahl"]
+import "time"
+
+maxAge:  2 * 30 * 24 * time.Hour
+refresh: 10 * time.Minute
 
 feeds: {
 	edutainment: {

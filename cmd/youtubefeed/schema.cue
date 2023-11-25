@@ -1,4 +1,8 @@
+import "time"
+
 #Config: {
+	maxAge:  int64 & >time.ParseDuration("1h") // duration in ns
+	refresh: int64 & >time.ParseDuration("1m") // duration in ns
 	feeds: [string]: #Feed
 }
 
@@ -13,3 +17,5 @@
 	channel_id: string
 	uploads_id: string
 }
+
+config: #Config
