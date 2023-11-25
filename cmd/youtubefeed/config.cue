@@ -10,6 +10,11 @@ feeds: {
 			somewhat education, but mostly for entertainment
 			"""
 		channels: {
+			"@art_deco": {
+				title:      "Art Deco"
+				channel_id: "UCHH2vhhi45Ar3fOl7SmUvnA"
+				uploads_id: "UUHH2vhhi45Ar3fOl7SmUvnA"
+			}
 			"@bernadettebanner": {
 				title:      "Bernadette Banner"
 				channel_id: "UCSHtaUm-FjUps090S7crO4Q"
