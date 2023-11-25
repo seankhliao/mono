@@ -5,28 +5,22 @@
   />
   <title>{{ .Title }}</title>
 
-  <link rel="icon" href="https://seankhliao.com/favicon.ico" />
-  <link
-    rel="icon"
-    href="https://seankhliao.com/static/icon.svg"
-    type="image/svg+xml"
-    sizes="any"
-  />
-  <link
-    rel="apple-touch-icon"
-    href="https://seankhliao.com/static/icon-192.png"
-  />
-
   {{ with .GTM }}
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
   <script>
-    (function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-      var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != "dataLayer" ? "&l=" + l : "";
-      j.async = true; j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, "script", "dataLayer", "{{ . }}");
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '{{ . }}');
   </script>
   {{ end }}
+
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="https://seankhliao.com/favicon.ico">
+  <link rel="icon" href="https://seankhliao.com/static/icon.svg" type="image/svg+xml" sizes="any">
+  <link rel="apple-touch-icon" href="https://seankhliao.com/static/icon-192.png">
 
   <style>
     * {
@@ -42,7 +36,7 @@
 
       background: var(--background);
       color: var(--text);
-      font: 18px "Inconsolata", monospace;
+      font: 20px "Inconsolata", monospace;
     }
 
     @font-face {
@@ -102,8 +96,6 @@
       text-decoration: underline 1px var(--primary);
     }
   </style>
-
-  {{ with .GTM }}<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ . }}" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>{{ end }}
 
   <main>
   {{ .Main }}

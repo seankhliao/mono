@@ -1,6 +1,6 @@
 Title:  "liao.dev"
 Text:   "Hi, I'm <em>sean</em>khliao"
-GTM:    "GTM-TLVN7D6"
+GTM:    "G-9GLEE4YLNC"
 Repeat: 5
 Links: {
 	"blog":           "https://seankhliao.com/blog/"
