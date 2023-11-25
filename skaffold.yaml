@@ -177,3 +177,37 @@ manifests:
 deploy:
   cloudrun:
     region: us-central1
+---
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: youtubefeed
+build:
+  artifacts:
+    - image: ghcr.io/seankhliao/youtubefeed
+      ko:
+        main: ./cmd/youtubefeed
+        env:
+          - CGO_ENABLED=0
+        flags:
+          - -trimpath
+        ldflags:
+          - -s
+          - -w
+        dependencies:
+          paths:
+            - "go.mod"
+            - "cmd/youtubefeed/*"
+  tagPolicy:
+    inputDigest: {}
+  platforms:
+    - linux/amd64
+    - linux/arm64
+manifests:
+  rawYaml:
+    - cmd/youtubefeed/kubernetes.yaml
+    - cmd/youtubefeed/secrets.sopssecret.yaml
+deploy:
+  kubeContext: ihwa
+  kubectl:
+    defaultNamespace: youtubefeed

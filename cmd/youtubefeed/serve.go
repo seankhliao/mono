@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"os"
 	"slices"
+	"strings"
 	"sync"
 	"time"
 
@@ -205,9 +206,9 @@ func (a *App) runRefresh(ctx context.Context) {
 				}
 				fd.Videos = append(fd.Videos, FeedVideo{
 					Published:    dt,
-					ChannelTitle: it.Snippet.ChannelTitle,
+					ChannelTitle: escapeMDTable(it.Snippet.ChannelTitle),
 					ChannelLink:  urlChannel + it.Snippet.ChannelId,
-					VideoTitle:   it.Snippet.Title,
+					VideoTitle:   escapeMDTable(it.Snippet.Title),
 					VideoLink:    urlVideo + url.Values{"q": []string{it.Id}}.Encode(),
 				})
 			}
@@ -223,4 +224,8 @@ func (a *App) runRefresh(ctx context.Context) {
 	a.feedMu.Lock()
 	a.feeds = feeds
 	a.feedMu.Unlock()
+}
+
+func escapeMDTable(s string) string {
+	return strings.NewReplacer("|", "¦").Replace(s)
 }

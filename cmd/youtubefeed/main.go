@@ -20,11 +20,20 @@ func main() {
 	framework.Run(framework.Config{
 		RegisterFlags: conf.SetFlags,
 		Start: func(ctx context.Context, o *observability.O, sm *http.ServeMux) (cleanup func(), err error) {
+			if len(conf.Feeds) == 0 {
+				err := conf.setConfig([]byte(defaultConfig))
+				if err != nil {
+					o.Err(ctx, "set default config", err)
+					os.Exit(1)
+				}
+			}
+
 			app, err := New(ctx, o, conf)
 			if err != nil {
 				o.Err(ctx, "setup app", err)
 				os.Exit(1)
 			}
+
 			switch conf.mode {
 			case "lookup":
 				res, err := app.lookupFromConfig(ctx)

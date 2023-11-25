@@ -1,13 +1,14 @@
 import "time"
 
 #Config: {
-	maxAge:  int64 & >time.ParseDuration("1h") // duration in ns
-	refresh: int64 & >time.ParseDuration("1m") // duration in ns
+	maxAge:  >time.ParseDuration("1h") // duration in ns
+	refresh: >time.ParseDuration("1m") // duration in ns
 	feeds: [string]: #Feed
 }
 
 #Feed: {
-	description: string
+	name:        string
+	description: string | *""
 	channels: [string]: #Channel // username: channel
 	exclude: [string]:  string   // name: regexp
 }
