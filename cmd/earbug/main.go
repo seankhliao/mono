@@ -148,15 +148,17 @@ func New(ctx context.Context, o *observability.O, conf *Config) (*App, error) {
 }
 
 func (a *App) Register(mux *http.ServeMux) {
-	mux.HandleFunc("/", a.handleIndex)
-	mux.HandleFunc("/artists", a.handleArtists)
-	mux.HandleFunc("/playbacks", a.handlePlaybacks)
-	mux.HandleFunc("/tracks", a.handleTracks)
-	mux.HandleFunc("/api/export", a.hExport)
-	mux.HandleFunc("/api/auth", a.hAuthorize)
-	mux.HandleFunc("/api/update", a.hUpdate)
-	mux.HandleFunc("/auth/callback", a.hAuthCallback)
-	mux.HandleFunc("/-/ready", func(rw http.ResponseWriter, r *http.Request) { rw.Write([]byte("ok")) })
+	mux.HandleFunc("GET /", a.handleIndex)
+	mux.HandleFunc("GET /artists", a.handleArtists)
+	mux.HandleFunc("GET /playbacks", a.handlePlaybacks)
+	mux.HandleFunc("GET /tracks", a.handleTracks)
+	mux.HandleFunc("GET /api/export", a.hExport)
+	mux.HandleFunc("POST /api/export", a.hExport)
+	mux.HandleFunc("GET /api/auth", a.hAuthorize)
+	mux.HandleFunc("GET /api/update", a.hUpdate)
+	mux.HandleFunc("POST /api/update", a.hUpdate)
+	mux.HandleFunc("GET /auth/callback", a.hAuthCallback)
+	mux.HandleFunc("GET /-/ready", func(rw http.ResponseWriter, r *http.Request) { rw.Write([]byte("ok")) })
 }
 
 func (a *App) hAuthorize(rw http.ResponseWriter, r *http.Request) {
@@ -727,7 +729,7 @@ func (a *App) exportLoop(ctx context.Context, dur time.Duration) {
 			return
 		}
 		ctx := context.Background()
-		a.update(ctx)
+		a.export(ctx)
 	}
 }
 
