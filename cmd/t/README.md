@@ -23,10 +23,8 @@ function t() {
 
 ## example output
 
-
-
 ```
-» t con                                                                
+» t con
 input.txt
 [1] 6:5:Nam consequat orci leo, eget lobortis ex semper vel
 [2] 9:20:Quisque vestibulum condimentum tincidunt

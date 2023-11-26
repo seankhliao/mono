@@ -2,7 +2,6 @@
 
 repos is a tool to manage local repos.
 
-
 ## install
 
 ```sh
@@ -21,9 +20,9 @@ function repos() {
 
 ## usage
 
-### creete a new temporary repo 
+### creete a new temporary repo
 
-If `name` isn't provided, the repo is created in `~/tmp/testrepoXXXX`, 
+If `name` isn't provided, the repo is created in `~/tmp/testrepoXXXX`,
 where XXXX is an autoincrementing number.
 The repo comes with a readme, license (MIT), and `go.mod`.
 
@@ -44,7 +43,6 @@ Sync all repos in first level child directories to HEAD.
 ```sh
 $ repos sync
 ```
-
 
 ### sync non archived repos from a github user/org
 

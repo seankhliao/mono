@@ -1,4 +1,4 @@
 defaultBaseImage: gcr.io/distroless/static-debian12:nonroot
 defaultPlatforms:
-- linux/arm64
-- linux/amd64
+  - linux/arm64
+  - linux/amd64

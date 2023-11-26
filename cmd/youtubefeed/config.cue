@@ -55,6 +55,11 @@ feeds: {
 				channel_id: "UC3KEoMzNz8eYnwBC34RaKCQ"
 				uploads_id: "UU3KEoMzNz8eYnwBC34RaKCQ"
 			}
+			"@stuffmadehere": {
+				title:      "Stuff Made Here"
+				channel_id: "UCj1VqrHhDte54oLgPG4xpuQ"
+				uploads_id: "UUj1VqrHhDte54oLgPG4xpuQ"
+			}
 			"@technologyconnections": {
 				title:      "Technology Connections"
 				channel_id: "UCy0tKL1T7wFoYcxCe0xjN6Q"
@@ -133,6 +138,11 @@ feeds: {
 				title:      "PVRIS"
 				channel_id: "UC16zGxZ1weXDUXzRYwtfPqg"
 				uploads_id: "UU16zGxZ1weXDUXzRYwtfPqg"
+			}
+			"@rainpariss": {
+				title:      "Rain Paris"
+				channel_id: "UC6jBhNUwGUs67xiPyQezMlg"
+				uploads_id: "UU6jBhNUwGUs67xiPyQezMlg"
 			}
 			"@upsahl": {
 				title:      "UPSAHL"

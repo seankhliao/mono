@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
         - args:
-            - -mode=serve 
+            - -mode=serve
           envFrom:
             - secretRef:
                 name: youtubefeed
