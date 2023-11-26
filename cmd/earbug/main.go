@@ -628,9 +628,9 @@ func (a *App) handlePlaybacks(rw http.ResponseWriter, r *http.Request) {
 			artists = append(artists, artist.Name)
 		}
 		buf.WriteString("<tr><td>")
-		buf.WriteString(play.StartTime.String())
+		buf.WriteString(play.StartTime.Format(time.DateTime))
 		buf.WriteString("<td>")
-		buf.WriteString(play.PlaybackTime.String())
+		buf.WriteString(play.PlaybackTime.Round(time.Second).String())
 		buf.WriteString("<td>")
 		buf.WriteString(play.Track.Name)
 		buf.WriteString("<td>")
