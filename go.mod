@@ -10,6 +10,8 @@ require (
 	github.com/google/go-github/v56 v56.0.0
 	github.com/google/subcommands v1.2.0
 	github.com/klauspost/compress v1.17.2
+	github.com/maragudk/gomponents v0.20.1
+	github.com/tdewolff/minify/v2 v2.20.7
 	github.com/yuin/goldmark v1.6.0
 	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc
 	github.com/zmb3/spotify/v2 v2.4.0
@@ -61,6 +63,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
+	github.com/tdewolff/parse/v2 v2.7.5 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric v0.42.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.19.0 // indirect

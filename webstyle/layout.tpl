@@ -32,19 +32,6 @@
     {{ template "basecss" . }}
     {{ .Style }}
 
-    .chroma {
-      position: relative;
-    }
-    .chroma > button {
-      position: absolute;
-      top: 0;
-      right: 0;
-      color: var(--primary);
-      background: #000;
-      border: 1px solid var(--primary);
-      padding: 1em;
-      width: 5em;
-    }
   </style>
 
   <h1>{{ .Title }}</h1>
