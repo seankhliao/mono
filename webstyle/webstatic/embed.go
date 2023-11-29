@@ -7,6 +7,8 @@ import (
 	"io/fs"
 	"net/http"
 	"time"
+
+	"go.seankhliao.com/mono/httpencoding"
 )
 
 var (
@@ -20,6 +22,7 @@ var (
 // usually a http.ServeMux
 type Registrar interface {
 	HandleFunc(string, func(http.ResponseWriter, *http.Request))
+	Handle(string, http.Handler)
 }
 
 // Registers the individual files with their matching paths.
@@ -29,7 +32,7 @@ func Register(reg Registrar) {
 		if d.IsDir() {
 			return nil
 		}
-		reg.HandleFunc("/"+p, func(w http.ResponseWriter, r *http.Request) {
+		reg.Handle("GET /"+p, httpencoding.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			f, err := StaticFS.Open(p)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
@@ -41,7 +44,7 @@ func Register(reg Registrar) {
 				return
 			}
 			http.ServeContent(w, r, d.Name(), t, rs)
-		})
+		})))
 		return nil
 	})
 }

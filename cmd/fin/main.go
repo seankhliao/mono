@@ -20,6 +20,7 @@ import (
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
+	"go.seankhliao.com/mono/webstyle/webstatic"
 )
 
 func main() {
@@ -44,6 +45,7 @@ func main() {
 				os.Exit(0)
 			case "serve":
 				app := New(ctx, o, conf)
+				webstatic.Register(m)
 				app.Register(m)
 				return nil, nil
 			}

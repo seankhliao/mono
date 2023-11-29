@@ -13,6 +13,7 @@ import (
 
 	"go.seankhliao.com/mono/framework"
 	"go.seankhliao.com/mono/observability"
+	"go.seankhliao.com/mono/webstyle/webstatic"
 )
 
 func main() {
@@ -45,6 +46,7 @@ func main() {
 				os.Exit(0)
 			case "serve":
 				go app.RunPeriodicRefresh(ctx, conf.RefreshInterval)
+				webstatic.Register(sm)
 				app.Register(sm)
 			default:
 				o.Err(ctx, "start", errors.New("unknown mode"), slog.String("mode", conf.mode))

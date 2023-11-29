@@ -28,6 +28,7 @@ import (
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
+	"go.seankhliao.com/mono/webstyle/webstatic"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/gcsblob"
 	"golang.org/x/oauth2"
@@ -45,6 +46,7 @@ func main() {
 			if err != nil {
 				return nil, err
 			}
+			webstatic.Register(m)
 			app.Register(m)
 			return func() { app.export(context.Background()) }, nil
 		},

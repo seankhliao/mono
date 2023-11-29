@@ -40,7 +40,7 @@ func Handler(h http.Handler) http.Handler {
 		} else {
 			nrw := newZstd(rw)
 			defer nrw.Flush()
-			rw.Header().Set("content-encoding", "ztsd")
+			rw.Header().Set("content-encoding", "zstd")
 			h.ServeHTTP(nrw, r)
 		}
 	})

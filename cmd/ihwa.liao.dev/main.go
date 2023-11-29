@@ -13,6 +13,7 @@ import (
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
+	"go.seankhliao.com/mono/webstyle/webstatic"
 )
 
 //go:embed index.md
@@ -26,6 +27,7 @@ func main() {
 			if err != nil {
 				return nil, fmt.Errorf("render index: %w", err)
 			}
+			webstatic.Register(m)
 			m.Handle("GET /{$}", httpencoding.Handler(handleIndex(o, t0, index)))
 			return nil, nil
 		},
