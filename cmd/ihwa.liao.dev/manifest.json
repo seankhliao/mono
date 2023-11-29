@@ -1,0 +1,21 @@
+{
+  "background_color": "#000",
+  "description": "A random host on the internet",
+  "display": "minimal-ui",
+  "name": "ihwa.liao.dev",
+  "short_name": "ihwa",
+  "start_url": "/?utm_source=pwa",
+  "theme_color": "#000",
+  "icons": [
+    {
+      "src": "https://seankhliao.com/static/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "https://seankhliao.com/static/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}

@@ -19,6 +19,9 @@ import (
 //go:embed index.md
 var rawIndex []byte
 
+//go:embed manifest.json
+var manifest []byte
+
 func main() {
 	framework.Run(framework.Config{
 		Start: func(ctx context.Context, o *observability.O, m *http.ServeMux) (func(), error) {
@@ -28,13 +31,14 @@ func main() {
 				return nil, fmt.Errorf("render index: %w", err)
 			}
 			webstatic.Register(m)
-			m.Handle("GET /{$}", httpencoding.Handler(handleIndex(o, t0, index)))
+			m.Handle("GET /{$}", httpencoding.Handler(handle(o, t0, "index.html", index)))
+			m.Handle("GET /manifest.json", httpencoding.Handler(handle(o, t0, "manifest.json", manifest)))
 			return nil, nil
 		},
 	})
 }
 
-func handleIndex(o *observability.O, t0 time.Time, index []byte) http.Handler {
+func handle(o *observability.O, t0 time.Time, filename string, index []byte) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx, span := o.T.Start(r.Context(), "handle request")
 		defer span.End()
@@ -48,6 +52,6 @@ func handleIndex(o *observability.O, t0 time.Time, index []byte) http.Handler {
 			slog.Any("headers", r.Header),
 		))
 
-		http.ServeContent(w, r, "index.html", t0, bytes.NewReader(index))
+		http.ServeContent(w, r, filename, t0, bytes.NewReader(index))
 	})
 }
