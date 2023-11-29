@@ -15,6 +15,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
+- _12024-05-23_ Leah Kate
 - _12024-05-01_ Spirited Away
 - _12024-03-19_ Cannons
 - _12024-02-22_ Zara Larsson
