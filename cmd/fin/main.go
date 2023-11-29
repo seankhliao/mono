@@ -17,6 +17,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.seankhliao.com/mono/cmd/fin/findata"
 	"go.seankhliao.com/mono/framework"
+	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
 )
@@ -146,23 +147,24 @@ func New(ctx context.Context, o *observability.O, conf *Config) *App {
 }
 
 func (a *App) Register(mux *http.ServeMux) {
-	mux.Handle("/eur", otelhttp.NewHandler(a.hView("eur"), "hView - eur"))
-	mux.Handle("/gbp", otelhttp.NewHandler(a.hView("gbp"), "hView - gbp"))
-	mux.Handle("/twd", otelhttp.NewHandler(a.hView("twd"), "hView - twd"))
-	mux.Handle("/", otelhttp.NewHandler(http.HandlerFunc(a.hIndex), "hIndex"))
+	mux.Handle("/eur", otelhttp.NewHandler(httpencoding.Handler(a.hView("eur")), "hView - eur"))
+	mux.Handle("/gbp", otelhttp.NewHandler(httpencoding.Handler(a.hView("gbp")), "hView - gbp"))
+	mux.Handle("/twd", otelhttp.NewHandler(httpencoding.Handler(a.hView("twd")), "hView - twd"))
+	mux.Handle("/", otelhttp.NewHandler(httpencoding.Handler(a.hIndex()), "hIndex"))
 	mux.HandleFunc("/-/ready", func(rw http.ResponseWriter, r *http.Request) { rw.Write([]byte("ok")) })
 }
 
-func (a *App) hIndex(rw http.ResponseWriter, r *http.Request) {
-	ctx, span := a.o.T.Start(r.Context(), "hIndex")
-	defer span.End()
+func (a *App) hIndex() http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		ctx, span := a.o.T.Start(r.Context(), "hIndex")
+		defer span.End()
 
-	if r.URL.Path != "/" {
-		http.Redirect(rw, r, "/", http.StatusFound)
-		return
-	}
+		if r.URL.Path != "/" {
+			http.Redirect(rw, r, "/", http.StatusFound)
+			return
+		}
 
-	c := `
+		c := `
 # fin
 
 ## money
@@ -174,10 +176,11 @@ func (a *App) hIndex(rw http.ResponseWriter, r *http.Request) {
 - [TWD](/twd)
 `
 
-	err := a.render.Render(rw, strings.NewReader(c), webstyle.Data{})
-	if err != nil {
-		a.o.HTTPErr(ctx, "render", err, rw, http.StatusInternalServerError)
-	}
+		err := a.render.Render(rw, strings.NewReader(c), webstyle.Data{})
+		if err != nil {
+			a.o.HTTPErr(ctx, "render", err, rw, http.StatusInternalServerError)
+		}
+	})
 }
 
 func (a *App) hView(cur string) http.Handler {

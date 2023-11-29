@@ -18,6 +18,7 @@ import (
 	"cuelang.org/go/cue/cuecontext"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
+	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
 	"google.golang.org/api/option"
@@ -87,10 +88,10 @@ type App struct {
 }
 
 func (a *App) Register(mux *http.ServeMux) {
-	mux.HandleFunc("GET /{$}", a.handleIndex)
-	mux.HandleFunc("GET /feeds/{feed}", a.handleFeed)
-	mux.HandleFunc("GET /lookup", a.handleLookup)
-	mux.HandleFunc("POST /lookup", a.handleLookup)
+	mux.Handle("GET /{$}", httpencoding.Handler(http.HandlerFunc(a.handleIndex)))
+	mux.Handle("GET /feeds/{feed}", httpencoding.Handler(http.HandlerFunc(a.handleFeed)))
+	mux.Handle("GET /lookup", httpencoding.Handler(http.HandlerFunc(a.handleLookup)))
+	mux.Handle("POST /lookup", httpencoding.Handler(http.HandlerFunc(a.handleLookup)))
 
 	// mux.HandleFunc("POST /api/v1/refresh", a.handleAPIRefresh)
 }

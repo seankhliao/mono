@@ -25,6 +25,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.seankhliao.com/mono/cmd/earbug/earbugv4"
 	"go.seankhliao.com/mono/framework"
+	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
 	"gocloud.dev/blob"
@@ -148,10 +149,10 @@ func New(ctx context.Context, o *observability.O, conf *Config) (*App, error) {
 }
 
 func (a *App) Register(mux *http.ServeMux) {
-	mux.HandleFunc("GET /", a.handleIndex)
-	mux.HandleFunc("GET /artists", a.handleArtists)
-	mux.HandleFunc("GET /playbacks", a.handlePlaybacks)
-	mux.HandleFunc("GET /tracks", a.handleTracks)
+	mux.Handle("GET /", httpencoding.Handler(http.HandlerFunc(a.handleIndex)))
+	mux.Handle("GET /artists", httpencoding.Handler(http.HandlerFunc(a.handleArtists)))
+	mux.Handle("GET /playbacks", httpencoding.Handler(http.HandlerFunc(a.handlePlaybacks)))
+	mux.Handle("GET /tracks", httpencoding.Handler(http.HandlerFunc(a.handleTracks)))
 	mux.HandleFunc("GET /api/export", a.hExport)
 	mux.HandleFunc("POST /api/export", a.hExport)
 	mux.HandleFunc("GET /api/auth", a.hAuthorize)

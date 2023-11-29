@@ -47,22 +47,10 @@ spec:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://ingest.otelcol.svc:4317
           image: ghcr.io/seankhliao/ihwa-liao-dev
-          livenessProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           name: ihwa-liao-dev
           ports:
             - containerPort: 8080
               name: http
-          readinessProbe:
-            httpGet:
-              path: /-/ready
-              port: http
-          startupProbe:
-            httpGet:
-              path: /-/ready
-              port: http
       enableServiceLinks: false
 ---
 apiVersion: gateway.networking.k8s.io/v1beta1
