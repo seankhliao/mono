@@ -17,14 +17,52 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 - _12024-05-23_ Leah Kate
 - _12024-05-01_ Spirited Away
+- _12024-04-23_ Tate McRae
 - _12024-03-19_ Cannons
 - _12024-02-22_ Zara Larsson
 - _12024-02-20_ Poppy
 - _12024-02-16_ Alessandra
 - _12023-12-09_ Halestorm with Black Veil Brides, Mothica
-- _12023-12-01_ Against the Current
-- _12023-11-30_ Ashnikko
-- _12023-11-24_ Chloe Adams
+
+#### _12023-12-01_ Against the Current
+
+With _Call Me Amour_ and _LØLØ_
+
+I started off wondering if this was the same _LØLØ_ that I had seen a few months before,
+but the second half of her set did awar with those thoughts.
+Fun and energetic.
+Seeing _Against the Current_ again brought me a warm, comforting feeling
+as if I were coming back home (they were the first band I was really into).
+So much energy, this is really a show you should be in the stalls for.
+Chrissy's stage presence has changed a bit I think,
+less plain left/right movements, more bending down;
+also she reminded me of a lion...
+To top it all off, they ended with Legends Never Die,
+the song that made me think: "i wonder who's behind this",
+and pick up on music as a thing.
+
+#### _12023-11-30_ Ashnikko
+
+With _Hemlocke Springs_
+
+I honestly had no idea what was going on during the support act.
+_Ashnikko_ on the other hand was amazing.
+It was more of a pop/dance style performance,
+and I loved the little (mildly disturbing) stories she used to introduce each song.
+I knew more of these than I expected,
+and even jumped around a bit.
+Very fun.
+
+#### _12023-11-24_ Chloe Adams
+
+With _ili_
+
+The glaswegian accent from _ili_ was so cute to listen to,
+definitely recommend.
+_Chloe Adams_ was an interesting mix of styles.
+I came here after hearing Seasons too many times on ticktock,
+the live version did not disappoint
+(though the crowd was much smaller and quieter than I expected).
 
 ##### _12023-11-20_ Echosmith
 
@@ -232,7 +270,7 @@ With _Jayd Marie_, _Detweiler_, and _Lekna_
 
 My hopes weren't high when I saw the venue was one of the smaller ones,
 but it was surprisingly good.
-Catchy and enegertic,
+Catchy and energertic,
 with a cooperative audience that danced along.
 
 ##### _12023-06-06_ Royal Philharmonic Orchestra
