@@ -1,6 +1,33 @@
 apiVersion: skaffold/v4beta5
 kind: Config
 metadata:
+  name: authsvr
+build:
+  artifacts:
+    - image: ghcr.io/seankhliao/authsvr
+      ko:
+        main: ./cmd/authsvr
+        env:
+          - CGO_ENABLED=0
+        ldflags:
+          - -s
+          - -w
+  tagPolicy:
+    inputDigest: {}
+  platforms:
+    - linux/amd64
+    - linux/arm64
+manifests:
+  rawYaml:
+    - cmd/authsvr/kubernetes.yaml
+deploy:
+  kubeContext: ihwa
+  kubectl:
+    defaultNamespace: authsvr
+---
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
   name: earbug
 build:
   artifacts:

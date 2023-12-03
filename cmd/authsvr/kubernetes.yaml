@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: authsvr
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authsvr
+  namespace: authsvr
+spec:
+  ports:
+    - appProtocol: HTTP
+      name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: authsvr
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: authsvr
+  namespace: authsvr
+spec:
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: authsvr
+  serviceName: authsvr
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: authsvr
+    spec:
+      containers:
+        - args:
+            - -db.path=/data/db.bbolt
+            - -webauthn.id=auth.liao.dev
+            - -webauthn.origin=https://auth.liao.dev
+          env:
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app.kubernetes.io/name']
+            - name: POD_UID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: k8s.pod.uid=$(POD_UID),k8s.cluster.name=ihwa,k8s.container.name=authsvr
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://ingest.otelcol.svc:4317
+          image: ghcr.io/seankhliao/authsvr
+          name: authsvr
+          ports:
+            - containerPort: 8080
+              name: http
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - mountPath: /data
+              name: data
+      enableServiceLinks: false
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        labels:
+          app.kubernetes.io/name: authsvr
+          app.kubernetes.io/version: v0.0.1
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: local-path
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: authsvr
+spec:
+  hostnames:
+    - auth.liao.dev
+  parentRefs:
+    - name: default
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - name: authsvr
+          port: 80
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
