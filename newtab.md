@@ -2,15 +2,10 @@
 
 ### _links_
 
-_wifi:_
-[google](http://connectivitycheck.android.com/generate_204)
-[neverssl](http://neverssl.com)
-
-_slack:_
-[gophers](https://gophers.slack.com/)
-[cncf](https://cloud-native.slack.com/)
-[k8s](https://kubernetes.slack.com/)
-[rls](https://rands-leadership.slack.com/)
+_tsnet:_
+[earbug](https://earbug.ihwa.liao.dev/)
+[fin](https://fin.ihwa.liao.dev/)
+[youtubefeed](https://youtubefeed.ihwa.liao.dev/)
 
 _console:_
 [analytics](https://analytics.google.com)
@@ -22,15 +17,10 @@ _console:_
 ### _to_ read
 
 _txt:_
-[jaana](https://jbd.dev)
-[rakyll](https://rakyll.org)
-[@rakyll](https://medium.com/@rakyll)
 [xkcd](https://xkcd.com)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
 
 _img:_
-[your throne](https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009)
-[hero killer](https://www.webtoons.com/en/action/hero-killer/list?title_no=2745)
+[ghostblade](https://tapas.io/series/GhostBlade/info)
 [infinite mage](https://infinitemage.online/)
 [can we become a family](https://coffeemanga.io/manga/can-we-become-a-family-online-reading-1/)
-[ghostblade](https://tapas.io/series/GhostBlade/info)
