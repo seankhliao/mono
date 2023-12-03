@@ -23,6 +23,7 @@ import (
 	"github.com/klauspost/compress/zstd"
 	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.seankhliao.com/mono/authed"
 	"go.seankhliao.com/mono/cmd/earbug/earbugv4"
 	"go.seankhliao.com/mono/framework"
 	"go.seankhliao.com/mono/httpencoding"
@@ -46,8 +47,12 @@ func main() {
 			if err != nil {
 				return nil, err
 			}
-			webstatic.Register(m)
-			app.Register(m)
+
+			mux := http.NewServeMux()
+			webstatic.Register(mux)
+			app.Register(mux)
+			m.Handle("/", authed.New(o).Authed(mux))
+
 			return func() { app.export(context.Background()) }, nil
 		},
 	})
@@ -161,7 +166,6 @@ func (a *App) Register(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/update", a.hUpdate)
 	mux.HandleFunc("POST /api/update", a.hUpdate)
 	mux.HandleFunc("GET /auth/callback", a.hAuthCallback)
-	mux.HandleFunc("GET /-/ready", func(rw http.ResponseWriter, r *http.Request) { rw.Write([]byte("ok")) })
 }
 
 func (a *App) hAuthorize(rw http.ResponseWriter, r *http.Request) {

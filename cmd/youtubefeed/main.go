@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 
+	"go.seankhliao.com/mono/authed"
 	"go.seankhliao.com/mono/framework"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle/webstatic"
@@ -20,7 +21,7 @@ func main() {
 	conf := &Config{}
 	framework.Run(framework.Config{
 		RegisterFlags: conf.SetFlags,
-		Start: func(ctx context.Context, o *observability.O, sm *http.ServeMux) (cleanup func(), err error) {
+		Start: func(ctx context.Context, o *observability.O, m *http.ServeMux) (cleanup func(), err error) {
 			if len(conf.Feeds) == 0 {
 				err := conf.setConfig([]byte(defaultConfig))
 				if err != nil {
@@ -46,8 +47,11 @@ func main() {
 				os.Exit(0)
 			case "serve":
 				go app.RunPeriodicRefresh(ctx, conf.RefreshInterval)
-				webstatic.Register(sm)
-				app.Register(sm)
+
+				mux := http.NewServeMux()
+				webstatic.Register(mux)
+				app.Register(mux)
+				m.Handle("/", authed.New(o).Authed(mux))
 			default:
 				o.Err(ctx, "start", errors.New("unknown mode"), slog.String("mode", conf.mode))
 				os.Exit(1)

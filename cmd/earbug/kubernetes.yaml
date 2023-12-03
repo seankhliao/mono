@@ -3,15 +3,31 @@ kind: Namespace
 metadata:
   name: earbug
 ---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: earbug
+spec:
+  hostnames:
+    - earbug.ihwa.liao.dev
+  parentRefs:
+    - name: default
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - name: earbug
+          port: 80
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: earbug
   namespace: earbug
-  annotations:
-    tailscale.com/hostname: earbug-ihwa
 spec:
-  loadBalancerClass: tailscale
   ports:
     - appProtocol: HTTP
       name: http
@@ -20,7 +36,6 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: earbug
-  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -55,26 +70,14 @@ spec:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/run/secrets/google/key.json
           image: ghcr.io/seankhliao/earbug
-          livenessProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           name: earbug
           ports:
             - containerPort: 8080
               name: http
-          readinessProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           resources:
             requests:
               cpu: 100m
               memory: 128Mi
-          startupProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           volumeMounts:
             - mountPath: /var/run/secrets/google
               name: gcp
@@ -100,31 +103,3 @@ spec:
           requests:
             storage: 1Gi
         storageClassName: local-path
----
-apiVersion: gateway.networking.k8s.io/v1beta1
-kind: HTTPRoute
-metadata:
-  name: earbug
-spec:
-  hostnames:
-    - earbug.ihwa.liao.dev
-  parentRefs:
-    - name: default
-      namespace: envoy-gateway-system
-  rules:
-    - backendRefs:
-        - name: earbug
-          port: 80
-      matches:
-        - path:
-            type: Exact
-            value: /
-        - path:
-            type: Exact
-            value: /artists
-        - path:
-            type: Exact
-            value: /playbacks
-        - path:
-            type: Exact
-            value: /tracks

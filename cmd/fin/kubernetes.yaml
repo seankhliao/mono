@@ -3,15 +3,31 @@ kind: Namespace
 metadata:
   name: fin
 ---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: fin
+spec:
+  hostnames:
+    - fin.ihwa.liao.dev
+  parentRefs:
+    - name: default
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - name: fin
+          port: 80
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: fin
   namespace: fin
-  annotations:
-    tailscale.com/hostname: fin-ihwa
 spec:
-  loadBalancerClass: tailscale
   ports:
     - appProtocol: HTTP
       name: http
@@ -20,7 +36,6 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: fin
-  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -55,26 +70,14 @@ spec:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://ingest.otelcol.svc:4317
           image: ghcr.io/seankhliao/fin
-          livenessProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           name: fin
           ports:
             - containerPort: 8080
               name: http
-          readinessProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           resources:
             requests:
               cpu: 100m
               memory: 128Mi
-          startupProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           volumeMounts:
             - mountPath: /data
               name: data

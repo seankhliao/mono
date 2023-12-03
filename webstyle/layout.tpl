@@ -19,7 +19,6 @@
   {{ end }}
 
   {{ with .URL }}<link rel="canonical" href="{{ . }}">{{ end }}
-  <link rel="manifest" href="/manifest.json">
 
   <meta name="theme-color" content="#000000">
   {{ with .Desc }}<meta name="description" content="{{ . }}">{{ end }}

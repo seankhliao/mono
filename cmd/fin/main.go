@@ -15,6 +15,7 @@ import (
 	"strings"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.seankhliao.com/mono/authed"
 	"go.seankhliao.com/mono/cmd/fin/findata"
 	"go.seankhliao.com/mono/framework"
 	"go.seankhliao.com/mono/httpencoding"
@@ -45,8 +46,12 @@ func main() {
 				os.Exit(0)
 			case "serve":
 				app := New(ctx, o, conf)
-				webstatic.Register(m)
-				app.Register(m)
+
+				mux := http.NewServeMux()
+				webstatic.Register(mux)
+				app.Register(mux)
+				m.Handle("/", authed.New(o).Authed(mux))
+
 				return nil, nil
 			}
 			return nil, fmt.Errorf("unknown mode: %q", conf.mode)

@@ -3,15 +3,31 @@ kind: Namespace
 metadata:
   name: youtubefeed
 ---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: youtubefeed
+spec:
+  hostnames:
+    - youtubefeed.ihwa.liao.dev
+  parentRefs:
+    - name: default
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - name: youtubefeed
+          port: 80
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: youtubefeed
   namespace: youtubefeed
-  annotations:
-    tailscale.com/hostname: youtubefeed-ihwa
 spec:
-  loadBalancerClass: tailscale
   ports:
     - appProtocol: HTTP
       name: http
@@ -20,7 +36,6 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: youtubefeed
-  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
