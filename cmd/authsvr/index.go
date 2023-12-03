@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	_ "embed"
 	"encoding/hex"
@@ -93,18 +92,8 @@ func (a *App) index() http.Handler {
 			)
 		}
 
-		var buf bytes.Buffer
-		err = webstyle.Structured(&buf, webstyle.Options{
-			CompactStyle: true,
-			Minify:       true,
-			Title:        "auth svr",
-			Content:      content,
-		})
-		if err != nil {
-			a.o.HTTPErr(ctx, "render index page", err, rw, http.StatusInternalServerError)
-			return
-		}
-		http.ServeContent(rw, r, "index.html", time.Now(), bytes.NewReader(buf.Bytes()))
+		o := webstyle.NewOptions("authsvr", "auth svr", content)
+		webstyle.Structured(rw, o)
 	})
 }
 

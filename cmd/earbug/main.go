@@ -21,6 +21,8 @@ import (
 	"time"
 
 	"github.com/klauspost/compress/zstd"
+	"github.com/maragudk/gomponents"
+	"github.com/maragudk/gomponents/html"
 	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.seankhliao.com/mono/authed"
@@ -76,8 +78,7 @@ func (c *Config) SetFlags(fset *flag.FlagSet) {
 }
 
 type App struct {
-	o      *observability.O
-	render webstyle.Renderer
+	o *observability.O
 
 	// New
 	http    *http.Client
@@ -95,8 +96,7 @@ type App struct {
 
 func New(ctx context.Context, o *observability.O, conf *Config) (*App, error) {
 	a := &App{
-		o:      o,
-		render: webstyle.NewRenderer(webstyle.TemplateCompact),
+		o: o,
 		http: &http.Client{
 			Transport: otelhttp.NewTransport(http.DefaultTransport),
 		},
@@ -373,34 +373,21 @@ func optionsFromRequest(r *http.Request) getPlaybacksOptions {
 }
 
 func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
-	ctx, span := a.o.T.Start(r.Context(), "handleIndex")
+	_, span := a.o.T.Start(r.Context(), "handleIndex")
 	defer span.End()
 
-	if r.URL.Path != "/" {
-		http.Redirect(rw, r, "/", http.StatusFound)
-		return
-	}
-
-	c := `
-# earbug
-
-## spotify
-
-### _earbug_
-
-- [artists by track](/artists?sort=track)
-- [artists by plays](/artists?sort=plays)
-- [artists by time](/artists?sort=time)
-- [playbacks](/playbacks)
-- [tracks by plays](/tracks?sort=plays)
-- [tracks by time](/tracks?sort=time)
-`
-
-	err := a.render.Render(rw, strings.NewReader(c), webstyle.Data{})
-	if err != nil {
-		a.o.HTTPErr(ctx, "render", err, rw, http.StatusInternalServerError)
-		return
-	}
+	o := webstyle.NewOptions("earbug", "earbug", []gomponents.Node{
+		html.H3(gomponents.Text("earbug")),
+		html.Ul(
+			html.Li(html.A(html.Href("/artists?sort=track"), gomponents.Text("artists by track"))),
+			html.Li(html.A(html.Href("/artists?sort=plays"), gomponents.Text("artists by plays"))),
+			html.Li(html.A(html.Href("/artists?sort=time"), gomponents.Text("artists by time"))),
+			html.Li(html.A(html.Href("/playbacks"), gomponents.Text("playbacks"))),
+			html.Li(html.A(html.Href("/tracks?sort=plays"), gomponents.Text("tracks by plays"))),
+			html.Li(html.A(html.Href("/tracks?sort=time"), gomponents.Text("tracks by time"))),
+		),
+	})
+	webstyle.Structured(rw, o)
 }
 
 func (a *App) handleArtists(rw http.ResponseWriter, r *http.Request) {
@@ -496,49 +483,52 @@ func (a *App) handleArtists(rw http.ResponseWriter, r *http.Request) {
 		})
 	}
 
-	var buf bytes.Buffer
-	buf.WriteString(`### Artists by `)
-	buf.WriteString(sortOrder)
-	buf.WriteString("\n\n")
-	buf.WriteString("<table><thead><tr><th>artist<th>total<th>track<th>plays<th>time</tr></thead>\n<tbody>")
+	var body []gomponents.Node
 	for _, artist := range artistData {
-		buf.WriteString("<tr><td rowspan=\"")
-		buf.WriteString(strconv.Itoa(len(artist.Tracks)))
-		buf.WriteString("\">")
-		buf.WriteString(artist.Name)
-		buf.WriteString("<td rowspan=\"")
-		buf.WriteString(strconv.Itoa(len(artist.Tracks)))
-		buf.WriteString("\">")
+		var row []gomponents.Node
+		rowspan := strconv.Itoa(len(artist.Tracks))
+		var totalVal string
 		switch sortOrder {
 		case "tracks":
-			buf.WriteString(strconv.Itoa(len(artist.Tracks)))
+			totalVal = strconv.Itoa(len(artist.Tracks))
 		case "time":
-			buf.WriteString(artist.Time.String())
+			totalVal = artist.Time.Round(time.Second).String()
 		case "plays":
 			fallthrough
 		default:
-			buf.WriteString(strconv.Itoa(artist.Plays))
+			totalVal = strconv.Itoa(artist.Plays)
 		}
-		for i, track := range artist.Tracks {
-			if i != 0 {
-				buf.WriteString("</tr>\n<tr>")
-			}
-			buf.WriteString("<td>")
-			buf.WriteString(track.Name)
-			buf.WriteString("<td>")
-			buf.WriteString(strconv.Itoa(track.Plays))
-			buf.WriteString("<td>")
-			buf.WriteString(track.Time.String())
+		row = append(row,
+			html.Td(html.RowSpan(rowspan), gomponents.Text(artist.Name)),
+			html.Td(html.RowSpan(rowspan), gomponents.Text(totalVal)),
+		)
+		for _, track := range artist.Tracks {
+			row = append(row,
+				html.Td(gomponents.Text(track.Name)),
+				html.Td(gomponents.Text(strconv.Itoa(track.Plays))),
+				html.Td(gomponents.Text(track.Time.Round(time.Second).String())),
+			)
+			body = append(body, html.Tr(row...))
+			row = []gomponents.Node{}
 		}
-		buf.WriteString("</tr>\n")
 	}
-	buf.WriteString("</tbody></table>")
 
-	err := a.render.Render(rw, &buf, webstyle.Data{})
-	if err != nil {
-		a.o.HTTPErr(ctx, "render", err, rw, http.StatusInternalServerError)
-		return
-	}
+	o := webstyle.NewOptions("earbug", "artists", []gomponents.Node{
+		html.H3(html.Em(gomponents.Text("artist")), gomponents.Text(" by "+sortOrder)),
+		html.Table(
+			html.THead(
+				html.Tr(
+					html.Th(gomponents.Text("artist")),
+					html.Th(gomponents.Text("total")),
+					html.Th(gomponents.Text("track")),
+					html.Th(gomponents.Text("plays")),
+					html.Th(gomponents.Text("time")),
+				),
+			),
+			html.Body(body...),
+		),
+	})
+	webstyle.Structured(rw, o)
 }
 
 func (a *App) handleTracks(rw http.ResponseWriter, r *http.Request) {
@@ -590,33 +580,34 @@ func (a *App) handleTracks(rw http.ResponseWriter, r *http.Request) {
 		}
 	})
 
-	var buf bytes.Buffer
-	buf.WriteString(`### Tracks by `)
-	buf.WriteString(sortOrder)
-	buf.WriteString("\n\n")
-	buf.WriteString("<table><thead><tr><th>track<th>plays<th>time<th>artists</tr></thead>\n<tbody>")
+	var body []gomponents.Node
 	for _, track := range trackData {
 		var artists []string
 		for _, artist := range track.Artists {
 			artists = append(artists, artist.Name)
 		}
-		buf.WriteString("<tr><td>")
-		buf.WriteString(track.Name)
-		buf.WriteString("<td>")
-		buf.WriteString(strconv.Itoa(track.Plays))
-		buf.WriteString("<td>")
-		buf.WriteString(track.Time.String())
-		buf.WriteString("<td>")
-		buf.WriteString(strings.Join(artists, ", "))
-		buf.WriteString("</tr>\n")
+		body = append(body, html.Tr(
+			html.Td(gomponents.Text(track.Name)),
+			html.Td(gomponents.Text(strconv.Itoa(track.Plays))),
+			html.Td(gomponents.Text(track.Time.Round(time.Second).String())),
+			html.Td(gomponents.Text(strings.Join(artists, ", "))),
+		))
 	}
-	buf.WriteString("</tbody></table>")
-
-	err := a.render.Render(rw, &buf, webstyle.Data{})
-	if err != nil {
-		a.o.HTTPErr(ctx, "render", err, rw, http.StatusInternalServerError)
-		return
-	}
+	o := webstyle.NewOptions("earbug", "playbacks", []gomponents.Node{
+		html.H3(html.Em(gomponents.Text("tracks")), gomponents.Textf(" by %s", sortOrder)),
+		html.Table(
+			html.THead(
+				html.Tr(
+					html.Th(gomponents.Text("track")),
+					html.Th(gomponents.Text("plays")),
+					html.Th(gomponents.Text("time")),
+					html.Th(gomponents.Text("artists")),
+				),
+			),
+			html.Body(body...),
+		),
+	})
+	webstyle.Structured(rw, o)
 }
 
 func (a *App) handlePlaybacks(rw http.ResponseWriter, r *http.Request) {
@@ -625,33 +616,35 @@ func (a *App) handlePlaybacks(rw http.ResponseWriter, r *http.Request) {
 
 	plays := a.getPlaybacks(ctx, optionsFromRequest(r))
 
-	var buf bytes.Buffer
-	buf.WriteString(`### Playbacks `)
-	buf.WriteString("\n\n")
-	buf.WriteString("<table><thead><tr><th>time<th>duration<th>track<th>artists</tr></thead>\n<tbody>")
+	var body []gomponents.Node
 	for _, play := range plays {
 		var artists []string
 		for _, artist := range play.Track.Artists {
 			artists = append(artists, artist.Name)
 		}
-		buf.WriteString("<tr><td>")
-		buf.WriteString(play.StartTime.Format(time.DateTime))
-		buf.WriteString("<td>")
-		buf.WriteString(play.PlaybackTime.Round(time.Second).String())
-		buf.WriteString("<td>")
-		buf.WriteString(play.Track.Name)
-		buf.WriteString("<td>")
-		buf.WriteString(strings.Join(artists, ", "))
-		buf.WriteString("</tr>\n")
+		body = append(body, html.Tr(
+			html.Td(gomponents.Text(play.StartTime.Format(time.DateTime))),
+			html.Td(gomponents.Text(play.PlaybackTime.Round(time.Second).String())),
+			html.Td(gomponents.Text(play.Track.Name)),
+			html.Td(gomponents.Text(strings.Join(artists, ", "))),
+		))
 	}
 
-	buf.WriteString("</tbody></table>")
-
-	err := a.render.Render(rw, &buf, webstyle.Data{})
-	if err != nil {
-		a.o.HTTPErr(ctx, "render", err, rw, http.StatusInternalServerError)
-		return
-	}
+	o := webstyle.NewOptions("earbug", "playbacks", []gomponents.Node{
+		html.H3(html.Em(gomponents.Text("playbacks"))),
+		html.Table(
+			html.THead(
+				html.Tr(
+					html.Th(gomponents.Text("time")),
+					html.Th(gomponents.Text("duration")),
+					html.Th(gomponents.Text("track")),
+					html.Th(gomponents.Text("artists")),
+				),
+			),
+			html.Body(body...),
+		),
+	})
+	webstyle.Structured(rw, o)
 }
 
 type getPlaybacksOptions struct {

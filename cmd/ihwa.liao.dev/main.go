@@ -3,12 +3,12 @@ package main
 import (
 	"bytes"
 	"context"
-	_ "embed"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
 
+	"github.com/maragudk/gomponents"
+	"github.com/maragudk/gomponents/html"
 	"go.seankhliao.com/mono/framework"
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/observability"
@@ -16,23 +16,23 @@ import (
 	"go.seankhliao.com/mono/webstyle/webstatic"
 )
 
-//go:embed index.md
-var rawIndex []byte
-
-//go:embed manifest.json
-var manifest []byte
-
 func main() {
 	framework.Run(framework.Config{
 		Start: func(ctx context.Context, o *observability.O, m *http.ServeMux) (func(), error) {
 			t0 := time.Now()
-			index, err := webstyle.NewRenderer(webstyle.TemplateCompact).RenderBytes(rawIndex, webstyle.Data{})
-			if err != nil {
-				return nil, fmt.Errorf("render index: %w", err)
-			}
+
+			ro := webstyle.NewOptions("ihwa", "ihwa", []gomponents.Node{
+				html.H3(html.Em(gomponents.Text("inter")), gomponents.Text("webs")),
+				html.P(
+					html.Em(gomponents.Text("Congratulations")),
+					gomponents.Text("You've found a server on the internet."),
+				),
+			})
+			var buf bytes.Buffer
+			webstyle.Structured(&buf, ro)
+
 			webstatic.Register(m)
-			m.Handle("GET /{$}", httpencoding.Handler(handle(o, t0, "index.html", index)))
-			m.Handle("GET /manifest.json", httpencoding.Handler(handle(o, t0, "manifest.json", manifest)))
+			m.Handle("GET /{$}", httpencoding.Handler(handle(o, t0, "index.html", buf.Bytes())))
 			return nil, nil
 		},
 	})

@@ -4,18 +4,18 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"net/url"
 	"os"
 	"regexp"
 	"slices"
-	"strings"
 	"sync"
 	"time"
 
 	"cuelang.org/go/cue/cuecontext"
+	"github.com/maragudk/gomponents"
+	"github.com/maragudk/gomponents/html"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/httpencoding"
@@ -38,57 +38,27 @@ func New(ctx context.Context, o *observability.O, conf *Config) (*App, error) {
 	if err != nil {
 		return nil, o.Err(ctx, "create youtube service", err)
 	}
-	a := &App{
+	return &App{
 		o:             o,
 		yt:            yt,
-		render:        webstyle.NewRenderer(webstyle.TemplateCompact),
 		startupConfig: *conf,
-		startupTime:   time.Now(),
 
 		feedMu: new(sync.Mutex),
 		feeds:  make(map[string]FeedData),
-	}
-
-	content := bytes.NewBufferString(`
-# youtube feeds
-
-## things to watch
-
-### _feeds_
-
-To update config: [lookup](./lookup)
-
-`)
-	var feeds []string
-	for feed := range a.startupConfig.Feeds {
-		feeds = append(feeds, feed)
-	}
-	slices.Sort(feeds)
-
-	content.WriteRune('\n')
-	for _, feed := range feeds {
-		fmt.Fprintf(content, "- [%s](./feeds/%s)\n", feed, feed)
-	}
-
-	a.indexRendered, err = a.render.RenderBytes(content.Bytes(), webstyle.Data{})
-
-	return a, err
+	}, nil
 }
 
 type App struct {
 	yt            *youtube.Service
 	o             *observability.O
-	render        webstyle.Renderer
 	startupConfig Config
-	startupTime   time.Time
-	indexRendered []byte
 
 	feedMu *sync.Mutex
 	feeds  map[string]FeedData
 }
 
 func (a *App) Register(mux *http.ServeMux) {
-	mux.Handle("GET /{$}", httpencoding.Handler(http.HandlerFunc(a.handleIndex)))
+	mux.Handle("GET /{$}", httpencoding.Handler(a.index()))
 	mux.Handle("GET /feeds/{feed}", httpencoding.Handler(http.HandlerFunc(a.handleFeed)))
 	mux.Handle("GET /lookup", httpencoding.Handler(http.HandlerFunc(a.handleLookup)))
 	mux.Handle("POST /lookup", httpencoding.Handler(http.HandlerFunc(a.handleLookup)))
@@ -96,11 +66,41 @@ func (a *App) Register(mux *http.ServeMux) {
 	// mux.HandleFunc("POST /api/v1/refresh", a.handleAPIRefresh)
 }
 
-func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
-	_, span := a.o.T.Start(r.Context(), "serve index")
-	defer span.End()
+func (a *App) index() http.Handler {
+	content := []gomponents.Node{
+		html.H3(html.Em(gomponents.Text("things")), gomponents.Text(" to watch")),
+		html.P(
+			gomponents.Text("To update config, find channel config with:"),
+			html.A(html.Href("/lookup"), gomponents.Text("lookup")),
+		),
+	}
 
-	http.ServeContent(rw, r, "index.html", a.startupTime, bytes.NewReader(a.indexRendered))
+	var feeds []string
+	for feed := range a.startupConfig.Feeds {
+		feeds = append(feeds, feed)
+	}
+	slices.Sort(feeds)
+
+	var list []gomponents.Node
+	for _, feed := range feeds {
+		list = append(list, html.Li(
+			html.A(
+				html.Href("/feeds/"+feed),
+				gomponents.Text(feed),
+			),
+		))
+	}
+	content = append(content, html.Ul(list...))
+
+	o := webstyle.NewOptions("youtubefeed", "youtubefeed", content)
+	var buf bytes.Buffer
+	webstyle.Structured(&buf, o)
+
+	t := time.Now()
+	b := buf.Bytes()
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		http.ServeContent(rw, r, "index.html", t, bytes.NewReader(b))
+	})
 }
 
 func (a *App) handleFeed(rw http.ResponseWriter, r *http.Request) {
@@ -119,31 +119,41 @@ func (a *App) handleFeed(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	content := bytes.NewBufferString(fmt.Sprintf(`
-# %s
-
-## [youtube feeds](/)
-
-### _%s_
-
-%s
-
-Updated: %v
-
-| time | channel | video |
-| --- | --- | --- |
-`, fd.Name, fd.Name, fd.Description, fd.Updated.Format(time.DateTime)))
+	var body []gomponents.Node
 	for _, video := range fd.Videos {
-		fmt.Fprintf(content, "| %s | [%s](%s) | [%s](%s) |\n",
-			video.Published.Format(time.DateTime),
-			video.ChannelTitle, video.ChannelLink,
-			video.VideoTitle, video.VideoLink,
-		)
+		body = append(body, html.Tr(
+			html.Td(gomponents.Text(video.Published.Format(time.DateTime))),
+			html.Td(
+				html.A(
+					html.Href(video.ChannelLink),
+					gomponents.Text(video.ChannelTitle),
+				),
+			),
+			html.Td(
+				html.A(
+					html.Href(video.VideoLink),
+					gomponents.Text(video.VideoTitle),
+				),
+			),
+		))
 	}
 
-	a.render.Render(rw, content, webstyle.Data{
-		Desc: fd.Description,
+	o := webstyle.NewOptions("youtubefeed", feed, []gomponents.Node{
+		html.H3(html.Em(gomponents.Text(fd.Name))),
+		html.P(gomponents.Text(fd.Description)),
+		html.P(gomponents.Textf("Updated: %s", fd.Updated.Format(time.DateTime))),
+		html.Table(
+			html.THead(
+				html.Tr(
+					html.Th(gomponents.Text("time")),
+					html.Th(gomponents.Text("channel")),
+					html.Th(gomponents.Text("video")),
+				),
+			),
+			html.TBody(body...),
+		),
 	})
+	webstyle.Structured(rw, o)
 }
 
 type FeedData struct {
@@ -267,9 +277,9 @@ itemLoop:
 
 		videos = append(videos, FeedVideo{
 			Published:    dt,
-			ChannelTitle: escapeMDTable(it.Snippet.ChannelTitle),
+			ChannelTitle: it.Snippet.ChannelTitle,
 			ChannelLink:  urlChannel + it.Snippet.ChannelId,
-			VideoTitle:   escapeMDTable(it.Snippet.Title),
+			VideoTitle:   it.Snippet.Title,
 			VideoLink:    urlVideo + url.Values{"v": []string{it.Snippet.ResourceId.VideoId}}.Encode(),
 		})
 	}
@@ -280,42 +290,30 @@ func (a *App) handleLookup(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "handle lookup")
 	defer span.End()
 
-	content := bytes.NewBufferString(`
-# lookup
-
-## [youtube feeds](/)
-
-### _lookup_ config
-
-<form action="/lookup" method="post">
-<label for="term">search term:</label>
-<input type="text" placehandler="some youtube term" id="term" name="term" />
-
-<input type="submit" />
-</form>
-
-`)
+	content := []gomponents.Node{
+		html.H3(html.Em(gomponents.Text("lookup")), gomponents.Text(" channels")),
+		html.FormEl(
+			html.Action("/lookup"), html.Method("post"),
+			html.Label(html.For("term"), gomponents.Text("search term:")),
+			html.Input(
+				html.Type("text"), html.Placeholder("some youtube search term"),
+				html.ID("term"), html.Name("term"),
+			),
+			html.Input(html.Type("submit")),
+		),
+	}
 
 	searchTerm := r.PostFormValue("term")
 	if r.Method == http.MethodPost && searchTerm != "" {
-		content.WriteString("```cue\n")
-
 		res, err := a.runLookup(ctx, searchTerm)
 		if err != nil {
-			fmt.Fprintln(content, err.Error())
+			content = append(content, html.Pre(gomponents.Text(err.Error())))
 		} else {
 			cuectx := cuecontext.New()
-			fmt.Fprintln(content, cuectx.Encode(res))
+			content = append(content, html.Pre(gomponents.Textf("\n%s\n", cuectx.Encode(res))))
 		}
-
-		content.WriteString("```\n")
 	}
 
-	a.render.Render(rw, content, webstyle.Data{
-		Desc: "generate config for a user",
-	})
-}
-
-func escapeMDTable(s string) string {
-	return strings.NewReplacer("|", "¦").Replace(s)
+	o := webstyle.NewOptions("youtubefeed", "lookup", content)
+	webstyle.Structured(rw, o)
 }

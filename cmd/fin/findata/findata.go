@@ -8,6 +8,8 @@ import (
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
+	"github.com/maragudk/gomponents"
+	"github.com/maragudk/gomponents/html"
 )
 
 //go:embed schema.cue
@@ -68,6 +70,56 @@ const (
 	ViewIncomes
 	ViewExpenses
 )
+
+func (c Currency) HTMLTable(view View) gomponents.Node {
+	var group []string
+	switch view {
+	case ViewHoldings:
+		group = c.Holdings
+	case ViewIncomes:
+		group = c.Incomes
+	case ViewExpenses:
+		group = c.Expenses
+	}
+
+	heading := []gomponents.Node{html.Th(gomponents.Text("month"))}
+	for _, g := range group {
+		heading = append(heading, html.Th(html.Strong(gomponents.Text(g))))
+	}
+	body := []gomponents.Node{}
+
+	// Months
+	bag := make(map[string]int)
+	for _, month := range c.Months {
+		if view != ViewHoldings {
+			// reset monthly for delta
+			bag = make(map[string]int)
+		}
+		for _, transaction := range month.Transactions {
+			bag[transaction.Src] -= transaction.Val
+			bag[transaction.Dst] += transaction.Val
+		}
+
+		row := []gomponents.Node{
+			html.Td(html.Strong(gomponents.Textf("%4d-%02d", month.Year, month.Month))),
+		}
+		for _, title := range group {
+			val := float64(bag[title])
+			if view == ViewIncomes && val != 0 {
+				val *= -1
+			}
+			row = append(row, html.Td(gomponents.Textf("%.2f", val/100)))
+		}
+		body = append(body, html.Tr(row...))
+	}
+
+	return html.Table(
+		html.THead(
+			html.Tr(heading...),
+		),
+		html.TBody(body...),
+	)
+}
 
 func (c Currency) MarkdownTable(view View) []byte {
 	var group []string

@@ -133,12 +133,8 @@ func (a *App) staticPage(title string, content []gomponents.Node) http.Handler {
 	ts := time.Now()
 
 	var buf bytes.Buffer
-	err := webstyle.Structured(&buf, webstyle.Options{
-		CompactStyle: true,
-		Minify:       true,
-		Title:        title,
-		Content:      content,
-	})
+	o := webstyle.NewOptions("authsvr", title, content)
+	err := webstyle.Structured(&buf, o)
 	if err != nil {
 		a.o.Err(context.Background(), "prerender page", err, slog.String("page_title", title))
 	}

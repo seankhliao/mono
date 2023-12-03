@@ -12,8 +12,9 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"strings"
 
+	"github.com/maragudk/gomponents"
+	"github.com/maragudk/gomponents/html"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.seankhliao.com/mono/authed"
 	"go.seankhliao.com/mono/cmd/fin/findata"
@@ -140,53 +141,37 @@ func View(ctx context.Context, o *observability.O, conf *Config) error {
 }
 
 type App struct {
-	o      *observability.O
-	render webstyle.Renderer
-	dir    string
+	o   *observability.O
+	dir string
 }
 
 func New(ctx context.Context, o *observability.O, conf *Config) *App {
 	return &App{
-		o:      o,
-		render: webstyle.NewRenderer(webstyle.TemplateCompact),
-		dir:    conf.dir,
+		o:   o,
+		dir: conf.dir,
 	}
 }
 
 func (a *App) Register(mux *http.ServeMux) {
-	mux.Handle("/eur", otelhttp.NewHandler(httpencoding.Handler(a.hView("eur")), "hView - eur"))
-	mux.Handle("/gbp", otelhttp.NewHandler(httpencoding.Handler(a.hView("gbp")), "hView - gbp"))
-	mux.Handle("/twd", otelhttp.NewHandler(httpencoding.Handler(a.hView("twd")), "hView - twd"))
-	mux.Handle("/", otelhttp.NewHandler(httpencoding.Handler(a.hIndex()), "hIndex"))
-	mux.HandleFunc("/-/ready", func(rw http.ResponseWriter, r *http.Request) { rw.Write([]byte("ok")) })
+	mux.Handle("GET /eur", otelhttp.NewHandler(httpencoding.Handler(a.hView("eur")), "hView - eur"))
+	mux.Handle("GET /gbp", otelhttp.NewHandler(httpencoding.Handler(a.hView("gbp")), "hView - gbp"))
+	// mux.Handle("GET /twd", otelhttp.NewHandler(httpencoding.Handler(a.hView("twd")), "hView - twd"))
+	mux.Handle("GET /{$}", otelhttp.NewHandler(httpencoding.Handler(a.hIndex()), "hIndex"))
 }
 
 func (a *App) hIndex() http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		ctx, span := a.o.T.Start(r.Context(), "hIndex")
+		_, span := a.o.T.Start(r.Context(), "hIndex")
 		defer span.End()
 
-		if r.URL.Path != "/" {
-			http.Redirect(rw, r, "/", http.StatusFound)
-			return
-		}
-
-		c := `
-# fin
-
-## money
-
-### _fin_
-
-- [GBP](/gbp)
-- [EUR](/eur)
-- [TWD](/twd)
-`
-
-		err := a.render.Render(rw, strings.NewReader(c), webstyle.Data{})
-		if err != nil {
-			a.o.HTTPErr(ctx, "render", err, rw, http.StatusInternalServerError)
-		}
+		o := webstyle.NewOptions("fin", "fin", []gomponents.Node{
+			html.H3(html.Em(gomponents.Text("fin"))),
+			html.Ul(
+				html.Li(html.A(html.Href("/gbp"), gomponents.Text("GBP"))),
+				html.Li(html.A(html.Href("/eur"), gomponents.Text("EUR"))),
+			),
+		})
+		webstyle.Structured(rw, o)
 	})
 }
 
@@ -232,24 +217,15 @@ func (a *App) hView(cur string) http.Handler {
 			return
 		}
 
-		var buf bytes.Buffer
-		buf.WriteString("# ")
-		buf.WriteString(cur)
-		buf.WriteString("\n\n## currency view\n\n### _")
-		buf.WriteString(cur)
-		buf.WriteString("_\n\n")
-
-		buf.WriteString("\n#### _holdings_\n\n")
-		buf.Write(out.MarkdownTable(findata.ViewHoldings))
-		buf.WriteString("\n#### _expenses_\n\n")
-		buf.Write(out.MarkdownTable(findata.ViewExpenses))
-		buf.WriteString("\n#### _income_\n\n")
-		buf.Write(out.MarkdownTable(findata.ViewIncomes))
-
-		err := a.render.Render(rw, &buf, webstyle.Data{})
-		if err != nil {
-			a.o.HTTPErr(ctx, "render", err, rw, http.StatusInternalServerError)
-			return
-		}
+		o := webstyle.NewOptions("fin", cur, []gomponents.Node{
+			html.H3(html.Em(gomponents.Text(cur))),
+			html.H4(html.Em(gomponents.Text("income"))),
+			out.HTMLTable(findata.ViewIncomes),
+			html.H4(html.Em(gomponents.Text("expenses"))),
+			out.HTMLTable(findata.ViewExpenses),
+			html.H4(html.Em(gomponents.Text("holdings"))),
+			out.HTMLTable(findata.ViewHoldings),
+		})
+		webstyle.Structured(rw, o)
 	})
 }

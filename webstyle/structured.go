@@ -34,7 +34,7 @@ type Options struct {
 	Minify       bool
 
 	Title       string // title, h1
-	Subtitle    string // h2
+	Subtitle    string // link home, h2
 	Description string // meta description
 
 	Content []gomponents.Node
@@ -46,12 +46,17 @@ type OptionsFooter struct {
 	URL  string
 }
 
-func NewOptions(title string) Options {
+func NewOptions(site, title string, content []gomponents.Node) Options {
 	return Options{
-		Gtag:     "G-9GLEE4YLNC",
-		Manifest: "/manifest.json",
-		Minify:   true,
+		Gtag: "G-9GLEE4YLNC",
+		// Manifest: "/manifest.json",
+		CompactStyle: true,
+		Minify:       true,
+
 		Title:    title,
+		Subtitle: site,
+
+		Content: content,
 	}
 }
 
@@ -95,9 +100,7 @@ func Structured(w io.Writer, o Options) error {
 	}
 	body = append(body, html.HGroup(html.A(html.Href("https://seankhliao.com/"), gomponents.Group(hgroup))))
 	body = append(body, html.H1(gomponents.Text(o.Title)))
-	if o.Subtitle != "" {
-		body = append(body, html.H2(gomponents.Text(o.Subtitle)))
-	}
+	body = append(body, html.H2(html.A(html.Href("/"), gomponents.Text(o.Subtitle))))
 
 	// content
 	body = append(body, o.Content...)
