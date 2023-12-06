@@ -23,6 +23,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-02-20_ Poppy
 - _12024-02-16_ Alessandra
 - _12023-12-09_ Halestorm with Black Veil Brides, Mothica
+- _12023-12-08_ Communion Xmas Party
 
 #### _12023-12-01_ Against the Current
 
