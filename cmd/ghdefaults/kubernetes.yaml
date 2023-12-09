@@ -52,26 +52,14 @@ spec:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://ingest.otelcol.svc:4317
           image: ghcr.io/seankhliao/ghdefaults
-          livenessProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           name: ghdefaults
           ports:
             - containerPort: 8080
               name: http
-          readinessProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           resources:
             requests:
               cpu: 100m
               memory: 128Mi
-          startupProbe:
-            httpGet:
-              path: /-/ready
-              port: http
           volumeMounts:
             - mountPath: /var/run/secrets/github
               name: secrets

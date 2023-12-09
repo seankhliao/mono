@@ -79,10 +79,11 @@ func New(ctx context.Context, o *observability.O, c Config) (*App, error) {
 
 	t := true
 	wan, err := webauthn.New(&webauthn.Config{
-		RPID:          c.ID,
-		RPDisplayName: c.ID,
-		RPOrigins:     c.Origins,
-		Debug:         true,
+		RPID:                  c.ID,
+		RPDisplayName:         c.ID,
+		RPOrigins:             c.Origins,
+		Debug:                 true,
+		AttestationPreference: protocol.PreferDirectAttestation,
 		AuthenticatorSelection: protocol.AuthenticatorSelection{
 			RequireResidentKey: &t,
 			ResidentKey:        protocol.ResidentKeyRequirementRequired,
@@ -123,6 +124,7 @@ func (a *App) Register(mux *http.ServeMux) {
 
 	// internal endpoints
 	mux.Handle("GET /api/v1/token/{token}", otelhttp.NewHandler(a.apiv1SessionToken(), "check sessiontoken"))
+	mux.Handle("GET /api/v1/cred/{credid}/remove", otelhttp.NewHandler(a.removeCred(), "remove cred"))
 
 	// internal admin endpoints
 	mux.Handle("POST /register/{email}/start", otelhttp.NewHandler(a.registerStart(), "register start"))

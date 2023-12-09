@@ -36,7 +36,7 @@ func main() {
 	client := goreleases.New(nil, "")
 	rels, err := client.Releases(ctx, true)
 	if err != nil {
-		log.Fatalln("get go releases")
+		log.Fatalln("get go releases", err)
 	}
 
 	versionMap := make(map[int]goreleases.Version)

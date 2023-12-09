@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"time"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
@@ -46,15 +47,18 @@ func (a *Authed) Authed(h http.Handler) http.Handler {
 		ctx, span := a.o.T.Start(r.Context(), "authed handler")
 		defer span.End()
 
+		requested := url.URL{Scheme: "https", Host: r.Host, Path: r.URL.Path, RawQuery: r.URL.RawQuery}
+		u := "https://auth.liao.dev/?" + url.Values{"redirect": []string{requested.String()}}.Encode()
+
 		c, err := r.Cookie(cookieName)
 		if err != nil {
-			http.Redirect(rw, r, "https://auth.liao.dev/", http.StatusFound)
+			http.Redirect(rw, r, u, http.StatusFound)
 			return
 		}
 
 		info, err := a.check(ctx, c)
 		if err != nil {
-			http.Redirect(rw, r, "https://auth.liao.dev/", http.StatusFound)
+			http.Redirect(rw, r, u, http.StatusFound)
 			return
 		}
 

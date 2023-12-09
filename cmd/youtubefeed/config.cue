@@ -70,6 +70,11 @@ feeds: {
 				channel_id: "UCHsRtomD4twRf5WVHHk-cMw"
 				uploads_id: "UUHsRtomD4twRf5WVHHk-cMw"
 			}
+			"@xkcd_whatif": {
+				title:      "xkcd's What If?"
+				channel_id: "UC6IxnFzHofFJ5X2PycSMsww"
+				uploads_id: "UU6IxnFzHofFJ5X2PycSMsww"
+			}
 		}
 	}
 

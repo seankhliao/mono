@@ -31,7 +31,10 @@ async function loginUser() {
     publicKey: opts.publicKey,
   });
 
-  const finishResponse = await fetch("/login/finish", {
+  // technically possible to do this all client side?
+  let windowParams = new URLSearchParams(document.location.search);
+  let params = new URLSearchParams({ redirect: windowParams.get("redirect") });
+  const finishResponse = await fetch(`/login/finish?${params}`, {
     method: "POST",
     body: JSON.stringify({
       id: assertion.id,
@@ -47,6 +50,11 @@ async function loginUser() {
   });
   if (!finishResponse.ok) {
     alert("failed to login");
+    return;
+  }
+  const loginStatus = await finishResponse.json();
+  if (loginStatus.redirect) {
+    window.location.href = loginStatus.redirect;
     return;
   }
   window.location.reload();
@@ -90,5 +98,5 @@ async function registerUser() {
     alert("failed to register");
     return;
   }
-  window.location.href = "/";
+  alert("registered, plz login");
 }

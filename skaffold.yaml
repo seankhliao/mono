@@ -69,10 +69,6 @@ build:
         ldflags:
           - -s
           - -w
-        dependencies:
-          paths:
-            - "go.mod"
-            - "**/*.go"
   tagPolicy:
     inputDigest: {}
   platforms:
@@ -102,10 +98,6 @@ build:
         ldflags:
           - -s
           - -w
-        dependencies:
-          paths:
-            - "go.mod"
-            - "**/*.go"
   tagPolicy:
     inputDigest: {}
   platforms:
@@ -221,10 +213,6 @@ build:
         ldflags:
           - -s
           - -w
-        dependencies:
-          paths:
-            - "go.mod"
-            - "cmd/youtubefeed/*"
   tagPolicy:
     inputDigest: {}
   platforms:

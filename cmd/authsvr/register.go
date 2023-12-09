@@ -9,6 +9,7 @@ import (
 	"math/big"
 	"net/http"
 
+	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"go.etcd.io/bbolt"
 )
@@ -54,7 +55,12 @@ func (a *App) registerStart() http.Handler {
 			return
 		}
 
-		data, wanSess, err := a.wan.BeginRegistration(user)
+		var exlcusions []protocol.CredentialDescriptor
+		for _, cred := range user.Creds {
+			exlcusions = append(exlcusions, cred.Descriptor())
+		}
+
+		data, wanSess, err := a.wan.BeginRegistration(user, webauthn.WithExclusions(exlcusions))
 		if err != nil {
 			a.jsonErr(ctx, rw, "webauthn begin registration", err, http.StatusInternalServerError, struct{}{})
 			return

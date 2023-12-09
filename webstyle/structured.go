@@ -114,7 +114,7 @@ func Structured(w io.Writer, o Options) error {
 	var footer []gomponents.Node
 	for i, l := range footerLinks {
 		if i != 0 {
-			footer = append(footer, gomponents.Text("|"))
+			footer = append(footer, gomponents.Text(" | "))
 		}
 		footer = append(footer, html.A(html.Href(l.URL), gomponents.Text(l.Name)))
 	}

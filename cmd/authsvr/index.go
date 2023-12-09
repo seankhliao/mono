@@ -26,23 +26,14 @@ func (a *App) index() http.Handler {
 		defer span.End()
 
 		content := []gomponents.Node{
-			html.H3(html.Em(gomponents.Text("auth")), gomponents.Text("svr")),
-
-			html.H4(html.Em(gomponents.Text("register"))),
-			html.FormEl(
-				html.Action("javascript:registerUser()"),
-				html.Label(html.For("email"), gomponents.Text("Email:")),
-				html.Input(html.Type("email"), html.ID("email"), html.Name("email")),
-				html.Label(html.For("key"), gomponents.Text("Admin key:")),
-				html.Input(html.Type("password"), html.ID("adminkey"), html.Name("adminkey")),
-				html.Input(html.Type("submit"), html.Value("Register")),
-			),
+			html.H3(html.Em(gomponents.Text("auth ")), gomponents.Text("svr")),
 		}
 
 		user, sess, err := a.getActiveSession(ctx, r)
 		if errors.Is(err, ErrNoSession) {
 			content = append(content,
 				html.H4(html.Em(gomponents.Text("login"))),
+				html.P(gomponents.Text("Log in with a passkey:")),
 				html.FormEl(
 					html.Action("javascript:loginUser()"),
 					html.Input(html.Type("submit"), html.Value("login")),
@@ -58,17 +49,20 @@ func (a *App) index() http.Handler {
 				knownCreds = append(knownCreds, html.Tr(
 					html.Td(gomponents.Text(hex.EncodeToString(cred.ID))),
 					html.Td(gomponents.Text(cred.AttestationType)),
+					html.Td(gomponents.Text(string(cred.Authenticator.Attachment))),
 					html.Td(gomponents.Text(strconv.FormatUint(uint64(cred.Authenticator.SignCount), 10))),
 					html.Td(gomponents.Text(fmt.Sprint(cred.Transport))),
 				))
 			}
 			content = append(content,
-				html.H4(html.Em(gomponents.Text("user")), gomponents.Text(user.Email)),
+				html.H4(html.Em(gomponents.Text("user ")), gomponents.Text(user.Email)),
+				html.P(gomponents.Text("Credentials attached to this user:")),
 				html.Table(
 					html.THead(
 						html.Tr(
 							html.Th(gomponents.Text("cred id")),
 							html.Th(gomponents.Text("attestation type")),
+							html.Th(gomponents.Text("attachment")),
 							html.Th(gomponents.Text("sign count")),
 							html.Th(gomponents.Text("transports")),
 						),
@@ -84,6 +78,10 @@ func (a *App) index() http.Handler {
 					html.Strong(gomponents.Text("user agent:")),
 					gomponents.Text(sess.UserAgent),
 				),
+				html.P(
+					html.Strong(gomponents.Text("login cred:")),
+					gomponents.Text(sess.LoginCredID),
+				),
 				html.FormEl(
 					html.Action("/logout"), html.Method("post"),
 					html.Input(html.Type("submit"), html.Value("logout")),
@@ -91,6 +89,18 @@ func (a *App) index() http.Handler {
 				html.Script(gomponents.Raw(scriptJS)),
 			)
 		}
+
+		content = append(content,
+			html.H4(html.Em(gomponents.Text("register ")), gomponents.Text("user / device")),
+			html.FormEl(
+				html.Action("javascript:registerUser()"),
+				html.Label(html.For("email"), gomponents.Text("Email:")),
+				html.Input(html.Type("email"), html.ID("email"), html.Name("email")),
+				html.Label(html.For("key"), gomponents.Text("Admin key:")),
+				html.Input(html.Type("password"), html.ID("adminkey"), html.Name("adminkey")),
+				html.Input(html.Type("submit"), html.Value("Register")),
+			),
+		)
 
 		o := webstyle.NewOptions("authsvr", "auth svr", content)
 		webstyle.Structured(rw, o)

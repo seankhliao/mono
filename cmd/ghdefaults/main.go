@@ -81,7 +81,6 @@ func New(ctx context.Context, o *observability.O, c Config) *Server {
 
 func (s *Server) Register(mux *http.ServeMux) {
 	mux.Handle("/webhook", otelhttp.NewHandler(http.HandlerFunc(s.hWebhook), "hWebhook"))
-	mux.HandleFunc("/-/ready", func(rw http.ResponseWriter, r *http.Request) { rw.Write([]byte("ok")) })
 }
 
 var defaultConfig = map[string]github.Repository{
