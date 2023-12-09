@@ -23,7 +23,20 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-02-20_ Poppy
 - _12024-02-16_ Alessandra
 - _12023-12-09_ Halestorm with Black Veil Brides, Mothica
-- _12023-12-08_ Communion Xmas Party
+
+#### _12023-12-08_ Communion Xmas Party
+
+With _Nectar Woode_, _Bear’s Den_, _Christof Van Der Ven_, _Jack Garratt_,
+_Jasmine Jethwa_, _Lucia & the Best Boys_, _Maisie Peters_, and _The Staves_
+
+Film music, and explicitly not christmas music or films,
+though 2 christmas songs did sneak through,
+hosted by Communion Records.
+It was quite a joyous occasion,
+though with the age of the artists and them referencing their "teenage dreams",
+I don't think I recognized too many songs.
+_Maisie Peters_ was awesome as always,
+_Lucia_ was someone I might consider listening to again.
 
 #### _12023-12-01_ Against the Current
 
