@@ -22,7 +22,21 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-02-22_ Zara Larsson
 - _12024-02-20_ Poppy
 - _12024-02-16_ Alessandra
-- _12023-12-09_ Halestorm with Black Veil Brides, Mothica
+
+#### _12023-12-09_ Halestorm
+
+With _Black Veil Brides_, and _Mothica_
+
+I came to see _Mothica_ and I was not disappointed.
+My favourite dress I've seen this year, maybe vampire core?
+For her style of music, it was a bit different from the recordings,
+maybe a bit less clarity and more backing vocals?
+But it felt emotional.
+_Black Veil Brides_ were... fine I guess?
+_Halestorm_ were... cool.
+It felt old school rock and roll,
+no need for flashy stage props,
+just a clean, empty stage, with lights and music.
 
 #### _12023-12-08_ Communion Xmas Party
 
