@@ -12,6 +12,19 @@ build:
         ldflags:
           - -s
           - -w
+        dependencies:
+          paths:
+            - go.mod
+            # go list -deps -f '{{if .Module}}{{if .Module.Main}}{{.Dir}}{{end}}{{end}}' ./cmd/authsvr | xargs realpath --relative-to .
+            - jsonlog
+            - observability
+            - basehttp
+            - framework
+            - webstyle/picture
+            - webstyle
+            - httpencoding
+            - webstyle/webstatic
+            - cmd/authsvr
   tagPolicy:
     inputDigest: {}
   platforms:
@@ -39,6 +52,21 @@ build:
         ldflags:
           - -s
           - -w
+        dependencies:
+          paths:
+            - go.mod
+            # go list -deps -f '{{if .Module}}{{if .Module.Main}}{{.Dir}}{{end}}{{end}}' ./cmd/authsvr | xargs realpath --relative-to .
+            - jsonlog
+            - observability
+            - authed
+            - cmd/earbug/earbugv4
+            - basehttp
+            - framework
+            - httpencoding
+            - webstyle/picture
+            - webstyle
+            - webstyle/webstatic
+            - cmd/earbug
   tagPolicy:
     inputDigest: {}
   platforms:
@@ -69,6 +97,21 @@ build:
         ldflags:
           - -s
           - -w
+        dependencies:
+          paths:
+            - go.mod
+            # go list -deps -f '{{if .Module}}{{if .Module.Main}}{{.Dir}}{{end}}{{end}}' ./cmd/fin | xargs realpath --relative-to .
+            - jsonlog
+            - observability
+            - authed
+            - cmd/fin/findata
+            - basehttp
+            - framework
+            - httpencoding
+            - webstyle/picture
+            - webstyle
+            - webstyle/webstatic
+            - cmd/fin
   tagPolicy:
     inputDigest: {}
   platforms:
@@ -98,6 +141,15 @@ build:
         ldflags:
           - -s
           - -w
+        dependencies:
+          paths:
+            - go.mod
+            # go list -deps -f '{{if .Module}}{{if .Module.Main}}{{.Dir}}{{end}}{{end}}' ./cmd/ghdefaults | xargs realpath --relative-to .
+            - jsonlog
+            - observability
+            - basehttp
+            - framework
+            - cmd/ghdefaults
   tagPolicy:
     inputDigest: {}
   platforms:
@@ -128,6 +180,19 @@ build:
         ldflags:
           - -s
           - -w
+        dependencies:
+          paths:
+            - go.mod
+            # go list -deps -f '{{if .Module}}{{if .Module.Main}}{{.Dir}}{{end}}{{end}}' ./cmd/ihwa.liao.dev | xargs realpath --relative-to .
+            - jsonlog
+            - observability
+            - basehttp
+            - framework
+            - httpencoding
+            - webstyle/picture
+            - webstyle
+            - webstyle/webstatic
+            - cmd/ihwa.liao.dev
   tagPolicy:
     inputDigest: {}
   platforms:
@@ -140,35 +205,6 @@ deploy:
   kubeContext: ihwa
   kubectl:
     defaultNamespace: ihwa-liao-dev
----
-apiVersion: skaffold/v4beta5
-kind: Config
-metadata:
-  name: testclickhouse
-build:
-  artifacts:
-    - image: ghcr.io/seankhliao/testclickhouse
-      ko:
-        main: ./cmd/testclickhouse
-        env:
-          - CGO_ENABLED=0
-        flags:
-          - -trimpath
-        ldflags:
-          - -s
-          - -w
-  tagPolicy:
-    inputDigest: {}
-  platforms:
-    - linux/amd64
-    - linux/arm64
-manifests:
-  rawYaml:
-    - cmd/testclickhouse/kubernetes.yaml
-deploy:
-  kubeContext: ihwa
-  kubectl:
-    defaultNamespace: testclickhouse
 ---
 apiVersion: skaffold/v4beta5
 kind: Config
@@ -186,6 +222,19 @@ build:
         ldflags:
           - -s
           - -w
+        dependencies:
+          paths:
+            - go.mod
+            # go list -deps -f '{{if .Module}}{{if .Module.Main}}{{.Dir}}{{end}}{{end}}' ./cmd/vanity | xargs realpath --relative-to .
+            - jsonlog
+            - observability
+            - basehttp
+            - framework
+            - webstyle/picture
+            - webstyle
+            - httpencoding
+            - webstyle/webstatic
+            - cmd/vanity
   tagPolicy:
     inputDigest: {}
   platforms:
@@ -213,6 +262,20 @@ build:
         ldflags:
           - -s
           - -w
+        dependencies:
+          paths:
+            - go.mod
+            # go list -deps -f '{{if .Module}}{{if .Module.Main}}{{.Dir}}{{end}}{{end}}' ./cmd/youtubefeed | xargs realpath --relative-to .
+            - jsonlog
+            - observability
+            - authed
+            - basehttp
+            - framework
+            - httpencoding
+            - webstyle/picture
+            - webstyle
+            - webstyle/webstatic
+            - cmd/youtubefeed
   tagPolicy:
     inputDigest: {}
   platforms:
