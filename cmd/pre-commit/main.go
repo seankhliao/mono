@@ -164,6 +164,13 @@ func selectTools() ([]tool, error) {
 				).CombinedOutput()
 			},
 		}, tool{
+			name: "guvulncheck",
+			run: func(ctx context.Context) ([]byte, error) {
+				return exec.CommandContext(ctx,
+					"govulncheck", "./...",
+				).CombinedOutput()
+			},
+		}, tool{
 			name: "go build",
 			run: func(ctx context.Context) ([]byte, error) {
 				return exec.CommandContext(ctx,
