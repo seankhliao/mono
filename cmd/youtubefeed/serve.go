@@ -141,6 +141,7 @@ func (a *App) handleFeed(rw http.ResponseWriter, r *http.Request) {
 	o := webstyle.NewOptions("youtubefeed", feed, []gomponents.Node{
 		html.H3(html.Em(gomponents.Text(fd.Name))),
 		html.P(gomponents.Text(fd.Description)),
+		html.P(html.A(html.Href("https://www.youtube.com/feed/history"), gomponents.Text("history control"))),
 		html.P(gomponents.Textf("Updated: %s", fd.Updated.Format(time.DateTime))),
 		html.Table(
 			html.THead(

@@ -7,6 +7,7 @@ apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
 metadata:
   name: earbug
+  namespace: earbug
 spec:
   hostnames:
     - earbug.ihwa.liao.dev
@@ -74,10 +75,6 @@ spec:
           ports:
             - containerPort: 8080
               name: http
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
           volumeMounts:
             - mountPath: /var/run/secrets/google
               name: gcp
@@ -103,3 +100,14 @@ spec:
           requests:
             storage: 1Gi
         storageClassName: local-path
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: earbug
+  namespace: earbug
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: earbug

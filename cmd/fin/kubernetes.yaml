@@ -7,6 +7,7 @@ apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
 metadata:
   name: fin
+  namespace: fin
 spec:
   hostnames:
     - fin.ihwa.liao.dev
@@ -97,3 +98,14 @@ spec:
           requests:
             storage: 1Gi
         storageClassName: local-path
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: fin
+  namespace: fin
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: fin

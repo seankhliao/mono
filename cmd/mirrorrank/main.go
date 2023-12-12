@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -19,8 +18,9 @@ import (
 )
 
 type Mirror struct {
-	u string
-	d time.Duration
+	u   string
+	d   time.Duration
+	err error
 }
 
 func main() {
@@ -32,7 +32,7 @@ func main() {
 	exclude := map[string]struct{}{
 		"checkdomain.de": {},
 	}
-	flag.BoolVar(&ip4, "4", false, "limit to IPv4")
+	flag.BoolVar(&ip4, "4", true, "limit to IPv4")
 	flag.BoolVar(&ip6, "6", false, "limit to IPv6")
 	flag.StringVar(&file, "f", "", "mirrorlist to use instead of from archlinux.org/mirrorlist/")
 	flag.StringVar(&save, "s", "/etc/pacman.d/mirrorlist", "output file location")
@@ -49,7 +49,7 @@ func main() {
 	})
 	flag.Parse()
 
-	lg := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	lg := slog.New(slog.NewTextHandler(os.Stderr, nil))
 
 	client := http.Client{
 		Timeout: 5 * time.Second,
@@ -120,7 +120,14 @@ loop:
 	done := make(chan []Mirror)
 	go func() {
 		mirrors := make([]Mirror, 0, len(rawMirrors))
+		var i int
 		for m := range collect {
+			i++
+			if m.err != nil {
+				lg.Warn("failed", "index", i, "total", len(rawMirrors), "err", m.err.Error(), "mirror", m.u)
+				continue
+			}
+			lg.Debug("success", "index", i, "total", len(rawMirrors), "time", m.d, "mirror", m.u)
 			mirrors = append(mirrors, m)
 		}
 		sort.Slice(mirrors, func(i, j int) bool { return mirrors[i].d.Milliseconds() < mirrors[j].d.Milliseconds() })
@@ -133,32 +140,21 @@ loop:
 		ch <- struct{}{}
 		wg.Add(1)
 		go func(m string) {
-			var err error
-			u := replacer.Replace(m + "/extra.db")
 			defer func() {
-				if err != nil {
-					if strings.Contains(err.Error(), "context deadline exceeded") {
-						// not wrapped?
-						err = errors.New("timeout")
-					}
-					lg.Error("download extra.db", "err", err, "mirror", u)
-				}
 				<-ch
 				wg.Done()
 			}()
+			mirror := Mirror{u: m}
+			u := replacer.Replace(m + "/extra.db")
 			t := time.Now()
-			r, err := client.Get(u)
-			if err != nil {
-				return
+			var r *http.Response
+			r, mirror.err = client.Get(u)
+			if mirror.err == nil {
+				defer r.Body.Close()
+				_, mirror.err = io.Copy(io.Discard, r.Body)
 			}
-			defer r.Body.Close()
-			_, err = io.Copy(io.Discard, r.Body)
-			if err != nil {
-				return
-			}
-			s := time.Since(t)
-			collect <- Mirror{u: m, d: s}
-			lg.Info("done", "time", s.Round(time.Millisecond), "mirror", u)
+			mirror.d = time.Since(t)
+			collect <- mirror
 		}(rawMirrors[i])
 	}
 	wg.Wait()
@@ -179,4 +175,5 @@ loop:
 		lg.Error("write file", "err", err, "file", save)
 		return
 	}
+	fmt.Println(b.String())
 }
