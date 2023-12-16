@@ -26,9 +26,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-02-20_ Poppy
 - _12024-02-16_ Alessandra
 - _12024-01-26_ Witcher / Mystery Ensemble
-- _12023-12-16_ FEMM
-- _12023-12-15_ michy tree
-- _12023-12-14_ Emily Craig
 
 #### _12023-12-09_ Halestorm
 
