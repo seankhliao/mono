@@ -1,7 +1,7 @@
 import "time"
 
 maxAge:  3 * 30 * 24 * time.Hour
-refresh: 10 * time.Minute
+refresh: 30 * time.Minute
 
 feeds: {
 	edutainment: {
