@@ -420,11 +420,6 @@ feeds: {
 				channel_id: "UCMEswlGLcAXxWVOGDS_gaUw"
 				uploads_id: "UUMEswlGLcAXxWVOGDS_gaUw"
 			}
-			"@mikamikatn": {
-				title:      "田中みかチャンネル🍊"
-				channel_id: "UCFvvY4ny_QkcCTOWY9kIOJw"
-				uploads_id: "UUFvvY4ny_QkcCTOWY9kIOJw"
-			}
 			"@minami_3s": {
 				title:      "南アナの本番3秒前"
 				channel_id: "UCniTv9IbS9oCB0VKRM3hDqA"
