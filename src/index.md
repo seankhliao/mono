@@ -27,6 +27,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-02-16_ Alessandra
 - _12024-01-26_ Witcher / Mystery Ensemble
 
+#### _12023-12-16_ FEMM
+
+We open with 2 Japanese mannequins in latex maid costumes carried on stage.
+It was a very visual performance,
+the robotic moves of the first part,
+the slightly more fluid but still precise and fully choreograhed remainder of the show.
+With their last show outside of Japan,
+the crowd was a bit smaller than expected, though there was an afternoon show as well.
+
 #### _12023-12-09_ Halestorm
 
 With _Black Veil Brides_, and _Mothica_
