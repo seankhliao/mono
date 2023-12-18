@@ -1,0 +1,26 @@
+apiVersion: skaffold/v4beta5
+kind: Config
+metadata:
+  name: vanity
+build:
+  artifacts:
+    - image: us-central1-docker.pkg.dev/com-seankhliao/run/vanity
+      ko:
+        main: .
+        env:
+          - CGO_ENABLED=0
+        flags:
+          - -trimpath
+        ldflags:
+          - -s
+          - -w
+  tagPolicy:
+    inputDigest: {}
+  platforms:
+    - linux/amd64
+manifests:
+  rawYaml:
+    - cloudrun.yaml
+deploy:
+  cloudrun:
+    region: us-central1

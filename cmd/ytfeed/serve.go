@@ -92,7 +92,7 @@ func (a *App) index() http.Handler {
 	}
 	content = append(content, html.Ul(list...))
 
-	o := webstyle.NewOptions("youtubefeed", "youtubefeed", content)
+	o := webstyle.NewOptions("ytfeed", "ytfeed", content)
 	var buf bytes.Buffer
 	webstyle.Structured(&buf, o)
 
@@ -138,7 +138,7 @@ func (a *App) handleFeed(rw http.ResponseWriter, r *http.Request) {
 		))
 	}
 
-	o := webstyle.NewOptions("youtubefeed", feed, []gomponents.Node{
+	o := webstyle.NewOptions("ytfeed", feed, []gomponents.Node{
 		html.H3(html.Em(gomponents.Text(fd.Name))),
 		html.P(gomponents.Text(fd.Description)),
 		html.P(html.A(html.Href("https://www.youtube.com/feed/history"), gomponents.Text("history control"))),
@@ -315,6 +315,6 @@ func (a *App) handleLookup(rw http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	o := webstyle.NewOptions("youtubefeed", "lookup", content)
+	o := webstyle.NewOptions("ytfeed", "lookup", content)
 	webstyle.Structured(rw, o)
 }

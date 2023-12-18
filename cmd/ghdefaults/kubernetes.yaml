@@ -51,7 +51,7 @@ spec:
               value: k8s.pod.uid=$(POD_UID),k8s.cluster.name=ihwa,k8s.container.name=earbug
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://ingest.otelcol.svc:4317
-          image: ghcr.io/seankhliao/ghdefaults
+          image: ko://go.seankhliao.com/mono/cmd/ghdefaults
           name: ghdefaults
           ports:
             - containerPort: 8080

@@ -70,7 +70,7 @@ spec:
               value: http://ingest.otelcol.svc:4317
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/run/secrets/google/key.json
-          image: ghcr.io/seankhliao/earbug
+          image: ko://go.seankhliao.com/mono/cmd/earbug
           name: earbug
           ports:
             - containerPort: 8080

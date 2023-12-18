@@ -2,3 +2,30 @@ defaultBaseImage: gcr.io/distroless/static-debian12:nonroot # sha256:43a5ce527e9
 defaultPlatforms:
   - linux/arm64
   - linux/amd64
+
+_buildopts: &buildopts
+  env:
+    - CGO_ENABLED=0
+  ldflags:
+    - -s
+    - -w
+
+builds:
+  - id: authsvr
+    main: ./cmd/authsvr
+    <<: *buildopts
+  - id: earbug
+    main: ./cmd/earbug
+    <<: *buildopts
+  - id: fin
+    main: ./cmd/fin
+    <<: *buildopts
+  - id: ghdefaults
+    main: ./cmd/ghdefaults
+    <<: *buildopts
+  - id: ihwa-liao-dev
+    main: ./cmd/ihwa-liao-dev
+    <<: *buildopts
+  - id: ytfeed
+    main: ./cmd/ytfeed
+    <<: *buildopts

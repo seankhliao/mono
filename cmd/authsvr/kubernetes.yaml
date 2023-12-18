@@ -52,7 +52,7 @@ spec:
               value: k8s.pod.uid=$(POD_UID),k8s.cluster.name=ihwa,k8s.container.name=authsvr
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://ingest.otelcol.svc:4317
-          image: ghcr.io/seankhliao/authsvr
+          image: ko://go.seankhliao.com/mono/cmd/authsvr
           name: authsvr
           ports:
             - containerPort: 8080

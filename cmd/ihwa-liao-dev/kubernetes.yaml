@@ -46,7 +46,7 @@ spec:
               value: k8s.pod.uid=$(POD_UID),k8s.cluster.name=ihwa,k8s.container.name=ihwa-liao-dev
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://ingest.otelcol.svc:4317
-          image: ghcr.io/seankhliao/ihwa-liao-dev
+          image: ko://go.seankhliao.com/mono/cmd/ihwa-liao-dev
           name: ihwa-liao-dev
           ports:
             - containerPort: 8080
