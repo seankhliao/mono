@@ -25,6 +25,11 @@ feeds: {
 				channel_id: "UC2C_jShtL725hvbm1arSV9w"
 				uploads_id: "UU2C_jShtL725hvbm1arSV9w"
 			}
+			"@girlwiththedogs": {
+				title:      "Girl With The Dogs"
+				channel_id: "UCUFnGWHIQvybwmR7XDh7-9A"
+				uploads_id: "UUUFnGWHIQvybwmR7XDh7-9A"
+			}
 			"@kurzgesagt": {
 				title:      "Kurzgesagt – In a Nutshell"
 				channel_id: "UCsXVk37bltHxD1rDPwtNM8Q"
