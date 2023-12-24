@@ -69,22 +69,30 @@ spec:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://ingest.otelcol.svc:4317
             - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/run/secrets/google/key.json
+              value: /var/run/service-account/gcp-workload-identity.json
           image: ko://go.seankhliao.com/mono/cmd/earbug
           name: earbug
           ports:
             - containerPort: 8080
               name: http
           volumeMounts:
-            - mountPath: /var/run/secrets/google
-              name: gcp
             - mountPath: /data
               name: data
+            - name: token
+              mountPath: "/var/run/service-account"
+              readOnly: true
       enableServiceLinks: false
+      serviceAccountName: earbug
       volumes:
-        - name: gcp
-          secret:
-            secretName: gcp
+        - name: token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: https://iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/ihwa-k3s
+                  expirationSeconds: 3600
+                  path: token
+              - configMap:
+                  name: gcp-workload-identity
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
@@ -111,3 +119,30 @@ spec:
     apiVersion: apps/v1
     kind: StatefulSet
     name: earbug
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: earbug
+  namespace: earbug
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gcp-workload-identity
+  namespace: earbug
+data:
+  gcp-workload-identity.json: |
+    {
+      "type": "external_account",
+      "audience": "//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/ihwa-k3s",
+      "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+      "token_url": "https://sts.googleapis.com/v1/token",
+      "credential_source": {
+        "file": "/var/run/service-account/token",
+        "format": {
+          "type": "text"
+        }
+      },
+      "service_account_impersonation_url": "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/ihwa-earbug@com-seankhliao.iam.gserviceaccount.com:generateAccessToken"
+    }
