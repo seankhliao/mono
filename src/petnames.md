@@ -13,3 +13,4 @@
 - Medea - [Your Throne](https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009)
 - Hwaryun - [Tower of God](https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95)
 - Millenyn - [Wished You Were Dead](https://www.webtoons.com/en/drama/wished-you-were-dead/list?title_no=3591)
+- Layla - [Cry, or Better Yet, Beg](https://www.webtoons.com/en/drama/cry-or-better-yet-beg/list?title_no=5815)
