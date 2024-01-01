@@ -81,8 +81,8 @@ func (c *Config) SetFlags(fset *flag.FlagSet) {
 		c.files = append(c.files, b)
 		return nil
 	})
-	c.submitAddress, _ = url.Parse("http://fin-ihwa.badger-altered.ts.net/")
-	fset.Func("submit.addr", "http://fin-ihwa.badger-altered.ts.net/", func(s string) error {
+	c.submitAddress, _ = url.Parse("https://fin.ihwa.liao.dev/")
+	fset.Func("submit.addr", "base http addr to post to", func(s string) error {
 		u, err := url.Parse(s)
 		if err != nil {
 			return err
@@ -153,8 +153,8 @@ func New(ctx context.Context, o *observability.O, conf *Config) *App {
 }
 
 func (a *App) Register(mux *http.ServeMux) {
-	mux.Handle("GET /eur", otelhttp.NewHandler(httpencoding.Handler(a.hView("eur")), "hView - eur"))
-	mux.Handle("GET /gbp", otelhttp.NewHandler(httpencoding.Handler(a.hView("gbp")), "hView - gbp"))
+	mux.Handle("/eur", otelhttp.NewHandler(httpencoding.Handler(a.hView("eur")), "hView - eur"))
+	mux.Handle("/gbp", otelhttp.NewHandler(httpencoding.Handler(a.hView("gbp")), "hView - gbp"))
 	// mux.Handle("GET /twd", otelhttp.NewHandler(httpencoding.Handler(a.hView("twd")), "hView - twd"))
 	mux.Handle("GET /{$}", otelhttp.NewHandler(httpencoding.Handler(a.hIndex()), "hIndex"))
 }
