@@ -5,7 +5,7 @@
 _tsnet:_
 [earbug](https://earbug.ihwa.liao.dev/)
 [fin](https://fin.ihwa.liao.dev/)
-[youtubefeed](https://youtubefeed.ihwa.liao.dev/)
+[ytfeed](https://ytfeed.ihwa.liao.dev/)
 
 _console:_
 [analytics](https://analytics.google.com)
