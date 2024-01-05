@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"flag"
@@ -141,6 +142,7 @@ func newTestrepoVersion() (string, error) {
 	if err != nil && !errors.Is(err, fs.ErrNotExist) {
 		return "", fmt.Errorf("read %s: %w", vf, err)
 	}
+	b, _, _ = bytes.Cut(b, []byte("\n"))
 	ctr, _ := strconv.Atoi(string(b))
 	ctr++
 
