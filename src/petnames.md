@@ -4,13 +4,26 @@
 
 ### _names_ for pet servers
 
-- Asami - [Leave Me Alone, I Don't Want a Romantic Comedy](https://www.webtoons.com/en/canvas/leave-me-alone-i-dont-want-a-romantic-comedy/list?title_no=506168)
-- Lucid - [Lucid](https://www.webtoons.com/en/canvas/lucid/list?title_no=250209)
-- Nyarla - [Crawling Dreams](https://www.webtoons.com/en/canvas/crawling-dreams/list?title_no=141539)
-- Dani - [That Which Flows By](https://www.webtoons.com/en/historical/that-which-flows-by/list?title_no=5419)
-- Lapis - [The Dark Lord's Confession](https://www.webtoons.com/en/fantasy/the-dark-lords-confession/list?title_no=4464)
-- Ihwa - [Hero Killer](https://www.webtoons.com/en/action/hero-killer/list?title_no=2745)
-- Medea - [Your Throne](https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009)
-- Hwaryun - [Tower of God](https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95)
-- Millenyn - [Wished You Were Dead](https://www.webtoons.com/en/drama/wished-you-were-dead/list?title_no=3591)
-- Layla - [Cry, or Better Yet, Beg](https://www.webtoons.com/en/drama/cry-or-better-yet-beg/list?title_no=5815)
+| name     | source                                                  | use             |
+| -------- | ------------------------------------------------------- | --------------- |
+| Asami    | [Leave Me Alone, I Don't Want a Romantic Comedy][asami] |                 |
+| Dani     | [That Which Flows By][dani]                             |                 |
+| Hwaryun  | [Tower of God][hwaryun]                                 | framwork laptop |
+| Ihwa     | [Hero Killer][ihwa]                                     | arm64 server    |
+| Lapis    | [The Dark Lord's Confession][lapis]                     | pixel 8         |
+| Layla    | [Cry, or Better Yet, Beg][layla]                        |                 |
+| Lucid    | [Lucid][lucid]                                          |                 |
+| Medea    | [Your Throne][medea]                                    |                 |
+| Millenyn | [Wished You Were Dead][millenyn]                        |                 |
+| Nyarla   | [Crawling Dreams][nyarla]                               |                 |
+
+[asami]: https://www.webtoons.com/en/canvas/leave-me-alone-i-dont-want-a-romantic-comedy/list?title_no=506168
+[lucid]: https://www.webtoons.com/en/canvas/lucid/list?title_no=250209
+[nyarla]: https://www.webtoons.com/en/canvas/crawling-dreams/list?title_no=141539
+[dani]: https://www.webtoons.com/en/historical/that-which-flows-by/list?title_no=5419
+[lapis]: https://www.webtoons.com/en/fantasy/the-dark-lords-confession/list?title_no=4464
+[ihwa]: https://www.webtoons.com/en/action/hero-killer/list?title_no=2745
+[medea]: https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009
+[hwaryun]: https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95
+[millenyn]: https://www.webtoons.com/en/drama/wished-you-were-dead/list?title_no=3591
+[layla]: https://www.webtoons.com/en/drama/cry-or-better-yet-beg/list?title_no=5815
