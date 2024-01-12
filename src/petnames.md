@@ -8,10 +8,11 @@
 | -------- | ------------------------------------------------------- | --------------- |
 | Asami    | [Leave Me Alone, I Don't Want a Romantic Comedy][asami] |                 |
 | Dani     | [That Which Flows By][dani]                             |                 |
+| Hwa-yeong | [The Crown Princess Scandal][hwayeong] | |
 | Hwaryun  | [Tower of God][hwaryun]                                 | framwork laptop |
 | Ihwa     | [Hero Killer][ihwa]                                     | arm64 server    |
-| Lapis    | [The Dark Lord's Confession][lapis]                     | pixel 8         |
-| Layla    | [Cry, or Better Yet, Beg][layla]                        |                 |
+| Lapis    | [The Dark Lord's Confession][lapis]                     | pixel 8 pro     |
+| Layla    | [Cry, or Better Yet, Beg][layla]                        | lichee pi 4a    |
 | Lucid    | [Lucid][lucid]                                          |                 |
 | Medea    | [Your Throne][medea]                                    |                 |
 | Millenyn | [Wished You Were Dead][millenyn]                        |                 |
@@ -27,3 +28,4 @@
 [hwaryun]: https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95
 [millenyn]: https://www.webtoons.com/en/drama/wished-you-were-dead/list?title_no=3591
 [layla]: https://www.webtoons.com/en/drama/cry-or-better-yet-beg/list?title_no=5815
+[hwayeong]: https://www.webtoons.com/en/fantasy/the-crown-princess-scandal/list?title_no=5478
