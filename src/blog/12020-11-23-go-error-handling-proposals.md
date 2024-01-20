@@ -126,7 +126,7 @@ some rely on `wrap` being smart and passing through `nil` (so not `fmt.Errorf`),
 - [`x := guard foo()`](https://go.dev/issue/31442)
 - [`x := must foo()`](https://gist.github.com/VictoriaRaymond/d70663a6ec6cdc59816b8806dccf7826)
 - [`x := foo!()`](https://go.dev/issue/21155)
-- [`x := foo()?`](https://go.dev/issue/39451), [also](https://go.dev/issue/51146), [also](<(https://gist.github.com/yaxinlx/1e013fec0e3c2469f97074dbf5d2e2c0)>)
+- [`x := foo()?`](https://go.dev/issue/39451), [also](https://go.dev/issue/51146), [also](https://gist.github.com/yaxinlx/1e013fec0e3c2469f97074dbf5d2e2c0)
 - [`x := #foo()`](https://go.dev/issue/18721)
 - [`x :=. foo()`](https://go.dev/issue/59664)
 - [`x, # := foo()`](https://go.dev/issue/22122): panic instead of return
