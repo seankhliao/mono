@@ -25,9 +25,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-02-22_ Zara Larsson
 - _12024-02-20_ Poppy
 - _12024-02-16_ Alessandra
-- _12024-01-26_ Witcher / Mystery Ensemble
 
-#### _12023-12-16_ FEMM
+##### _12024-01-26_  Mystery Ensemble
+
+Some light instrumental music from the Witcher game and tv series.
+Maybe I wasn't paying enough attention but I may not have recognized
+most of it.
+At least it was mostly pleasant.
+
+##### _12023-12-16_ FEMM
 
 We open with 2 Japanese mannequins in latex maid costumes carried on stage.
 It was a very visual performance,
@@ -36,7 +42,7 @@ the slightly more fluid but still precise and fully choreograhed remainder of th
 With their last show outside of Japan,
 the crowd was a bit smaller than expected, though there was an afternoon show as well.
 
-#### _12023-12-09_ Halestorm
+##### _12023-12-09_ Halestorm
 
 With _Black Veil Brides_, and _Mothica_
 
@@ -51,7 +57,7 @@ It felt old school rock and roll,
 no need for flashy stage props,
 just a clean, empty stage, with lights and music.
 
-#### _12023-12-08_ Communion Xmas Party
+##### _12023-12-08_ Communion Xmas Party
 
 With _Nectar Woode_, _Bear’s Den_, _Christof Van Der Ven_, _Jack Garratt_,
 _Jasmine Jethwa_, _Lucia & the Best Boys_, _Maisie Peters_, and _The Staves_
@@ -65,7 +71,7 @@ I don't think I recognized too many songs.
 _Maisie Peters_ was awesome as always,
 _Lucia_ was someone I might consider listening to again.
 
-#### _12023-12-01_ Against the Current
+##### _12023-12-01_ Against the Current
 
 With _Call Me Amour_ and _LØLØ_
 
@@ -82,7 +88,7 @@ To top it all off, they ended with Legends Never Die,
 the song that made me think: "i wonder who's behind this",
 and pick up on music as a thing.
 
-#### _12023-11-30_ Ashnikko
+##### _12023-11-30_ Ashnikko
 
 With _Hemlocke Springs_
 
@@ -94,7 +100,7 @@ I knew more of these than I expected,
 and even jumped around a bit.
 Very fun.
 
-#### _12023-11-24_ Chloe Adams
+##### _12023-11-24_ Chloe Adams
 
 With _ili_
 
