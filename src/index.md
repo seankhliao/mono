@@ -17,6 +17,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 - _12024-05-23_ Leah Kate
 - _12024-05-01_ Spirited Away
+- _12024-04-30_ Ari Abdul
 - _12024-04-23_ Tate McRae
 - _12024-03-25_ Madison Beer
 - _12024-03-19_ Cannons
