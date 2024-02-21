@@ -24,8 +24,29 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-03-09_ Cloudy June
 - _12024-02-29_ RØRY
 - _12024-02-22_ Zara Larsson
-- _12024-02-20_ Poppy
-- _12024-02-16_ Alessandra
+
+##### _12024-02-20_ Poppy
+
+With _Wargasm_.
+
+We open the night with a mosh pit,
+and we have one for almost every song (well mostly electronic sounds).
+It makes me wonder if I should have gone down into the stalls instead
+for _Wargasm_.
+_Poppy_ was a bit softer on the electronic,
+but I liked it better, with the higher dynamic range.
+It did feel a bit impersonal with the chatter in-between being pre-recorded,
+at the same time, very on brand.
+The dancing felt a bit in the uncanny valley,
+but overall a pretty good time.
+
+
+##### _12024-02-16_ Alessandra
+
+Pop music is back on the schedule,
+this time with Norway's Eurovision 2023 representative _Alessandra_.
+It was good, though not particularly special,
+just an energetic night out.
 
 ##### _12024-01-26_  Mystery Ensemble
 
@@ -318,7 +339,7 @@ With _Jayd Marie_, _Detweiler_, and _Lekna_
 
 My hopes weren't high when I saw the venue was one of the smaller ones,
 but it was surprisingly good.
-Catchy and energertic,
+Catchy and energetic,
 with a cooperative audience that danced along.
 
 ##### _12023-06-06_ Royal Philharmonic Orchestra
