@@ -15,6 +15,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
+- _12024-11-02_ Kamelot with Blackbriar
 - _12024-05-23_ Leah Kate
 - _12024-05-01_ Spirited Away
 - _12024-04-30_ Ari Abdul
@@ -23,7 +24,21 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-03-19_ Cannons
 - _12024-03-09_ Cloudy June
 - _12024-02-29_ RØRY
-- _12024-02-22_ Zara Larsson
+
+##### _12024-02-22_ Zara Larsson
+
+With _Yaeger_.
+
+Chill and energetic,
+not quite words that go together, 
+but that was the overall vibe I got from _Yaeger_.
+It was fun, relaxing, and got us all hyped up for Zara.
+_Zara Larsson_ came in popstar style,
+with the usual 4 backing dancers and giant screen in the back.
+With only a slight lull in the middle, 
+it was high energy singing and dancing,
+both on the stage and in the crowds.
+So fun.
 
 ##### _12024-02-20_ Poppy
 
