@@ -32,6 +32,8 @@ we could also see p99 latency for serving the html page was 200ms,
 compared to mere microseconds for the api responses.
 I think it may have to do with the page being 10kb.
 
+I may have to reevaluate how resource hungry http servers need to be.
+
 
 #### _app_ code
 
