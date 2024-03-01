@@ -23,7 +23,13 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-03-25_ Madison Beer
 - _12024-03-19_ Cannons
 - _12024-03-09_ Cloudy June
-- _12024-02-29_ RØRY
+
+##### _12024-02-29_ RØRY
+
+With _lleo_ and _Uninvited_.
+
+Sadcore? I guess that's the genre we're in now.
+_RØRY_ was interesting but it just never felt quite aligned to what i was feeling.
 
 ##### _12024-02-22_ Zara Larsson
 
