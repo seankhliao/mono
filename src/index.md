@@ -71,6 +71,7 @@ Dates using the
 - Japan — 12018-03, 12023-02
 - Lithuania — 12022-12
 - Luxembourg — 12019-10
+- Malta — 12024-02
 - Netherlands — **12019—12022**
 - Northern Ireland — 12023-06
 - Norway — 12023-07
