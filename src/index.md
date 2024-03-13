@@ -16,13 +16,23 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12024-11-02_ Kamelot with Blackbriar
+- _12024-09-03_ girl in red
 - _12024-05-23_ Leah Kate
 - _12024-05-01_ Spirited Away
 - _12024-04-30_ Ari Abdul
 - _12024-04-23_ Tate McRae
 - _12024-03-25_ Madison Beer
 - _12024-03-19_ Cannons
-- _12024-03-09_ Cloudy June
+
+##### _12024-03-09_ Cloudy June
+
+With _King Mala_.
+
+I didn't have high hopes, but _Cloudy June_ was pretty good,
+apparently I knew quite of few of her songs.
+I remember first noticing her from a very slow, sad song,
+but this set was mostly fairly energetic.
+Though the lighting was bad when I wanted to get pictures...
 
 ##### _12024-02-29_ RØRY
 
