@@ -16,6 +16,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12024-11-02_ Kamelot with Blackbriar
+- _12024-10-04_ Visions of Atlantis
 - _12024-09-03_ girl in red
 - _12024-05-23_ Leah Kate
 - _12024-05-01_ Spirited Away
