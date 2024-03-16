@@ -17,8 +17,10 @@ func ExampleRegisterFlags() {
 			S1 string `flag:"string_1,help me"`
 		}
 		B1  bool
+		b2  bool
 		B3  bool `flag:"bool_3"`
 		S2  string
+		s3  string
 		I1  int
 		I16 int16
 		I64 int64
@@ -30,7 +32,9 @@ func ExampleRegisterFlags() {
 		A2  []int
 	}
 
-	var conf Config
+	conf := Config{
+		b2: false, s3: "", // staticcheck U1000
+	}
 	err := structflag.RegisterFlags(fset, &conf, "f")
 	if err != nil {
 		panic(err)
