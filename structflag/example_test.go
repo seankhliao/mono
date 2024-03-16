@@ -17,10 +17,8 @@ func ExampleRegisterFlags() {
 			S1 string `flag:"string_1,help me"`
 		}
 		B1  bool
-		b2  bool
 		B3  bool `flag:"bool_3"`
 		S2  string
-		s3  string
 		I1  int
 		I16 int16
 		I64 int64

@@ -212,14 +212,6 @@ func setDefaults(ctx context.Context, c Config, installID int64, owner, repo str
 	return nil
 }
 
-type dataTransport struct{}
-
-func (dataTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	return &http.Response{
-		Body: io.NopCloser(strings.NewReader(req.URL.Opaque)),
-	}, nil
-}
-
 var defaultConfig = map[string]github.Repository{
 	"erred": {
 		AllowMergeCommit:    github.Bool(false),

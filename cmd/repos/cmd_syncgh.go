@@ -100,7 +100,7 @@ func (c syncGHCmd) run(ctx context.Context) error {
 	allReposM := make(map[string]string)
 	for _, user := range c.users {
 		for page := 1; true; page++ {
-			repos, res, err := client.Repositories.List(ctx, user, &github.RepositoryListOptions{
+			repos, res, err := client.Repositories.ListByUser(ctx, user, &github.RepositoryListByUserOptions{
 				ListOptions: github.ListOptions{
 					Page:    page,
 					PerPage: 100,
