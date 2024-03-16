@@ -399,60 +399,6 @@ feeds: {
 		}
 	}
 
-	pretty: {
-		name: "pretty things"
-		description: """
-			Pretty....
-			"""
-		channels: {
-			"@alexandradaddario": {
-				title:      "Alexandra Daddario"
-				channel_id: "UCIU3ZZKZxT5e7OBA5avh5VQ"
-				uploads_id: "UUIU3ZZKZxT5e7OBA5avh5VQ"
-			}
-			"@chrissycostanza": {
-				title:      "Chrissy Costanza"
-				channel_id: "UCj-ZvTVcl9mphVZiRlcNS-Q"
-				uploads_id: "UUj-ZvTVcl9mphVZiRlcNS-Q"
-			}
-			"@dashataranbaby": {
-				title:      "Dasha Taran"
-				channel_id: "UC8cBpF1nXrpTVbztdj3iSdQ"
-				uploads_id: "UU8cBpF1nXrpTVbztdj3iSdQ"
-			}
-			"@ikkyu3_193": {
-				title:      "いくみ_193ch"
-				channel_id: "UCMEswlGLcAXxWVOGDS_gaUw"
-				uploads_id: "UUMEswlGLcAXxWVOGDS_gaUw"
-			}
-			"@minami_3s": {
-				title:      "南アナの本番3秒前"
-				channel_id: "UCniTv9IbS9oCB0VKRM3hDqA"
-				uploads_id: "UUniTv9IbS9oCB0VKRM3hDqA"
-			}
-			"@pjms_miku": {
-				title:      "パジャマの未来"
-				channel_id: "UCfP8S3sak8urA1om4-zBi7w"
-				uploads_id: "UUfP8S3sak8urA1om4-zBi7w"
-			}
-			"@umi_shinonome": {
-				title:      "うみちゃんねる【東雲うみ】"
-				channel_id: "UCLnac6g3R8YcGOisZxsVIpw"
-				uploads_id: "UULnac6g3R8YcGOisZxsVIpw"
-			}
-			"@user-rb6sl7yj3n": {
-				title:      "ちゃづり"
-				channel_id: "UCyhCR0l5TixeU7QM0AGL5eg"
-				uploads_id: "UUyhCR0l5TixeU7QM0AGL5eg"
-			}
-			"@yeonyuneko": {
-				title:      "연유네코 Yeonyuneko"
-				channel_id: "UCzkBMzO9YfJa2tPJ_SbJIFA"
-				uploads_id: "UUzkBMzO9YfJa2tPJ_SbJIFA"
-			}
-		}
-	}
-
 	junk: {
 		name: "junk food"
 		description: """
@@ -460,21 +406,6 @@ feeds: {
 			purely for entertainment.
 			"""
 		channels: {
-			"@filmtheory": {
-				title:      "The Film Theorists"
-				channel_id: "UC3sznuotAs2ohg_U__Jzj_Q"
-				uploads_id: "UU3sznuotAs2ohg_U__Jzj_Q"
-			}
-			"@foodtheory": {
-				title:      "The Food Theorists"
-				channel_id: "UCHYoe8kQ-7Gn9ASOlmI0k6Q"
-				uploads_id: "UUHYoe8kQ-7Gn9ASOlmI0k6Q"
-			}
-			"@gametheory": {
-				title:      "The Game Theorists"
-				channel_id: "UCo_IB5145EVNcf8hw1Kku7w"
-				uploads_id: "UUo_IB5145EVNcf8hw1Kku7w"
-			}
 			"@girlfriendreviews": {
 				title:      "Girlfriend Reviews"
 				channel_id: "UC2eEGT06FrWFU6VBnPOR9lg"
@@ -509,6 +440,11 @@ feeds: {
 				title:      "The Spiffing Brit"
 				channel_id: "UCRHXUZ0BxbkU2MYZgsuFgkQ"
 				uploads_id: "UURHXUZ0BxbkU2MYZgsuFgkQ"
+			}
+			"@styletheorists": {
+				title:      "The Style Theorists"
+				channel_id: "UCd4t3EEUy0LUOM4MTdjpNHA"
+				uploads_id: "UUd4t3EEUy0LUOM4MTdjpNHA"
 			}
 		}
 	}

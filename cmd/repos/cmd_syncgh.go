@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"sort"
 
-	"github.com/google/go-github/v56/github"
+	"github.com/google/go-github/v60/github"
 	"github.com/google/subcommands"
 	"golang.org/x/oauth2"
 )
