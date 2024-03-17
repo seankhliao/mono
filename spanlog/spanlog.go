@@ -32,31 +32,28 @@ type Processor struct {
 	Handler slog.Handler
 }
 
-func (p *Processor) commonAttrs(s trace.ReadOnlySpan, attrs ...slog.Attr) []slog.Attr {
-	n := make([]slog.Attr, 0, len(attrs)+2)
+func (p *Processor) appendCommon(attrs []slog.Attr, s trace.ReadOnlySpan) []slog.Attr {
 	if p.LogID {
-		n = append(attrs,
+		attrs = append(attrs,
 			slog.String("trace_id", s.SpanContext().TraceID().String()),
 			slog.String("span_id", s.SpanContext().SpanID().String()),
 		)
 	}
-	n = append(n, attrs...)
-	return n
+	return attrs
 }
 
 func (p *Processor) OnStart(parent context.Context, s trace.ReadWriteSpan) {
 	ctx := context.Background()
 	// span start: debug
 	if p.Handler.Enabled(ctx, slog.LevelDebug) {
-		h := p.Handler.WithAttrs(p.commonAttrs(s,
-			slog.Group("span",
-				slog.String("type", "start"),
-			),
-		))
-		h = h.WithGroup(path.Base(s.InstrumentationScope().Name))
+		attrs := p.appendCommon(make([]slog.Attr, 0, 10), s)
+		attrs = append(attrs,
+			slog.Group("span", slog.String("type", "start")),
+			slog.Any(path.Base(s.InstrumentationScope().Name), slog.GroupValue(attr2attr(s.Attributes())...)),
+		)
 		rec := slog.NewRecord(s.StartTime(), slog.LevelDebug, s.Name(), 0)
-		rec.AddAttrs(attr2attr(s.Attributes())...)
-		h.Handle(ctx, rec)
+		rec.AddAttrs(attrs...)
+		p.Handler.Handle(ctx, rec)
 	}
 }
 
@@ -69,18 +66,17 @@ func (p *Processor) OnEnd(s trace.ReadOnlySpan) {
 		level = slog.LevelWarn
 	}
 	if p.Handler.Enabled(ctx, level) {
-		h := p.Handler.WithAttrs(p.commonAttrs(s,
-			slog.Group("span",
-				slog.String("type", "event"),
-			),
-		))
-		h = h.WithGroup(path.Base(s.InstrumentationScope().Name))
+		attrs := p.appendCommon(make([]slog.Attr, 0, 10), s)
+		attrs = append(attrs, slog.Group("span", slog.String("type", "event")))
+		attrs = p.appendCommon(attrs, s)
+		h := p.Handler.WithAttrs(attrs).WithGroup(path.Base(s.InstrumentationScope().Name))
 		for _, event := range s.Events() {
 			level := level
 			if event.Name == semconv.ExceptionEventName {
 				level = slog.LevelError
 			}
 			rec := slog.NewRecord(event.Time, level, event.Name, 0)
+
 			rec.AddAttrs(attr2attr(event.Attributes)...)
 			h.Handle(ctx, rec)
 		}
@@ -92,7 +88,7 @@ func (p *Processor) OnEnd(s trace.ReadOnlySpan) {
 		level = slog.LevelError
 	}
 	if p.Handler.Enabled(ctx, level) {
-		spanAttrs := make([]any, 0, 3)
+		spanAttrs := make([]slog.Attr, 0, 3)
 		spanAttrs = append(spanAttrs,
 			slog.String("type", "end"),
 			slog.Duration("duration", s.EndTime().Sub(s.StartTime())),
@@ -103,13 +99,15 @@ func (p *Processor) OnEnd(s trace.ReadOnlySpan) {
 				slog.String("description", s.Status().Description),
 			))
 		}
-		h := p.Handler.WithAttrs(p.commonAttrs(s,
-			slog.Group("span", spanAttrs...),
-		))
-		h = h.WithGroup(path.Base(s.InstrumentationScope().Name))
+
+		attrs := p.appendCommon(make([]slog.Attr, 0, 10), s)
+		attrs = append(attrs,
+			slog.Any("span", slog.GroupValue(spanAttrs...)),
+			slog.Any(path.Base(s.InstrumentationScope().Name), slog.GroupValue(attr2attr(s.Attributes())...)),
+		)
 		rec := slog.NewRecord(s.EndTime(), level, s.Name(), 0)
-		rec.AddAttrs(attr2attr(s.Attributes())...)
-		h.Handle(ctx, rec)
+		rec.AddAttrs(attrs...)
+		p.Handler.Handle(ctx, rec)
 	}
 }
 
