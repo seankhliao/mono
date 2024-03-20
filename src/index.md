@@ -23,7 +23,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-04-30_ Ari Abdul
 - _12024-04-23_ Tate McRae
 - _12024-03-25_ Madison Beer
-- _12024-03-19_ Cannons
+
+##### _12024-03-19_ Cannons
+
+With _NINA_ and _Radio Wolf_.
+
+Relaxed, cool, and sensual was the vibe tonight with _NINA_ and _Radio Wolf_.
+Much like _Cannons_ though I'd replace relaxed with laid back.
+It wasn't intense, but still had a positive, upbeat feel.
+I was honestly surprised that not many people seemed to be dancing...
 
 ##### _12024-03-09_ Cloudy June
 
