@@ -76,6 +76,7 @@ Dates using the
 - Northern Ireland — 12023-06
 - Norway — 12023-07
 - Philippines — 12017-08
+- Portugal — 12024-03
 - Russia — **12000—12005**
 - Scotland — 12022-06
 - Singapore — 12017-01
@@ -86,7 +87,7 @@ Dates using the
 - Taiwan — **11996—12000, 12005—12009, 12011—12019**, 12023-03
 - Timor-Leste — 12018-02
 - Turkey — 12022-09
-- United States — 12019-04, 12023-07
+- United States — 12019-04, 12023-07, 12024-03
 - Vatican — 12021-12
 - Wales — 12022-06
 
