@@ -16,13 +16,24 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12024-11-02_ Kamelot with Blackbriar
+- _12024-10-26_ Hatsune Miku
 - _12024-10-04_ Visions of Atlantis
+- _12024-10-02_ Aurora
+- _12024-09-26_ Mothica
 - _12024-09-03_ girl in red
 - _12024-05-23_ Leah Kate
 - _12024-05-01_ Spirited Away
 - _12024-04-30_ Ari Abdul
 - _12024-04-23_ Tate McRae
-- _12024-03-25_ Madison Beer
+
+##### _12024-03-25_ Madison Beer
+
+Such a lovely performance,
+This was another one with the entire crowd singing along
+for most of the songs.
+There was a cutesy elegance to _Madison Beer_,
+which I felt was a bit unique compared to all the other shows
+I've recently seen.
 
 ##### _12024-03-19_ Cannons
 
