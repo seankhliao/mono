@@ -1,39 +1,26 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width,minimum-scale=1,initial-scale=1"
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"
   />
   <title>liao.dev</title>
 
+  
   <!-- Google tag (gtag.js) -->
-  <script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=G-9GLEE4YLNC"
-  ></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9GLEE4YLNC"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-    gtag("config", "G-9GLEE4YLNC");
+    gtag('config', 'G-9GLEE4YLNC');
   </script>
+  
 
-  <meta name="theme-color" content="#000000" />
-  <link rel="icon" href="https://seankhliao.com/favicon.ico" />
-  <link
-    rel="icon"
-    href="https://seankhliao.com/static/icon.svg"
-    type="image/svg+xml"
-    sizes="any"
-  />
-  <link
-    rel="apple-touch-icon"
-    href="https://seankhliao.com/static/icon-192.png"
-  />
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="https://seankhliao.com/favicon.ico">
+  <link rel="icon" href="https://seankhliao.com/static/icon.svg" type="image/svg+xml" sizes="any">
+  <link rel="apple-touch-icon" href="https://seankhliao.com/static/icon-192.png">
 
   <style>
     * {
@@ -49,9 +36,7 @@
 
       background: var(--background);
       color: var(--text);
-      font:
-        20px "Inconsolata",
-        monospace;
+      font: 20px "Inconsolata", monospace;
     }
 
     @font-face {
@@ -59,13 +44,10 @@
       font-style: normal;
       font-weight: 400;
       font-display: swap;
-      src:
-        local("Inconsolata"),
-        local("Inconsolata-Regular"),
+      src: local("Inconsolata"), local("Inconsolata-Regular"),
         url(/static/inconsolata-var.woff2) format("woff2-variations"),
         url(/static/inconsolata-400.woff2) format("woff2"),
-        url(https://seankhliao.com/static/inconsolata-var.woff2)
-          format("woff2-variations"),
+        url(https://seankhliao.com/static/inconsolata-var.woff2) format("woff2-variations"),
         url(https://seankhliao.com/static/inconsolata-400.woff2) format("woff2");
     }
     @font-face {
@@ -73,16 +55,13 @@
       font-style: normal;
       font-weight: 700;
       font-display: swap;
-      src:
-        local("Inconsolata Bold"),
-        local("Inconsolata-Bold"),
+      src: local("Inconsolata Bold"), local("Inconsolata-Bold"),
         url(/static/inconsolata-var.woff2) format("woff2-variations"),
         url(/static/inconsolata-700.woff2) format("woff2"),
-        url(https://seankhliao.com/static/inconsolata-var.woff2)
-          format("woff2-variations"),
+        url(https://seankhliao.com/static/inconsolata-var.woff2) format("woff2-variations"),
         url(https://seankhliao.com/static/inconsolata-700.woff2) format("woff2");
     }
-
+  
     body {
       display: grid;
       place-items: center;
@@ -105,25 +84,13 @@
       font-style: normal;
       font-weight: 700;
     }
-    a,
-    a:visited {
+    a, a:visited {
       color: var(--text-dark);
       font-weight: 400;
       text-decoration: none;
     }
-
-    main:has(> .liao-dev:hover) > .liao-dev,
-    main:has(> .seankhliao-com:hover) > .seankhliao-com,
-    main:has(> .twitter:hover) > .twitter,
-    main:has(> .email:hover) > .email,
-    main:has(> .github:hover) > .github,
-    main:has(> .libera:hover) > .libera,
-    main:has(> .linkedin:hover) > .linkedin,
-    main:has(> .mastodon:hover) > .mastodon,
-    main:has(> .sean-liao-dev:hover) > .sean-liao-dev,
-    main:has(> .blog:hover) > .blog,
-    main:has(> .instagram:hover) > .instagram,
-    main:has(> .oftc:hover) > .oftc {
+    
+    main:has(> .twitter:hover) > .twitter,main:has(> .blog:hover) > .blog,main:has(> .bluesky:hover) > .bluesky,main:has(> .github:hover) > .github,main:has(> .instagram:hover) > .instagram,main:has(> .libera:hover) > .libera,main:has(> .linkedin:hover) > .linkedin,main:has(> .sean-liao-dev:hover) > .sean-liao-dev,main:has(> .email:hover) > .email,main:has(> .liao-dev:hover) > .liao-dev,main:has(> .mastodon:hover) > .mastodon,main:has(> .oftc:hover) > .oftc,main:has(> .seankhliao-com:hover) > .seankhliao-com {
       color: var(--primary);
       transition: color 0.16s;
       text-decoration: underline 1px var(--primary);
@@ -131,319 +98,137 @@
   </style>
 
   <main>
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-    <span>Hi, I'm <em>sean</em>khliao</span>
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-    <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao"
-      >mastodon</a
-    >
-    <a
-      class="libera"
-      rel="me"
-      href="ircs://irc.libera.chat:6697/seankhliao,isuser"
-      >libera</a
-    >
-    <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-    <a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-    <a class="seankhliao-com" rel="me" href="https://seankhliao.com/"
-      >seankhliao.com</a
-    >
-    <a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser"
-      >oftc</a
-    >
-    <a class="instagram" rel="me" href="https://instagram.com/seankhliao"
-      >instagram</a
-    >
-    <a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao"
-      >linkedin</a
-    >
-    <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/"
-      >sean.liao.dev</a
-    >
-    <a class="twitter" rel="me" href="https://twitter.com/seankhliao"
-      >twitter</a
-    >
-    <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+  <a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<span>Hi, I'm <em>sean</em>khliao</span>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="libera" rel="me" href="ircs://irc.libera.chat:6697/seankhliao,isuser">libera</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="oftc" rel="me" href="ircs://irc.oftc.net:6697/seankhliao,isuser">oftc</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+
   </main>
-</html>
