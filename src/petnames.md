@@ -18,6 +18,7 @@
 | Medea     | [Your Throne][medea]                                    |                 |
 | Millenyn  | [Wished You Were Dead][millenyn]                        |                 |
 | Nyarla    | [Crawling Dreams][nyarla]                               |                 |
+| Scarlett  | [Ten Ways to Get Dumped by a Tyrant](scarlett)          |                 |
 
 [asami]: https://www.webtoons.com/en/canvas/leave-me-alone-i-dont-want-a-romantic-comedy/list?title_no=506168
 [lucid]: https://www.webtoons.com/en/canvas/lucid/list?title_no=250209
@@ -31,3 +32,4 @@
 [layla]: https://www.webtoons.com/en/drama/cry-or-better-yet-beg/list?title_no=5815
 [hwayeong]: https://www.webtoons.com/en/fantasy/the-crown-princess-scandal/list?title_no=5478
 [justia]: https://www.browndust2.com/en-us/
+[scarlett]: https://www.webtoons.com/en/fantasy/ten-ways-to-get-dumped-by-a-tyrant/list?title_no=5811
