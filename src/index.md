@@ -24,7 +24,21 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-08-28_ Ari Abdul
 - _12024-05-23_ Leah Kate
 - _12024-05-01_ Spirited Away
-- _12024-04-23_ Tate McRae
+- _12024-04-24_ ITZY
+
+
+##### _12024-04-23_ Tate McRae
+
+With _charlieonnafriday_
+
+_Tate McRae_ slayed the evening with a mix of song and dance.
+There was some alternating between fast and slow songs,
+which was different from the usual fast-slow-fast sandwich.
+The singing was good, 
+though with heavy use of prerecorded parts,
+enabling some more energetic routines.
+It was interesting to see there was a fan in the center to make her hair flow in the wind,
+really reinforcing the glamour look.
 
 ##### _12024-03-25_ Madison Beer
 
