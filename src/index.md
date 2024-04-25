@@ -24,7 +24,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-08-28_ Ari Abdul
 - _12024-05-23_ Leah Kate
 - _12024-05-01_ Spirited Away
-- _12024-04-24_ ITZY
+
+##### _12024-04-24_ ITZY
+
+I can't say that I was really in to their music,
+I just saw an ad on the tube and thought why not....
+There were a lot of screaming fans,
+I hope my eardrums are still ok.
+The performance itself was quite glitzy,
+with every part choreograhed with good dances.
 
 
 ##### _12024-04-23_ Tate McRae
