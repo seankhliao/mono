@@ -44,6 +44,7 @@ that even though it was all in japanese and I kept having to glance at the subti
 it didn't really distract me.
 The lavishness of the setup and costumes left me in awe of the whole thing.
 The fact that the puppeteers didn't hide at all were an endearing part of the show.
+_Mone Kamishiraishi_ as Chihiro, _Kotaro Daigo_ as Haku.
 
 ##### _12024-04-24_ ITZY
 
