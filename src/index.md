@@ -32,6 +32,17 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _12024-05-01_ Spirited Away
 
+This was such a magical experience.
+Even though it had been forever since I'd seen the original animation,
+this brought back so many memories.
+The set design was wonderful,
+as was the masterful use of the rotating set piece,
+who knew that a single odly shaped half building could turn into so many locations.
+I cannot sing enough praises for the actors,
+there was so much emotion,
+that even though it was all in japanese and I kept having to glance at the subtitles on the side,
+it didn't really distract me.
+
 ##### _12024-04-24_ ITZY
 
 I can't say that I was really in to their music,
