@@ -15,6 +15,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
+- _12025-07-17_ Billie Eilish
 - _12024-11-02_ Kamelot with Blackbriar
 - _12024-10-26_ Hatsune Miku
 - _12024-10-04_ Visions of Atlantis
@@ -22,8 +23,14 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-09-26_ Mothica
 - _12024-09-03_ girl in red
 - _12024-08-28_ Ari Abdul
+- _12024-06-21_ Charlotte Sands
+- _12024-06-18_ AViVA
+- _12024-06-16_ IVE
+- _12024-06-10_ ATARASHII GAKKO
+- _12024-05-28_ Allie X
 - _12024-05-23_ Leah Kate
-- _12024-05-01_ Spirited Away
+
+##### _12024-05-01_ Spirited Away
 
 ##### _12024-04-24_ ITZY
 
