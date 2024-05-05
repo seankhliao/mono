@@ -1,6 +1,8 @@
 package deploy
 
-k8s: "": v1: "ConfigMap": "kube-system": "cilium-config": {
+import corev1 "k8s.io/api/core/v1"
+
+k8s: "": v1: "ConfigMap": "kube-system": "cilium-config": corev1.#ConfigMap & {
 	data: {
 
 		// Identity allocation mode selects how identities are shared between cilium
@@ -155,7 +157,7 @@ k8s: "": v1: "ConfigMap": "kube-system": "cilium-config": {
 		"synchronize-k8s-nodes":           "true"
 		"operator-api-serve-addr":         "127.0.0.1:9234"
 		// Enable Hubble gRPC service.
-		"enable-hubble": "true"
+		"enable-hubble": "false"
 		// UNIX domain socket for Hubble server to listen to.
 		"hubble-socket-path":             "/var/run/cilium/hubble.sock"
 		"hubble-export-file-max-size-mb": "10"
