@@ -12,10 +12,13 @@ import (
 	"encoding"
 	"flag"
 	"fmt"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
+
+	"cuelang.org/go/cue/cuecontext"
 )
 
 func RegisterFlags(fset *flag.FlagSet, c any, prefix string) error {
@@ -46,6 +49,10 @@ func RegisterFlags(fset *flag.FlagSet, c any, prefix string) error {
 
 		// used to refer to this field
 		fidx := f.Index
+
+		if f.Type.Kind() != reflect.Struct {
+			desc += fmt.Sprintf(" (default: %v)", cv.FieldByIndex(fidx))
+		}
 
 		// textmarshalers first
 		if f.Type.Implements(reflect.TypeFor[encoding.TextUnmarshaler]()) {
@@ -146,4 +153,22 @@ func RegisterFlags(fset *flag.FlagSet, c any, prefix string) error {
 
 	}
 	return nil
+}
+
+func ConfigFile(fset *flag.FlagSet, c any) {
+	// register config file
+	fset.Func("config", "path to config file in cue", func(s string) error {
+		b, err := os.ReadFile(s)
+		if err != nil {
+			return fmt.Errorf("read config file: %w", err)
+		}
+
+		cuectx := cuecontext.New()
+		val := cuectx.CompileBytes(b)
+		err = val.Decode(c)
+		if err != nil {
+			return fmt.Errorf("decode config file: %w", err)
+		}
+		return nil
+	})
 }

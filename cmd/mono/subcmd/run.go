@@ -13,6 +13,12 @@ func Run(cmds map[string]Runner) {
 	ctx, cancel := signal.NotifyContext(ctx, unix.SIGINT, unix.SIGTERM)
 	defer cancel()
 
+	go func() {
+		// second force stop
+		<-ctx.Done()
+		cancel()
+	}()
+
 	prog := Prog{
 		cmds: cmds,
 	}

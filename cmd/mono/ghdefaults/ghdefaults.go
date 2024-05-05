@@ -19,6 +19,10 @@ import (
 	"golang.org/x/oauth2"
 )
 
+type Handlers struct {
+	Webhook http.Handler
+}
+
 type Config struct {
 	WebhookSecret string `flag:",shared secret with github to validate webhook payloads"`
 	AppID         int64  `flag:",registered github app id"`
@@ -29,28 +33,30 @@ type Config struct {
 	ctrEvents metric.Int64Counter
 }
 
-func Register(c Config, mux *http.ServeMux) {
+func New(c Config) Handlers {
 	c.WebhookSecret = strings.TrimSpace(c.WebhookSecret)
 	c.PrivateKey = c.PrivateKey + "\n"
 
 	c.t = otel.Tracer("go.seankhliao.com/mono/cmd/mono/ghdefaults")
 
-	mux.HandleFunc("POST /ghdefaults/webhook", HandleWebhook(c))
+	return Handlers{
+		Webhook: HandleWebhook(c),
+	}
 }
 
-func HandleWebhook(c Config) http.HandlerFunc {
+func HandleWebhook(c Config) http.Handler {
 	mt := otel.Meter("go.seankhliao.com/mono/cmd/mono/ghdefaults")
 	c.ctrError, _ = mt.Int64Counter("errors")
 	c.ctrEvents, _ = mt.Int64Counter("ghdefaults.webhook.events")
 
-	return func(rw http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		ctx, span := c.t.Start(r.Context(), "handle webhook")
 		defer span.End()
 
 		event, eventType, err := getPayload(ctx, c, r)
 		if err != nil {
 			c.ctrError.Add(ctx, 1)
-			spanerr.Error(span, "failed to get payload", err)
+			spanerr.Err(span, "failed to get payload", err)
 			http.Error(rw, "bad request", http.StatusBadRequest)
 			return
 		}
@@ -76,13 +82,13 @@ func HandleWebhook(c Config) http.HandlerFunc {
 		err = handler(ctx, c, event)
 		if err != nil {
 			c.ctrError.Add(ctx, 1)
-			spanerr.Error(span, "error processing event", err)
+			spanerr.Err(span, "error processing event", err)
 			http.Error(rw, "internal error", http.StatusInternalServerError)
 			return
 		}
 
 		io.WriteString(rw, "ok")
-	}
+	})
 }
 
 func getPayload(ctx context.Context, c Config, r *http.Request) (any, string, error) {
@@ -132,7 +138,7 @@ func installEvent(ctx context.Context, c Config, evt any) error {
 
 	if len(errs) > 0 {
 		err := errors.Join(errs...)
-		return spanerr.Error(span, "error setting default", err)
+		return spanerr.Err(span, "error setting default", err)
 	}
 
 	return nil
@@ -160,7 +166,7 @@ func repoEvent(ctx context.Context, c Config, evt any) error {
 		}
 		err := setDefaults(ctx, c, installID, owner, repo, *event.Repo.Fork)
 		if err != nil {
-			return spanerr.Error(span, "error setting defaults", err)
+			return spanerr.Err(span, "error setting defaults", err)
 		}
 	}
 	return nil
@@ -177,13 +183,13 @@ func setDefaults(ctx context.Context, c Config, installID int64, owner, repo str
 	tr := http.DefaultTransport
 	tr, err := ghinstallation.NewAppsTransport(tr, c.AppID, []byte(c.PrivateKey))
 	if err != nil {
-		return spanerr.Error(span, "create ghinstallation transport", err)
+		return spanerr.Err(span, "create ghinstallation transport", err)
 	}
 
 	client := github.NewClient(&http.Client{Transport: otelhttp.NewTransport(tr)})
 	installToken, _, err := client.Apps.CreateInstallationToken(ctx, installID, nil)
 	if err != nil {
-		return spanerr.Error(span, "create installation token", err)
+		return spanerr.Err(span, "create installation token", err)
 	}
 
 	client = github.NewClient(&http.Client{
@@ -195,7 +201,7 @@ func setDefaults(ctx context.Context, c Config, installID int64, owner, repo str
 	config := defaultConfig[owner]
 	_, _, err = client.Repositories.Edit(ctx, owner, repo, &config)
 	if err != nil {
-		return spanerr.Error(span, "update repo settings", err)
+		return spanerr.Err(span, "update repo settings", err)
 	}
 
 	if fork {
@@ -205,7 +211,7 @@ func setDefaults(ctx context.Context, c Config, installID int64, owner, repo str
 			},
 		)
 		if err != nil {
-			return spanerr.Error(span, "disable github actions on fork", err)
+			return spanerr.Err(span, "disable github actions on fork", err)
 		}
 	}
 

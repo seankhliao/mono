@@ -1,0 +1,39 @@
+apiVersion: skaffold/v4beta10
+kind: Config
+metadata:
+  name: foo
+build:
+  artifacts:
+    - image: ghcr.io/seankhliao/foo:latest
+      ko:
+        fromImage: gcr.io/distroless/static-debian12:nonroot
+        env:
+          - CGO_ENABLED=0
+        flags:
+          - -trimpath
+        ldflags:
+          - -s
+          - -w
+  tagPolicy:
+    inputDigest: {}
+  platforms:
+    - linux/arm64
+    - linux/amd64
+  local:
+    concurrency: 0
+manifests:
+  kpt:
+    - ./
+  hooks:
+    before:
+      - host:
+          command:
+            - cue
+            - cmd
+            - k8smanifests
+deploy:
+  kpt:
+    applyFlags:
+      - --server-side
+  statusCheck: true
+  kubeContext: user@asami
