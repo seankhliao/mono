@@ -1,0 +1,47 @@
+package deploy
+
+import (
+	appsv1 "k8s.io/api/apps/v1"
+)
+
+k8s: apps: v1: Deployment: "kube-system": {
+	"softserve": appsv1.#Deployment
+	"softserve": (#LabelSelector & {
+		#args: labels: {
+			"app.kubernetes.io/name": "softserve"
+		}
+	}).out
+	"softserve": {
+		spec: revisionHistoryLimit: 1
+		spec: strategy: type: "Recreate"
+		spec: template: spec: {
+			containers: [{
+				image: "ghcr.io/charmbracelet/soft-serve:v0.7.4"
+				name:  "softserve"
+				ports: [{
+					containerPort: 9418
+					name:          "git"
+				}, {
+					containerPort: 23231
+					hostPort:      23231
+					name:          "git-ssh"
+				}, {
+					containerPort: 23232
+					name:          "git-http"
+				}, {
+					containerPort: 23233
+					name:          "stats"
+				}]
+				volumeMounts: [{
+					mountPath: "/soft-serve"
+					name:      "data"
+				}]
+			}]
+			enableServiceLinks: false
+			volumes: [{
+				hostPath: path: "/opt/volumes/softserve"
+				name: "data"
+			}]
+		}
+	}
+}
