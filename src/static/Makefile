@@ -63,3 +63,8 @@ earbug-2022-time.avif: earbug-2022-time.png
 	convert $? -write earbug-2022-time.avif
 earbug-2022-track.avif: earbug-2022-track.png
 	convert $? -write earbug-2022-track.avif
+
+.PHONY: github-merge-queue
+github-merge-queue: github-merge-queue.avif
+github-merge-queue.avif: github-merge-queue.png
+	convert $? -write github-merge-queue.avif
