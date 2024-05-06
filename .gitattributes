@@ -1,3 +1,5 @@
 buf.lock linguist-generated=true
 go.sum linguist-generated=true
+cue.mod/pkg/ linguist-generated=true
+deploy/**/kubernetes.yaml linguist-generated=true
 *.sopsecret.yaml diff=sopsdiffer

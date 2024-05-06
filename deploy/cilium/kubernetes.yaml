@@ -1,12 +1,4 @@
 kind: ConfigMap
-metadata:
-  name: cilium-config
-  namespace: kube-system
-  labels:
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
 data:
   identity-allocation-mode: crd
   identity-heartbeat-timeout: 30m0s
@@ -122,6 +114,36 @@ data:
   proxy-max-connection-duration-seconds: "0"
   external-envoy-proxy: "false"
   max-connected-clusters: "255"
+metadata:
+  name: cilium-config
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
+apiVersion: v1
+---
+kind: ServiceAccount
+metadata:
+  name: cilium-agent
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
+apiVersion: v1
+---
+kind: ServiceAccount
+metadata:
+  name: cilium-operator
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
 apiVersion: v1
 ---
 kind: Namespace
@@ -133,28 +155,6 @@ metadata:
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
 apiVersion: v1
----
-kind: ServiceAccount
-apiVersion: v1
-metadata:
-  name: cilium-agent
-  namespace: kube-system
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
-  labels:
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium
----
-kind: ServiceAccount
-apiVersion: v1
-metadata:
-  name: cilium-operator
-  namespace: kube-system
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
-  labels:
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium
 ---
 kind: DaemonSet
 metadata:
@@ -185,65 +185,149 @@ spec:
         container.apparmor.security.beta.kubernetes.io/mount-cgroup: unconfined
         container.apparmor.security.beta.kubernetes.io/apply-sysctl-overwrites: unconfined
     spec:
-      volumes:
-        - name: tmp
-          emptyDir: {}
-        - name: cilium-run
-          hostPath:
-            path: /var/run/cilium
-            type: DirectoryOrCreate
-        - name: bpf-maps
-          hostPath:
-            path: /sys/fs/bpf
-            type: DirectoryOrCreate
-        - name: hostproc
-          hostPath:
-            path: /proc
-            type: Directory
-        - name: cilium-cgroup
-          hostPath:
-            path: /run/cilium/cgroupv2
-            type: DirectoryOrCreate
-        - name: cni-path
-          hostPath:
-            path: /usr/libexec/cni
-            type: DirectoryOrCreate
-        - name: etc-cni-netd
-          hostPath:
-            path: /etc/cni/net.d
-            type: DirectoryOrCreate
-        - name: lib-modules
-          hostPath:
-            path: /lib/modules
-        - name: xtables-lock
-          hostPath:
-            path: /run/xtables.lock
-            type: FileOrCreate
-        - name: clustermesh-secrets
-          projected:
-            defaultMode: 256
-            sources:
-              - secret:
-                  name: cilium-clustermesh
-                  optional: true
-              - secret:
-                  name: clustermesh-apiserver-remote-cert
-                  optional: true
-                  items:
-                    - key: tls.key
-                      path: common-etcd-client.key
-                    - key: tls.crt
-                      path: common-etcd-client.crt
-                    - key: ca.crt
-                      path: common-etcd-client-ca.crt
-        - name: host-proc-sys-net
-          hostPath:
-            path: /proc/sys/net
-            type: Directory
-        - name: host-proc-sys-kernel
-          hostPath:
-            path: /proc/sys/kernel
-            type: Directory
+      containers:
+        - name: cilium-agent
+          image: quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426
+          imagePullPolicy: IfNotPresent
+          command:
+            - cilium-agent
+          args:
+            - --config-dir=/tmp/cilium/config-map
+          startupProbe:
+            httpGet:
+              host: 127.0.0.1
+              path: /healthz
+              port: 9879
+              scheme: HTTP
+              httpHeaders:
+                - name: brief
+                  value: "true"
+            failureThreshold: 105
+            periodSeconds: 2
+            successThreshold: 1
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              host: 127.0.0.1
+              path: /healthz
+              port: 9879
+              scheme: HTTP
+              httpHeaders:
+                - name: brief
+                  value: "true"
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              host: 127.0.0.1
+              path: /healthz
+              port: 9879
+              scheme: HTTP
+              httpHeaders:
+                - name: brief
+                  value: "true"
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 5
+          env:
+            - name: K8S_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: spec.nodeName
+            - name: CILIUM_K8S_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: CILIUM_CLUSTERMESH_CONFIG
+              value: /var/lib/cilium/clustermesh/
+            - name: GOMEMLIMIT
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.memory
+                  divisor: "1"
+            - name: KUBERNETES_SERVICE_HOST
+              value: justia.liao.dev
+            - name: KUBERNETES_SERVICE_PORT
+              value: "6443"
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - bash
+                  - -c
+                  - |
+                    set -o errexit
+                    set -o pipefail
+                    set -o nounset
+
+                    # When running in AWS ENI mode, it's likely that 'aws-node' has
+                    # had a chance to install SNAT iptables rules. These can result
+                    # in dropped traffic, so we should attempt to remove them.
+                    # We do it using a 'postStart' hook since this may need to run
+                    # for nodes which might have already been init'ed but may still
+                    # have dangling rules. This is safe because there are no
+                    # dependencies on anything that is part of the startup script
+                    # itself, and can be safely run multiple times per node (e.g. in
+                    # case of a restart).
+                    if [[ "$(iptables-save | grep -E -c 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN')" != "0" ]];
+                    then
+                        echo 'Deleting iptables rules created by the AWS CNI VPC plugin'
+                        iptables-save | grep -E -v 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN' | iptables-restore
+                    fi
+                    echo 'Done!'
+            preStop:
+              exec:
+                command:
+                  - /cni-uninstall.sh
+          securityContext:
+            seLinuxOptions:
+              level: s0
+              type: spc_t
+            capabilities:
+              add:
+                - CHOWN
+                - KILL
+                - NET_ADMIN
+                - NET_RAW
+                - IPC_LOCK
+                - SYS_MODULE
+                - SYS_ADMIN
+                - SYS_RESOURCE
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
+                - NET_BIND_SERVICE
+              drop:
+                - ALL
+          terminationMessagePolicy: FallbackToLogsOnError
+          volumeMounts:
+            - mountPath: /host/proc/sys/net
+              name: host-proc-sys-net
+            - mountPath: /host/proc/sys/kernel
+              name: host-proc-sys-kernel
+            - name: bpf-maps
+              mountPath: /sys/fs/bpf
+              mountPropagation: HostToContainer
+            - name: cilium-run
+              mountPath: /var/run/cilium
+            - name: etc-cni-netd
+              mountPath: /host/etc/cni/net.d
+            - name: clustermesh-secrets
+              mountPath: /var/lib/cilium/clustermesh
+              readOnly: true
+            - name: lib-modules
+              mountPath: /lib/modules
+              readOnly: true
+            - name: xtables-lock
+              mountPath: /run/xtables.lock
+            - name: tmp
+              mountPath: /tmp
       initContainers:
         - name: config
           image: quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426
@@ -417,155 +501,11 @@ spec:
           volumeMounts:
             - name: cni-path
               mountPath: /host/opt/cni/bin
-      containers:
-        - name: cilium-agent
-          image: quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426
-          imagePullPolicy: IfNotPresent
-          command:
-            - cilium-agent
-          args:
-            - --config-dir=/tmp/cilium/config-map
-          startupProbe:
-            httpGet:
-              host: 127.0.0.1
-              path: /healthz
-              port: 9879
-              scheme: HTTP
-              httpHeaders:
-                - name: brief
-                  value: "true"
-            failureThreshold: 105
-            periodSeconds: 2
-            successThreshold: 1
-            initialDelaySeconds: 5
-          livenessProbe:
-            httpGet:
-              host: 127.0.0.1
-              path: /healthz
-              port: 9879
-              scheme: HTTP
-              httpHeaders:
-                - name: brief
-                  value: "true"
-            periodSeconds: 30
-            successThreshold: 1
-            failureThreshold: 10
-            timeoutSeconds: 5
-          readinessProbe:
-            httpGet:
-              host: 127.0.0.1
-              path: /healthz
-              port: 9879
-              scheme: HTTP
-              httpHeaders:
-                - name: brief
-                  value: "true"
-            periodSeconds: 30
-            successThreshold: 1
-            failureThreshold: 3
-            timeoutSeconds: 5
-          env:
-            - name: K8S_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: spec.nodeName
-            - name: CILIUM_K8S_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
-            - name: CILIUM_CLUSTERMESH_CONFIG
-              value: /var/lib/cilium/clustermesh/
-            - name: GOMEMLIMIT
-              valueFrom:
-                resourceFieldRef:
-                  resource: limits.memory
-                  divisor: "1"
-            - name: KUBERNETES_SERVICE_HOST
-              value: justia.liao.dev
-            - name: KUBERNETES_SERVICE_PORT
-              value: "6443"
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - bash
-                  - -c
-                  - |
-                    set -o errexit
-                    set -o pipefail
-                    set -o nounset
-
-                    # When running in AWS ENI mode, it's likely that 'aws-node' has
-                    # had a chance to install SNAT iptables rules. These can result
-                    # in dropped traffic, so we should attempt to remove them.
-                    # We do it using a 'postStart' hook since this may need to run
-                    # for nodes which might have already been init'ed but may still
-                    # have dangling rules. This is safe because there are no
-                    # dependencies on anything that is part of the startup script
-                    # itself, and can be safely run multiple times per node (e.g. in
-                    # case of a restart).
-                    if [[ "$(iptables-save | grep -E -c 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN')" != "0" ]];
-                    then
-                        echo 'Deleting iptables rules created by the AWS CNI VPC plugin'
-                        iptables-save | grep -E -v 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN' | iptables-restore
-                    fi
-                    echo 'Done!'
-            preStop:
-              exec:
-                command:
-                  - /cni-uninstall.sh
-          securityContext:
-            seLinuxOptions:
-              level: s0
-              type: spc_t
-            capabilities:
-              add:
-                - CHOWN
-                - KILL
-                - NET_ADMIN
-                - NET_RAW
-                - IPC_LOCK
-                - SYS_MODULE
-                - SYS_ADMIN
-                - SYS_RESOURCE
-                - DAC_OVERRIDE
-                - FOWNER
-                - SETGID
-                - SETUID
-                - NET_BIND_SERVICE
-              drop:
-                - ALL
-          terminationMessagePolicy: FallbackToLogsOnError
-          volumeMounts:
-            - mountPath: /host/proc/sys/net
-              name: host-proc-sys-net
-            - mountPath: /host/proc/sys/kernel
-              name: host-proc-sys-kernel
-            - name: bpf-maps
-              mountPath: /sys/fs/bpf
-              mountPropagation: HostToContainer
-            - name: cilium-run
-              mountPath: /var/run/cilium
-            - name: etc-cni-netd
-              mountPath: /host/etc/cni/net.d
-            - name: clustermesh-secrets
-              mountPath: /var/lib/cilium/clustermesh
-              readOnly: true
-            - name: lib-modules
-              mountPath: /lib/modules
-              readOnly: true
-            - name: xtables-lock
-              mountPath: /run/xtables.lock
-            - name: tmp
-              mountPath: /tmp
       restartPolicy: Always
-      terminationGracePeriodSeconds: 1
-      nodeSelector:
-        kubernetes.io/os: linux
+      priorityClassName: system-node-critical
       serviceAccountName: cilium-agent
       automountServiceAccountToken: true
+      terminationGracePeriodSeconds: 1
       hostNetwork: true
       affinity:
         podAntiAffinity:
@@ -574,9 +514,69 @@ spec:
                 matchLabels:
                   k8s-app: cilium
               topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        kubernetes.io/os: linux
       tolerations:
         - operator: Exists
-      priorityClassName: system-node-critical
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: cilium-run
+          hostPath:
+            path: /var/run/cilium
+            type: DirectoryOrCreate
+        - name: bpf-maps
+          hostPath:
+            path: /sys/fs/bpf
+            type: DirectoryOrCreate
+        - name: hostproc
+          hostPath:
+            path: /proc
+            type: Directory
+        - name: cilium-cgroup
+          hostPath:
+            path: /run/cilium/cgroupv2
+            type: DirectoryOrCreate
+        - name: cni-path
+          hostPath:
+            path: /usr/libexec/cni
+            type: DirectoryOrCreate
+        - name: etc-cni-netd
+          hostPath:
+            path: /etc/cni/net.d
+            type: DirectoryOrCreate
+        - name: lib-modules
+          hostPath:
+            path: /lib/modules
+        - name: xtables-lock
+          hostPath:
+            path: /run/xtables.lock
+            type: FileOrCreate
+        - name: clustermesh-secrets
+          projected:
+            defaultMode: 256
+            sources:
+              - secret:
+                  name: cilium-clustermesh
+                  optional: true
+              - secret:
+                  name: clustermesh-apiserver-remote-cert
+                  optional: true
+                  items:
+                    - key: tls.key
+                      path: common-etcd-client.key
+                    - key: tls.crt
+                      path: common-etcd-client.crt
+                    - key: ca.crt
+                      path: common-etcd-client-ca.crt
+        - name: host-proc-sys-net
+          hostPath:
+            path: /proc/sys/net
+            type: Directory
+        - name: host-proc-sys-kernel
+          hostPath:
+            path: /proc/sys/kernel
+            type: Directory
 apiVersion: apps/v1
 ---
 kind: Deployment
@@ -603,10 +603,6 @@ spec:
         app.kubernetes.io/part-of: cilium
         app.kubernetes.io/component: operator
     spec:
-      volumes:
-        - name: cilium-config-path
-          configMap:
-            name: cilium-config
       containers:
         - name: cilium-operator
           image: quay.io/cilium/operator-generic:v1.15.4@sha256:404890a83cca3f28829eb7e54c1564bb6904708cdb7be04ebe69c2b60f164e9a
@@ -666,13 +662,12 @@ spec:
               mountPath: /tmp/cilium/config-map
               readOnly: true
           terminationMessagePolicy: FallbackToLogsOnError
-      restartPolicy: Always
-      nodeSelector:
-        kubernetes.io/os: linux
-      serviceAccountName: cilium-operator
-      serviceAccount: cilium-operator
-      automountServiceAccountToken: true
       hostNetwork: true
+      restartPolicy: Always
+      priorityClassName: system-cluster-critical
+      serviceAccount: cilium-operator
+      serviceAccountName: cilium-operator
+      automountServiceAccountToken: true
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -680,25 +675,30 @@ spec:
                 matchLabels:
                   io.cilium/app: operator
               topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        kubernetes.io/os: linux
       tolerations:
         - operator: Exists
-      priorityClassName: system-cluster-critical
+      volumes:
+        - name: cilium-config-path
+          configMap:
+            name: cilium-config
   strategy:
     rollingUpdate:
       maxUnavailable: 100%
 apiVersion: apps/v1
 ---
+kind: GatewayClass
 spec:
   controllerName: io.cilium/gateway-controller
-kind: GatewayClass
-apiVersion: gateway.networking.k8s.io/v1
 metadata:
   name: cilium
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
   labels:
     app.kubernetes.io/part-of: cilium
     app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
+apiVersion: gateway.networking.k8s.io/v1
 ---
 kind: ClusterRoleBinding
 metadata:

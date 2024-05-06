@@ -1,10 +1,6 @@
 package deploy
 
-import (
-	corev1 "k8s.io/api/core/v1"
-)
-
-k8s: "": v1: Service: "cert-manager": "cert-manager-webhook": corev1.#Service & {
+k8s: "": v1: Service: "cert-manager": "cert-manager-webhook": {
 	spec: {
 		type: "ClusterIP"
 		ports: [{

@@ -2,12 +2,9 @@ package deploy
 
 import (
 	"strings"
-
-	appsv1 "k8s.io/api/apps/v1"
 )
 
 k8s: apps: v1: Deployment: "cert-manager": {
-	"cert-manager-controller": appsv1.#Deployment
 	"cert-manager-controller": (#LabelSelector & {
 		#args: labels: {
 			"app.kubernetes.io/part-of":   "cert-manager"

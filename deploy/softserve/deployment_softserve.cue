@@ -1,11 +1,6 @@
 package deploy
 
-import (
-	appsv1 "k8s.io/api/apps/v1"
-)
-
 k8s: apps: v1: Deployment: "kube-system": {
-	"softserve": appsv1.#Deployment
 	"softserve": (#LabelSelector & {
 		#args: labels: {
 			"app.kubernetes.io/name": "softserve"

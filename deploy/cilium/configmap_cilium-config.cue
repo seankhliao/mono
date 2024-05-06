@@ -1,8 +1,6 @@
 package deploy
 
-import corev1 "k8s.io/api/core/v1"
-
-k8s: "": v1: "ConfigMap": "kube-system": "cilium-config": corev1.#ConfigMap & {
+k8s: "": v1: "ConfigMap": "kube-system": "cilium-config": {
 	data: {
 
 		// Identity allocation mode selects how identities are shared between cilium

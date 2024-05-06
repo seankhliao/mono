@@ -2,12 +2,9 @@ package deploy
 
 import (
 	"strings"
-
-	appsv1 "k8s.io/api/apps/v1"
 )
 
 k8s: apps: v1: DaemonSet: "kube-system": {
-	"cilium-agent": appsv1.#DaemonSet
 	"cilium-agent": (#LabelSelector & {
 		#args: labels: {
 			"app.kubernetes.io/name":      "cilium-agent"
