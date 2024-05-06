@@ -4,20 +4,24 @@
 
 ### _names_ for pet servers
 
+List of names from pretty characters
+that I could use to name things.
+
 | name      | source                                                  | use             |
 | --------- | ------------------------------------------------------- | --------------- |
-| Asami     | [Leave Me Alone, I Don't Want a Romantic Comedy][asami] |                 |
+| Asami     | [Leave Me Alone, I Don't Want a Romantic Comedy][asami] | k8s cluster     |
+| Binari    | [The Dark Lord's Confession][lapis]                     |                 |
 | Dani      | [That Which Flows By][dani]                             |                 |
 | Hwa-yeong | [The Crown Princess Scandal][hwayeong]                  |                 |
 | Hwaryun   | [Tower of God][hwaryun]                                 | framwork laptop |
-| Ihwa      | [Hero Killer][ihwa]                                     | arm64 server    |
-| Justia    | [Brown Dust II][justia]                                 |                 |
+| Ihwa      | [Hero Killer][ihwa]                                     | ... retired ... |
+| Justia    | [Brown Dust II][justia]                                 | arm64 server    |
 | Lapis     | [The Dark Lord's Confession][lapis]                     | pixel 8 pro     |
 | Layla     | [Cry, or Better Yet, Beg][layla]                        | lichee pi 4a    |
-| Lucid     | [Lucid][lucid]                                          |                 |
-| Medea     | [Your Throne][medea]                                    |                 |
-| Millenyn  | [Wished You Were Dead][millenyn]                        |                 |
-| Nyarla    | [Crawling Dreams][nyarla]                               |                 |
+| Lucid     | [Lucid][lucid]                                          | ... retired ... |
+| Medea     | [Your Throne][medea]                                    | ... retired ... |
+| Millenyn  | [Wished You Were Dead][millenyn]                        | ... retired ... |
+| Nyarla    | [Crawling Dreams][nyarla]                               | ... retired ... |
 | Scarlett  | [Ten Ways to Get Dumped by a Tyrant](scarlett)          |                 |
 
 [asami]: https://www.webtoons.com/en/canvas/leave-me-alone-i-dont-want-a-romantic-comedy/list?title_no=506168
