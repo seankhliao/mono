@@ -44,6 +44,12 @@ Kaguya-sama: Love is War - Ultra Romantic
 
 Watched: 12024-05-18
 
+##### Kusuriya no Hitorigoto
+
+The Apothecary Diaries
+
+Watched: 12024-05-19
+
 ##### Paripi Koumei
 
 Ya Boy Kongming!
