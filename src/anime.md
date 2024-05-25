@@ -9,7 +9,7 @@ Sorted alphabetically by series name.
 
 Current favs: _Frieren_ and _Bocchi_
 
-#### Bocchi the Rock!
+#### _Bocchi the Rock!_
 
 [Bocchi the Rock!](https://myanimelist.net/anime/47917/Bocchi_the_Rock)
 
@@ -76,9 +76,8 @@ Watched: 12024-05-20
 
 Only loosely connected to its historical setting.
 
-#### NieR:Automata
 
-##### NieR:Automata Ver1.1a
+#### NieR:Automata Ver1.1a
 
 [NieR:Automata Ver1.1a](https://myanimelist.net/anime/51105/NieR_Automata_Ver11a)
 
@@ -96,7 +95,7 @@ Watched: 12024-05-23
 Rewatching this after many years and seeing the stage play,
 I think I liked the stage version better...
 
-#### Sousou no Frieren
+#### _Sousou no Frieren_
 
 ##### Sousou no Frieren
 
