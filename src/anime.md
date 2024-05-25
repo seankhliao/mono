@@ -115,3 +115,23 @@ Watched: 12024-05-18
 
 Shorts about different magic spells,
 mostly fun.
+
+<!--
+
+#### Violet Evergarden
+
+[Violet Evergarden](https://myanimelist.net/anime/33352/Violet_Evergarden)
+
+##### Violet Evergarden: Kitto "Ai" wo Shiru Hi ga Kuru no Darou
+
+[Violet Evergarden: The Day You Understand "I Love You" Will Surely Come](https://myanimelist.net/anime/37095/Violet_Evergarden__Kitto_Ai_wo_Shiru_Hi_ga_Kuru_no_Darou)
+
+##### Violet Evergarden Gaiden: Eien to Jidou Shuki Ningyou
+
+[Violet Evergarden: Eternity and the Auto Memory Doll](https://myanimelist.net/anime/39741/Violet_Evergarden_Gaiden__Eien_to_Jidou_Shuki_Ningyou)
+
+##### Violet Evergarden Movie
+
+[Violet Evergarden: The Movie](https://myanimelist.net/anime/37987/Violet_Evergarden_Movie)
+
+-->
