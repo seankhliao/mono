@@ -19,6 +19,18 @@ Crippling social anxiety?
 Super relatable (for me at least).
 It truly uses the medium of animation to tell the story in various styles.
 
+<!--
+
+#### Inu ni Nattara Suki na Hito ni Hirowareta.
+
+[My Life as Inukai-san's Dog](https://myanimelist.net/anime/51265/Inu_ni_Nattara_Suki_na_Hito_ni_Hirowareta)
+
+Watched: 12024-05-27
+
+Ecchi...
+
+-->
+
 #### Kaguya-sama wa Kokurasetai
 
 Girl and boy like? love? each other but wants the other to be the one to confess.
