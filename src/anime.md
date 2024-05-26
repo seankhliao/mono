@@ -29,6 +29,12 @@ Watched: 12024-05-27
 
 Ecchi...
 
+#### Inu ni Nattara Suki na Hito ni Hirowareta. Specials
+
+[My Life as Inukai-san’s Dog. OVA](https://myanimelist.net/anime/54225/Inu_ni_Nattara_Suki_na_Hito_ni_Hirowareta_Specials)
+
+Watched: 12024-05-27
+
 -->
 
 #### Kaguya-sama wa Kokurasetai
