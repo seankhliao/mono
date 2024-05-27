@@ -47,7 +47,7 @@ Sorted alphabetically by series name.
   - [Servant x Service](https://myanimelist.net/anime/18119/Servant_x_Service)
   - Watched: 12024-05-27
 - _Sousou no Frieren_
-  [Frieren: Beyond Journey's End](https://myanimelist.net/anime/52991/Sousou_no_Frieren)
+  - [Frieren: Beyond Journey's End](https://myanimelist.net/anime/52991/Sousou_no_Frieren)
   - Watched: 12024-05-07
 - Sousou no Frieren: ●● no Mahou
   [Frieren: Beyond Journey's End Mini Anime](https://myanimelist.net/anime/56885/Sousou_no_Frieren__%E2%97%8F%E2%97%8F_no_Mahou)
