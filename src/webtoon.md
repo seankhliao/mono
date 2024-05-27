@@ -79,3 +79,6 @@ Guilty pleasures.
 - [Winter Before Spring](https://www.webtoons.com/en/drama/winter-before-spring/list?title_no=6400)
 - [Wished You Were Dead](https://www.webtoons.com/en/drama/wished-you-were-dead/list?title_no=3591)
 - [Wrong Quest](https://www.webtoons.com/en/fantasy/wrong-quest/list?title_no=6282)
+
+That's it for now.
+Technically there's more I've read but dropped...
