@@ -6,6 +6,7 @@
 
 Boredom strikes, and I aim to binge watch an entire series per day.
 Sorted alphabetically by series name.
+_Highlighted_ are top tier.
 
 - _Bocchi the Rock!_ 
   - [Bocchi the Rock!](https://myanimelist.net/anime/47917/Bocchi_the_Rock)

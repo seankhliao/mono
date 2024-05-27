@@ -7,9 +7,7 @@
 Things I read to psas the time.
 Or spend money on because I'm impulsive and impatient.
 
-#### Ongoing
-
-These I really love:
+_These I really love_
 
 - [Hero Killer](https://www.webtoons.com/en/action/hero-killer/list?title_no=2745)
 - [Ten Ways to Get Dumped by a Tyrant](https://www.webtoons.com/en/fantasy/ten-ways-to-get-dumped-by-a-tyrant/list?title_no=5811)
