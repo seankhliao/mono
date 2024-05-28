@@ -29,7 +29,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-06-16_ IVE
 - _12024-06-10_ ATARASHII GAKKO
 - _12024-05-28_ Allie X
-- _12024-05-23_ Leah Kate
 
 ##### _12024-05-01_ Spirited Away
 
