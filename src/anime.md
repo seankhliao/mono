@@ -51,7 +51,7 @@ _Highlighted_ are top tier.
   - [Frieren: Beyond Journey's End](https://myanimelist.net/anime/52991/Sousou_no_Frieren)
   - Watched: 12024-05-07
 - Sousou no Frieren: ●● no Mahou
-  [Frieren: Beyond Journey's End Mini Anime](https://myanimelist.net/anime/56885/Sousou_no_Frieren__%E2%97%8F%E2%97%8F_no_Mahou)
+  - [Frieren: Beyond Journey's End Mini Anime](https://myanimelist.net/anime/56885/Sousou_no_Frieren__%E2%97%8F%E2%97%8F_no_Mahou)
   - Watched: 12024-05-18
 
 That's it for now.

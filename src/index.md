@@ -28,7 +28,22 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-06-18_ AViVA
 - _12024-06-16_ IVE
 - _12024-06-10_ ATARASHII GAKKO
-- _12024-05-28_ Allie X
+
+##### _12024-05-29_ Spirited Away
+
+The second time I was seeing this,
+this time higher up and further away.
+Maybe it broke the magic a little to see more of how things were acted out,
+especially places where I didn't notice there were body doubles.
+Since the last time, I had rewatched the original animation.
+Still it was pretty good.
+_Kanna Hashimoto_ as Chihiro, _Kotaro Daigo_ as Haku.
+
+
+##### _12024-05-28_ Allie X
+
+Electronic music?
+Certainly interesting.
 
 ##### _12024-05-01_ Spirited Away
 
