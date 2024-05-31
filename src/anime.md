@@ -32,6 +32,9 @@ _Highlighted_ are top tier.
 - Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai
   - [Kaguya-sama: Love is War - The First Kiss That Never Ends](https://myanimelist.net/anime/52198/Kaguya-sama_wa_Kokurasetai__First_Kiss_wa_Owaranai)
   - Watched: 12024-05-18
+- Kamisama Hajimemashita
+  - [Kamisama Kiss](https://myanimelist.net/anime/14713/Kamisama_Hajimemashita)
+  - Watched: 12024-05-31
 - Kusuriya no Hitorigoto
   - [The Apothecary Diaries](https://myanimelist.net/anime/54492/Kusuriya_no_Hitorigoto)
   - Watched: 12024-05-19
