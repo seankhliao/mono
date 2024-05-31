@@ -38,6 +38,9 @@ _Highlighted_ are top tier.
 - Kusuriya no Hitorigoto
   - [The Apothecary Diaries](https://myanimelist.net/anime/54492/Kusuriya_no_Hitorigoto)
   - Watched: 12024-05-19
+- Edomae Elf
+  - [Otaku Elf](https://myanimelist.net/anime/52081/Edomae_Elf)
+  - Watched: 12024-05-27
 - Paripi Koumei
   - [Ya Boy Kongming!](https://myanimelist.net/anime/50380/Paripi_Koumei?q=par&cat=anime)
   - Watched: 12024-05-20
