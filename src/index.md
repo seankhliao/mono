@@ -24,6 +24,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-09-26_ Mothica
 - _12024-09-03_ girl in red
 - _12024-08-28_ Ari Abdul
+- _12024-07-03_ Against the Currrent
 - _12024-06-21_ Charlotte Sands
 - _12024-06-18_ AViVA
 - _12024-06-16_ IVE
