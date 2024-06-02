@@ -47,7 +47,7 @@ _Highlighted_ are top tier.
 - NieR:Automata Ver1.1a
   - [NieR:Automata Ver1.1a](https://myanimelist.net/anime/51105/NieR_Automata_Ver11a)
   - Watched: 12024-05-03
-- _Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken_
+- Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
   - [The Angel Next Door Spoils Me Rotten](https://myanimelist.net/anime/50739/Otonari_no_Tenshi-sama_ni_Itsunomanika_Dame_Ningen_ni_Sareteita_Ken)
   - Watched: 12024-06-02
 - Sen to Chihiro no Kamikakushi
