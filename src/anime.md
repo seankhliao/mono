@@ -11,6 +11,9 @@ _Highlighted_ are top tier.
 - _Bocchi the Rock!_ 
   - [Bocchi the Rock!](https://myanimelist.net/anime/47917/Bocchi_the_Rock)
   - Watched: 12024-05-13
+- Edomae Elf
+  - [Otaku Elf](https://myanimelist.net/anime/52081/Edomae_Elf)
+  - Watched: 12024-05-27
 - Inu ni Nattara Suki na Hito ni Hirowareta.
   - [My Life as Inukai-san's Dog](https://myanimelist.net/anime/51265/Inu_ni_Nattara_Suki_na_Hito_ni_Hirowareta)
   - Watched: 12024-05-27
@@ -38,15 +41,15 @@ _Highlighted_ are top tier.
 - Kusuriya no Hitorigoto
   - [The Apothecary Diaries](https://myanimelist.net/anime/54492/Kusuriya_no_Hitorigoto)
   - Watched: 12024-05-19
-- Edomae Elf
-  - [Otaku Elf](https://myanimelist.net/anime/52081/Edomae_Elf)
-  - Watched: 12024-05-27
 - Paripi Koumei
   - [Ya Boy Kongming!](https://myanimelist.net/anime/50380/Paripi_Koumei?q=par&cat=anime)
   - Watched: 12024-05-20
 - NieR:Automata Ver1.1a
   - [NieR:Automata Ver1.1a](https://myanimelist.net/anime/51105/NieR_Automata_Ver11a)
   - Watched: 12024-05-03
+- _Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken_
+  - [The Angel Next Door Spoils Me Rotten](https://myanimelist.net/anime/50739/Otonari_no_Tenshi-sama_ni_Itsunomanika_Dame_Ningen_ni_Sareteita_Ken)
+  - Watched: 12024-06-02
 - Sen to Chihiro no Kamikakushi
   - [Spirited Away](https://myanimelist.net/anime/199/Sen_to_Chihiro_no_Kamikakushi)
   - Watched: 12024-05-23
