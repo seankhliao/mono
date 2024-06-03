@@ -47,6 +47,15 @@ _Highlighted_ are top tier.
 - NieR:Automata Ver1.1a
   - [NieR:Automata Ver1.1a](https://myanimelist.net/anime/51105/NieR_Automata_Ver11a)
   - Watched: 12024-05-03
+- No Game No Life
+  - [No Game, No Life](https://myanimelist.net/anime/19815/No_Game_No_Life)
+  - Watched: 12024-06-03
+- No Game No Life Specials
+  - [No Game, No Life Specials](https://myanimelist.net/anime/24991/No_Game_No_Life_Specials)
+  - Watched: 12024-06-03
+- No Game No Life: Zero
+  - [No Game, No Life: Zero](https://myanimelist.net/anime/33674/No_Game_No_Life__Zero)
+  - Watched: 12024-06-03
 - Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken
   - [The Angel Next Door Spoils Me Rotten](https://myanimelist.net/anime/50739/Otonari_no_Tenshi-sama_ni_Itsunomanika_Dame_Ningen_ni_Sareteita_Ken)
   - Watched: 12024-06-02
