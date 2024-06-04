@@ -17,6 +17,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 - _12025-07-17_ Billie Eilish
 - _12024-11-29_ renforshort
+- _12024-11-27_ Sasha Alex Sloan
 - _12024-11-02_ Kamelot with Blackbriar
 - _12024-10-26_ Hatsune Miku
 - _12024-10-04_ Visions of Atlantis

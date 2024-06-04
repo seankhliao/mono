@@ -38,6 +38,9 @@ _Highlighted_ are top tier.
 - Kamisama Hajimemashita
   - [Kamisama Kiss](https://myanimelist.net/anime/14713/Kamisama_Hajimemashita)
   - Watched: 12024-05-31
+- Kamisama Hajimemashita◎
+  - [Kamisama Kiss Season 2](https://myanimelist.net/anime/25681/Kamisama_Hajimemashita%E2%97%8E)
+  - Watched: 12024-06-04
 - Kusuriya no Hitorigoto
   - [The Apothecary Diaries](https://myanimelist.net/anime/54492/Kusuriya_no_Hitorigoto)
   - Watched: 12024-05-19
