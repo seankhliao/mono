@@ -38,8 +38,17 @@ _Highlighted_ are top tier.
 - Kamisama Hajimemashita
   - [Kamisama Kiss](https://myanimelist.net/anime/14713/Kamisama_Hajimemashita)
   - Watched: 12024-05-31
+- Kamisama Hajimemashita OVA
+  - [Kamisama Kiss OVA](https://myanimelist.net/anime/18661/Kamisama_Hajimemashita_OVA)
+  - Watched: 12024-06-06
 - Kamisama Hajimemashita◎
   - [Kamisama Kiss Season 2](https://myanimelist.net/anime/25681/Kamisama_Hajimemashita%E2%97%8E)
+  - Watched: 12024-06-04
+- Kamisama Hajimemashita: Kako-hen
+  - [Kamisama Hajimemashita: Kako-hen](https://myanimelist.net/anime/30709/Kamisama_Hajimemashita__Kako-hen)
+  - Watched: 12024-06-05
+- [Kamisama Hajimemashita: Kamisama, Shiawase ni Naru]
+  - [Kamisama Hajimemashita: Kamisama, Shiawase ni Naru](https://myanimelist.net/anime/33323/Kamisama_Hajimemashita__Kamisama_Shiawase_ni_Naru)
   - Watched: 12024-06-04
 - Kusuriya no Hitorigoto
   - [The Apothecary Diaries](https://myanimelist.net/anime/54492/Kusuriya_no_Hitorigoto)
@@ -74,6 +83,9 @@ _Highlighted_ are top tier.
 - Sousou no Frieren: ●● no Mahou
   - [Frieren: Beyond Journey's End Mini Anime](https://myanimelist.net/anime/56885/Sousou_no_Frieren__%E2%97%8F%E2%97%8F_no_Mahou)
   - Watched: 12024-05-18
+- Wotaku ni Koi wa Muzukashii OVA
+  - [Wotakoi: Love is Hard for Otaku OVA](https://myanimelist.net/anime/35968/Wotaku_ni_Koi_wa_Muzukashii)
+  - Watched: 12024-06-05
 
 That's it for now.
 
