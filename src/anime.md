@@ -77,6 +77,9 @@ _Highlighted_ are top tier.
 - Servant x Service
   - [Servant x Service](https://myanimelist.net/anime/18119/Servant_x_Service)
   - Watched: 12024-05-27
+- Sewayaki Kitsune no Senko-san
+  - [The Helpful Fox Senko-san](https://myanimelist.net/anime/38759/Sewayaki_Kitsune_no_Senko-san)
+  - Watched: 12024-06-07
 - _Sousou no Frieren_
   - [Frieren: Beyond Journey's End](https://myanimelist.net/anime/52991/Sousou_no_Frieren)
   - Watched: 12024-05-07
