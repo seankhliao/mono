@@ -30,7 +30,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-06-21_ Charlotte Sands
 - _12024-06-18_ AViVA
 - _12024-06-16_ IVE
-- _12024-06-10_ ATARASHII GAKKO
+
+##### _12024-06-10_ ATARASHII GAKKO!
+
+Fun, though it didn't feel like it fell into any particular genre.
+I did feel like a lot of the songs sort of blended together,
+but maybe that was from all the pre-listening I did the day before.
+Maybe digital pop?
+I think the visual component was a big part of it,
+not just the sound.
 
 ##### _12024-05-29_ Spirited Away
 
