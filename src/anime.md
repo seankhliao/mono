@@ -74,6 +74,9 @@ _Highlighted_ are top tier.
 - Sen to Chihiro no Kamikakushi
   - [Spirited Away](https://myanimelist.net/anime/199/Sen_to_Chihiro_no_Kamikakushi)
   - Watched: 12024-05-23
+- Senpai ga Uzai Kouhai no Hanashi
+  - [My Senpai is Annoying](https://myanimelist.net/anime/42351/Senpai_ga_Uzai_Kouhai_no_Hanashi)
+  - Watched: 12024-06-13
 - Servant x Service
   - [Servant x Service](https://myanimelist.net/anime/18119/Servant_x_Service)
   - Watched: 12024-05-27
