@@ -38,7 +38,7 @@ func foo(ctx context.Context) error {
 
 What I also found to be an inconvenience was the differing attribute systems 
 between tracing with OpenTelemetry and logging with log/slog.
-So it occured to me that if I pass the same information to both,
+So it occurred to me that if I pass the same information to both,
 I could drive the lower fidelty logging from the information I pass to tracing.
 
 #### _spanlog_ processor 

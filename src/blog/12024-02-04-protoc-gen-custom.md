@@ -76,7 +76,7 @@ extend google.protobuf.FieldOptions {
 Now to write the code generator.
 `protoc` looks at the flags it gets, like `--foo_out`,
 and looks for executables named `protoc-gen-foo` in `$PATH`.
-The exectuables take protobuf messages over stdin describing the parsed proto files
+The executable take protobuf messages over stdin describing the parsed proto files
 and writes the result to stdout.
 
 We don't need to care about all that,

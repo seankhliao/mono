@@ -13,7 +13,7 @@ or in other words operations only this specific device can do
 (and devices are bound to the hardware).
 
 Typically, you might hear about TPMs in the context of (remote) attestation,
-where sofware can prove the platform was started from a known state.
+where software can prove the platform was started from a known state.
 This works through the cooperation of the formware, BIOS, and OS,
 to report data during the boot process as it's loaded/executed to the TPM,
 which records `sha(old_state + sha(new_data))` into Platform Configuration Registers (PCRs).

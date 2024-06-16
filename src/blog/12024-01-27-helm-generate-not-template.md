@@ -56,7 +56,7 @@ spec:
 ```
 
 Say you want to provide a helper to generate a sidecar,
-you might write soemthing like:
+you might write something like:
 
 ```helm
 {{- define "sidecar" }}
