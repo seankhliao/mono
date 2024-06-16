@@ -29,7 +29,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-06-29_ Sarah de Warren
 - _12024-06-21_ Charlotte Sands
 - _12024-06-18_ AViVA
-- _12024-06-16_ IVE
+
+##### _12024-06-16_ IVE
+
+My eardrums almost burst with the amount of screaming I heard from the fans...
+This time, I prepped for a two whole days listening to their songs,
+and I think it paid off,
+I was familiar with what felt like over half of them.
+Of course, being kpop, the visuals were probably the important part
+and they didn't disappoint either.
 
 ##### _12024-06-10_ ATARASHII GAKKO!
 
