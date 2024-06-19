@@ -68,6 +68,9 @@ _Highlighted_ are top tier.
 - [No Game No Life: Zero](https://myanimelist.net/anime/33674/No_Game_No_Life__Zero)
   - No Game, No Life: Zero
   - Watched: 12024-06-03
+- [Oshi no Ko](https://myanimelist.net/anime/52034/Oshi_no_Ko)
+  - Oshi no Ko
+  - Watched: 12024-06-19
 - [Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken](https://myanimelist.net/anime/50739/Otonari_no_Tenshi-sama_ni_Itsunomanika_Dame_Ningen_ni_Sareteita_Ken)
   - The Angel Next Door Spoils Me Rotten
   - Watched: 12024-06-02
@@ -97,16 +100,3 @@ _Highlighted_ are top tier.
   - Watched: 12024-06-05
 
 That's it for now.
-
-<!--
-
-- [Violet Evergarden](https://myanimelist.net/anime/33352/Violet_Evergarden)
-  - Violet Evergarden
-- [Violet Evergarden: Kitto "Ai" wo Shiru Hi ga Kuru no Darou](https://myanimelist.net/anime/37095/Violet_Evergarden__Kitto_Ai_wo_Shiru_Hi_ga_Kuru_no_Darou)
-  - Violet Evergarden: The Day You Understand "I Love You" Will Surely Come
-- [Violet Evergarden Gaiden: Eien to Jidou Shuki Ningyou](https://myanimelist.net/anime/39741/Violet_Evergarden_Gaiden__Eien_to_Jidou_Shuki_Ningyou)
-  - Violet Evergarden: Eternity and the Auto Memory Doll
-- [Violet Evergarden Movie](https://myanimelist.net/anime/37987/Violet_Evergarden_Movie)
-  - Violet Evergarden: The Movie
-
--->

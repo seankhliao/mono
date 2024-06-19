@@ -18,6 +18,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-07-17_ Billie Eilish
 - _12024-11-29_ renforshort
 - _12024-11-27_ Sasha Alex Sloan
+- _12024-11-15_ UPSAHL
 - _12024-11-02_ Kamelot with Blackbriar
 - _12024-10-26_ Hatsune Miku
 - _12024-10-04_ Visions of Atlantis
@@ -28,7 +29,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-07-03_ Against the Currrent
 - _12024-06-29_ Sarah de Warren
 - _12024-06-21_ Charlotte Sands
-- _12024-06-18_ AViVA
+
+##### _12024-06-18_ AViVA
+
+With _Air Drawn Dagger_
+
+_AViVA_ was... different than what I expected.
+I didn't really like the sound mix for the live version,
+I guess I liked the studio versions better?
+I couldn't really tell what exactly I was listening to.
 
 ##### _12024-06-16_ IVE
 
@@ -57,7 +66,6 @@ especially places where I didn't notice there were body doubles.
 Since the last time, I had rewatched the original animation.
 Still it was pretty good.
 _Kanna Hashimoto_ as Chihiro, _Kotaro Daigo_ as Haku.
-
 
 ##### _12024-05-28_ Allie X
 
@@ -89,7 +97,6 @@ I hope my eardrums are still ok.
 The performance itself was quite glitzy,
 with every part choreograhed with good dances.
 
-
 ##### _12024-04-23_ Tate McRae
 
 With _charlieonnafriday_
@@ -97,7 +104,7 @@ With _charlieonnafriday_
 _Tate McRae_ slayed the evening with a mix of song and dance.
 There was some alternating between fast and slow songs,
 which was different from the usual fast-slow-fast sandwich.
-The singing was good, 
+The singing was good,
 though with heavy use of prerecorded parts,
 enabling some more energetic routines.
 It was interesting to see there was a fan in the center to make her hair flow in the wind,
@@ -143,12 +150,12 @@ _RØRY_ was interesting but it just never felt quite aligned to what i was feeli
 With _Yaeger_.
 
 Chill and energetic,
-not quite words that go together, 
+not quite words that go together,
 but that was the overall vibe I got from _Yaeger_.
 It was fun, relaxing, and got us all hyped up for Zara.
 _Zara Larsson_ came in popstar style,
 with the usual 4 backing dancers and giant screen in the back.
-With only a slight lull in the middle, 
+With only a slight lull in the middle,
 it was high energy singing and dancing,
 both on the stage and in the crowds.
 So fun.
@@ -168,7 +175,6 @@ at the same time, very on brand.
 The dancing felt a bit in the uncanny valley,
 but overall a pretty good time.
 
-
 ##### _12024-02-16_ Alessandra
 
 Pop music is back on the schedule,
@@ -176,7 +182,7 @@ this time with Norway's Eurovision 2023 representative _Alessandra_.
 It was good, though not particularly special,
 just an energetic night out.
 
-##### _12024-01-26_  Mystery Ensemble
+##### _12024-01-26_ Mystery Ensemble
 
 Some light instrumental music from the Witcher game and tv series.
 Maybe I wasn't paying enough attention but I may not have recognized
