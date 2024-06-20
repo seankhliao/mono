@@ -11,6 +11,9 @@ _Highlighted_ are top tier.
 - [_Bocchi the Rock!_ ](https://myanimelist.net/anime/47917/Bocchi_the_Rock)
   - Bocchi the Rock!
   - Watched: 12024-05-13
+- [Chainsaw Man](https://myanimelist.net/anime/44511/Chainsaw_Man)
+  - Chainsaw Man
+  - Watched: 12024-06-20
 - [Edomae Elf](https://myanimelist.net/anime/52081/Edomae_Elf)
   - Otaku Elf
   - Watched: 12024-05-27
