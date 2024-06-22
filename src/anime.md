@@ -4,6 +4,11 @@
 
 ### _anime_
 
+> If I were to utter those words and realize I was in fact lying...
+> The thought of it scares me.
+>
+> — Ai Hoshino, Oshi no Ko, Season 1 Episode 1
+
 Boredom strikes, and I aim to binge watch an entire series per day.
 Sorted alphabetically by series name.
 _Highlighted_ are top tier.
@@ -59,6 +64,9 @@ _Highlighted_ are top tier.
 - [Paripi Koumei](https://myanimelist.net/anime/50380/Paripi_Koumei?q=par&cat=anime)
   - Ya Boy Kongming!
   - Watched: 12024-05-20
+- [Mushoku Tensei: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/39535/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu)
+  - Mushoku Tensei: Jobless Reincarnation
+  - Watched: 12024-06-21
 - [NieR:Automata Ver1.1a](https://myanimelist.net/anime/51105/NieR_Automata_Ver11a)
   - NieR:Automata Ver1.1a
   - Watched: 12024-05-03

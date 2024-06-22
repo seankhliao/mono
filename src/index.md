@@ -28,7 +28,16 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-08-28_ Ari Abdul
 - _12024-07-03_ Against the Currrent
 - _12024-06-29_ Sarah de Warren
-- _12024-06-21_ Charlotte Sands
+
+##### _12024-06-21_ Charlotte Sands
+
+With _Emi Jeen_ and _AJA_
+
+I certainly felt the hype ramping up through the three sets.
+_Emi Jeen_ was fine,
+I felt like I got _Tate McRae_ vibes from _AJA_,
+and _Charlotte Sands_ was more heavy into rock (I think).
+Quite the energetic night, I think I missed being on the floor in the front.
 
 ##### _12024-06-18_ AViVA
 
