@@ -23,7 +23,6 @@ that I could use to name things.
 | Lapis          | [The Dark Lord's Confession][lapis]                     | pixel 8 pro      |
 | Layla          | [Cry, or Better Yet, Beg][layla]                        | lichee pi 4a     |
 | Lucid          | [Lucid][lucid]                                          | ... retired ...  |
-| Mahiru         | [The Angel Next Door Spoils Me Rotten][mahiru]          |                  |
 | Makima         | [Chainsaw Man][makima]                                  |                  |
 | Medea          | [Your Throne][medea]                                    | ... retired ...  |
 | Millenyn       | [Wished You Were Dead][millenyn]                        | ... retired ...  |
@@ -42,7 +41,6 @@ that I could use to name things.
 [lapis]: https://www.webtoons.com/en/fantasy/the-dark-lords-confession/list?title_no=4464
 [layla]: https://www.webtoons.com/en/drama/cry-or-better-yet-beg/list?title_no=5815
 [lucid]: https://www.webtoons.com/en/canvas/lucid/list?title_no=250209
-[mahiru]: https://en.wikipedia.org/wiki/The_Angel_Next_Door_Spoils_Me_Rotten
 [makima]: https://myanimelist.net/anime/44511/Chainsaw_Man
 [medea]: https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009
 [millenyn]: https://www.webtoons.com/en/drama/wished-you-were-dead/list?title_no=3591
