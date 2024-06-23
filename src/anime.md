@@ -7,7 +7,7 @@
 > If I were to utter those words and realize I was in fact lying...
 > The thought of it scares me.
 >
-> — Ai Hoshino, Oshi no Ko, Season 1 Episode 1
+> — Hoshino Ai, Oshi no Ko, Season 1 Episode 1
 
 Boredom strikes, and I aim to binge watch an entire series per day.
 Sorted alphabetically by series name.
@@ -121,6 +121,9 @@ _Highlighted_ are top tier.
 - [Sousou no Frieren: ●● no Mahou](https://myanimelist.net/anime/56885/Sousou_no_Frieren__%E2%97%8F%E2%97%8F_no_Mahou)
   - Frieren: Beyond Journey's End Mini Anime
   - Watched: 12024-05-18
+- [Tomo-chan wa Onnanoko!](https://myanimelist.net/anime/52305/Tomo-chan_wa_Onnanoko)
+  - Tomo-chan Is a Girl!
+  - Watched: 12024-06-23
 - [Wotaku ni Koi wa Wotaku](https://myanimelist.net/anime/35968/Wotaku_ni_Koi_wa_Muzukashii)
   - Wotakoi: Love is Hard for Otaku
   - Watched: 12024-06-16
