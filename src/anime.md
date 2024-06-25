@@ -65,6 +65,9 @@ _Highlighted_ are top tier.
 - [Kamisama Hajimemashita: Kamisama, Shiawase ni Naru](https://myanimelist.net/anime/33323/Kamisama_Hajimemashita__Kamisama_Shiawase_ni_Naru)
   - Kamisama Hajimemashita: Kamisama, Shiawase ni Naru
   - Watched: 12024-06-04
+- [Kono Subarashii Sekai ni Bakuen wo!](https://myanimelist.net/anime/51958/Kono_Subarashii_Sekai_ni_Bakuen_wo)
+  - KonoSuba: An Explosion on This Wonderful World!
+  - Watched: 12024-06-25
 - [Kusuriya no Hitorigoto](https://myanimelist.net/anime/54492/Kusuriya_no_Hitorigoto)
   - The Apothecary Diaries
   - Watched: 12024-05-19
