@@ -50,6 +50,9 @@ _Highlighted_ are top tier.
 - [Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai](https://myanimelist.net/anime/52198/Kaguya-sama_wa_Kokurasetai__First_Kiss_wa_Owaranai)
   - Kaguya-sama: Love is War - The First Kiss That Never Ends
   - Watched: 12024-05-18
+- [Kami no Tou](https://myanimelist.net/anime/40221/Kami_no_Tou)
+  - Tower of God
+  - Watched: 12024-05-11
 - [Kamisama Hajimemashita](https://myanimelist.net/anime/14713/Kamisama_Hajimemashita)
   - Kamisama Kiss
   - Watched: 12024-05-31
