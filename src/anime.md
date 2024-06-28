@@ -89,6 +89,9 @@ _Highlighted_ are top tier.
 - [Mushoku Tensei: Isekai Ittara Honki Dasu - Eris no Goblin Toubatsu](https://myanimelist.net/anime/50360/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu_-_Eris_no_Goblin_Toubatsu)
   - Mushoku Tensei: Jobless Reincarnation - Eris the Goblin Slayer
   - Watched: 12024-06-22
+- [Mushoku Tensei II: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/51179/Mushoku_Tensei_II__Isekai_Ittara_Honki_Dasu)
+  - Mushoku Tensei: Jobless Reincarnation Season 2
+  - Watched: 12024-06-28
 - [NieR:Automata Ver1.1a](https://myanimelist.net/anime/51105/NieR_Automata_Ver11a)
   - NieR:Automata Ver1.1a
   - Watched: 12024-05-03
