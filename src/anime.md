@@ -77,6 +77,9 @@ _Highlighted_ are top tier.
 - [Paripi Koumei](https://myanimelist.net/anime/50380/Paripi_Koumei?q=par&cat=anime)
   - Ya Boy Kongming!
   - Watched: 12024-05-20
+- [Majo no Tabitabi](https://myanimelist.net/anime/40571/Majo_no_Tabitabi)
+  - Wandering Witch: The Journey of Elaina
+  - Watched: 12024-06-29
 - [Mushoku Tensei: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/39535/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu)
   - Mushoku Tensei: Jobless Reincarnation
   - Watched: 12024-06-21
