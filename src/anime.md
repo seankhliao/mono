@@ -136,6 +136,9 @@ _Highlighted_ are top tier.
 - [Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?](https://myanimelist.net/anime/38573/Tsuujou_Kougeki_ga_Zentai_Kougeki_de_Ni-kai_Kougeki_no_Okaasan_wa_Suki_desu_ka)
   - Do You Love Your Mom and Her Two-Hit Multi-Target Attacks?
   - Watched: 12024-06-28
+- [Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka? Namiuchigiwa no Okaasan wa Suki desu ka?](https://myanimelist.net/anime/40102/Tsuujou_Kougeki_ga_Zentai_Kougeki_de_Ni-kai_Kougeki_no_Okaasan_wa_Suki_desu_ka_Namiuchigiwa_no_Okaasan_wa_Suki_desu_ka)
+  - Do You Love Your Mom and Her Two-Hit Multi-Target Attacks? Do You Love Your Mom on the Shore?
+  - Watched: 12024-06-28
 - [Wotaku ni Koi wa Wotaku](https://myanimelist.net/anime/35968/Wotaku_ni_Koi_wa_Muzukashii)
   - Wotakoi: Love is Hard for Otaku
   - Watched: 12024-06-16
