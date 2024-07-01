@@ -42,5 +42,5 @@ message Track {
 message Artist {
   string id = 1;
   string uri = 2;
-  string name  = 3;
+  string name = 3;
 }
