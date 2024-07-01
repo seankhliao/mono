@@ -17,8 +17,6 @@ var configDefault string
 
 func newConfig(ctx context.Context, lg *slog.Logger, args []string) (Config, error) {
 	fset := flag.NewFlagSet("blogengine", flag.ExitOnError)
-	var v int
-	fset.IntVar(&v, "v", 0, "logging verbosity")
 	configFile := "blogengine.cue"
 	fset.Func("config", "path to config file:blogengine.cue", func(s string) error {
 		u, err := url.Parse(s)

@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	lh := jsonlog.New(slog.LevelDebug, os.Stderr)
+	lh := jsonlog.New(slog.LevelInfo, os.Stderr)
 	lg := slog.New(lh)
 	ctx := context.Background()
 
