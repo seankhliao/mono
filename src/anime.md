@@ -133,6 +133,9 @@ _Highlighted_ are top tier.
 - [Sousou no Frieren: ●● no Mahou](https://myanimelist.net/anime/56885/Sousou_no_Frieren__%E2%97%8F%E2%97%8F_no_Mahou)
   - Frieren: Beyond Journey's End Mini Anime
   - Watched: 12024-05-18
+- [Spy x Family](https://myanimelist.net/anime/50265/Spy_x_Family)
+  - Spy x Family
+  - Watched: 12024-07-02
 - [Tomo-chan wa Onnanoko!](https://myanimelist.net/anime/52305/Tomo-chan_wa_Onnanoko)
   - Tomo-chan Is a Girl!
   - Watched: 12024-06-23
