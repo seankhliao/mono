@@ -1,4 +1,5 @@
-// goreleases is a wrapper for getting the current Go releases from go.dev/dl/?mode=json
+// goreleases is a wrapper for getting the current Go releases from
+// https://go.dev/dl/?mode=json
 package goreleases
 
 import (
