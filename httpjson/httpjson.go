@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// Ok marshals the given data as JSON and writes it to the given ResponseWriter.
 func OK(rw http.ResponseWriter, data any) error {
 	b, err := json.Marshal(data)
 	if err != nil {
@@ -26,6 +27,8 @@ type problemDetail struct {
 	Instance string `json:"instance,omitempty"`
 }
 
+// Err wraps the given error and message in an RFC 7807 Problem Details JSON Object,
+// and writes it to the given ResponseWriter.
 func Err(rw http.ResponseWriter, code int, msg string, err error) error {
 	prob := problemDetail{
 		Title:  msg,
