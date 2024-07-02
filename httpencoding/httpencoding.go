@@ -10,6 +10,8 @@ import (
 	"github.com/klauspost/compress/zstd"
 )
 
+// Handler wraps the given handler to return write responses in gzip or zstd content-encoding
+// if the incoming request has the corresponding accept-encoding header.
 func Handler(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		var acceptGz, acceptZstd float64
