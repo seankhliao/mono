@@ -142,6 +142,9 @@ var (
 	}
 )
 
+// New returns a [slog.Handler] that outputs logs in JSON format.
+// It has special handling to extract trace_id/span_id as top level keys
+// from the context given to log calls.
 func New(level slog.Level, out io.Writer) slog.Handler {
 	return &handler{
 		minLevel: level,
