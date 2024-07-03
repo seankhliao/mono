@@ -14,7 +14,7 @@ that I could use to name things.
 | Binari         | [The Dark Lord's Confession][lapis]                     |                  |
 | Bocchi         | [Bocchi the Rock!][bocchi]                              |                  |
 | Chika Fujiwara | [Kaguya-sama: Love Is War][chika]                       |                  |
-| Dani           | [That Which Flows By][dani]                             |                  |
+| Dani           | [That Which Flows By][dani]                             | ... retired ...  |
 | Frieren        | [Frieren: Beyond Journey's End][frieren]                |                  |
 | Hwaryun        | [Tower of God][hwaryun]                                 | framework laptop |
 | Hwa-yeong      | [The Crown Princess Scandal][hwayeong]                  |                  |
@@ -23,7 +23,7 @@ that I could use to name things.
 | Lapis          | [The Dark Lord's Confession][lapis]                     | pixel 8 pro      |
 | Layla          | [Cry, or Better Yet, Beg][layla]                        | lichee pi 4a     |
 | Lucid          | [Lucid][lucid]                                          | ... retired ...  |
-| Makima         | [Chainsaw Man][makima]                                  |                  |
+| Makima         | [Chainsaw Man][makima]                                  | pixel tablt      |
 | Medea          | [Your Throne][medea]                                    | ... retired ...  |
 | Millenyn       | [Wished You Were Dead][millenyn]                        | ... retired ...  |
 | Nyarla         | [Crawling Dreams][nyarla]                               | ... retired ...  |
