@@ -26,8 +26,24 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-09-26_ Mothica
 - _12024-09-03_ girl in red
 - _12024-08-28_ Ari Abdul
-- _12024-07-03_ Against the Currrent
-- _12024-06-29_ Sarah de Warren
+
+##### _12024-07-03_ Against the Currrent
+
+With _Dead Pony_
+
+When a band that can sell out a 2400 people venue
+goes on stage at a 600 one in short notice,
+you know it's going to be good.
+I think the mosh pit opened up behind me from the second song,
+pausing only for the acoustics.
+After all these years,
+_Against the Current_ is still my favourite band,
+the sound, the energy just gives me life.
+I feel revitalized after an honestly mostly mediocre first half of the year,
+and this is going to keep me going through a summer without anything of interest.
+Not attached to any specific album,
+this set drew from the best,
+and further back in the past as well.
 
 ##### _12024-06-21_ Charlotte Sands
 
