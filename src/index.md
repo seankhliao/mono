@@ -25,7 +25,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-10-02_ Aurora
 - _12024-09-26_ Mothica
 - _12024-09-03_ girl in red
-- _12024-08-28_ Ari Abdul
+- _12024-08-28_ WACK in the UK Vol 3
 
 ##### _12024-07-03_ Against the Currrent
 
