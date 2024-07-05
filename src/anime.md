@@ -80,6 +80,8 @@ _Highlighted_ are top tier.
 - [Majo no Tabitabi](https://myanimelist.net/anime/40571/Majo_no_Tabitabi)
   - Wandering Witch: The Journey of Elaina
   - Watched: 12024-06-29
+  - Notes:
+    - __Elaina__ is confidently cute
 - [Mushoku Tensei: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/39535/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu)
   - Mushoku Tensei: Jobless Reincarnation
   - Watched: 12024-06-21
@@ -95,6 +97,9 @@ _Highlighted_ are top tier.
 - [Mushoku Tensei II: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/51179/Mushoku_Tensei_II__Isekai_Ittara_Honki_Dasu)
   - Mushoku Tensei: Jobless Reincarnation Season 2
   - Watched: 12024-06-28
+- [Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2](https://myanimelist.net/anime/55888/Mushoku_Tensei_II__Isekai_Ittara_Honki_Dasu_Part_2)
+  - Mushoku Tensei: Jobless Reincarnation Season 2 Part 2
+  - Watched: 12024-07-05
 - [NieR:Automata Ver1.1a](https://myanimelist.net/anime/51105/NieR_Automata_Ver11a)
   - NieR:Automata Ver1.1a
   - Watched: 12024-05-03
