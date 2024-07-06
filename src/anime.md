@@ -156,5 +156,8 @@ _Highlighted_ are top tier.
 - [Wotaku ni Koi wa Muzukashii OVA](https://myanimelist.net/anime/35968/Wotaku_ni_Koi_wa_Muzukashii)
   - Wotakoi: Love is Hard for Otaku OVA
   - Watched: 12024-06-05
+- [Yoru no Kurage wa Oyogenai](https://myanimelist.net/anime/54839/Yoru_no_Kurage_wa_Oyogenai)
+  - Jellyfish Can't Swim in the Night
+  - Watched: 12024-07-06
 
 That's it for now.
