@@ -120,6 +120,9 @@ _Highlighted_ are top tier.
 - [Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken](https://myanimelist.net/anime/50739/Otonari_no_Tenshi-sama_ni_Itsunomanika_Dame_Ningen_ni_Sareteita_Ken)
   - The Angel Next Door Spoils Me Rotten
   - Watched: 12024-06-02
+- [Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai](https://myanimelist.net/anime/37450/Seishun_Buta_Yarou_wa_Bunny_Girl_Senpai_no_Yume_wo_Minai)
+  - Rascal Does Not Dream of Bunny Girl Senpai
+  - Watched: 12024-07-07
 - [Sen to Chihiro no Kamikakushi](https://myanimelist.net/anime/199/Sen_to_Chihiro_no_Kamikakushi)
   - Spirited Away
   - Watched: 12024-05-23
