@@ -126,6 +126,9 @@ _Highlighted_ are top tier.
 - [Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai](https://myanimelist.net/anime/38329/Seishun_Buta_Yarou_wa_Yumemiru_Shoujo_no_Yume_wo_Minai)
   - Rascal Does Not Dream of a Dreaming Girl
   - Watched: 12024-07-08
+- [Seishun Buta Yarou wa Odekake Sister no Yume wo Minai](https://myanimelist.net/anime/53129/Seishun_Buta_Yarou_wa_Odekake_Sister_no_Yume_wo_Minai)
+  - Rascal Does Not Dream of a Sister Venturing Out
+  - Watched: 12024-07-10
 - [Sen to Chihiro no Kamikakushi](https://myanimelist.net/anime/199/Sen_to_Chihiro_no_Kamikakushi)
   - Spirited Away
   - Watched: 12024-05-23
