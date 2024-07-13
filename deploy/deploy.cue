@@ -56,8 +56,10 @@ k8s: {
 		CustomResourceDefinition: [kns=""]: [kn=string]: apiextensionsv1.#CustomResourceDefinition
 	}
 	apps: v1: {
-		DaemonSet: [kns=string]: [kn=string]:   appsv1.#DaemonSet
-		Deployment: [kns=string]: [kn=string]:  appsv1.#Deployment
+		DaemonSet: [kns=string]: [kn=string]: appsv1.#DaemonSet
+		Deployment: [kns=string]: [kn=string]: appsv1.#Deployment & {
+			spec: template: spec: enableServiceLinks: bool | *false
+		}
 		StatefulSet: [kns=string]: [kn=string]: appsv1.#StatefulSet
 	}
 	autoscaling: v2: {

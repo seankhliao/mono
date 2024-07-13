@@ -34,11 +34,11 @@ spec:
           volumeMounts:
             - mountPath: /soft-serve
               name: data
-      enableServiceLinks: false
       volumes:
         - hostPath:
             path: /opt/volumes/softserve
           name: data
+      enableServiceLinks: false
   strategy:
     type: Recreate
   revisionHistoryLimit: 1

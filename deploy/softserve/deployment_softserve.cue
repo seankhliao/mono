@@ -32,7 +32,6 @@ k8s: apps: v1: Deployment: "softserve": {
 					name:      "data"
 				}]
 			}]
-			enableServiceLinks: false
 			volumes: [{
 				hostPath: path: "/opt/volumes/softserve"
 				name: "data"
