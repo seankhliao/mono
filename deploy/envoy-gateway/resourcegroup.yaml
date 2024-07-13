@@ -1,0 +1,7 @@
+apiVersion: kpt.dev/v1alpha1
+kind: ResourceGroup
+metadata:
+  name: inventory-23113189
+  namespace: envoy-gateway-system
+  labels:
+    cli-utils.sigs.k8s.io/inventory-id: 28cc98c982c051176079ffef8b3cdfaf71ed9cd4-1720904120632617725

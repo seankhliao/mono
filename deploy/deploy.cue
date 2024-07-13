@@ -70,7 +70,7 @@ k8s: {
 		Job: [kns=string]: [kn=string]:     batchv1.#Job
 	}
 	"cert-manager.io": v1: {
-		Certificate: [kns=string]: [kn=string]: certmanagerv1.Certificate
+		Certificate: [kns=string]: [kn=string]: certmanagerv1.#Certificate
 		Issuer: [kns=string]: [kn=string]:      certmanagerv1.#Issuer
 
 		ClusterIssuer: [kns=""]: [kn=string]: certmanagerv1.#ClusterIssuer
