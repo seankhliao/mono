@@ -18,7 +18,6 @@ k8s: apps: v1: Deployment: "cert-manager": {
 		], ",")
 		spec: template: spec: {
 			serviceAccountName: "cert-manager-controller"
-			enableServiceLinks: false
 			securityContext: {
 				runAsNonRoot: true
 				seccompProfile: type: "RuntimeDefault"

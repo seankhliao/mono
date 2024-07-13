@@ -4620,7 +4620,6 @@ spec:
         app.kubernetes.io/component: cainjector
     spec:
       serviceAccountName: cert-manager-cainjector
-      enableServiceLinks: false
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -4642,6 +4641,7 @@ spec:
             capabilities:
               drop:
                 - ALL
+      enableServiceLinks: false
 apiVersion: apps/v1
 ---
 kind: Deployment
@@ -4669,7 +4669,6 @@ spec:
         app.kubernetes.io/component: controller
     spec:
       serviceAccountName: cert-manager-controller
-      enableServiceLinks: false
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -4701,6 +4700,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+      enableServiceLinks: false
 apiVersion: apps/v1
 ---
 kind: Deployment
@@ -4728,7 +4728,6 @@ spec:
         app.kubernetes.io/component: webhook
     spec:
       serviceAccountName: cert-manager-webhook
-      enableServiceLinks: false
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -4782,6 +4781,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+      enableServiceLinks: false
 apiVersion: apps/v1
 ---
 kind: ClusterRoleBinding

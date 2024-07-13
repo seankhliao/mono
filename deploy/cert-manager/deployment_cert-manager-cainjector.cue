@@ -18,7 +18,6 @@ k8s: apps: v1: Deployment: "cert-manager": {
 		], ",")
 		spec: template: spec: {
 			serviceAccountName: "cert-manager-cainjector"
-			enableServiceLinks: false
 			securityContext: {
 				runAsNonRoot: true
 				seccompProfile: type: "RuntimeDefault"
