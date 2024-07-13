@@ -24,13 +24,13 @@ k8s: apps: v1: Deployment: "cert-manager": {
 			}
 			containers: [{
 				name:            "cert-manager-controller"
-				image:           "quay.io/jetstack/cert-manager-controller:v1.13.2"
+				image:           "quay.io/jetstack/cert-manager-controller:v1.15.1"
 				imagePullPolicy: "IfNotPresent"
 				args: [
 					"--v=2",
 					"--cluster-resource-namespace=$(POD_NAMESPACE)",
 					"--leader-election-namespace=cert-manager",
-					"--acme-http01-solver-image=quay.io/jetstack/cert-manager-acmesolver:v1.13.2",
+					"--acme-http01-solver-image=quay.io/jetstack/cert-manager-acmesolver:v1.15.1",
 					"--max-concurrent-challenges=60",
 				]
 				ports: [{
