@@ -6,7 +6,7 @@ apiVersion: v1
 kind: Deployment
 metadata:
   name: softserve
-  namespace: kube-system
+  namespace: softserve
   labels:
     app.kubernetes.io/name: softserve
 spec:
