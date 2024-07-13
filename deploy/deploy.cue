@@ -69,7 +69,7 @@ k8s: {
 		CronJob: [kns=string]: [kn=string]: batchv1.#CronJob
 		Job: [kns=string]: [kn=string]:     batchv1.#Job
 	}
-	"cert-manager.io": {
+	"cert-manager.io": v1: {
 		Certificate: [kns=string]: [kn=string]: certmanagerv1.Certificate
 		Issuer: [kns=string]: [kn=string]:      certmanagerv1.#Issuer
 
@@ -99,17 +99,17 @@ k8s: {
 	policy: v1: {
 		PodDisruptionBudget: [kns=string]: [kn=string]: policyv1.#PodDisruptionBudget
 	}
-	"rbac.authorization.k8s.io": {
+	"rbac.authorization.k8s.io": v1: {
 		RoleBinding: [kns=string]: [kn=string]: rbacv1.#RoleBinding
 		Role: [kns=string]: [kn=string]:        rbacv1.#Role
 
 		ClusterRoleBinding: [kns=""]: [kn=string]: rbacv1.#ClusterRoleBinding
 		ClusterRole: [kns=""]: [kn=string]:        rbacv1.#ClusterRole
 	}
-	"scheduling.k8s.io": {
+	"scheduling.k8s.io": v1: {
 		PriorityClass: [kns=""]: [kn=string]: schedulingv1.#PriorityClass
 	}
-	"storage.k8s.io": {
+	"storage.k8s.io": v1: {
 		StorageClass: [kns=""]: [kn=string]: storagev1.#StorageClass
 	}
 }

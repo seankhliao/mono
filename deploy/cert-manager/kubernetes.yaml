@@ -4784,6 +4784,164 @@ spec:
       enableServiceLinks: false
 apiVersion: apps/v1
 ---
+kind: ClusterIssuer
+spec:
+  selfSigned: {}
+metadata:
+  name: selfsigned
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+apiVersion: cert-manager.io/v1
+---
+kind: RoleBinding
+metadata:
+  name: cert-manager-cainjector
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-cainjector
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cert-manager-cainjector
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager-cainjector
+    namespace: cert-manager
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: RoleBinding
+metadata:
+  name: cert-manager-controller
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-controller
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cert-manager-controller
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager-controller
+    namespace: cert-manager
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: RoleBinding
+metadata:
+  name: cert-manager-webhook
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-webhook
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cert-manager-webhook
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager-webhook
+    namespace: cert-manager
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: Role
+rules:
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    resourceNames:
+      - cert-manager-cainjector-leader-election
+      - cert-manager-cainjector-leader-election-core
+    verbs:
+      - get
+      - update
+      - patch
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - create
+metadata:
+  name: cert-manager-cainjector
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: Role
+rules:
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    resourceNames:
+      - cert-manager-controller
+    verbs:
+      - get
+      - update
+      - patch
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - create
+metadata:
+  name: cert-manager-controller
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: Role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    resourceNames:
+      - cert-manager-webhook-ca
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+metadata:
+  name: cert-manager-webhook
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+apiVersion: rbac.authorization.k8s.io/v1
+---
 kind: ClusterRoleBinding
 metadata:
   name: cert-manager-cainjector
@@ -4992,149 +5150,3 @@ rules:
     verbs:
       - create
 apiVersion: rbac.authorization.k8s.io/v1
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  annotations:
-    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-cainjector
-    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
-  name: cert-manager-cainjector
-  namespace: cert-manager
-  labels:
-    app.kubernetes.io/part-of: cert-manager
-    app.kubernetes.io/name: cert-manager
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: cert-manager-cainjector
-subjects:
-  - kind: ServiceAccount
-    name: cert-manager-cainjector
-    namespace: cert-manager
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  annotations:
-    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-controller
-    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
-  name: cert-manager-controller
-  namespace: cert-manager
-  labels:
-    app.kubernetes.io/part-of: cert-manager
-    app.kubernetes.io/name: cert-manager
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: cert-manager-controller
-subjects:
-  - kind: ServiceAccount
-    name: cert-manager-controller
-    namespace: cert-manager
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  annotations:
-    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-webhook
-    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
-  name: cert-manager-webhook
-  namespace: cert-manager
-  labels:
-    app.kubernetes.io/part-of: cert-manager
-    app.kubernetes.io/name: cert-manager
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: cert-manager-webhook
-subjects:
-  - kind: ServiceAccount
-    name: cert-manager-webhook
-    namespace: cert-manager
----
-rules:
-  - apiGroups:
-      - coordination.k8s.io
-    resources:
-      - leases
-    resourceNames:
-      - cert-manager-cainjector-leader-election
-      - cert-manager-cainjector-leader-election-core
-    verbs:
-      - get
-      - update
-      - patch
-  - apiGroups:
-      - coordination.k8s.io
-    resources:
-      - leases
-    verbs:
-      - create
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: cert-manager-cainjector
-  namespace: cert-manager
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
-  labels:
-    app.kubernetes.io/part-of: cert-manager
-    app.kubernetes.io/name: cert-manager
----
-rules:
-  - apiGroups:
-      - coordination.k8s.io
-    resources:
-      - leases
-    resourceNames:
-      - cert-manager-controller
-    verbs:
-      - get
-      - update
-      - patch
-  - apiGroups:
-      - coordination.k8s.io
-    resources:
-      - leases
-    verbs:
-      - create
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: cert-manager-controller
-  namespace: cert-manager
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
-  labels:
-    app.kubernetes.io/part-of: cert-manager
-    app.kubernetes.io/name: cert-manager
----
-rules:
-  - apiGroups:
-      - ""
-    resources:
-      - secrets
-    resourceNames:
-      - cert-manager-webhook-ca
-    verbs:
-      - get
-      - list
-      - watch
-      - update
-  - apiGroups:
-      - ""
-    resources:
-      - secrets
-    verbs:
-      - create
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: cert-manager-webhook
-  namespace: cert-manager
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
-  labels:
-    app.kubernetes.io/part-of: cert-manager
-    app.kubernetes.io/name: cert-manager
