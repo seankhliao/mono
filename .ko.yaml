@@ -23,8 +23,8 @@ builds:
   - id: ghdefaults
     main: ./cmd/ghdefaults
     <<: *buildopts
-  - id: ihwa-liao-dev
-    main: ./cmd/ihwa-liao-dev
+  - id: server-homepage
+    main: ./cmd/server-homepage
     <<: *buildopts
   - id: ytfeed
     main: ./cmd/ytfeed
