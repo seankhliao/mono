@@ -69,9 +69,9 @@ spec:
                 fieldRef:
                   fieldPath: metadata.uid
             - name: OTEL_RESOURCE_ATTRIBUTES
-              value: k8s.pod.uid=$(POD_UID),k8s.cluster.name=ihwa,k8s.container.name=ytfeed
+              value: k8s.pod.uid=$(POD_UID),k8s.container.name=earbug
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: http://ingest.otelcol.svc:4317
+              value: http://otelcol.opentelemetry.svc:4317
           image: ko://go.seankhliao.com/mono/cmd/ytfeed
           name: ytfeed
           ports:

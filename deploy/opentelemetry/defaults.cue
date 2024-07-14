@@ -11,3 +11,7 @@ k8s: [kgroup=string]: [kversion=string]: [kkind=string]: [knamespace=string]: [k
 		"app.kubernetes.io/name":    string | *"opentelemetry"
 	}
 }
+
+namespace: (#Namespace & {#args: name: "opentelemetry"})
+
+k8s: namespace.out

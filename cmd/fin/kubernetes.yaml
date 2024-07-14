@@ -3,16 +3,16 @@ kind: Namespace
 metadata:
   name: fin
 ---
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: fin
   namespace: fin
 spec:
   hostnames:
-    - fin.ihwa.liao.dev
+    - fin.liao.dev
   parentRefs:
-    - name: default
+    - name: http-gateway
       namespace: envoy-gateway-system
   rules:
     - backendRefs:
@@ -67,9 +67,9 @@ spec:
                 fieldRef:
                   fieldPath: metadata.uid
             - name: OTEL_RESOURCE_ATTRIBUTES
-              value: k8s.pod.uid=$(POD_UID),k8s.cluster.name=ihwa,k8s.container.name=fin
+              value: k8s.pod.uid=$(POD_UID),k8s.container.name=earbug
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: http://ingest.otelcol.svc:4317
+              value: http://otelcol.opentelemetry.svc:4317
           image: ko://go.seankhliao.com/mono/cmd/fin
           name: fin
           ports:
@@ -95,13 +95,13 @@ spec:
             storage: 1Gi
         storageClassName: local-path
 ---
-apiVersion: autoscaling.k8s.io/v1
-kind: VerticalPodAutoscaler
-metadata:
-  name: fin
-  namespace: fin
-spec:
-  targetRef:
-    apiVersion: apps/v1
-    kind: StatefulSet
-    name: fin
+# apiVersion: autoscaling.k8s.io/v1
+# kind: VerticalPodAutoscaler
+# metadata:
+#   name: fin
+#   namespace: fin
+# spec:
+#   targetRef:
+#     apiVersion: apps/v1
+#     kind: StatefulSet
+#     name: fin

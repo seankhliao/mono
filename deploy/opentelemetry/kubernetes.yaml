@@ -1,18 +1,5 @@
 kind: ConfigMap
 data:
-  creds.json: '{"universe_domain":"googleapis.com","type":"external_account","audience":"//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami","subject_token_type":"urn:ietf:params:oauth:token-type:jwt","token_url":"https://sts.googleapis.com/v1/token","credential_source":{"file":"/var/run/service-account/token","format":{"type":"text"}},"token_info_url":"https://sts.googleapis.com/v1/introspect"}'
-metadata:
-  name: gcp
-  namespace: opentelemetry
-  labels:
-    app.kubernetes.io/part-of: opentelemetry
-    app.kubernetes.io/name: opentelemetry
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/opentelemetry/*.cue"
-apiVersion: v1
----
-kind: ConfigMap
-data:
   config.yaml: |
     receivers:
       otlp:
@@ -21,6 +8,24 @@ data:
             endpoint: "0.0.0.0:4317"
           http:
             endpoint: "0.0.0.0:4318"
+    processors:
+      transform:
+        error_mode: ignore
+        trace_statements:
+          - context: resource
+            statements:
+              - set(attributes["k8s.cluster.name"], "justia")
+              - set(attributes["deployment.environment"], "production")
+        metric_statements:
+          - context: resource
+            statements:
+              - set(attributes["k8s.cluster.name"], "justia")
+              - set(attributes["deployment.environment"], "production")
+        log_statements:
+          - context: resource
+            statements:
+              - set(attributes["k8s.cluster.name"], "justia")
+              - set(attributes["deployment.environment"], "production")
     exporters:
       googlecloud:
         project: com-seankhliao
@@ -35,18 +40,42 @@ data:
         - pprof
         - zpages
       pipelines:
+        logs:
+          receivers:
+            - otlp
+          processors:
+            - transform
+          exporters:
+            - nop
         metrics:
           receivers:
             - otlp
+          processors:
+            - transform
           exporters:
             - nop
         traces:
           receivers:
             - otlp
+          processors:
+            - transform
           exporters:
             - googlecloud
 metadata:
   name: otelcol
+  namespace: opentelemetry
+  labels:
+    app.kubernetes.io/part-of: opentelemetry
+    app.kubernetes.io/name: opentelemetry
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/opentelemetry/*.cue"
+apiVersion: v1
+---
+kind: ConfigMap
+data:
+  creds.json: '{"universe_domain":"googleapis.com","type":"external_account","audience":"//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami","subject_token_type":"urn:ietf:params:oauth:token-type:jwt","token_url":"https://sts.googleapis.com/v1/token","credential_source":{"file":"/var/run/service-account/token","format":{"type":"text"}},"token_info_url":"https://sts.googleapis.com/v1/introspect"}'
+metadata:
+  name: gcp
   namespace: opentelemetry
   labels:
     app.kubernetes.io/part-of: opentelemetry
@@ -117,7 +146,7 @@ spec:
             - --config=file:/etc/otelcol/config.yaml
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /etc/workload-identity/creds.json
+              value: /var/run/service-account/creds.json
           ports:
             - name: otlp-grpc
               containerPort: 4317
@@ -131,9 +160,6 @@ spec:
             - name: token
               mountPath: /var/run/service-account
               readOnly: true
-            - name: gcp-creds
-              mountPath: /etc/workload-identity
-              readOnly: true
             - name: config
               mountPath: /etc/otelcol
       volumes:
@@ -144,9 +170,8 @@ spec:
                   audience: https://iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami
                   expirationSeconds: 3600
                   path: token
-        - name: gcp-creds
-          configMap:
-            name: gcp
+              - configMap:
+                  name: gcp
         - name: config
           configMap:
             name: otelcol

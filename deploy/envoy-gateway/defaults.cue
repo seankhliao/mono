@@ -11,3 +11,7 @@ k8s: [kgroup=string]: [kversion=string]: [kkind=string]: [knamespace=string]: [k
 		"app.kubernetes.io/name":    string | *"envoy-gateway"
 	}
 }
+
+namespace: (#Namespace & {#args: name: "envoy-gateway"})
+
+k8s: namespace.out

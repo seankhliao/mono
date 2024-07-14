@@ -1,6 +1,7 @@
 package deploy
 
 import (
+	"encoding/json"
 	"list"
 	"strings"
 
@@ -136,6 +137,54 @@ k8slist: list.FlattenN([for _group, versions in k8s {
 		metadata: labels: #args.labels
 		spec: selector: matchLabels: #args.labels
 		spec: template: metadata: labels: #args.labels
+	}
+}
+
+#Namespace: {
+	#args: {
+		name: string
+	}
+
+	gcpEnv: {
+		name:  "GOOGLE_APPLICATION_CREDENTIALS"
+		value: "/var/run/service-account/creds.json"
+	}
+	gcpVolumeMount: {
+		name:      "token"
+		mountPath: "/var/run/service-account"
+		readOnly:  true
+	}
+	gcpVolume: {
+		name: "token"
+		projected: sources: [{
+			serviceAccountToken: {
+				audience:          "https://iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami"
+				expirationSeconds: 3600
+				path:              "token"
+			}
+		}, {
+			configMap: name: "gcp"
+		}]
+	}
+
+	out: {
+		"": v1: "ConfigMap": "\(#args.name)": "gcp": "data": {
+			"creds.json": json.Marshal({
+				"universe_domain":    "googleapis.com"
+				"type":               "external_account"
+				"audience":           "//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami"
+				"subject_token_type": "urn:ietf:params:oauth:token-type:jwt"
+				"token_url":          "https://sts.googleapis.com/v1/token"
+				"credential_source": {
+					"file": "/var/run/service-account/token"
+					"format": {
+						"type": "text"
+					}
+				}
+				"token_info_url": "https://sts.googleapis.com/v1/introspect"
+			})
+		}
+		"": v1: "Namespace": "": "\(#args.name)": {}
 	}
 }
 

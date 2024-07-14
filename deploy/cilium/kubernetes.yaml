@@ -683,9 +683,11 @@ spec:
         - name: cilium-config-path
           configMap:
             name: cilium-config
+      enableServiceLinks: false
   strategy:
     rollingUpdate:
       maxUnavailable: 100%
+  revisionHistoryLimit: 1
 apiVersion: apps/v1
 ---
 kind: GatewayClass
@@ -699,6 +701,127 @@ metadata:
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
 apiVersion: gateway.networking.k8s.io/v1
+---
+kind: RoleBinding
+metadata:
+  name: cilium-agent
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cilium-agent
+subjects:
+  - kind: ServiceAccount
+    name: cilium-agent
+    namespace: kube-system
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: RoleBinding
+metadata:
+  name: cilium-agent
+  namespace: cilium-secrets
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cilium-agent
+subjects:
+  - kind: ServiceAccount
+    name: cilium-agent
+    namespace: kube-system
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: RoleBinding
+metadata:
+  name: cilium-operator
+  namespace: cilium-secrets
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-operator
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cilium-operator
+subjects:
+  - kind: ServiceAccount
+    name: cilium-operator
+    namespace: kube-system
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: Role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+metadata:
+  name: cilium-agent
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: Role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+metadata:
+  name: cilium-agent
+  namespace: cilium-secrets
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
+apiVersion: rbac.authorization.k8s.io/v1
+---
+kind: Role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - delete
+      - update
+      - patch
+metadata:
+  name: cilium-operator
+  namespace: cilium-secrets
+  labels:
+    app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/name: cilium
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
+apiVersion: rbac.authorization.k8s.io/v1
 ---
 kind: ClusterRoleBinding
 metadata:
@@ -1083,124 +1206,3 @@ rules:
       - update
       - patch
 apiVersion: rbac.authorization.k8s.io/v1
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  annotations:
-    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
-  name: cilium-agent
-  namespace: kube-system
-  labels:
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: cilium-agent
-subjects:
-  - kind: ServiceAccount
-    name: cilium-agent
-    namespace: kube-system
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  annotations:
-    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
-  name: cilium-agent
-  namespace: cilium-secrets
-  labels:
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: cilium-agent
-subjects:
-  - kind: ServiceAccount
-    name: cilium-agent
-    namespace: kube-system
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  annotations:
-    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-operator
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
-  name: cilium-operator
-  namespace: cilium-secrets
-  labels:
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: cilium-operator
-subjects:
-  - kind: ServiceAccount
-    name: cilium-operator
-    namespace: kube-system
----
-rules:
-  - apiGroups:
-      - ""
-    resources:
-      - configmaps
-    verbs:
-      - get
-      - list
-      - watch
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: cilium-agent
-  namespace: kube-system
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
-  labels:
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium
----
-rules:
-  - apiGroups:
-      - ""
-    resources:
-      - secrets
-    verbs:
-      - get
-      - list
-      - watch
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: cilium-agent
-  namespace: cilium-secrets
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
-  labels:
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium
----
-rules:
-  - apiGroups:
-      - ""
-    resources:
-      - secrets
-    verbs:
-      - create
-      - delete
-      - update
-      - patch
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: cilium-operator
-  namespace: cilium-secrets
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
-  labels:
-    app.kubernetes.io/part-of: cilium
-    app.kubernetes.io/name: cilium

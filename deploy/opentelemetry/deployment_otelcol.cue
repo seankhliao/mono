@@ -12,10 +12,7 @@ k8s: "apps": "v1": "Deployment": "opentelemetry": {
 			name:  "otelcol"
 			image: "ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.104.0"
 			args: ["--config=file:/etc/otelcol/config.yaml"]
-			env: [{
-				name:  "GOOGLE_APPLICATION_CREDENTIALS"
-				value: "/etc/workload-identity/creds.json"
-			}]
+			env: [namespace.gcpEnv]
 			ports: [{
 				name:          "otlp-grpc"
 				containerPort: 4317
@@ -29,35 +26,14 @@ k8s: "apps": "v1": "Deployment": "opentelemetry": {
 				name:          "zpages"
 				containerPort: 55679
 			}]
-			volumeMounts: [{
-				name:      "token"
-				mountPath: "/var/run/service-account"
-				readOnly:  true
-			}, {
-				name:      "gcp-creds"
-				mountPath: "/etc/workload-identity"
-				readOnly:  true
-			}, {
+			volumeMounts: [namespace.gcpVolumeMount, {
 				name:      "config"
 				mountPath: "/etc/otelcol"
 			}]
 		}]
-		volumes: [{
-			name: "token"
-			projected: sources: [{
-				serviceAccountToken: {
-					audience:          "https://iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami"
-					expirationSeconds: 3600
-					path:              "token"
-				}
-			}]
-		}, {
-			name: "gcp-creds"
-			configMap: name: "gcp"
-		}, {
+		volumes: [namespace.gcpVolume, {
 			name: "config"
 			configMap: name: "otelcol"
 		}]
-
 	}
 }

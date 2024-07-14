@@ -4655,6 +4655,7 @@ spec:
               drop:
                 - ALL
       enableServiceLinks: false
+  revisionHistoryLimit: 1
 apiVersion: apps/v1
 ---
 kind: Deployment
@@ -4710,18 +4711,15 @@ spec:
               drop:
                 - ALL
           env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/run/service-account/creds.json
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /etc/workload-identity/creds.json
           volumeMounts:
             - name: token
               mountPath: /var/run/service-account
-              readOnly: true
-            - name: gcp-creds
-              mountPath: /etc/workload-identity
               readOnly: true
       volumes:
         - name: token
@@ -4731,10 +4729,10 @@ spec:
                   audience: https://iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami
                   expirationSeconds: 3600
                   path: token
-        - name: gcp-creds
-          configMap:
-            name: gcp
+              - configMap:
+                  name: gcp
       enableServiceLinks: false
+  revisionHistoryLimit: 1
 apiVersion: apps/v1
 ---
 kind: Deployment
@@ -4816,6 +4814,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
       enableServiceLinks: false
+  revisionHistoryLimit: 1
 apiVersion: apps/v1
 ---
 kind: ClusterIssuer
