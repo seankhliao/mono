@@ -17,13 +17,13 @@ _Highlighted_ are top tier.
   - Bocchi the Rock!
   - Watched: 12024-05-13
   - Notes:
-    - __Bocchi__ is relatable
+    - **Bocchi** is relatable
 - [Chainsaw Man](https://myanimelist.net/anime/44511/Chainsaw_Man)
   - Chainsaw Man
   - Watched: 12024-06-20
   - Notes:
-    - __Makima__ dominates
-    - __Power__ is playfully wild
+    - **Makima** dominates
+    - **Power** is playfully wild
 - [Edomae Elf](https://myanimelist.net/anime/52081/Edomae_Elf)
   - Otaku Elf
   - Watched: 12024-05-27
@@ -37,7 +37,7 @@ _Highlighted_ are top tier.
   - Kaguya-sama: Love is War
   - Watched: 12024-05-16
   - Notes:
-    - __Fujiwara Chika__ is chaotic good
+    - **Fujiwara Chika** is chaotic good
 - [Kaguya-sama wa Kokurasetai? Tensai-tachi no Renai Zunousen](https://myanimelist.net/anime/40591/Kaguya-sama_wa_Kokurasetai_Tensai-tachi_no_Renai_Zunousen)
   - Kaguya-sama: Love is War Season 2
   - Watched: 12024-05-17
@@ -71,6 +71,12 @@ _Highlighted_ are top tier.
 - [Kono Subarashii Sekai ni Bakuen wo!](https://myanimelist.net/anime/51958/Kono_Subarashii_Sekai_ni_Bakuen_wo)
   - KonoSuba: An Explosion on This Wonderful World!
   - Watched: 12024-06-25
+- [Kono Subarashii Sekai ni Shukufuku wo!](https://myanimelist.net/anime/30831/Kono_Subarashii_Sekai_ni_Shukufuku_wo)
+  - KonoSuba: God's Blessing on This Wonderful World!
+  - Watched: 12024-07-14
+- [Kono Subarashii Sekai ni Shukufuku wo!: Kono Subarashii Choker ni Shukufuku wo!](https://myanimelist.net/anime/32380/Kono_Subarashii_Sekai_ni_Shukufuku_wo__Kono_Subarashii_Choker_ni_Shukufuku_wo)
+  - KonoSuba: God's Blessing on This Wonderful World! - God's Blessing on This Wonderful Choker!
+  - Watched: 12024-07-14
 - [Kusuriya no Hitorigoto](https://myanimelist.net/anime/54492/Kusuriya_no_Hitorigoto)
   - The Apothecary Diaries
   - Watched: 12024-05-19
@@ -81,13 +87,13 @@ _Highlighted_ are top tier.
   - Wandering Witch: The Journey of Elaina
   - Watched: 12024-06-29
   - Notes:
-    - __Elaina__ is confidently cute
+    - **Elaina** is confidently cute
 - [Mushoku Tensei: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/39535/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu)
   - Mushoku Tensei: Jobless Reincarnation
   - Watched: 12024-06-21
   - Notes:
-    - __Roxy__ is cute (and surrounded by creeps)
-    - __Eris__ is wild in a cute way
+    - **Roxy** is cute (and surrounded by creeps)
+    - **Eris** is wild in a cute way
 - [Mushoku Tensei: Isekai Ittara Honki Dasu Part 2](https://myanimelist.net/anime/45576/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu_Part_2)
   - Mushoku Tensei: Jobless Reincarnation Part 2
   - Watched: 12024-06-22
@@ -116,7 +122,7 @@ _Highlighted_ are top tier.
   - Oshi no Ko
   - Watched: 12024-06-19
   - Notes:
-    - __Hoshino Ai__ is the embodiment of the perfect lie we want to believe in
+    - **Hoshino Ai** is the embodiment of the perfect lie we want to believe in
 - [Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken](https://myanimelist.net/anime/50739/Otonari_no_Tenshi-sama_ni_Itsunomanika_Dame_Ningen_ni_Sareteita_Ken)
   - The Angel Next Door Spoils Me Rotten
   - Watched: 12024-06-02
