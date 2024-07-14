@@ -13,166 +13,56 @@ Boredom strikes, and I aim to binge watch an entire series per day.
 Sorted alphabetically by series name.
 _Highlighted_ are top tier.
 
-- [_Bocchi the Rock!_ ](https://myanimelist.net/anime/47917/Bocchi_the_Rock)
-  - Bocchi the Rock!
-  - Watched: 12024-05-13
-  - Notes:
-    - **Bocchi** is relatable
-- [Chainsaw Man](https://myanimelist.net/anime/44511/Chainsaw_Man)
-  - Chainsaw Man
-  - Watched: 12024-06-20
-  - Notes:
-    - **Makima** dominates
-    - **Power** is playfully wild
-- [Edomae Elf](https://myanimelist.net/anime/52081/Edomae_Elf)
-  - Otaku Elf
-  - Watched: 12024-05-27
-- [Inu ni Nattara Suki na Hito ni Hirowareta.](https://myanimelist.net/anime/51265/Inu_ni_Nattara_Suki_na_Hito_ni_Hirowareta)
-  - My Life as Inukai-san's Dog
-  - Watched: 12024-05-27
-- [Inu ni Nattara Suki na Hito ni Hirowareta. Specials](https://myanimelist.net/anime/54225/Inu_ni_Nattara_Suki_na_Hito_ni_Hirowareta_Specials)
-  - My Life as Inukai-san’s Dog. OVA
-  - Watched: 12024-05-27
-- [Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen](https://myanimelist.net/anime/37999/Kaguya-sama_wa_Kokurasetai__Tensai-tachi_no_Renai_Zunousen)
-  - Kaguya-sama: Love is War
-  - Watched: 12024-05-16
-  - Notes:
-    - **Fujiwara Chika** is chaotic good
-- [Kaguya-sama wa Kokurasetai? Tensai-tachi no Renai Zunousen](https://myanimelist.net/anime/40591/Kaguya-sama_wa_Kokurasetai_Tensai-tachi_no_Renai_Zunousen)
-  - Kaguya-sama: Love is War Season 2
-  - Watched: 12024-05-17
-- [Kaguya-sama wa Kokurasetai? Tensai-tachi no Renai Zunousen OVA](https://myanimelist.net/anime/43609/Kaguya-sama_wa_Kokurasetai_Tensai-tachi_no_Renai_Zunousen_OVA)
-  - Kaguya-sama: Love is War OVA
-  - Watched: 12024-05-18
-- [Kaguya-sama wa Kokurasetai: Ultra Romantic](https://myanimelist.net/anime/43608/Kaguya-sama_wa_Kokurasetai__Ultra_Romantic)
-  - Kaguya-sama: Love is War - Ultra Romantic
-  - Watched: 12024-05-18
-- [Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai](https://myanimelist.net/anime/52198/Kaguya-sama_wa_Kokurasetai__First_Kiss_wa_Owaranai)
-  - Kaguya-sama: Love is War - The First Kiss That Never Ends
-  - Watched: 12024-05-18
-- [Kami no Tou](https://myanimelist.net/anime/40221/Kami_no_Tou)
-  - Tower of God
-  - Watched: 12024-05-11
-- [Kamisama Hajimemashita](https://myanimelist.net/anime/14713/Kamisama_Hajimemashita)
-  - Kamisama Kiss
-  - Watched: 12024-05-31
-- [Kamisama Hajimemashita OVA](https://myanimelist.net/anime/18661/Kamisama_Hajimemashita_OVA)
-  - Kamisama Kiss OVA
-  - Watched: 12024-06-06
-- [Kamisama Hajimemashita◎](https://myanimelist.net/anime/25681/Kamisama_Hajimemashita%E2%97%8E)
-  - Kamisama Kiss Season 2
-  - Watched: 12024-06-04
-- [Kamisama Hajimemashita: Kako-hen](https://myanimelist.net/anime/30709/Kamisama_Hajimemashita__Kako-hen)
-  - Kamisama Hajimemashita: Kako-hen
-  - Watched: 12024-06-05
-- [Kamisama Hajimemashita: Kamisama, Shiawase ni Naru](https://myanimelist.net/anime/33323/Kamisama_Hajimemashita__Kamisama_Shiawase_ni_Naru)
-  - Kamisama Hajimemashita: Kamisama, Shiawase ni Naru
-  - Watched: 12024-06-04
-- [Kono Subarashii Sekai ni Bakuen wo!](https://myanimelist.net/anime/51958/Kono_Subarashii_Sekai_ni_Bakuen_wo)
-  - KonoSuba: An Explosion on This Wonderful World!
-  - Watched: 12024-06-25
-- [Kono Subarashii Sekai ni Shukufuku wo!](https://myanimelist.net/anime/30831/Kono_Subarashii_Sekai_ni_Shukufuku_wo)
-  - KonoSuba: God's Blessing on This Wonderful World!
-  - Watched: 12024-07-14
-- [Kono Subarashii Sekai ni Shukufuku wo!: Kono Subarashii Choker ni Shukufuku wo!](https://myanimelist.net/anime/32380/Kono_Subarashii_Sekai_ni_Shukufuku_wo__Kono_Subarashii_Choker_ni_Shukufuku_wo)
-  - KonoSuba: God's Blessing on This Wonderful World! - God's Blessing on This Wonderful Choker!
-  - Watched: 12024-07-14
-- [Kusuriya no Hitorigoto](https://myanimelist.net/anime/54492/Kusuriya_no_Hitorigoto)
-  - The Apothecary Diaries
-  - Watched: 12024-05-19
-- [Paripi Koumei](https://myanimelist.net/anime/50380/Paripi_Koumei?q=par&cat=anime)
-  - Ya Boy Kongming!
-  - Watched: 12024-05-20
-- [Majo no Tabitabi](https://myanimelist.net/anime/40571/Majo_no_Tabitabi)
-  - Wandering Witch: The Journey of Elaina
-  - Watched: 12024-06-29
-  - Notes:
-    - **Elaina** is confidently cute
-- [Mushoku Tensei: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/39535/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu)
-  - Mushoku Tensei: Jobless Reincarnation
-  - Watched: 12024-06-21
-  - Notes:
-    - **Roxy** is cute (and surrounded by creeps)
-    - **Eris** is wild in a cute way
-- [Mushoku Tensei: Isekai Ittara Honki Dasu Part 2](https://myanimelist.net/anime/45576/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu_Part_2)
-  - Mushoku Tensei: Jobless Reincarnation Part 2
-  - Watched: 12024-06-22
-- [Mushoku Tensei: Isekai Ittara Honki Dasu - Eris no Goblin Toubatsu](https://myanimelist.net/anime/50360/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu_-_Eris_no_Goblin_Toubatsu)
-  - Mushoku Tensei: Jobless Reincarnation - Eris the Goblin Slayer
-  - Watched: 12024-06-22
-- [Mushoku Tensei II: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/51179/Mushoku_Tensei_II__Isekai_Ittara_Honki_Dasu)
-  - Mushoku Tensei: Jobless Reincarnation Season 2
-  - Watched: 12024-06-28
-- [Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2](https://myanimelist.net/anime/55888/Mushoku_Tensei_II__Isekai_Ittara_Honki_Dasu_Part_2)
-  - Mushoku Tensei: Jobless Reincarnation Season 2 Part 2
-  - Watched: 12024-07-05
-- [NieR:Automata Ver1.1a](https://myanimelist.net/anime/51105/NieR_Automata_Ver11a)
-  - NieR:Automata Ver1.1a
-  - Watched: 12024-05-03
-- [No Game No Life](https://myanimelist.net/anime/19815/No_Game_No_Life)
-  - No Game, No Life
-  - Watched: 12024-06-03
-- [No Game No Life Specials](https://myanimelist.net/anime/24991/No_Game_No_Life_Specials)
-  - No Game, No Life Specials
-  - Watched: 12024-06-03
-- [No Game No Life: Zero](https://myanimelist.net/anime/33674/No_Game_No_Life__Zero)
-  - No Game, No Life: Zero
-  - Watched: 12024-06-03
-- [Oshi no Ko](https://myanimelist.net/anime/52034/Oshi_no_Ko)
-  - Oshi no Ko
-  - Watched: 12024-06-19
-  - Notes:
-    - **Hoshino Ai** is the embodiment of the perfect lie we want to believe in
-- [Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken](https://myanimelist.net/anime/50739/Otonari_no_Tenshi-sama_ni_Itsunomanika_Dame_Ningen_ni_Sareteita_Ken)
-  - The Angel Next Door Spoils Me Rotten
-  - Watched: 12024-06-02
-- [Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai](https://myanimelist.net/anime/37450/Seishun_Buta_Yarou_wa_Bunny_Girl_Senpai_no_Yume_wo_Minai)
-  - Rascal Does Not Dream of Bunny Girl Senpai
-  - Watched: 12024-07-07
-- [Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai](https://myanimelist.net/anime/38329/Seishun_Buta_Yarou_wa_Yumemiru_Shoujo_no_Yume_wo_Minai)
-  - Rascal Does Not Dream of a Dreaming Girl
-  - Watched: 12024-07-08
-- [Seishun Buta Yarou wa Odekake Sister no Yume wo Minai](https://myanimelist.net/anime/53129/Seishun_Buta_Yarou_wa_Odekake_Sister_no_Yume_wo_Minai)
-  - Rascal Does Not Dream of a Sister Venturing Out
-  - Watched: 12024-07-10
-- [Sen to Chihiro no Kamikakushi](https://myanimelist.net/anime/199/Sen_to_Chihiro_no_Kamikakushi)
-  - Spirited Away
-  - Watched: 12024-05-23
-- [Senpai ga Uzai Kouhai no Hanashi](https://myanimelist.net/anime/42351/Senpai_ga_Uzai_Kouhai_no_Hanashi)
-  - My Senpai is Annoying
-  - Watched: 12024-06-13
-- [Servant x Service](https://myanimelist.net/anime/18119/Servant_x_Service)
-  - Servant x Service
-  - Watched: 12024-05-27
-- [Sewayaki Kitsune no Senko-san](https://myanimelist.net/anime/38759/Sewayaki_Kitsune_no_Senko-san)
-  - The Helpful Fox Senko-san
-  - Watched: 12024-06-07
-- [_Sousou no Frieren_](https://myanimelist.net/anime/52991/Sousou_no_Frieren)
-  - Frieren: Beyond Journey's End
-  - Watched: 12024-05-07
-- [Sousou no Frieren: ●● no Mahou](https://myanimelist.net/anime/56885/Sousou_no_Frieren__%E2%97%8F%E2%97%8F_no_Mahou)
-  - Frieren: Beyond Journey's End Mini Anime
-  - Watched: 12024-05-18
-- [Spy x Family](https://myanimelist.net/anime/50265/Spy_x_Family)
-  - Spy x Family
-  - Watched: 12024-07-02
-- [Tomo-chan wa Onnanoko!](https://myanimelist.net/anime/52305/Tomo-chan_wa_Onnanoko)
-  - Tomo-chan Is a Girl!
-  - Watched: 12024-06-23
-- [Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?](https://myanimelist.net/anime/38573/Tsuujou_Kougeki_ga_Zentai_Kougeki_de_Ni-kai_Kougeki_no_Okaasan_wa_Suki_desu_ka)
-  - Do You Love Your Mom and Her Two-Hit Multi-Target Attacks?
-  - Watched: 12024-06-28
-- [Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka? Namiuchigiwa no Okaasan wa Suki desu ka?](https://myanimelist.net/anime/40102/Tsuujou_Kougeki_ga_Zentai_Kougeki_de_Ni-kai_Kougeki_no_Okaasan_wa_Suki_desu_ka_Namiuchigiwa_no_Okaasan_wa_Suki_desu_ka)
-  - Do You Love Your Mom and Her Two-Hit Multi-Target Attacks? Do You Love Your Mom on the Shore?
-  - Watched: 12024-06-28
-- [Wotaku ni Koi wa Wotaku](https://myanimelist.net/anime/35968/Wotaku_ni_Koi_wa_Muzukashii)
-  - Wotakoi: Love is Hard for Otaku
-  - Watched: 12024-06-16
-- [Wotaku ni Koi wa Muzukashii OVA](https://myanimelist.net/anime/35968/Wotaku_ni_Koi_wa_Muzukashii)
-  - Wotakoi: Love is Hard for Otaku OVA
-  - Watched: 12024-06-05
-- [Yoru no Kurage wa Oyogenai](https://myanimelist.net/anime/54839/Yoru_no_Kurage_wa_Oyogenai)
-  - Jellyfish Can't Swim in the Night
-  - Watched: 12024-07-06
+| Watched     | Rating | Name                                                                                                                                                                                                                                                                                   | Alt                                                                                           | Notes                                                                       |
+| ----------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 12024-05-13 | 10     | [_Bocchi the Rock!_ ](https://myanimelist.net/anime/47917/Bocchi_the_Rock)                                                                                                                                                                                                             | Bocchi the Rock!                                                                              | **Bocchi** is relatable                                                     |
+| 12024-06-20 | 9      | [Chainsaw Man](https://myanimelist.net/anime/44511/Chainsaw_Man)                                                                                                                                                                                                                       | Chainsaw Man                                                                                  | **Makima** dominates, **Power** is playfully wild                           |
+| 12024-05-27 | 6      | [Edomae Elf](https://myanimelist.net/anime/52081/Edomae_Elf)                                                                                                                                                                                                                           | Otaku Elf                                                                                     |
+| 12024-05-27 | 5      | [Inu ni Nattara Suki na Hito ni Hirowareta.](https://myanimelist.net/anime/51265/Inu_ni_Nattara_Suki_na_Hito_ni_Hirowareta)                                                                                                                                                            | My Life as Inukai-san's Dog                                                                   |
+| 12024-05-27 | 5      | [Inu ni Nattara Suki na Hito ni Hirowareta. Specials](https://myanimelist.net/anime/54225/Inu_ni_Nattara_Suki_na_Hito_ni_Hirowareta_Specials)                                                                                                                                          | My Life as Inukai-san’s Dog. OVA                                                              |
+| 12024-05-16 | 9      | [Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen](https://myanimelist.net/anime/37999/Kaguya-sama_wa_Kokurasetai__Tensai-tachi_no_Renai_Zunousen)                                                                                                                           | Kaguya-sama: Love is War                                                                      | **Fujiwara Chika** is chaotic good                                          |
+| 12024-05-17 | 9      | [Kaguya-sama wa Kokurasetai? Tensai-tachi no Renai Zunousen](https://myanimelist.net/anime/40591/Kaguya-sama_wa_Kokurasetai_Tensai-tachi_no_Renai_Zunousen)                                                                                                                            | Kaguya-sama: Love is War Season 2                                                             |
+| 12024-05-18 | 8      | [Kaguya-sama wa Kokurasetai? Tensai-tachi no Renai Zunousen OVA](https://myanimelist.net/anime/43609/Kaguya-sama_wa_Kokurasetai_Tensai-tachi_no_Renai_Zunousen_OVA)                                                                                                                    | Kaguya-sama: Love is War OVA                                                                  |
+| 12024-05-18 | 8      | [Kaguya-sama wa Kokurasetai: Ultra Romantic](https://myanimelist.net/anime/43608/Kaguya-sama_wa_Kokurasetai__Ultra_Romantic)                                                                                                                                                           | Kaguya-sama: Love is War - Ultra Romantic                                                     |
+| 12024-05-18 | 8      | [Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai](https://myanimelist.net/anime/52198/Kaguya-sama_wa_Kokurasetai__First_Kiss_wa_Owaranai)                                                                                                                                           | Kaguya-sama: Love is War - The First Kiss That Never Ends                                     |
+| 12024-05-11 | 8      | [Kami no Tou](https://myanimelist.net/anime/40221/Kami_no_Tou)                                                                                                                                                                                                                         | Tower of God                                                                                  |
+| 12024-05-31 | 7      | [Kamisama Hajimemashita](https://myanimelist.net/anime/14713/Kamisama_Hajimemashita)                                                                                                                                                                                                   | Kamisama Kiss                                                                                 |
+| 12024-06-06 | 7      | [Kamisama Hajimemashita OVA](https://myanimelist.net/anime/18661/Kamisama_Hajimemashita_OVA)                                                                                                                                                                                           | Kamisama Kiss OVA                                                                             |
+| 12024-06-04 | 7      | [Kamisama Hajimemashita◎](https://myanimelist.net/anime/25681/Kamisama_Hajimemashita%E2%97%8E)                                                                                                                                                                                         | Kamisama Kiss Season 2                                                                        |
+| 12024-06-05 | 7      | [Kamisama Hajimemashita: Kako-hen](https://myanimelist.net/anime/30709/Kamisama_Hajimemashita__Kako-hen)                                                                                                                                                                               | Kamisama Hajimemashita: Kako-hen                                                              |
+| 12024-06-04 | 7      | [Kamisama Hajimemashita: Kamisama, Shiawase ni Naru](https://myanimelist.net/anime/33323/Kamisama_Hajimemashita__Kamisama_Shiawase_ni_Naru)                                                                                                                                            | Kamisama Hajimemashita: Kamisama, Shiawase ni Naru                                            |
+| 12024-06-25 | 8      | [Kono Subarashii Sekai ni Bakuen wo!](https://myanimelist.net/anime/51958/Kono_Subarashii_Sekai_ni_Bakuen_wo)                                                                                                                                                                          | KonoSuba: An Explosion on This Wonderful World!                                               |
+| 12024-07-14 | 8      | [Kono Subarashii Sekai ni Shukufuku wo!](https://myanimelist.net/anime/30831/Kono_Subarashii_Sekai_ni_Shukufuku_wo)                                                                                                                                                                    | KonoSuba: God's Blessing on This Wonderful World!                                             |
+| 12024-07-14 | 8      | [Kono Subarashii Sekai ni Shukufuku wo!: Kono Subarashii Choker ni Shukufuku wo!](https://myanimelist.net/anime/32380/Kono_Subarashii_Sekai_ni_Shukufuku_wo__Kono_Subarashii_Choker_ni_Shukufuku_wo)                                                                                   | KonoSuba: God's Blessing on This Wonderful World! - God's Blessing on This Wonderful Choker!  |
+| 12024-05-19 | 9      | [Kusuriya no Hitorigoto](https://myanimelist.net/anime/54492/Kusuriya_no_Hitorigoto)                                                                                                                                                                                                   | The Apothecary Diaries                                                                        |
+| 12024-05-20 | 8      | [Paripi Koumei](https://myanimelist.net/anime/50380/Paripi_Koumei?q=par&cat=anime)                                                                                                                                                                                                     | Ya Boy Kongming!                                                                              |
+| 12024-06-29 | 8      | [Majo no Tabitabi](https://myanimelist.net/anime/40571/Majo_no_Tabitabi)                                                                                                                                                                                                               | Wandering Witch: The Journey of Elaina                                                        | **Elaina** is confidently cute                                              |
+| 12024-06-21 | 8      | [Mushoku Tensei: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/39535/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu)                                                                                                                                                               | Mushoku Tensei: Jobless Reincarnation                                                         | **Roxy** is cute (and surrounded by creeps), **Eris** is wild in a cute way |
+| 12024-06-22 | 8      | [Mushoku Tensei: Isekai Ittara Honki Dasu Part 2](https://myanimelist.net/anime/45576/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu_Part_2)                                                                                                                                                 | Mushoku Tensei: Jobless Reincarnation Part 2                                                  |
+| 12024-06-22 | 8      | [Mushoku Tensei: Isekai Ittara Honki Dasu - Eris no Goblin Toubatsu](https://myanimelist.net/anime/50360/Mushoku_Tensei__Isekai_Ittara_Honki_Dasu_-_Eris_no_Goblin_Toubatsu)                                                                                                           | Mushoku Tensei: Jobless Reincarnation - Eris the Goblin Slayer                                |
+| 12024-06-28 | 7      | [Mushoku Tensei II: Isekai Ittara Honki Dasu](https://myanimelist.net/anime/51179/Mushoku_Tensei_II__Isekai_Ittara_Honki_Dasu)                                                                                                                                                         | Mushoku Tensei: Jobless Reincarnation Season 2                                                |
+| 12024-07-05 | 7      | [Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2](https://myanimelist.net/anime/55888/Mushoku_Tensei_II__Isekai_Ittara_Honki_Dasu_Part_2)                                                                                                                                           | Mushoku Tensei: Jobless Reincarnation Season 2 Part 2                                         |
+| 12024-05-03 | 8      | [NieR:Automata Ver1.1a](https://myanimelist.net/anime/51105/NieR_Automata_Ver11a)                                                                                                                                                                                                      | NieR:Automata Ver1.1a                                                                         |
+| 12024-06-03 | 8      | [No Game No Life](https://myanimelist.net/anime/19815/No_Game_No_Life)                                                                                                                                                                                                                 | No Game, No Life                                                                              |
+| 12024-06-03 | 8      | [No Game No Life Specials](https://myanimelist.net/anime/24991/No_Game_No_Life_Specials)                                                                                                                                                                                               | No Game, No Life Specials                                                                     |
+| 12024-06-03 | 8      | [No Game No Life: Zero](https://myanimelist.net/anime/33674/No_Game_No_Life__Zero)                                                                                                                                                                                                     | No Game, No Life: Zero                                                                        |
+| 12024-06-19 | 9      | [Oshi no Ko](https://myanimelist.net/anime/52034/Oshi_no_Ko)                                                                                                                                                                                                                           | Oshi no Ko                                                                                    | **Hoshino Ai** is the embodiment of the perfect lie we want to believe in   |
+| 12024-06-02 | 8      | [Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken](https://myanimelist.net/anime/50739/Otonari_no_Tenshi-sama_ni_Itsunomanika_Dame_Ningen_ni_Sareteita_Ken)                                                                                                         | The Angel Next Door Spoils Me Rotten                                                          |
+| 12024-07-07 | 8      | [Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai](https://myanimelist.net/anime/37450/Seishun_Buta_Yarou_wa_Bunny_Girl_Senpai_no_Yume_wo_Minai)                                                                                                                               | Rascal Does Not Dream of Bunny Girl Senpai                                                    |
+| 12024-07-08 | 8      | [Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai](https://myanimelist.net/anime/38329/Seishun_Buta_Yarou_wa_Yumemiru_Shoujo_no_Yume_wo_Minai)                                                                                                                                   | Rascal Does Not Dream of a Dreaming Girl                                                      |
+| 12024-07-10 | 8      | [Seishun Buta Yarou wa Odekake Sister no Yume wo Minai](https://myanimelist.net/anime/53129/Seishun_Buta_Yarou_wa_Odekake_Sister_no_Yume_wo_Minai)                                                                                                                                     | Rascal Does Not Dream of a Sister Venturing Out                                               |
+| 12024-05-23 | 8      | [Sen to Chihiro no Kamikakushi](https://myanimelist.net/anime/199/Sen_to_Chihiro_no_Kamikakushi)                                                                                                                                                                                       | Spirited Away                                                                                 |
+| 12024-06-13 | 8      | [Senpai ga Uzai Kouhai no Hanashi](https://myanimelist.net/anime/42351/Senpai_ga_Uzai_Kouhai_no_Hanashi)                                                                                                                                                                               | My Senpai is Annoying                                                                         |
+| 12024-05-27 | 8      | [Servant x Service](https://myanimelist.net/anime/18119/Servant_x_Service)                                                                                                                                                                                                             | Servant x Service                                                                             |
+| 12024-06-07 | 7      | [Sewayaki Kitsune no Senko-san](https://myanimelist.net/anime/38759/Sewayaki_Kitsune_no_Senko-san)                                                                                                                                                                                     | The Helpful Fox Senko-san                                                                     |
+| 12024-05-07 | 10     | [_Sousou no Frieren_](https://myanimelist.net/anime/52991/Sousou_no_Frieren)                                                                                                                                                                                                           | Frieren: Beyond Journey's End                                                                 |
+| 12024-05-18 | 8      | [Sousou no Frieren: ●● no Mahou](https://myanimelist.net/anime/56885/Sousou_no_Frieren__%E2%97%8F%E2%97%8F_no_Mahou)                                                                                                                                                                   | Frieren: Beyond Journey's End Mini Anime                                                      |
+| 12024-07-02 | 8      | [Spy x Family](https://myanimelist.net/anime/50265/Spy_x_Family)                                                                                                                                                                                                                       | Spy x Family                                                                                  |
+| 12024-06-23 | 8      | [Tomo-chan wa Onnanoko!](https://myanimelist.net/anime/52305/Tomo-chan_wa_Onnanoko)                                                                                                                                                                                                    | Tomo-chan Is a Girl!                                                                          |
+| 12024-06-28 | 7      | [Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?](https://myanimelist.net/anime/38573/Tsuujou_Kougeki_ga_Zentai_Kougeki_de_Ni-kai_Kougeki_no_Okaasan_wa_Suki_desu_ka)                                                                                  | Do You Love Your Mom and Her Two-Hit Multi-Target Attacks?                                    |
+| 12024-06-28 | 7      | [Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka? Namiuchigiwa no Okaasan wa Suki desu ka?](https://myanimelist.net/anime/40102/Tsuujou_Kougeki_ga_Zentai_Kougeki_de_Ni-kai_Kougeki_no_Okaasan_wa_Suki_desu_ka_Namiuchigiwa_no_Okaasan_wa_Suki_desu_ka) | Do You Love Your Mom and Her Two-Hit Multi-Target Attacks? Do You Love Your Mom on the Shore? |
+| 12024-06-16 | 8      | [Wotaku ni Koi wa Wotaku](https://myanimelist.net/anime/35968/Wotaku_ni_Koi_wa_Muzukashii)                                                                                                                                                                                             | Wotakoi: Love is Hard for Otaku                                                               |
+| 12024-06-05 | 8      | [Wotaku ni Koi wa Muzukashii OVA](https://myanimelist.net/anime/35968/Wotaku_ni_Koi_wa_Muzukashii)                                                                                                                                                                                     | Wotakoi: Love is Hard for Otaku OVA                                                           |
+| 12024-07-06 | 9      | [Yoru no Kurage wa Oyogenai](https://myanimelist.net/anime/54839/Yoru_no_Kurage_wa_Oyogenai)                                                                                                                                                                                           | Jellyfish Can't Swim in the Night                                                             |
 
 That's it for now.
