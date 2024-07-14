@@ -10,6 +10,9 @@ data:
         default: info
     provider:
       type: Kubernetes
+      kubernetes:
+        envoyService:
+          type: ClusterIP
 metadata:
   name: envoy-gateway
   namespace: envoy-gateway-system
@@ -41,20 +44,21 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
 apiVersion: v1
 ---
-selector:
-  app.kubernetes.io/name: envoy-gateway
+spec:
+  selector:
+    app.kubernetes.io/name: envoy-gateway
+  ports:
+    - name: grpc
+      port: 18000
+      targetPort: 18000
+    - name: ratelimit
+      port: 18001
+      targetPort: 18001
 kind: Service
 apiVersion: v1
-ports:
-  - name: grpc
-    port: 18000
-    targetPort: 18000
-  - name: ratelimit
-    port: 18001
-    targetPort: 18001
 metadata:
-  name: spec
-  namespace: envoy-gateway
+  name: envoy-gateway
+  namespace: envoy-gateway-system
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
   labels:
@@ -11688,6 +11692,30 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
 apiVersion: cert-manager.io/v1
 ---
+kind: Certificate
+spec:
+  commonName: '*'
+  dnsNames:
+    - '*.envoy-gateway-system'
+  issuerRef:
+    kind: Issuer
+    name: envoy-gateway
+  usages:
+    - digital signature
+    - data encipherment
+    - key encipherment
+    - content commitment
+  secretName: envoy
+metadata:
+  name: envoy
+  namespace: envoy-gateway-system
+  labels:
+    app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/name: envoy-gateway
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
+apiVersion: cert-manager.io/v1
+---
 kind: Issuer
 spec:
   ca:
@@ -11701,6 +11729,40 @@ metadata:
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
 apiVersion: cert-manager.io/v1
+---
+kind: Gateway
+spec:
+  gatewayClassName: http-gateway
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+metadata:
+  name: http-gateway
+  namespace: envoy-gateway-system
+  labels:
+    app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/name: envoy-gateway
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
+apiVersion: gateway.networking.k8s.io/v1
+---
+kind: GatewayClass
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    namespace: envoy-gateway-system
+    name: http-gateway
+metadata:
+  name: http-gateway
+  labels:
+    app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/name: envoy-gateway
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
+apiVersion: gateway.networking.k8s.io/v1
 ---
 kind: RoleBinding
 metadata:
@@ -11929,3 +11991,34 @@ rules:
     verbs:
       - update
 apiVersion: rbac.authorization.k8s.io/v1
+---
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: ClusterIP
+      envoyDeployment:
+        strategy:
+          type: Recreate
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              template:
+                spec:
+                  containers:
+                    - name: envoy
+                      ports:
+                        - containerPort: 10080
+                          hostPort: 80
+kind: EnvoyProxy
+apiVersion: gateway.envoyproxy.io/v1alpha1
+metadata:
+  name: http-gateway
+  namespace: envoy-gateway-system
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
+  labels:
+    app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/name: envoy-gateway

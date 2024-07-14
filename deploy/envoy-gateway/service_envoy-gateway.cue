@@ -1,6 +1,6 @@
 package deploy
 
-k8s: "": "v1": "Service": "envoy-gateway": {
+k8s: "": "v1": "Service": "envoy-gateway-system": "envoy-gateway": {
 	spec: {
 		selector: {
 			"app.kubernetes.io/name": "envoy-gateway"

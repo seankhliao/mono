@@ -8,6 +8,9 @@ k8s: "": "v1": "ConfigMap": "envoy-gateway-system": "envoy-gateway": {
 		kind:       "EnvoyGateway"
 		gateway: controllerName: "gateway.envoyproxy.io/gatewayclass-controller"
 		logging: level: default: "info"
-		provider: type: "Kubernetes"
+		provider: {
+			type: "Kubernetes"
+			kubernetes: envoyService: type: "ClusterIP"
+		}
 	})
 }
