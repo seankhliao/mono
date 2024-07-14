@@ -1,0 +1,7 @@
+apiVersion: kpt.dev/v1alpha1
+kind: ResourceGroup
+metadata:
+  name: inventory-84941032
+  namespace: opentelemetry
+  labels:
+    cli-utils.sigs.k8s.io/inventory-id: 6ec3b0e7e1299eef7c5a84bf03417f2accb5be7c-1720965712402611632

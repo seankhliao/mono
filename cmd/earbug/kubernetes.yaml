@@ -3,25 +3,25 @@ kind: Namespace
 metadata:
   name: earbug
 ---
-# apiVersion: gateway.networking.k8s.io/v1beta1
-# kind: HTTPRoute
-# metadata:
-#   name: earbug
-#   namespace: earbug
-# spec:
-#   hostnames:
-#     - earbug.ihwa.liao.dev
-#   parentRefs:
-#     - name: default
-#       namespace: envoy-gateway-system
-#   rules:
-#     - backendRefs:
-#         - name: earbug
-#           port: 80
-#       matches:
-#         - path:
-#             type: PathPrefix
-#             value: /
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: earbug
+  namespace: earbug
+spec:
+  hostnames:
+    - earbug.liao.dev
+  parentRefs:
+    - name: http-gateway
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - name: earbug
+          port: 80
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
 ---
 apiVersion: v1
 kind: Service
@@ -30,7 +30,7 @@ metadata:
   namespace: earbug
 spec:
   ports:
-    - appProtocol: HTTP
+    - appProtocol: http
       name: http
       port: 80
       protocol: TCP
@@ -65,11 +65,11 @@ spec:
                 fieldRef:
                   fieldPath: metadata.uid
             - name: OTEL_RESOURCE_ATTRIBUTES
-              value: k8s.pod.uid=$(POD_UID),k8s.cluster.name=ihwa,k8s.container.name=earbug
+              value: k8s.pod.uid=$(POD_UID),k8s.cluster.name=justia,k8s.container.name=earbug
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: http://ingest.otelcol.svc:4317
+              value: http://otelcol.opentelemetry.svc:4317
             - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/run/service-account/gcp-workload-identity.json
+              value: /etc/workload-identity/creds.json
           image: ko://go.seankhliao.com/mono/cmd/earbug
           name: earbug
           ports:
@@ -79,7 +79,10 @@ spec:
             - mountPath: /data
               name: data
             - name: token
-              mountPath: "/var/run/service-account"
+              mountPath: /var/run/service-account
+              readOnly: true
+            - name: gcp-creds
+              mountPath: /etc/workload-identity
               readOnly: true
       enableServiceLinks: false
       serviceAccountName: earbug
@@ -91,8 +94,9 @@ spec:
                   audience: https://iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami
                   expirationSeconds: 3600
                   path: token
-              - configMap:
-                  name: gcp-workload-identity
+        - name: gcp-creds
+          configMap:
+            name: gcp
         - name: data
           hostPath:
             path: /opt/volumes/earbug
@@ -112,17 +116,6 @@ spec:
   #           storage: 1Gi
   #       storageClassName: local-path
 ---
-# apiVersion: autoscaling.k8s.io/v1
-# kind: VerticalPodAutoscaler
-# metadata:
-#   name: earbug
-#   namespace: earbug
-# spec:
-#   targetRef:
-#     apiVersion: apps/v1
-#     kind: StatefulSet
-#     name: earbug
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -132,20 +125,21 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: gcp-workload-identity
+  name: gcp
   namespace: earbug
 data:
-  gcp-workload-identity.json: |
+  creds.json: |
     {
+      "universe_domain": "googleapis.com",
       "type": "external_account",
       "audience": "//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami",
       "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
       "token_url": "https://sts.googleapis.com/v1/token",
-      "service_account_impersonation_url": "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/ihwa-earbug@com-seankhliao.iam.gserviceaccount.com:generateAccessToken",
       "credential_source": {
         "file": "/var/run/service-account/token",
         "format": {
           "type": "text"
         }
-      }
+      },
+      "token_info_url": "https://sts.googleapis.com/v1/introspect"
     }

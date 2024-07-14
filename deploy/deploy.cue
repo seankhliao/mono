@@ -59,6 +59,7 @@ k8s: {
 		DaemonSet: [kns=string]: [kn=string]: appsv1.#DaemonSet
 		Deployment: [kns=string]: [kn=string]: appsv1.#Deployment & {
 			spec: template: spec: enableServiceLinks: bool | *false
+			spec: revisionHistoryLimit: 1
 		}
 		StatefulSet: [kns=string]: [kn=string]: appsv1.#StatefulSet
 	}

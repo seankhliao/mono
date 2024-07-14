@@ -26,4 +26,21 @@ k8s: "gateway.envoyproxy.io": "v1alpha1": "EnvoyProxy": "envoy-gateway-system": 
 			}
 		}
 	}
+	spec: telemetry: {
+		tracing: provider: {
+			type: "OpenTelemetry"
+			host: "otelcol.opentelemetry.svc.cluster.local"
+			port: 4317
+		}
+		metrics: {
+			enableVirtualHostStats: true
+			sinks: [{
+				type: "OpenTelemetry"
+				openTelemetry: {
+					host: "otelcol.opentelemetry.svc.cluster.local"
+					port: 4317
+				}
+			}]
+		}
+	}
 }

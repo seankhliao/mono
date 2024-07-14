@@ -12056,6 +12056,8 @@ metadata:
     app.kubernetes.io/part-of: envoy-gateway
     app.kubernetes.io/name: envoy-gateway
 ---
+kind: EnvoyProxy
+apiVersion: gateway.envoyproxy.io/v1alpha1
 spec:
   provider:
     type: Kubernetes
@@ -12079,8 +12081,19 @@ spec:
                         - containerPort: 10443
                           protocol: TCP
                           hostPort: 443
-kind: EnvoyProxy
-apiVersion: gateway.envoyproxy.io/v1alpha1
+  telemetry:
+    tracing:
+      provider:
+        type: OpenTelemetry
+        host: otelcol.opentelemetry.svc.cluster.local
+        port: 4317
+    metrics:
+      enableVirtualHostStats: true
+      sinks:
+        - type: OpenTelemetry
+          openTelemetry:
+            host: otelcol.opentelemetry.svc.cluster.local
+            port: 4317
 metadata:
   name: http-gateway
   namespace: envoy-gateway-system
