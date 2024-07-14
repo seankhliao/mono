@@ -1,3 +1,16 @@
+kind: ConfigMap
+data:
+  creds.json: '{"universe_domain":"googleapis.com","type":"external_account","audience":"//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami","subject_token_type":"urn:ietf:params:oauth:token-type:jwt","token_url":"https://sts.googleapis.com/v1/token","credential_source":{"file":"/var/run/service-account/token","format":{"type":"text"}},"token_info_url":"https://sts.googleapis.com/v1/introspect"}'
+metadata:
+  name: gcp
+  namespace: cert-manager
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+apiVersion: v1
+---
 kind: ServiceAccount
 metadata:
   name: cert-manager-cainjector
@@ -4669,6 +4682,7 @@ spec:
         app.kubernetes.io/component: controller
     spec:
       serviceAccountName: cert-manager-controller
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -4700,6 +4714,26 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/workload-identity/creds.json
+          volumeMounts:
+            - name: token
+              mountPath: /var/run/service-account
+              readOnly: true
+            - name: gcp-creds
+              mountPath: /etc/workload-identity
+              readOnly: true
+      volumes:
+        - name: token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: https://iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami
+                  expirationSeconds: 3600
+                  path: token
+        - name: gcp-creds
+          configMap:
+            name: gcp
       enableServiceLinks: false
 apiVersion: apps/v1
 ---
@@ -4789,6 +4823,46 @@ spec:
   selfSigned: {}
 metadata:
   name: selfsigned
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+apiVersion: cert-manager.io/v1
+---
+kind: ClusterIssuer
+spec:
+  acme:
+    email: acme+letsencrypt@liao.dev
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-production-account
+    solvers:
+      - dns01:
+          cloudDNS:
+            project: com-seankhliao
+metadata:
+  name: letsencrypt-production
+  labels:
+    app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/name: cert-manager
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
+apiVersion: cert-manager.io/v1
+---
+kind: ClusterIssuer
+spec:
+  acme:
+    email: acme+letsencrypt@liao.dev
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-staging-account
+    solvers:
+      - dns01:
+          cloudDNS:
+            project: com-seankhliao
+metadata:
+  name: letsencrypt-staging
   labels:
     app.kubernetes.io/part-of: cert-manager
     app.kubernetes.io/name: cert-manager
@@ -5132,6 +5206,39 @@ rules:
       - '*'
     verbs:
       - '*'
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - services
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - update
+  - apiGroups:
+      - gateway.networking.k8s.io
+    resources:
+      - httproutes
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
+      - update
 apiVersion: rbac.authorization.k8s.io/v1
 ---
 kind: ClusterRole

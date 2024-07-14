@@ -17,7 +17,8 @@ k8s: apps: v1: Deployment: "cert-manager": {
 			for ref in controller_rbac.depends {ref},
 		], ",")
 		spec: template: spec: {
-			serviceAccountName: "cert-manager-controller"
+			serviceAccountName:           "cert-manager-controller"
+			automountServiceAccountToken: true
 			securityContext: {
 				runAsNonRoot: true
 				seccompProfile: type: "RuntimeDefault"
@@ -49,7 +50,32 @@ k8s: apps: v1: Deployment: "cert-manager": {
 				env: [{
 					name: "POD_NAMESPACE"
 					valueFrom: fieldRef: fieldPath: "metadata.namespace"
+				}, {
+					name:  "GOOGLE_APPLICATION_CREDENTIALS"
+					value: "/etc/workload-identity/creds.json"
 				}]
+				volumeMounts: [{
+					name:      "token"
+					mountPath: "/var/run/service-account"
+					readOnly:  true
+				}, {
+					name:      "gcp-creds"
+					mountPath: "/etc/workload-identity"
+					readOnly:  true
+				}]
+			}]
+			volumes: [{
+				name: "token"
+				projected: sources: [{
+					serviceAccountToken: {
+						audience:          "https://iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami"
+						expirationSeconds: 3600
+						path:              "token"
+					}
+				}]
+			}, {
+				name: "gcp-creds"
+				configMap: name: "gcp"
 			}]
 		}
 	}

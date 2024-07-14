@@ -15,6 +15,10 @@ k8s: "gateway.envoyproxy.io": "v1alpha1": "EnvoyProxy": "envoy-gateway-system": 
 							ports: [{
 								containerPort: 10080
 								hostPort:      80
+							}, {
+								containerPort: 10443
+								protocol:      "TCP"
+								hostPort:      443
 							}]
 						}]
 					}

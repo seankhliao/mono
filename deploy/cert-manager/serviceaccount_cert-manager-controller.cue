@@ -34,6 +34,18 @@ controller_rbac: #Rbac & {
 			apiGroups: ["acme.cert-manager.io"]
 			resources: ["*"]
 			verbs: ["*"]
+		}, {
+			apiGroups: [""]
+			resources: ["pods", "services"]
+			verbs: ["get", "list", "watch", "create", "delete"]
+		}, {
+			apiGroups: ["networking.k8s.io"]
+			resources: ["ingresses"]
+			verbs: ["get", "list", "watch", "create", "delete", "update"]
+		}, {
+			apiGroups: ["gateway.networking.k8s.io"]
+			resources: ["httproutes"]
+			verbs: ["get", "list", "watch", "create", "delete", "update"]
 		}]
 
 		namespaceRules: "cert-manager": [{

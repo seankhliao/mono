@@ -11716,6 +11716,38 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
 apiVersion: cert-manager.io/v1
 ---
+kind: Certificate
+spec:
+  secretName: http-gateway
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  duration: 2160h
+  renewBefore: 720h
+  isCA: false
+  usages:
+    - server auth
+    - client auth
+  subject:
+    organizations:
+      - liao.dev
+  dnsNames:
+    - '*.liao.dev'
+    - '*.justia.liao.dev'
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+    group: cert-manager.io
+metadata:
+  name: http-gateway
+  namespace: envoy-gateway-system
+  labels:
+    app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/name: envoy-gateway
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
+apiVersion: cert-manager.io/v1
+---
 kind: Issuer
 spec:
   ca:
@@ -11737,6 +11769,17 @@ spec:
     - name: http
       protocol: HTTP
       port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: http-gateway
       allowedRoutes:
         namespaces:
           from: All
@@ -11996,6 +12039,24 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 ---
 spec:
+  http3: {}
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: http-gateway
+    namespace: envoy-gateway-system
+kind: ClientTrafficPolicy
+apiVersion: gateway.envoyproxy.io/v1alpha1
+metadata:
+  name: http-gateway
+  namespace: envoy-gateway-system
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
+  labels:
+    app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/name: envoy-gateway
+---
+spec:
   provider:
     type: Kubernetes
     kubernetes:
@@ -12015,6 +12076,9 @@ spec:
                       ports:
                         - containerPort: 10080
                           hostPort: 80
+                        - containerPort: 10443
+                          protocol: TCP
+                          hostPort: 443
 kind: EnvoyProxy
 apiVersion: gateway.envoyproxy.io/v1alpha1
 metadata:
