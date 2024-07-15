@@ -6,6 +6,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -17,6 +18,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -28,6 +30,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -39,6 +42,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -49,6 +53,7 @@ metadata:
   name: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -73,6 +78,7 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
 ---
 kind: MutatingWebhookConfiguration
@@ -80,6 +86,7 @@ metadata:
   name: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     cert-manager.io/inject-ca-from-secret: cert-manager/cert-manager-webhook-ca
@@ -115,6 +122,7 @@ metadata:
   name: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     cert-manager.io/inject-ca-from-secret: cert-manager/cert-manager-webhook-ca
@@ -342,6 +350,7 @@ metadata:
   name: certificaterequests.cert-manager.io
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -711,6 +720,7 @@ metadata:
   name: certificates.cert-manager.io
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -1787,6 +1797,7 @@ metadata:
   name: challenges.acme.cert-manager.io
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -3105,6 +3116,7 @@ metadata:
   name: clusterissuers.cert-manager.io
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -4423,6 +4435,7 @@ metadata:
   name: issuers.cert-manager.io
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -4603,6 +4616,7 @@ metadata:
   name: orders.acme.cert-manager.io
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -4614,6 +4628,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager-cainjector
     app.kubernetes.io/component: cainjector
   annotations:
@@ -4664,6 +4679,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager-controller
     app.kubernetes.io/component: controller
   annotations:
@@ -4741,6 +4757,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager-webhook
     app.kubernetes.io/component: webhook
   annotations:
@@ -4824,6 +4841,7 @@ metadata:
   name: selfsigned
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -4844,6 +4862,7 @@ metadata:
   name: letsencrypt-production
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -4864,6 +4883,7 @@ metadata:
   name: letsencrypt-staging
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -4875,6 +4895,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-cainjector
@@ -4895,6 +4916,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-controller
@@ -4915,6 +4937,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-webhook
@@ -4953,6 +4976,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -4981,6 +5005,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -5010,6 +5035,7 @@ metadata:
   namespace: cert-manager
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -5020,6 +5046,7 @@ metadata:
   name: cert-manager-cainjector
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-cainjector,rbac.authorization.k8s.io/ClusterRole/cert-manager-cainjector
@@ -5039,6 +5066,7 @@ metadata:
   name: cert-manager-controller
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-controller,rbac.authorization.k8s.io/ClusterRole/cert-manager-controller
@@ -5058,6 +5086,7 @@ metadata:
   name: cert-manager-webhook
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-webhook,rbac.authorization.k8s.io/ClusterRole/cert-manager-webhook
@@ -5077,6 +5106,7 @@ metadata:
   name: cert-manager-cainjector
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -5144,6 +5174,7 @@ metadata:
   name: cert-manager-controller
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
@@ -5245,6 +5276,7 @@ metadata:
   name: cert-manager-webhook
   labels:
     app.kubernetes.io/part-of: cert-manager
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"

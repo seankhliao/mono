@@ -12,6 +12,6 @@ k8s: [kgroup=string]: [kversion=string]: [kkind=string]: [knamespace=string]: [k
 	}
 }
 
-namespace: (#Namespace & {#args: name: "envoy-gateway"})
+namespace: (#Namespace & {#args: name: "envoy-gateway-system"})
 
 k8s: namespace.out

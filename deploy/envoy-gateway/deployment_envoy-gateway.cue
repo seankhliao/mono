@@ -24,7 +24,7 @@ k8s: "apps": "v1": "Deployment": "envoy-gateway-system": {
 					}
 				}, {
 					name:  "KUBERNETES_CLUSTER_DOMAIN"
-					value: "cluster.local"
+					value: "asami.liao.dev"
 				}]
 				ports: [{
 					containerPort: 18000

@@ -18,6 +18,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -28,9 +29,10 @@ data:
   creds.json: '{"universe_domain":"googleapis.com","type":"external_account","audience":"//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami","subject_token_type":"urn:ietf:params:oauth:token-type:jwt","token_url":"https://sts.googleapis.com/v1/token","credential_source":{"file":"/var/run/service-account/token","format":{"type":"text"}},"token_info_url":"https://sts.googleapis.com/v1/introspect"}'
 metadata:
   name: gcp
-  namespace: envoy-gateway
+  namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -42,6 +44,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -49,9 +52,10 @@ apiVersion: v1
 ---
 kind: Namespace
 metadata:
-  name: envoy-gateway
+  name: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -76,6 +80,7 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -90,6 +95,7 @@ metadata:
   labels:
     gateway.networking.k8s.io/policy: Direct
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   name: backendtlspolicies.gateway.networking.k8s.io
 spec:
@@ -346,6 +352,7 @@ metadata:
   name: backendtrafficpolicies.gateway.envoyproxy.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.envoyproxy.io
@@ -1187,6 +1194,7 @@ metadata:
   name: clienttrafficpolicies.gateway.envoyproxy.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.envoyproxy.io
@@ -1594,6 +1602,7 @@ metadata:
   name: envoypatchpolicies.gateway.envoyproxy.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.envoyproxy.io
@@ -1792,6 +1801,7 @@ metadata:
   name: envoyproxies.gateway.envoyproxy.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.envoyproxy.io
@@ -5483,6 +5493,7 @@ metadata:
   name: gatewayclasses.gateway.networking.k8s.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.networking.k8s.io
@@ -5860,6 +5871,7 @@ metadata:
   name: gateways.gateway.networking.k8s.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.networking.k8s.io
@@ -6893,6 +6905,7 @@ metadata:
   name: grpcroutes.gateway.networking.k8s.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.networking.k8s.io
@@ -7708,6 +7721,7 @@ metadata:
   name: httproutes.gateway.networking.k8s.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.networking.k8s.io
@@ -9967,6 +9981,7 @@ metadata:
   name: referencegrants.gateway.networking.k8s.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.networking.k8s.io
@@ -10165,6 +10180,7 @@ metadata:
   name: securitypolicies.gateway.envoyproxy.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.envoyproxy.io
@@ -10738,6 +10754,7 @@ metadata:
   name: tcproutes.gateway.networking.k8s.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.networking.k8s.io
@@ -11018,6 +11035,7 @@ metadata:
   name: tlsroutes.gateway.networking.k8s.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.networking.k8s.io
@@ -11308,6 +11326,7 @@ metadata:
   name: udproutes.gateway.networking.k8s.io
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 spec:
   group: gateway.networking.k8s.io
@@ -11582,6 +11601,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -11607,7 +11627,7 @@ spec:
                   apiVersion: v1
                   fieldPath: metadata.namespace
             - name: KUBERNETES_CLUSTER_DOMAIN
-              value: cluster.local
+              value: asami.liao.dev
           ports:
             - containerPort: 18000
               name: grpc
@@ -11673,6 +11693,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -11685,7 +11706,7 @@ spec:
     - envoy-gateway
     - envoy-gateway.envoy-gateway-system
     - envoy-gateway.envoy-gateway-system.svc
-    - envoy-gateway.envoy-gateway-system.svc.cluster.local
+    - envoy-gateway.envoy-gateway-system.svc.asami.liao.dev
   issuerRef:
     kind: Issuer
     name: envoy-gateway
@@ -11700,6 +11721,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -11724,6 +11746,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -11756,6 +11779,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -11770,6 +11794,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -11801,6 +11826,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -11818,6 +11844,7 @@ metadata:
   name: http-gateway
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -11829,6 +11856,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/depends-on: /namespaces/envoy-gateway-system/ServiceAccount/envoy-gateway
@@ -11909,6 +11937,7 @@ metadata:
   namespace: envoy-gateway-system
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -11919,6 +11948,7 @@ metadata:
   name: envoy-gateway
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/depends-on: /namespaces/envoy-gateway-system/ServiceAccount/envoy-gateway,rbac.authorization.k8s.io/ClusterRole/envoy-gateway
@@ -11938,6 +11968,7 @@ metadata:
   name: envoy-gateway
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
@@ -12067,6 +12098,7 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
 ---
 kind: EnvoyProxy
@@ -12096,16 +12128,17 @@ spec:
                           hostPort: 443
   telemetry:
     tracing:
+      samplingRate: 100
       provider:
         type: OpenTelemetry
-        host: otelcol.opentelemetry.svc.cluster.local
+        host: otelcol.opentelemetry.svc
         port: 4317
     metrics:
       enableVirtualHostStats: true
       sinks:
         - type: OpenTelemetry
           openTelemetry:
-            host: otelcol.opentelemetry.svc.cluster.local
+            host: otelcol.opentelemetry.svc
             port: 4317
 metadata:
   name: http-gateway
@@ -12114,4 +12147,5 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
   labels:
     app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway

@@ -66,6 +66,7 @@ metadata:
   namespace: opentelemetry
   labels:
     app.kubernetes.io/part-of: opentelemetry
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: opentelemetry
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/opentelemetry/*.cue"
@@ -79,6 +80,7 @@ metadata:
   namespace: opentelemetry
   labels:
     app.kubernetes.io/part-of: opentelemetry
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: opentelemetry
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/opentelemetry/*.cue"
@@ -89,6 +91,7 @@ metadata:
   name: opentelemetry
   labels:
     app.kubernetes.io/part-of: opentelemetry
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: opentelemetry
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/opentelemetry/*.cue"
@@ -118,6 +121,7 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/opentelemetry/*.cue"
   labels:
     app.kubernetes.io/part-of: opentelemetry
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: opentelemetry
 ---
 kind: Deployment
@@ -126,6 +130,7 @@ metadata:
   namespace: opentelemetry
   labels:
     app.kubernetes.io/part-of: opentelemetry
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: otelcol
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/opentelemetry/*.cue"

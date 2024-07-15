@@ -121,7 +121,9 @@ k8slist: list.FlattenN([for _group, versions in k8s {
 		[for kind, namespaces in kinds {
 			[for namespace, names in namespaces {
 				[for name, obj in names {
-					obj
+					obj & {
+						metadata: labels: "app.kubernetes.io/managed-by": "kpt"
+					}
 				}]
 			}]
 		}]

@@ -119,6 +119,7 @@ metadata:
   namespace: kube-system
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
@@ -130,6 +131,7 @@ metadata:
   namespace: kube-system
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
@@ -141,6 +143,7 @@ metadata:
   namespace: kube-system
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
@@ -151,6 +154,7 @@ metadata:
   name: cilium-secrets
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
@@ -161,6 +165,7 @@ metadata:
   name: cilium-agent
   namespace: kube-system
   labels:
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium-agent
     app.kubernetes.io/part-of: cilium
     app.kubernetes.io/component: agent
@@ -584,6 +589,7 @@ metadata:
   name: cilium-operator
   namespace: kube-system
   labels:
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium-operator
     app.kubernetes.io/part-of: cilium
     app.kubernetes.io/component: operator
@@ -697,6 +703,7 @@ metadata:
   name: cilium
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
@@ -708,6 +715,7 @@ metadata:
   namespace: kube-system
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent
@@ -728,6 +736,7 @@ metadata:
   namespace: cilium-secrets
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent
@@ -748,6 +757,7 @@ metadata:
   namespace: cilium-secrets
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-operator
@@ -777,6 +787,7 @@ metadata:
   namespace: kube-system
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
@@ -797,6 +808,7 @@ metadata:
   namespace: cilium-secrets
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
@@ -818,6 +830,7 @@ metadata:
   namespace: cilium-secrets
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
@@ -828,6 +841,7 @@ metadata:
   name: cilium-agent
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent,rbac.authorization.k8s.io/ClusterRole/cilium-agent
@@ -847,6 +861,7 @@ metadata:
   name: cilium-operator
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-operator,rbac.authorization.k8s.io/ClusterRole/cilium-operator
@@ -866,6 +881,7 @@ metadata:
   name: cilium-agent
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
@@ -978,6 +994,7 @@ metadata:
   name: cilium-operator
   labels:
     app.kubernetes.io/part-of: cilium
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"

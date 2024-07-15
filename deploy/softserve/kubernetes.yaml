@@ -6,6 +6,7 @@ metadata:
   namespace: softserve
   labels:
     app.kubernetes.io/part-of: softserve
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: softserve
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/softserve/*.cue"
@@ -16,6 +17,7 @@ metadata:
   name: softserve
   labels:
     app.kubernetes.io/part-of: softserve
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: softserve
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/softserve/*.cue"
@@ -27,6 +29,7 @@ metadata:
   namespace: softserve
   labels:
     app.kubernetes.io/part-of: softserve
+    app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: softserve
   annotations:
     config.kubernetes.io/origin: "\tmono/deploy/softserve/*.cue"

@@ -7,7 +7,7 @@ k8s: "cert-manager.io": "v1": "Certificate": "envoy-gateway-system": "envoy-gate
 			"envoy-gateway",
 			"envoy-gateway.envoy-gateway-system",
 			"envoy-gateway.envoy-gateway-system.svc",
-			"envoy-gateway.envoy-gateway-system.svc.cluster.local",
+			"envoy-gateway.envoy-gateway-system.svc.asami.liao.dev",
 		]
 		issuerRef: {
 			kind: "Issuer"
