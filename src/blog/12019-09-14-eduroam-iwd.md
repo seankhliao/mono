@@ -33,3 +33,36 @@ EAP-PEAP-Phase2-Password=...
 [Settings]
 Autoconnect=true
 ```
+
+#### Update 2024-07-18: NetworkManager
+
+While I've always used iwd directly through files or `iwctl`,
+iwd can also be a backend for NetworkManager.
+
+UvA provides a config tool available for download at 
+[wifiportal.uva.nl](http://wifiportal.uva.nl/),
+which generates a connection profile at:
+`/etc/NetworkManager/system-connections/eduroam.nmconnection`.
+NetworkManager will read the file and generate a corresponding 
+iwd config at `/var/lib/iwd/eduroam.8021x`.
+
+I've been told the the UvA tool includes the following lines in
+`eduroam.nmconnection` which should be removed / commented out:
+
+```
+ca-cert=/home/user/.joinnow/eduroam.crt
+domain-suffix-match=radius.uva.nl
+```
+
+if left in place,
+they get translated into the following iwd config:
+
+```
+EAP-PEAP-CACert=/home/user/.joinnow/eduroam.crt
+EAP-PEAP-ServerDomainMask=*.radius.uva.nl
+```
+
+which apparently iwd doesn't need or like 
+(or is unnecessary for UvA's current network configuration).
+
+Thanks to Jason for the sharing their working configuration.
