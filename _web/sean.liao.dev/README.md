@@ -1,5 +1,12 @@
-# liao.dev
+# sean.liao.dev
 
-[![License](https://img.shields.io/github/license/seankhliao/sean.liao.dev.svg?style=flat-square)](LICENSE)
+This directory holds the source for 
+[sean.liao.dev](https://sean.liao.dev),
+primarily hosting a record of lifestyle events
+and media I've consumed.
 
-source for [sean.liao.dev](https://sean.liao.dev)
+## Build and Deploy
+
+```sh
+blogengine
+```

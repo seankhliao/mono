@@ -1,1 +1,0 @@
-tekton: pipeline: "blogengine"

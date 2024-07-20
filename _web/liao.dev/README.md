@@ -1,5 +1,18 @@
 # liao.dev
 
-[![License](https://img.shields.io/github/license/seankhliao/liao.dev.svg?style=flat-square)](LICENSE)
+[liao.dev](https://liao.dev) is intended to serve
+only links to other web properties / identities.
 
-source for [liao.dev](https://liao.dev)
+## Build
+
+Generate the randomized links with:
+
+```sh
+go generate
+```
+
+## Deploy
+
+```sh
+blogengine
+```

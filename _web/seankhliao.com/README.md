@@ -1,5 +1,14 @@
 # seankhliao.com
 
-[![License](https://img.shields.io/github/license/seankhliao/blogengine.svg?style=flat-square)](LICENSE)
+This directory holds the source for 
+[seankhliao.com](https://seankhliao.com).
+This site is primarily intended as a public profile
+of my presence within tech.
+The majority of the content lands within the
+[blog](https://seankhliao.com/blog/) section.
 
-Source for [seankhliao.com](https://seankhliao.com)
+## Build and Deploy
+
+```sh
+blogengine
+```

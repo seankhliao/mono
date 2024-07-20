@@ -1,4 +1,17 @@
-# chrome-newtab
+# newtab.liao.dev
+
+This site is both hosted on the internet at
+[newtab.liao.dev](https://newtab.liao.dev)
+but also can be used as a chrome new tab local extension.
+
+## Build and Deploy
+
+```sh
+blogengine
+```
+
+## Load as local extension
+
 
 1. go to [chrome://extensions](chrome://extensions)
 2. enable developer mode
