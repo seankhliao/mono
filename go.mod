@@ -1,6 +1,6 @@
 module go.seankhliao.com/mono
 
-go 1.22.0
+go 1.23
 
 require (
 	cuelang.org/go v0.9.2

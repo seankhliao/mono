@@ -5,7 +5,7 @@
 ### _re_ viewing command output
 
 Working with Kubernetes,
-I'm often faced with output that is hundres or thousands of lines long,
+I'm often faced with output that is hundreds or thousands of lines long,
 whether it's all Deployment manifests for a cluster,
 logs for a pod,
 or something else that just scrolls by me.

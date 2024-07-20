@@ -94,4 +94,4 @@ There is a limitation of this though:
 when I tried to enable HTTP3 (QUIC),
 I realized that the ports are keyed only on `containerPort` 
 which isn't unique when you have both `TCP` and `UDP` as protocols.
-The ouput after patchhing is only one of the ports will remain.
+The output after patchhing is only one of the ports will remain.

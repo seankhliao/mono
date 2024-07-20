@@ -14,7 +14,7 @@ Over the past few years,
 an explicit goal of our group/team at work was to move from a world of a single production environment,
 to one of many,
 each with its own set of attributes, such as region, tenancy, application set.
-This necessiated local tooling that could work confortable across environments.
+This necessiated local tooling that could work comfortable across environments.
 
 ##### _kubectl_
 
@@ -61,7 +61,7 @@ It's called yolo because of how dangerous it can be (especially with all my admi
 
 #### _git_
 
-I've done comparitively much less customization on `git` itself.
+I've done comparatively much less customization on `git` itself.
 Instead I'll just describe the workflow.
 
 _Linear_ history: 

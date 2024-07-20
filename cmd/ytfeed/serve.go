@@ -293,7 +293,7 @@ func (a *App) handleLookup(rw http.ResponseWriter, r *http.Request) {
 
 	content := []gomponents.Node{
 		html.H3(html.Em(gomponents.Text("lookup")), gomponents.Text(" channels")),
-		html.FormEl(
+		html.Form(
 			html.Action("/lookup"), html.Method("post"),
 			html.Label(html.For("term"), gomponents.Text("search term:")),
 			html.Input(

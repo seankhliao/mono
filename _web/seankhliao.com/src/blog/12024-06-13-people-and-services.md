@@ -14,7 +14,7 @@ Have you updated:
 
 - code host team membership
 - paging team / rota membership
-- montioring team membership
+- monitoring team membership
 - incident response team membership
 - chat team membership
 - hr team membership

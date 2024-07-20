@@ -34,7 +34,7 @@ func (a *App) index() http.Handler {
 			content = append(content,
 				html.H4(html.Em(gomponents.Text("login"))),
 				html.P(gomponents.Text("Log in with a passkey:")),
-				html.FormEl(
+				html.Form(
 					html.Action("javascript:loginUser()"),
 					html.Input(html.Type("submit"), html.Value("login")),
 				),
@@ -82,7 +82,7 @@ func (a *App) index() http.Handler {
 					html.Strong(gomponents.Text("login cred:")),
 					gomponents.Text(sess.LoginCredID),
 				),
-				html.FormEl(
+				html.Form(
 					html.Action("/logout"), html.Method("post"),
 					html.Input(html.Type("submit"), html.Value("logout")),
 				),
@@ -92,7 +92,7 @@ func (a *App) index() http.Handler {
 
 		content = append(content,
 			html.H4(html.Em(gomponents.Text("register ")), gomponents.Text("user / device")),
-			html.FormEl(
+			html.Form(
 				html.Action("javascript:registerUser()"),
 				html.Label(html.For("email"), gomponents.Text("Email:")),
 				html.Input(html.Type("email"), html.ID("email"), html.Name("email")),

@@ -69,7 +69,7 @@ func ExampleProcessor() {
 
 			_ = ctx
 
-			span.SetStatus(codes.Error, "an error occured")
+			span.SetStatus(codes.Error, "an error occurred")
 
 			span.AddEvent("l2b e2", apitrace.WithAttributes(
 				attribute.Float64("l2b k3", 976.765),
