@@ -51,7 +51,11 @@ func newConfig(ctx context.Context, lg *slog.Logger, args []string) (Config, err
 				if err == nil {
 					return conf, fmt.Errorf("config file not found, not checking past repo root")
 				} else if errors.Is(err, os.ErrNotExist) {
+					if dir, _ := os.Getwd(); dir == "/" {
+						return conf, fmt.Errorf("at system root /, config file not found")
+					}
 					os.Chdir("..")
+
 					continue
 				} else {
 					return conf, fmt.Errorf("error checking for git root: %w", err)
