@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	_ "embed"
+	"errors"
 	"flag"
 	"fmt"
 	"log/slog"
@@ -32,6 +33,7 @@ func newConfig(ctx context.Context, lg *slog.Logger, args []string) (Config, err
 		} else {
 			return fmt.Errorf("path not found: %s", u)
 		}
+
 		return nil
 	})
 	fset.Parse(args[1:])
@@ -39,6 +41,27 @@ func newConfig(ctx context.Context, lg *slog.Logger, args []string) (Config, err
 	var conf Config
 	cuectx := cuecontext.New()
 	confUnified := cuectx.CompileString(configDefault)
+
+	// find and change to web root
+	for {
+		_, err := os.Stat(configFile)
+		if err != nil {
+			if errors.Is(err, os.ErrNotExist) {
+				_, err := os.Stat(".git")
+				if err == nil {
+					return conf, fmt.Errorf("config file not found, not checking past repo root")
+				} else if errors.Is(err, os.ErrNotExist) {
+					os.Chdir("..")
+					continue
+				} else {
+					return conf, fmt.Errorf("error checking for git root: %w", err)
+				}
+			} else {
+				return conf, fmt.Errorf("error checking for config file: %w", err)
+			}
+		}
+		break
+	}
 
 	lg.LogAttrs(ctx, slog.LevelDebug, "rad config", slog.String("file", configFile))
 	configGiven, err := os.ReadFile(configFile)
