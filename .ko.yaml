@@ -23,6 +23,9 @@ builds:
   - id: ghdefaults
     main: ./cmd/ghdefaults
     <<: *buildopts
+  - id: reqlog
+    main: ./cmd/reqlog
+    <<: *buildopts
   - id: server-homepage
     main: ./cmd/server-homepage
     <<: *buildopts
