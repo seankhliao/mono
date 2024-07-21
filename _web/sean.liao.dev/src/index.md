@@ -27,9 +27,34 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-09-03_ girl in red
 - _12024-08-28_ WACK in the UK Vol 3
 
+##### _12024-07-21_ Hyper Japan Festival 2024
+
+With [_Akase Akari_]
+
+This is a London event about Japanese things in general,
+though if you walk around you'll find the ground floor is:
+media/entertainment companies, pens, sake, other food,
+and some assorted other stuff.
+The second floor is a marketplace:
+mostly independent sellers with cute stuff.
+The crowd fills in over the course of the day,
+it's never quite packed,
+though like all conventions,
+it's wise to keep your distance (for the sake of your nose).
+A decent portion of people dress up for the event,
+either matching japanese fashion or full on cosplay.
+This time,
+[_galacticbpd_]'s Death Note Misa cosplay with a giant scythe
+was my favorite.
+In between walking around,
+there were the on stage performances.
+[_Akase Akari_] was cute performing her ending theme for
+My Dress Up Darling,
+her cosplay skills were quite on point channelling Marin Kitagawa.
+
 ##### _12024-07-03_ Against the Currrent
 
-With _Dead Pony_
+With [_Dead Pony_]
 
 When a band that can sell out a 2400 people venue
 goes on stage at a 600 one in short notice,
@@ -37,7 +62,7 @@ you know it's going to be good.
 I think the mosh pit opened up behind me from the second song,
 pausing only for the acoustics.
 After all these years,
-_Against the Current_ is still my favourite band,
+[_Against the Current_] is still my favourite band,
 the sound, the energy just gives me life.
 I feel revitalized after an honestly mostly mediocre first half of the year,
 and this is going to keep me going through a summer without anything of interest.
@@ -50,9 +75,9 @@ and further back in the past as well.
 With _Emi Jeen_ and _AJA_
 
 I certainly felt the hype ramping up through the three sets.
-_Emi Jeen_ was fine,
-I felt like I got _Tate McRae_ vibes from _AJA_,
-and _Charlotte Sands_ was more heavy into rock (I think).
+[_Emi Jeen_] was fine,
+I felt like I got [_Tate McRae_] vibes from [_AJA_],
+and [_Charlotte Sands_] was more heavy into rock (I think).
 Quite the energetic night, I think I missed being on the floor in the front.
 
 ##### _12024-06-18_ AViVA
@@ -66,7 +91,8 @@ I couldn't really tell what exactly I was listening to.
 
 ##### _12024-06-16_ IVE
 
-My eardrums almost burst with the amount of screaming I heard from the fans...
+My eardrums almost burst with the amount of screaming I heard from the
+_IVE_ fans...
 This time, I prepped for a two whole days listening to their songs,
 and I think it paid off,
 I was familiar with what felt like over half of them.
@@ -75,7 +101,7 @@ and they didn't disappoint either.
 
 ##### _12024-06-10_ ATARASHII GAKKO!
 
-Fun, though it didn't feel like it fell into any particular genre.
+Fun, though _ATARASHII GAKKO_ didn't feel like it fell into any particular genre.
 I did feel like a lot of the songs sort of blended together,
 but maybe that was from all the pre-listening I did the day before.
 Maybe digital pop?
@@ -84,22 +110,22 @@ not just the sound.
 
 ##### _12024-05-29_ Spirited Away
 
-The second time I was seeing this,
+The second time I was seeing the _Spirited Away_ stage adaptation,
 this time higher up and further away.
 Maybe it broke the magic a little to see more of how things were acted out,
 especially places where I didn't notice there were body doubles.
 Since the last time, I had rewatched the original animation.
 Still it was pretty good.
-_Kanna Hashimoto_ as Chihiro, _Kotaro Daigo_ as Haku.
+[_Kanna Hashimoto_] as Chihiro, [_Kotaro Daigo_] as Haku.
 
 ##### _12024-05-28_ Allie X
 
 Electronic music?
-Certainly interesting.
+_Allie X_ was certainly interesting.
 
 ##### _12024-05-01_ Spirited Away
 
-This was such a magical experience.
+The [_Spirited Away_] stage adaptation was such a magical experience.
 Even though it had been forever since I'd seen the original animation,
 this brought back so many memories.
 The set design was wonderful,
@@ -111,7 +137,7 @@ that even though it was all in japanese and I kept having to glance at the subti
 it didn't really distract me.
 The lavishness of the setup and costumes left me in awe of the whole thing.
 The fact that the puppeteers didn't hide at all were an endearing part of the show.
-_Mone Kamishiraishi_ as Chihiro, _Kotaro Daigo_ as Haku.
+[_Mone Kamishiraishi_] as Chihiro, [_Kotaro Daigo_] as Haku.
 
 ##### _12024-04-24_ ITZY
 
@@ -124,9 +150,9 @@ with every part choreograhed with good dances.
 
 ##### _12024-04-23_ Tate McRae
 
-With _charlieonnafriday_
+With [_charlieonnafriday_]
 
-_Tate McRae_ slayed the evening with a mix of song and dance.
+[_Tate McRae_] slayed the evening with a mix of song and dance.
 There was some alternating between fast and slow songs,
 which was different from the usual fast-slow-fast sandwich.
 The singing was good,
@@ -140,24 +166,24 @@ really reinforcing the glamour look.
 Such a lovely performance,
 This was another one with the entire crowd singing along
 for most of the songs.
-There was a cutesy elegance to _Madison Beer_,
+There was a cutesy elegance to [_Madison Beer_],
 which I felt was a bit unique compared to all the other shows
 I've recently seen.
 
 ##### _12024-03-19_ Cannons
 
-With _NINA_ and _Radio Wolf_.
+With [_NINA_] and [_Radio Wolf_].
 
-Relaxed, cool, and sensual was the vibe tonight with _NINA_ and _Radio Wolf_.
-Much like _Cannons_ though I'd replace relaxed with laid back.
+Relaxed, cool, and sensual was the vibe tonight with [_NINA_] and [_Radio Wolf_].
+Much like [_Cannons_] though I'd replace relaxed with laid back.
 It wasn't intense, but still had a positive, upbeat feel.
 I was honestly surprised that not many people seemed to be dancing...
 
 ##### _12024-03-09_ Cloudy June
 
-With _King Mala_.
+With [_King Mala_].
 
-I didn't have high hopes, but _Cloudy June_ was pretty good,
+I didn't have high hopes, but [_Cloudy June_] was pretty good,
 apparently I knew quite of few of her songs.
 I remember first noticing her from a very slow, sad song,
 but this set was mostly fairly energetic.
@@ -165,20 +191,20 @@ Though the lighting was bad when I wanted to get pictures...
 
 ##### _12024-02-29_ RØRY
 
-With _lleo_ and _Uninvited_.
+With [_lleo_] and [_Uninvited_].
 
 Sadcore? I guess that's the genre we're in now.
-_RØRY_ was interesting but it just never felt quite aligned to what i was feeling.
+[_RØRY_] was interesting but it just never felt quite aligned to what i was feeling.
 
 ##### _12024-02-22_ Zara Larsson
 
-With _Yaeger_.
+With [_Yaeger_].
 
 Chill and energetic,
 not quite words that go together,
-but that was the overall vibe I got from _Yaeger_.
+but that was the overall vibe I got from [_Yaeger_].
 It was fun, relaxing, and got us all hyped up for Zara.
-_Zara Larsson_ came in popstar style,
+[_Zara Larsson_] came in popstar style,
 with the usual 4 backing dancers and giant screen in the back.
 With only a slight lull in the middle,
 it was high energy singing and dancing,
@@ -187,13 +213,13 @@ So fun.
 
 ##### _12024-02-20_ Poppy
 
-With _Wargasm_.
+With [_Wargasm_].
 
 We open the night with a mosh pit,
 and we have one for almost every song (well mostly electronic sounds).
 It makes me wonder if I should have gone down into the stalls instead
-for _Wargasm_.
-_Poppy_ was a bit softer on the electronic,
+for [_Wargasm_].
+[_Poppy_] was a bit softer on the electronic,
 but I liked it better, with the higher dynamic range.
 It did feel a bit impersonal with the chatter in-between being pre-recorded,
 at the same time, very on brand.
@@ -203,7 +229,7 @@ but overall a pretty good time.
 ##### _12024-02-16_ Alessandra
 
 Pop music is back on the schedule,
-this time with Norway's Eurovision 2023 representative _Alessandra_.
+this time with Norway's Eurovision 2023 representative [_Alessandra_].
 It was good, though not particularly special,
 just an energetic night out.
 
@@ -217,7 +243,7 @@ At least it was mostly pleasant.
 ##### _12023-12-16_ FEMM
 
 We open with 2 Japanese mannequins in latex maid costumes carried on stage.
-It was a very visual performance,
+[_FEMM_] was a very visual performance,
 the robotic moves of the first part,
 the slightly more fluid but still precise and fully choreograhed remainder of the show.
 With their last show outside of Japan,
@@ -225,23 +251,23 @@ the crowd was a bit smaller than expected, though there was an afternoon show as
 
 ##### _12023-12-09_ Halestorm
 
-With _Black Veil Brides_, and _Mothica_
+With [_Black Veil Brides_], and [_Mothica_]
 
-I came to see _Mothica_ and I was not disappointed.
+I came to see [_Mothica_] and I was not disappointed.
 My favourite dress I've seen this year, maybe vampire core?
 For her style of music, it was a bit different from the recordings,
 maybe a bit less clarity and more backing vocals?
 But it felt emotional.
-_Black Veil Brides_ were... fine I guess?
-_Halestorm_ were... cool.
+[_Black Veil Brides_] were... fine I guess?
+[_Halestorm_] were... cool.
 It felt old school rock and roll,
 no need for flashy stage props,
 just a clean, empty stage, with lights and music.
 
 ##### _12023-12-08_ Communion Xmas Party
 
-With _Nectar Woode_, _Bear’s Den_, _Christof Van Der Ven_, _Jack Garratt_,
-_Jasmine Jethwa_, _Lucia & the Best Boys_, _Maisie Peters_, and _The Staves_
+With [_Nectar Woode_], [_Bear’s Den_], [_Christof Van Der Ven_], [_Jack Garratt_],
+[_Jasmine Jethwa_], [_Lucia & the Best Boys_], [_Maisie Peters_], and [_The Staves_]
 
 Film music, and explicitly not christmas music or films,
 though 2 christmas songs did sneak through,
@@ -249,17 +275,17 @@ hosted by Communion Records.
 It was quite a joyous occasion,
 though with the age of the artists and them referencing their "teenage dreams",
 I don't think I recognized too many songs.
-_Maisie Peters_ was awesome as always,
-_Lucia_ was someone I might consider listening to again.
+[_Maisie Peters_] was awesome as always,
+[_Lucia_] was someone I might consider listening to again.
 
 ##### _12023-12-01_ Against the Current
 
-With _Call Me Amour_ and _LØLØ_
+With [_Call Me Amour_] and [_LØLØ_]
 
-I started off wondering if this was the same _LØLØ_ that I had seen a few months before,
+I started off wondering if this was the same [_LØLØ_] that I had seen a few months before,
 but the second half of her set did awar with those thoughts.
 Fun and energetic.
-Seeing _Against the Current_ again brought me a warm, comforting feeling
+Seeing [_Against the Current_] again brought me a warm, comforting feeling
 as if I were coming back home (they were the first band I was really into).
 So much energy, this is really a show you should be in the stalls for.
 Chrissy's stage presence has changed a bit I think,
@@ -271,10 +297,10 @@ and pick up on music as a thing.
 
 ##### _12023-11-30_ Ashnikko
 
-With _Hemlocke Springs_
+With [_Hemlocke Springs_]
 
 I honestly had no idea what was going on during the support act.
-_Ashnikko_ on the other hand was amazing.
+[_Ashnikko_] on the other hand was amazing.
 It was more of a pop/dance style performance,
 and I loved the little (mildly disturbing) stories she used to introduce each song.
 I knew more of these than I expected,
@@ -283,25 +309,25 @@ Very fun.
 
 ##### _12023-11-24_ Chloe Adams
 
-With _ili_
+With [_ili_]
 
 The glaswegian accent from _ili_ was so cute to listen to,
 definitely recommend.
-_Chloe Adams_ was an interesting mix of styles.
+[_Chloe Adams_] was an interesting mix of styles.
 I came here after hearing Seasons too many times on ticktock,
 the live version did not disappoint
 (though the crowd was much smaller and quieter than I expected).
 
 ##### _12023-11-20_ Echosmith
 
-With _McKenna Michels_ and _Larkins_
+With [_McKenna Michels_] and [_Larkins_]
 
 I think _McKenna Michels_ was fine?
 Slightly on the slower, sadder side,
 which was in contrast to the positive personality.
-_Larkins_ sounded like a typical pop/rock band,
+[_Larkins_] sounded like a typical pop/rock band,
 not very memorable, I may have drifted off for a bit.
-It really was a dream for me to see _Echosmith_,
+It really was a dream for me to see [_Echosmith_],
 they were one of the first bands I was into,
 and by the time I got around to seeing live shows,
 I didn't think they were still active.
@@ -313,14 +339,14 @@ and throwback to a more carefree time.
 
 ##### _12023-11-09_ Melanie Martinez
 
-With _UPSAHL_
+With [_UPSAHL_]
 
-I get to see _UPSAHL_ again,
+I get to see [_UPSAHL_] again,
 what's not to love?
 We open with a barrage of pop,
 slow down for a few sad songs,
 then get back into fast paced music.
-_Melanie Martinez_ on the other hand felt quite different.
+[_Melanie Martinez_] on the other hand felt quite different.
 It felt less about the music
 (whuch was different from the more dreamy style in recordings),
 and more the entire experience of the show.
@@ -333,12 +359,12 @@ was quite impressive.
 
 ##### _12023-11-03_ Maisie Peters
 
-With _Gretta Ray_
+With [_Gretta Ray_]
 
-_Gretta Ray_ was slow(er) sad(der) pop.
+[_Gretta Ray_] was slow(er) sad(der) pop.
 What went through my head was:
 she looks a bit like taylor swift?
-_Maisie Peters_ was way better than I expected.
+[_Maisie Peters_] was way better than I expected.
 Usually I don't care too much for the talk between the songs,
 but the cute, bubbly energy she gave off was infectious.
 The music was different from the recordings,
@@ -347,13 +373,13 @@ and I was pleasantly surprised by how many songs I knew.
 
 ##### _12023-11-02_ Fall Out Boy
 
-With _Nothing,Nowhere_ and _PVRIS_
+With [_Nothing, Nowhere_] and [_PVRIS_]
 
-_PVRIS_ felt a bit off...
+[_PVRIS_] felt a bit off...
 compared to the many times I saw them this year.
 The start of each song felt a but raw,
 but generally ended strong.
-_Fall Out Boy_ was very flashy.
+[_Fall Out Boy_] was very flashy.
 Lots of big sets and props,
 like a spinning starfish, a giant talking dog, and just stuff on stage.
 Also plenty of fireworks and flames.
@@ -365,31 +391,31 @@ the ones I knew were just the popular ones that bookended the set.
 
 ##### _12023-10-25_ deathbyromy
 
-With _July Jones_
+With [_July Jones_]
 
 I might have stood too close to the stage and half the time all I heard were drums...
 Halfway through I really did wonder if I was at the right place,
-I obviously hadn't gone through their discography beforehand,
+I obviously hadn't gone through _deathbyromy_'s discography beforehand,
 but it was still an interesting evening of loud alt music.
 
 ##### _12023-10-03_ ari abdul
 
-With _Deadbeat girl_
+With [_Deadbeat girl_]
 
 babydoll was the song stuck in my head all summer,
-and it was great seeing it live.
+and it was great seeing [_ari abdul_] perform it live.
 There was definitely a difference between the sweet quiet parts
 and the louder, coarser parts we don't get in the recorded version.
 
 ##### _12023-09-13_ eundohee
 
-With _Sadie Fine_, and _Chloe Levaillant_
+With [_Sadie Fine_], and [_Chloe Levaillant_]
 
-_Sadie Fine_ was... fine? I came for the one song on my spotify playlist (Detox),
+[_Sadie Fine_] was... fine? I came for the one song on my spotify playlist (Detox),
 and got it. Others sounded a bit rougher than expected.
-_Chloe Levaillant_ was my favourite of the trio,
+[_Chloe Levaillant_] was my favourite of the trio,
 it felt calm and relaxing, giving off ocean or forest vibes.
-_eundohee_ was ok? It took a bit for me to catch on what language I was listening to...
+[_eundohee_] was ok? It took a bit for me to catch on what language I was listening to...
 
 ##### _12023-09-07_ flamenco
 
@@ -398,9 +424,9 @@ but I can't say I understood the singing parts.
 
 ##### _12023-08-29_ UPSAHL
 
-With _clarence_
+With [_clarence_]
 
-_UPSAHL_ was one of my favourite shows last year,
+[_UPSAHL_] was one of my favourite shows last year,
 and it is most definitely making the list this year.
 The atmosphere was what can only be described as electric,
 even the slow songs turned into energetic dances.
@@ -413,23 +439,23 @@ plus you get to have Taylor lean into your personal space...
 
 ##### _12023-08-28_ All Points East
 
-With _Kaeto_, _Unflirt_, _Mae Stephens_, _Isabel LaRosa_, _Valencia Gtace_, _Nieve Ella_, _Griff_,
-_Paris Paloma_, _girl in red_, and _HAIM_
+With [_Kaeto_], [_Unflirt_], [_Mae Stephens_], [_Isabel LaRosa_], [_Valencia Grace_], [_Nieve Ella_],
+[_Griff_], [_Paris Paloma_], [_girl in red_], and [_HAIM_]
 
 I wandered into the festival grounds and saw an empty main stage,
 wondering where everyone was and if I got there too early.
 Making my way to the other end,
-I saw _Kaeto_ who set the mood for the rest of the day.
-_Mae Stephens_ I was wondering who that was until she got to her last song,
+I saw [_Kaeto_] who set the mood for the rest of the day.
+[_Mae Stephens_] I was wondering who that was until she got to her last song,
 If We Ever Broke Up, and I doubted if I could ever escape the repetitive tiktok musoc.
 
-_Isabel LaRosa_ was coverying BABYDOLL as I approached the stage,
+[_Isabel LaRosa_] was coverying BABYDOLL as I approached the stage,
 in the set were quite a few covers of songs currently at the top of my playlist,
 I loved it.
-_girl in red_ was just as good as I remember,
+[_girl in red_] was just as good as I remember,
 maybe slightly more relaxed than last time,
 still very active and jumpy.
-_HAIM_ sort of had a face of shock for most of their performance,
+[_HAIM_] sort of had a face of shock for most of their performance,
 I didn't really know their songs,
 but it was still enjoyable.
 
@@ -454,47 +480,47 @@ and less on precision choreography.
 
 ##### _12023-07-02_ Blackpink
 
-With _Sabrina Carpenter_, _Rebecca Black_, _The Rose_, _Peach PRC_, _Caity Baser_, and _Annika Bennett_
+With [_Sabrina Carpenter_], [_Rebecca Black_], [_The Rose_], [_Peach PRC_], [_Caity Baser_], and [_Annika Bennett_]
 
-_Annika Bennett_, the sad songs set of the festival,
+[_Annika Bennett_], the sad songs set of the festival,
 but I liked it.
 Cool and relaxing.
-_Caity Baser_ had a joyous african/caribbean vibe(?)
+[_Caity Baser_] had a joyous african/caribbean vibe(?)
 Not bad, but not my jam.
-_Peach PRC_ was, by contrast, wilder, with fairy wings and catchy songs (I think).
-_The Rose_, a K-POP boy band,
+[_Peach PRC_] was, by contrast, wilder, with fairy wings and catchy songs (I think).
+[_The Rose_], a K-POP boy band,
 it was fine I think.
 Just fine.
-_Rebecca Black_ felt like forever trying to outrun a dark history (Friday...),
+[_Rebecca Black_] felt like forever trying to outrun a dark history (Friday...),
 which came back as a remix(?) in the penultimate song.
 I'm not sure what I was expecting, but she gave off a feeling of wanting to be more mature.
-_Sabrina Carpenter_ I could barely see her on stage (sooo many people),
+[_Sabrina Carpenter_] I could barely see her on stage (sooo many people),
 but I still loved the set.
 I think her speaking voice was slightly deeper than expected,
 singing was just like the records.
-_Blackpink_ was... so much screaming and singing from the fans.
+[_Blackpink_] was... so much screaming and singing from the fans.
 I think I recognized a surprising number of their songs,
 and the visuals were over the top in a good way.
 High production at its best.
 
 ##### _12023-06-20_ Beth McCarthy
 
-With _lleo_, and _carpark_
+With [_lleo_], and [_carpark_]
 
 I think the music for the night was fine.
-_Beth_ was palpably excited.
+[_Beth McCarthy_] was palpably excited.
 
 ##### _12023-06-13_ Taylor Acorns
 
-With _Uninvited_
+With [_Uninvited_]
 
 Active, intense.
-I don't think I've heard much of her songs before then,
+I don't think I've heard much of [_Taylor Acorns_] songs before then,
 but it was good fun for the night.
 
 ##### _12023-06-09_ PRINS
 
-With _Jayd Marie_, _Detweiler_, and _Lekna_
+With [_Jayd Marie_], [_Detweiler_], and [_Lekna_]
 
 My hopes weren't high when I saw the venue was one of the smaller ones,
 but it was surprisingly good.
@@ -503,7 +529,7 @@ with a cooperative audience that danced along.
 
 ##### _12023-06-06_ Royal Philharmonic Orchestra
 
-With _Aisling McGlynn_
+With [_Aisling McGlynn_]
 
 A concert of video game music played by an orchestra,
 it was as amazing as it sounds.
@@ -511,12 +537,12 @@ Having been to way too many rock converts recently,
 it was a good reminder that there are a lot of other instruments
 than a guitar, bass, and drums.
 A few moments were, "oh so that's how those sounds were made".
-To top it off was the ethereal voice of _Aisling McGlynn_
+To top it off was the ethereal voice of [_Aisling McGlynn_]
 for some truly memorable songs.
 
 ##### _12023-06-03_ PVRIS
 
-Apparently already my third _PVRIS_ show of the year.
+Apparently already my third [_PVRIS_] show of the year.
 This time an acoustic solo session by Lynn.
 It's lovely to hear the focals so clearly.
 And the contrast between her voice in talking (soothing),
@@ -524,35 +550,35 @@ and singing (strong?), is just so cute.
 
 ##### _12023-05-27_ Slam Dunk Festival
 
-With _LØLØ_, _Scene Queen_, _Charlotte Sands_, _Maggie Lindemann_, and _PVRIS_
+With [_LØLØ_], [_Scene Queen_], [_Charlotte Sands_], [_Maggie Lindemann_], and [_PVRIS_]
 
 With 5 main stages (3 of which were double stages with to minimize downtime),
 I thought I'd have a nice variety,
 but I pretty much ended up just staying at a single stage for most of the day.
-_LØLØ_ was a fun, energetic performance that set the mood.
-_Scene Queen_ was interesting (bimbocore?),
+[_LØLØ_] was a fun, energetic performance that set the mood.
+[_Scene Queen_] was interesting (bimbocore?),
 though I'm not sure if I'd voluntarily listen to it again.
-_Charlotte Sands_ was once again a set I loved,
+[_Charlotte Sands_] was once again a set I loved,
 noticeably messier this time.
-_Maggie Lindemann_ was who I came for (front row anyone??).
+[_Maggie Lindemann_] was who I came for (front row anyone??).
 A solid, powerful voice, though with less deviation from studio versions.
-And finally, _PVRIS_ on the main stage,
+And finally, [_PVRIS_] on the main stage,
 maybe I was too far on the edge but the crowd didn't feel as into it,
 but I enjoyed it.
 
 ##### _12023-05-25_ Cherry Dream
 
-I think the real audience was just me and 4 other people,
+I think the real audience for [_Cherry Dream_] was just me and 4 other people,
 with everyone else being either one of the performances
 or staff.
 Slightly uncomfortable experience tbh.
 
 ##### _12023-05-17_ Nessa Barrett
 
-With _briskin_
+With [_briskin_]
 
 In a narrow room with bright lights (Heaven is a nightclub after all...),
-I could barely see _Nessa_ through the crowd,
+I could barely see [_Nessa Barrett_] through the crowd,
 but the show itself was still great.
 Sad-ish pop songs hits the feels,
 and the audience sang along for almost all of it.
@@ -560,12 +586,12 @@ An experience for sure.
 
 ##### _12023-05-09_ Avril Lavigne
 
-With _phem_
+With [_phem_]
 
-_phem_ was... fine?
+[_phem_] was... fine?
 Not bad, but also not especially memorable,
 besides the oversized mask she came on stage with.
-_Avril_ on the other hand... so many memories.
+[_Avril Lavigne_] on the other hand... so many memories.
 Someone next to me said:
 "everyone here either has Avril as a childhood hero or childhood crush",
 and i could totally believe that.
@@ -573,11 +599,11 @@ There were a lot of throwbacks in the music,
 and they weren't perfect deliveries of the studio versions,
 they all had that live twist.
 Every song was a hit,
-and i think this ranks among the best show i've been to this year along with _PVRIS_.
+and i think this ranks among the best show i've been to this year along with [_PVRIS_].
 
 ##### _12023-04-30_ Harvey Parker trust: love in mind
 
-With _Clean Bandit_, _Chineke Orchestra_, _National Children's Orchestra_, and more
+With [_Clean Bandit_], [_Chineke Orchestra_], [_National Children's Orchestra_], and more
 
 The launch event for a trust dedicated to the mental health of artists (musicians).
 There was a wide range of shows,
@@ -585,89 +611,89 @@ some things that I can appreciate, like orchestras,
 and others that I wouldn't go see on its own (spoken word, solo instruments).
 Of course the highlight was the final performance,
 a combination of the orchestras, a choir or two,
-and _Clean Bandit_.
+and [_Clean Bandit_].
 It was a full, rich sound,
 but I can't help but feel the distinctness I expected was drowned out by everything else.
 
 ##### _12023-04-26_ girli
 
-With _Louis III_
+With [_Louis III_]
 
-Chill, smooth were the vibes I got out of _Louis III_,
+Chill, smooth were the vibes I got out of [_Louis III_],
 good, but doesn't really hook me in.
-_girli_ on the other hand felt better than expected,
+[_girli_] on the other hand felt better than expected,
 with contrast between the quiet and loud parts.
 It was... therapeutic.
 
 ##### _12023-04-22_ Delain
 
-With _Xandria_
+With [_Xandria_]
 
-_Xandria_ was... noise like a stormy day,
+[_Xandria_] was... noise like a stormy day,
 with a ray of sunshine piercing through the clouds.
 Or at least that was what I thought of the vocals,
 and a bonus point of the voice being more like an instrument
 is that they don't ask the audience to sing along.
-Compartively, _Delain_ was a more rowdy,
+Compartively, [_Delain_] was a more rowdy,
 less contrasty affair.
 Popular sounding, but less distinct.
 
 ##### _12023-04-19_ Ava Max
 
-With _emlyn_
+With [_Emlyn_]
 
-_Ava Max_ was pure pop ecstasy,
+[_Ava Max_] was pure pop ecstasy,
 fun and energetic throughout,
 though it did seem to lean more heavily into dance compared to a pure music show.
 The music was a pretty faithful reproduction of the recorded versions,
 with a heavy mix of backing vocals.
 Oh, and for some reason, there was a dense population of gay male couples.
 
-##### _12023-04-15_ skillet
+##### _12023-04-15_ Skillet
 
-With _Eva Under Fire_, and _Like a Storm_
+With [_Eva Under Fire_], and [_Like a Storm_]
 
-I think _Eva Under Fire_ was one of the bands that YouTube just decided I must like one day,
+I think [_Eva Under Fire_] was one of the bands that YouTube just decided I must like one day,
 and it wasn't wrong.
 Their live performance was a pretty faithful rendition of the recorded versions.
-_Like a storm_ was... meh. I never really got into it,
+[_Like a storm_] was... meh. I never really got into it,
 and it sort of just blended together into the background.
-_Skillet_ started off strong with energy and flashy visuals,
+[_Skillet_] started off strong with energy and flashy visuals,
 but somewhere around the halfway point,
 they lost of a bit of momentum and never quite recovered.
 
-##### _12023-03-29_ emlyn
+##### _12023-03-29_ Emlyn
 
-With _Beth McCarthy_
+With [_Beth McCarthy_]
 
 I loved the support act,
 enegetic, excited, yet it gave off a relaxed overall vibe
 that was just pleasant to be around.
 On the other hand,
-from the moment _Emlyn_ came on,
+from the moment [_Emlyn_] came on,
 it was a full on intense barrage.
 It felt a bit too much for a full night,
 but it was great for the more popular songs where the audience sang along.
 
 ##### _12023-02-17_ Anna of the North
 
-With _Rebmoe_, and _Eden Hunter_
+With [_Rebmoe_], and [_Eden Hunter_]
 
 We start with a digiatl bedroom vibe,
 feels a bit like a throwback.
 Then into some pop, which was fine.
-Finally, we have _Anna_.
+Finally, we have [_Anna of the North_].
 There's a nervous/excited energy in the air and I'm there for it.
 The only reason I'm here has been Youtube's constant recommendations of her music videos,
 I guess they were worth it.
 
 ##### _12023-02-16_ Zoey Lily
 
-With _Elena Flury_
+With [_Elena Flury_]
 
 Best described as a chill night out,
 away from the banging drums I've been hearing for the past few weeks.
-Both are beautiful voices,
+Both [_Elena Flury_] and [_Zoey Lily_] had beautiful voices,
 makes me want to look for more acoustic sessions.
 
 ##### _12023-02-14_ Caroline Polachek
@@ -676,7 +702,7 @@ Heavy on the visual imagery,
 this was I think a night of pop music.
 There was a DJ set as support,
 still don't know who it was.
-As for the main event,
+As for the main event, [_Caroline Polachek_]
 it felt good, but not amazingly memorable.
 
 ##### _12023-02-11_ XYLØ
@@ -684,7 +710,7 @@ it felt good, but not amazingly memorable.
 This was a much smaller show than I expected, with no support act.
 Also, I happened to be surrounded by the friends and family group,
 which was interesting.
-The show itself was great,
+The show by [_XYLO_] was great,
 though the start/end of it all was sudden.
 Mostly what I remember from the released versions,
 and it didn't hurt that I was right up at the edge of the stage.
@@ -694,12 +720,12 @@ and it didn't hurt that I was right up at the edge of the stage.
 We start with a singer songwriter, she was good.
 Then a band, which....
 had a feel of compressed audio where everything is just full blast all the time.
-And finally, the star of the show, _Sonia_.
+And finally, the star of the show, [_Sonia Stein_].
 I think it was pretty much what I heard from spotify, but live.
 
 ##### _12023-01-27_ Kimbra
 
-A very synthetic(?) show.
+A very synthetic(?) show by [_Kimbra_]
 Lots of effects up to a point
 where I couldn't quite tell associate the action I saw with the sounds I heard.
 Also, quite a bit of talk about inner self and reflection,
@@ -707,29 +733,29 @@ but I guess that's par for the course for album launch events.
 
 ##### _12023-01-26_ PVRIS
 
-With _Maggie Lindemann_, and _Charlotte Sands_
+With [_Maggie Lindemann_], and [_Charlotte Sands_]
 
 One of the shows where I loved every part.
-_Charlotte Sands_ opened with what felt like boundless energy,
+[_Charlotte Sands_] opened with what felt like boundless energy,
 I expected nothing less and wasn't disappointed.
-_Maggie Lindemann_ was in comparison more muted.
+[_Maggie Lindemann_] was in comparison more muted.
 A softer performance that ramped up as it went on,
 I think slightly hindered by "not my audience".
-And _PVRIS_, I'd been looking forward to this for almost a year.
+And [_PVRIS_], I'd been looking forward to this for almost a year.
 By the second song there was a mosh pit which generally didn't let up until the very end.
 It felt like every song was a hit,
 bringing back good memories and making new ones.
 
 ##### _12023-01-24_ Kings Elliot
 
-With _Sophia Alexa_
+With [_Sophia Alexa_]
 
 An evening of sad, but not depressing, songs.
 The show opened with someone quite forgettable.
-Act II by _Sophia Alexa_ felt refreshingly better,
+Act II by [_Sophia Alexa_] felt refreshingly better,
 upbeat in contrast with the lyrics,
 mixing in a hint of country.
-The headliner, _Kings Elliot_, brought a much fuller experience.
+The headliner, [_Kings Elliot_], brought a much fuller experience.
 A rich sound that draws in your attention.
 I don't think there could have been a better end
 than the final song with strings accompaniment.
@@ -751,46 +777,48 @@ Also, way too loud with the audio systems turned up.
 
 ##### _12022-12-09_ Pierce the Veil
 
-With _Against the Current_
+With [_Against the Current_]
 
-_Pierce the Veil_ was the headliner, and they obviously had a very excited crowd.
+[_Pierce the Veil_] was the headliner, and they obviously had a very excited crowd.
 The performance felt more spectacle than music,
 with smoke screens, confetti, flying guitars, and general acting out.
 Something I've noticed with support acts is
 they usually get the short end of the stick in terms of lighting,
 and it detracts from the experience a bit.
-I also felt like _Against the Current_ weren't quite all in for this show...
+I also felt like [_Against the Current_] weren't quite all in for this show...
 
 ##### _12022-12-03_ Halocene and Halflives
 
 This was fun, and I was jumping around quite a bit for both of these.
 I witnessed crowdsurfing and playing a song again for the music video.
 As the final show of the tour, you can see them all letting go and just enjoying it.
-_Halflives_' music seemed most aligned to my taste,
-while _Halocene_ seemed a bit more all over the place.
+[_Halflives_]'s music seemed most aligned to my taste,
+while [_Halocene_] seemed a bit more all over the place.
 
 ##### _12022-11-24_ UPSAHL
 
-With _Lizzie Esau_, and _Eyelar_
+With [_Lizzie Esau_], and [_Eyelar_]
 
-Someone certainly knows how to leverage a live show to create an experience.
+[_UPSAHL_] certainly knows how to leverage a live show to create an experience.
 Apparently I liked a lot of her songs.
 The live versions don't aim to be pitch perfect recreations of the studio versions,
 but emotion filled variants enhanced by the stage presence.
 
 ##### _12022-11-15_ Nina Nesbitt
 
-With _LonelyTwin_, and _Katelyn Tarver_
+With [_LonelyTwin_], and [_Katelyn Tarver_]
 
-It counts as pop (I think), but it's slower than I expected.
+[_Nina Nesbitt_] counts as pop (I think), but it's slower than I expected.
 Not bad, but not amazing either.
 
 ##### _12022-11-10_ renforshort
 
-With _Valencia Grace_
+With [_Valencia Grace_]
 
 Such an exciting little show.
-Not sure what I was expecting but this was fun and energetic and actually knew most of the songs.
+Not sure what I was expecting,
+but this was fun and energetic,
+and actually knew most of the [_renforshort_] songs.
 Maybe a bit of it is just standing in with the crowd instead of sitting up somewhere far away,
 but I loved it either way.
 
@@ -804,9 +832,9 @@ with no real differentiation.
 
 ##### _12022-11-05_ The Pretty Reckless
 
-With _The Cruel Knives_
+With [_The Cruel Knives_]
 
-They were amazing.
+[_The Pretty Reckless_] were amazing.
 For once, I felt the music pull its weight,
 and going to the show is a balance of the music and the experience.
 The songs were revitalizing and the crowd was hyped for them.
@@ -815,99 +843,243 @@ O2 Academy, circle front center off right.
 
 ##### _12022-11-03_ The Rasmus
 
-With _Overlaps_
+With [_Overlaps_]
 
-It was okay for the night, but a bit bland.
+It was okay for the night, but I thought _The Rasmus_ bit bland.
 The songs sound like they should have energy,
 but I just wasn't really in tune with them.
-O2 Forum, balcony center.
 
 ##### _12022-09-16_ BANKS
 
-With _Maeve_
+With [_Maeve_]
 
 The roundhouse, as the name suggests, is round, and gives off circus vibes.
 This is the second show I've been to where there are 2 backup dancers dancing around,
 they still feel a bit weird...
 The lighting felt on point, cementing our focus on Banks.
 Alternating between high energy and slow (love?) songs,
-overall a bit of a throwback for me (Gemini Feed).
+overall the show by [_BANKS_] a bit of a throwback for me (Gemini Feed).
 
 ##### _12022-08-25_ Nadeah
 
-A cozy little bar, a little reminiscent of times past.
+This show by _Nadeah_ was set in a cozy little bar, 
+a little reminiscent of times past.
 Halfway bwteen acoustic and rock.
 
 ##### _12022-07-29_ London Grammar
 
 Outdoor festival, and with a song catalogue that's a bit ethereal.
-_Hannah_ forgetting the lyrics to a song (and feeling bad about it) is fine,
+Hannah of [_London Grammar_] forgetting the lyrics to a song (and feeling bad about it) is fine,
 the joy she shows when the crowd also forgets the lyrics to another song
 makes it much more human.
-Front centre.
 
 ##### _12022-07-26_ The Seagull
 
 A theatre show, superfically about playwrights,
 but maybe really about feelings around success (or lack thereof).
 I went into this blind,
-having picked the show based on the lead _Emilia Clarke_.
+having picked the show based on the lead [_Emilia Clarke_].
 There are no fancy settings,
 just a box, chairs and actors who never leave the stage.
 
 ##### _12022-06-29_ Billie Eilish
 
-With _girl in red_
+With [_girl in red_]
 
 Seated centre back in an arena full of screaming teenage girls (and their guardians)...
 The songs flowed well into each other,
 and even with the high production experience, it didn't feel artificial or detached.
 With a crowd this size, they could just be an amorphous blob,
 but it didn't really feel that way,
-maybe except when she stands to take in the adoration showered onto her.
+maybe except when [_Billie Eilish_] stands to take in the adoration showered onto her.
 Bonus points for coming out much closer to the crowds in a swinging crane arm.
 
 ##### _12022-05-19_ Charli XCX
 
-With _Yeule_
+With [_Yeule_]
 
 We're into the more mainstream hyperpop territory, and it shows.
-Polished high production with more focus on the performance and spectacle,
+[_Charli XCX_] polished high production with more focus on the performance and spectacle,
 less on the music and crowd.
-Front centre right.
 
 ##### _12022-05-15_ Fletcher
 
-With _Gracey_, and _UPSAHL_
+With [_Gracey_], and [_UPSAHL_]
 
 In a female domninated (90+%?) audience,
 I stuck towards the back of the crowd near the sound tech.
-_Fletcher_ certainly knew who her fans were,
+[_Fletcher_] certainly knew who her fans were,
 addressing the crowd directly.
 
 ##### _12022-04-10_ Against the Current
 
-With _Halflives_, and _Yours Truly_
+With [_Halflives_], and [_Yours Truly_]
 
 After a pandemic and a move to country with way more events,
 guess who's back first?
 Around mid centre in the crowds, the energy is as high as ever.
 
 This time I actually knew the openers:
-_Halflives_ were very similar to _ATC_,
+[_Halflives_] were very similar to [_Against the Current_],
 working up the crowd in a similar fashion (high energy bounces).
-_Yours Truly_ had a slightly stronger metal lean(?),
+[_Yours Truly_] had a slightly stronger metal lean(?),
 I think it took a while for people to recognize them from their songs.
 
 ##### _12019-12-08_ Against the Current
 
-_ATC_ again, this time I got VIP tickets because why not?
+[_Against the Current_] again, this time I got VIP tickets because why not?
 That got me a 2(?) acoustic performances, a poster, and a photo op.
 In the crowd, close to front,
 the energy levels are high.
 
 ##### _12019-03-19_ Against the Current
 
-One of the first bands I learned to recognize by name,
+[_Against the Current_] is one of the first bands I learned to recognize by name,
 for this show I sat on the upper floot and mostly just enjoyed the music.
-_Chrissy_ is a bundle of energy bouncing around the front of the stage.
+[_Chrissy Costanza_] is a bundle of energy bouncing around the front of the stage.
+
+[_Against the Current_]: https://www.instagram.com/againstthecurrent
+[_Air Drawn Dagger_]: https://www.instagram.com/airdrawndaggerband
+[_Aisling McGlynn_]:
+[_AJA_]: https://www.instagram.com/itsaja
+[_Akase Akari_]: https://www.instagram.com/akaseakari_official
+[_Alessandra_]: https://www.instagram.com/alessandram02
+[_Allie X_]: https://www.instagram.com/alliex
+[_Anna of the North_]:
+[_Annika Bennett_]:
+[_ari abdul_]:
+[_Ashnikko_]:
+[_ATARASHII GAKKO_]: https://www.instagram.com/japan_leaders
+[_Ava Max_]:
+[_AViVA_]: https://www.instagram.com/thisisaviva
+[_Avril Lavigne_]:
+[_BANKS_]:
+[_Bear’s Den_]:
+[_Beth McCarthy_]:
+[_Billie Eilish_]:
+[_Blackpink_]:
+[_Black Veil Brides_]:
+[_briskin_]:
+[_Caity Baser_]:
+[_Call Me Amour_]:
+[_Cannons_]: https://www.instagram.com/cannonstheband
+[_Caroline Polachek_]:
+[_carpark_]:
+[_charlieonnafriday_]: https://www.instagram.com/charlieonnafriday
+[_Charli XCX_]:
+[_Charlotte Sands_]: https://www.instagram.com/charlottesands
+[_Cherry Dream_]:
+[_Chineke Orchestra_]:
+[_Chloe Adams_]:
+[_Chloe Levaillant_]:
+[_Chrissy Costanza_]:
+[_Christof Van Der Ven_]:
+[_clarence_]:
+[_Clean Bandit_]:
+[_Cloudy June_]: https://www.instagram.com/cloudyjune
+[_Deadbeat girl_]:
+[_Dead Pony_]: https://www.instagram.com/deadponyband
+[_Delain_]:
+[_Detweiler_]:
+[_Echosmith_]:
+[_Eden Hunter_]:
+[_Elena Flury_]:
+[_Emi Jeen_]: https://www.instagram.com/emijeen
+[_Emilia Clarke_]:
+[_Emlyn_]:
+[_eundohee_]:
+[_Eva Under Fire_]:
+[_Eyelar_]:
+[_Fall Out Boy_]:
+[_FEMM_]:
+[_Fletcher_]:
+[_galacticbpd_]: https://www.instagram.com/galacticbpd_
+[_girli_]:
+[_girl in red_]:
+[_Gracey_]:
+[_Gretta Ray_]:
+[_Griff_]:
+[_HAIM_]:
+[_Halestorm_]:
+[_Halflives_]:
+[_Halocene_]:
+[_Hemlocke Springs_]:
+[_ili_]:
+[_Isabel LaRosa_]:
+[_IVE_]: https://www.instagram.com/ivestarship
+[_Jack Garratt_]:
+[_Jasmine Jethwa_]:
+[_Jayd Marie_]:
+[_July Jones_]:
+[_Kaeto_]:
+[_Kanna Hashimoto_]: https://www.instagram.com/kannahashimoto.mg
+[_Katelyn Tarver_]:
+[_Kimbra_]:
+[_King Mala_]: https://www.instagram.com/kingmalamusic
+[_Kings Elliot_]:
+[_Kotaro Daigo_]: https://www.instagram.com/daigo_kotaro
+[_Larkins_]:
+[_Lekna_]:
+[_Like a Storm_]:
+[_Lizzie Esau_]:
+[_lleo_]: https://www.instagram.com/lleoworld
+[_LØLØ_]:
+[_London Grammar_]:
+[_LonelyTwin_]:
+[_Louis III_]:
+[_Lucia_]:
+[_Lucia & the Best Boys_]:
+[_Madison Beer_]: https://www.instagram.com/madisonbeer
+[_Mae Stephens_]:
+[_Maeve_]:
+[_Maggie Lindemann_]:
+[_Maisie Peters_]:
+[_McKenna Michels_]:
+[_Melanie Martinez_]:
+[_Mone Kamishiraishi_]: https://www.instagram.com/mone_kamishiraishi
+[_Mothica_]:
+[_National Children's Orchestra_]:
+[_Nectar Woode_]:
+[_Nessa Barrett_]:
+[_Nieve Ella_]:
+[_NINA_]: https://www.instagram.com/ninasounduk
+[_Nina Nesbitt_]:
+[_Nothing, Nowhere_]:
+[_Overlaps_]:
+[_Paris Paloma_]:
+[_Peach PRC_]:
+[_phem_]:
+[_Pierce the Veil_]:
+[_Poppy_]: https://www.instagram.com/impoppy
+[_PVRIS_]:
+[_Radio Wolf_]: https://www.instagram.com/radiowolfmusic
+[_Rebecca Black_]:
+[_Rebmoe_]:
+[_renforshort_]:
+[_RØRY_]: https://www.instagram.com/its_r_o_r_y
+[_Sabrina Carpenter_]:
+[_Sadie Fine_]:
+[_Scene Queen_]:
+[_Skillet_]:
+[_Sonia Stein_]:
+[_Sophia Alexa_]:
+[_Spirited Away_]: https://www.instagram.com/spiritedldn
+[_Tate McRae_]: https://www.instagram.com/tatemcrae
+[_Taylor Acorns_]:
+[_The Cruel Knives_]:
+[_The Pretty Reckless_]:
+[_The Rose_]:
+[_The Staves_]:
+[_Unflirt_]:
+[_Uninvited_]: https://www.instagram.com/officialuninvited
+[_UPSAHL_]:
+[_Valencia Grace_]:
+[_Wargasm_]:
+[_Wargasm_]: https://www.instagram.com/thisiswargasmuk/
+[_Xandria_]:
+[_XYLO_]:
+[_Yaeger_]: https://www.instagram.com/yaegerofficial
+[_Yeule_]:
+[_Yours Truly_]:
+[_Zara Larsson_]: https://www.instagram.com/zaralarsson
+[_Zoey Lily_]:
