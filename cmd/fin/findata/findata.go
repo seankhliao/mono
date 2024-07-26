@@ -1,24 +1,22 @@
 package findata
 
 import (
-	"bytes"
 	_ "embed"
 	"fmt"
-	"text/tabwriter"
+	"io"
+	"os"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
 )
 
 //go:embed schema.cue
-var RawSchema []byte
+var rawSchema []byte
 
 func decode[T any](b []byte, p string) (T, error) {
 	cuectx := cuecontext.New()
 	val := cuectx.CompileBytes(b)
-	schema := cuectx.CompileBytes(RawSchema)
+	schema := cuectx.CompileBytes(rawSchema)
 	val = schema.Unify(val)
 
 	var out T
@@ -36,14 +34,11 @@ func decode[T any](b []byte, p string) (T, error) {
 	return out, nil
 }
 
-func DecodeOne(b []byte) (Currency, error) {
-	return decode[Currency](b, "one")
-}
-
 type (
 	Currency struct {
 		Currency string
-		Holdings []string
+		Assets   []string
+		Debts    []string
 		Incomes  []string
 		Expenses []string
 		Months   []Month
@@ -63,149 +58,160 @@ type (
 	}
 )
 
-type View int
-
-const (
-	ViewHoldings = iota
-	ViewIncomes
-	ViewExpenses
-)
-
-func (c Currency) HTMLTable(view View) gomponents.Node {
-	var group []string
-	switch view {
-	case ViewHoldings:
-		group = c.Holdings
-	case ViewIncomes:
-		group = c.Incomes
-	case ViewExpenses:
-		group = c.Expenses
+func DecodeFile(filePath string) (Currency, error) {
+	b, err := os.ReadFile(filePath)
+	if err != nil {
+		return Currency{}, fmt.Errorf("findata: read data from %q: %w", filePath, err)
 	}
 
-	heading := []gomponents.Node{html.Th(gomponents.Text("month"))}
-	for _, g := range group {
-		heading = append(heading, html.Th(html.Strong(gomponents.Text(g))))
-	}
-	body := []gomponents.Node{}
-
-	// Months
-	bag := make(map[string]int)
-	for _, month := range c.Months {
-		if view != ViewHoldings {
-			// reset monthly for delta
-			bag = make(map[string]int)
-		}
-		for _, transaction := range month.Transactions {
-			bag[transaction.Src] -= transaction.Val
-			bag[transaction.Dst] += transaction.Val
-		}
-
-		row := []gomponents.Node{
-			html.Td(html.Strong(gomponents.Textf("%4d-%02d", month.Year, month.Month))),
-		}
-		for _, title := range group {
-			val := float64(bag[title])
-			if view == ViewIncomes && val != 0 {
-				val *= -1
-			}
-			row = append(row, html.Td(gomponents.Textf("%.2f", val/100)))
-		}
-		body = append(body, html.Tr(row...))
+	currency, err := decode[Currency](b, "output")
+	if err != nil {
+		return Currency{}, fmt.Errorf("validate data from %q against schema: %w", filePath, err)
 	}
 
-	return html.Table(
-		html.THead(
-			html.Tr(heading...),
-		),
-		html.TBody(body...),
-	)
+	return currency, nil
 }
 
-func (c Currency) MarkdownTable(view View) []byte {
-	var group []string
-	switch view {
-	case ViewHoldings:
-		group = c.Holdings
-	case ViewIncomes:
-		group = c.Incomes
-	case ViewExpenses:
-		group = c.Expenses
-	}
-
-	// table header
-	var buf bytes.Buffer
-	buf.WriteString("|month|")
-	for _, g := range group {
-		buf.WriteString("**")
-		buf.WriteString(g)
-		buf.WriteString("**|")
-	}
-	buf.WriteString("\n")
-	buf.WriteString("|---|")
-	for range group {
-		buf.WriteString("---|")
-	}
-	buf.WriteString("\n")
-
-	// Months
-	bag := make(map[string]int)
-	for _, month := range c.Months {
-		if view != ViewHoldings {
-			// reset monthly for delta
-			bag = make(map[string]int)
-		}
-		for _, transaction := range month.Transactions {
-			bag[transaction.Src] -= transaction.Val
-			bag[transaction.Dst] += transaction.Val
-		}
-		fmt.Fprintf(&buf, "|**%4d-%2d**|", month.Year, month.Month)
-		for _, title := range group {
-			val := float64(bag[title])
-			if view == ViewIncomes && val != 0 {
-				val *= -1
-			}
-			fmt.Fprintf(&buf, "%.2f|", val/100)
-		}
-		buf.WriteString("\n")
-	}
-	buf.WriteString("\n")
-
-	return buf.Bytes()
+type Summary struct {
+	Year     int
+	Month    int
+	Assets   map[string]int
+	Debts    map[string]int
+	Incomes  map[string]int
+	Expenses map[string]int
 }
 
-func (c Currency) TabTable(view View) []byte {
-	var group []string
-	switch view {
-	case ViewHoldings:
-		group = c.Holdings
-	case ViewIncomes:
-		group = c.Incomes
-	case ViewExpenses:
-		group = c.Expenses
-	}
-
-	var buf bytes.Buffer
-	tw := tabwriter.NewWriter(&buf, 1, 8, 2, ' ', tabwriter.AlignRight)
-	fmt.Fprint(tw, "---\t")
-	for _, g := range group {
-		fmt.Fprint(tw, g, "\t")
-	}
-	fmt.Fprintln(tw)
-
-	bag := make(map[string]int)
+func SummarizeMonthly(c Currency) []Summary {
+	var summaries []Summary
 	for _, month := range c.Months {
-		fmt.Fprint(tw, month.Year, "-", month.Month, "\t")
-		for _, transaction := range month.Transactions {
-			bag[transaction.Src] -= transaction.Val
-			bag[transaction.Dst] += transaction.Val
+		m := make(map[string]int)
+		for _, tr := range month.Transactions {
+			m[tr.Src] -= tr.Val
+			m[tr.Dst] += tr.Val
 		}
-		for _, g := range group {
-			fmt.Fprintf(tw, "%.2f\t", float64(bag[g])/100)
+		summary := Summary{
+			Year:     month.Year,
+			Month:    month.Month,
+			Assets:   make(map[string]int),
+			Debts:    make(map[string]int),
+			Incomes:  make(map[string]int),
+			Expenses: make(map[string]int),
 		}
-		fmt.Fprintln(tw)
+		for _, asset := range c.Assets {
+			summary.Assets[asset] += m[asset]
+		}
+		for _, debt := range c.Debts {
+			summary.Debts[debt] -= m[debt]
+		}
+		for _, income := range c.Incomes {
+			summary.Incomes[income] -= m[income]
+		}
+		for _, expense := range c.Expenses {
+			summary.Expenses[expense] += m[expense]
+		}
+		summaries = append(summaries, summary)
 	}
+	return summaries
+}
 
-	tw.Flush()
+func SummarizeYearly(c Currency) []Summary {
+	var summaries []Summary
+	summary := Summary{
+		Year:     c.Months[0].Year,
+		Assets:   make(map[string]int),
+		Debts:    make(map[string]int),
+		Incomes:  make(map[string]int),
+		Expenses: make(map[string]int),
+	}
+	for _, month := range c.Months {
+		m := make(map[string]int)
+		for _, tr := range month.Transactions {
+			m[tr.Src] -= tr.Val
+			m[tr.Dst] += tr.Val
+		}
 
-	return buf.Bytes()
+		if month.Year != summary.Year {
+			summaries = append(summaries, summary)
+			summary = Summary{
+				Year:     month.Year,
+				Assets:   make(map[string]int),
+				Debts:    make(map[string]int),
+				Incomes:  make(map[string]int),
+				Expenses: make(map[string]int),
+			}
+		}
+
+		for _, asset := range c.Assets {
+			summary.Assets[asset] += m[asset]
+		}
+		for _, debt := range c.Debts {
+			summary.Debts[debt] -= m[debt]
+		}
+		for _, income := range c.Incomes {
+			summary.Incomes[income] -= m[income]
+		}
+		for _, expense := range c.Expenses {
+			summary.Expenses[expense] += m[expense]
+		}
+	}
+	summaries = append(summaries, summary)
+	return summaries
+}
+
+func SummarizeAll(c Currency) []Summary {
+	summary := Summary{
+		Assets:   make(map[string]int),
+		Debts:    make(map[string]int),
+		Incomes:  make(map[string]int),
+		Expenses: make(map[string]int),
+	}
+	for _, month := range c.Months {
+		m := make(map[string]int)
+		for _, tr := range month.Transactions {
+			m[tr.Src] -= tr.Val
+			m[tr.Dst] += tr.Val
+		}
+		for _, asset := range c.Assets {
+			summary.Assets[asset] += m[asset]
+		}
+		for _, debt := range c.Debts {
+			summary.Debts[debt] -= m[debt]
+		}
+		for _, income := range c.Incomes {
+			summary.Incomes[income] -= m[income]
+		}
+		for _, expense := range c.Expenses {
+			summary.Expenses[expense] += m[expense]
+		}
+	}
+	return []Summary{summary}
+}
+
+func (s Summary) MarshalTSV(w io.Writer, name string, names []string) {
+	s.printDate(w)
+	var m map[string]int
+	switch name {
+	case "ASSETS":
+		m = s.Assets
+	case "DEBTS":
+		m = s.Debts
+	case "INCOMES":
+		m = s.Incomes
+	case "EXPENSES":
+		m = s.Expenses
+	}
+	for _, name := range names {
+		fmt.Fprintf(w, "%.2f\t", float64(m[name])/100)
+	}
+	fmt.Fprintln(w)
+}
+
+func (s Summary) printDate(w io.Writer) {
+	if s.Year == 0 {
+		fmt.Fprintf(w, "%s\t", "all")
+	} else if s.Month == 0 {
+		fmt.Fprintf(w, "%4d\t", s.Year)
+	} else {
+		fmt.Fprintf(w, "%4d-%02d\t", s.Year, s.Month)
+	}
 }

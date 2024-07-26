@@ -1,4 +1,4 @@
-// ycli is a basic
+// ycli is a basic subcommand runner.
 package ycli
 
 import (
@@ -11,6 +11,8 @@ import (
 	"strings"
 )
 
+// OSExec runs the given command with os / process inputs,
+// and exits with os.Exit on completion.
 func OSExec(c Command) {
 	err := c.Exec(os.Args, os.Stdout, os.Stderr)
 	if err != nil {
@@ -32,9 +34,12 @@ type Command struct {
 	Run func(stdout, stderr io.Writer) error
 }
 
+// NewGroup registers multiple [Command] as subcommands under a given name.
 func NewGroup(name, desc string, register func(*flag.FlagSet), cmds ...Command) Command {
 	fset := flag.NewFlagSet(name, flag.ContinueOnError)
-	register(fset)
+	if register != nil {
+		register(fset)
+	}
 	return Command{
 		Name:     name,
 		Desc:     desc,
@@ -43,9 +48,12 @@ func NewGroup(name, desc string, register func(*flag.FlagSet), cmds ...Command) 
 	}
 }
 
+// New creates a [Command] that will execute the given function run
 func New(name, desc string, register func(*flag.FlagSet), run func(_, _ io.Writer) error) Command {
 	fset := flag.NewFlagSet(name, flag.ContinueOnError)
-	register(fset)
+	if register != nil {
+		register(fset)
+	}
 	return Command{
 		Name:  name,
 		Desc:  desc,
@@ -54,11 +62,14 @@ func New(name, desc string, register func(*flag.FlagSet), run func(_, _ io.Write
 	}
 }
 
-func (c Command) Exec(args []string, stdout, stderr io.Writer) error {
+func (c *Command) Exec(args []string, stdout, stderr io.Writer) error {
 	// remove current command name
 	_, args = args[0], args[1:]
 
 	c.Flags.SetOutput(stderr)
+	c.Flags.Usage = func() {
+		c.printHelp(stderr)
+	}
 	err := c.Flags.Parse(args)
 	if err != nil {
 		return err
@@ -82,6 +93,7 @@ func (c Command) Exec(args []string, stdout, stderr io.Writer) error {
 				c.Flags.VisitAll(func(f *flag.Flag) {
 					cmd.Flags.Var(f.Value, f.Name, f.Usage)
 				})
+				cmd.Name = c.Name + " " + cmd.Name
 				return cmd.Exec(args, stdout, stderr)
 			}
 		}
@@ -90,7 +102,7 @@ func (c Command) Exec(args []string, stdout, stderr io.Writer) error {
 	return c.printHelp(stderr)
 }
 
-func (c Command) printHelp(output io.Writer) error {
+func (c *Command) printHelp(output io.Writer) error {
 	fmt.Fprintln(output, c.Name)
 	fmt.Fprintln(output)
 	fmt.Fprintln(output, c.Desc)
@@ -108,7 +120,12 @@ func (c Command) printHelp(output io.Writer) error {
 		}
 		fmt.Fprintln(output)
 	}
-	if c.Flags.NFlag() > 0 {
+
+	var hasFlags bool
+	c.Flags.VisitAll(func(f *flag.Flag) {
+		hasFlags = true
+	})
+	if hasFlags {
 		fmt.Fprintln(output, "FLAGS")
 		c.Flags.PrintDefaults()
 	}

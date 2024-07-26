@@ -1,10 +1,16 @@
-one: #Currency
+output: #Currency
 
 #Currency: {
+	// name of the current currency
 	currency: string
-	holdings: [...string]
+
+	// classes of money
+	assets: [...string]
+	debts: [...string]
 	incomes: [...string]
 	expenses: [...string]
+
+	// record of transactions
 	months: [...#Month]
 }
 
