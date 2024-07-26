@@ -2,11 +2,6 @@
 
 ### _links_
 
-_tsnet:_
-[earbug](https://earbug.ihwa.liao.dev/)
-[fin](https://fin.ihwa.liao.dev/)
-[ytfeed](https://ytfeed.ihwa.liao.dev/)
-
 _console:_
 [analytics](https://analytics.google.com)
 [gcp](https://console.cloud.google.com/home/dashboard?project=com-seankhliao)
