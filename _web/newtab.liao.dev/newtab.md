@@ -22,5 +22,3 @@ _txt:_
 
 _img:_
 [ghostblade](https://tapas.io/series/GhostBlade/info)
-[infinite mage](https://infinitemage.online/)
-[can we become a family](https://coffeemanga.io/manga/can-we-become-a-family-online-reading-1/)
