@@ -9,8 +9,6 @@ _console:_
 [search](https://search.google.com/search-console/)
 [tailscale](https://login.tailscale.com/admin/machines)
 
-### _to_ read
-
 _txt:_
 [xkcd](https://xkcd.com)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
