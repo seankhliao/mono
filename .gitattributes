@@ -3,7 +3,7 @@ buf.lock linguist-generated=true
 go.sum linguist-generated=true
 
 # vendored
-cue.mod/gen/ linguist-generated=true linguist-vendored
+cue.mod/gen/** linguist-generated=true linguist-vendored
 
 # generated
 deploy/**/kubernetes.yaml linguist-generated=true
