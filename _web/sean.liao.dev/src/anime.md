@@ -37,6 +37,7 @@ _Highlighted_ are top tier.
 | 12024-07-16 | **8**    | [Kono Subarashii Sekai ni Shukufuku wo! ][Kono_4] <br> KonoSuba: God's Blessing on This Wonderful World! 2                                                                                                                              |                                                                             |
 | 12024-07-16 | **8**    | [Kono Subarashii Sekai ni Shukufuku wo! 2: Kono Subarashii Geijutsu ni Shukufuku wo][Kono_5] <br>                                                                                                                                       |                                                                             |
 | 12024-07-19 | **8**    | [Kono Subarashii Sekai ni Shukufuku wo! Movie: Kurenai Densets][Kono_6] <br> KonoSuba: God's Blessing on This Wonderful World! - Legend of Crimson                                                                                      |                                                                             |
+| 12024-07-27 | **8** | [Kono Subarashii Sekai ni Shukufuku wo! 3][Kono_7] <br> KonoSuba: God's Blessing on This Wonderful World! 3 | |
 | 12024-05-19 | _9_      | [Kusuriya no Hitorigot][Kusuriya_1] <br> The Apothecary Diaries                                                                                                                                                                         |                                                                             |
 | 12024-05-20 | 7        | [Paripi Koume][Paripi_1] <br> Ya Boy Kongming!                                                                                                                                                                                          |                                                                             |
 | 12024-06-29 | **8**    | [Majo no Tabitab][Majo_1] <br> Wandering Witch: The Journey of Elaina                                                                                                                                                                   | **Elaina** is confidently cute                                              |
@@ -90,6 +91,7 @@ _Highlighted_ are top tier.
 [Kono_4]: https://myanimelist.net/anime/32937
 [Kono_5]: https://myanimelist.net/anime/34626
 [Kono_6]: https://myanimelist.net/anime/38040
+[Kono_7]: https://myanimelist.net/anime/49458
 [Kusuriya_1]: https://myanimelist.net/anime/54492
 [Paripi_1]: https://myanimelist.net/anime/50380
 [Majo_1]: https://myanimelist.net/anime/40571
