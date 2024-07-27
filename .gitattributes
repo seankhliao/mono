@@ -1,12 +1,15 @@
+# github linguist overrides:
+# https://github.com/github-linguist/linguist/blob/master/docs/overrides.md
+
 # lockfile-esque
-buf.lock linguist-generated=true
-go.sum linguist-generated=true
+buf.lock linguist-generated
+go.sum linguist-generated
 
 # vendored
-cue.mod/gen/** linguist-generated=true linguist-vendored
+cue.mod/gen/** linguist-generated
 
-# generated
-deploy/**/kubernetes.yaml linguist-generated=true
+# local generated
+deploy/**/kubernetes.yaml linguist-generated
 
 # manual, diff
 *.md -whitespace
