@@ -17,11 +17,11 @@ import (
 )
 
 var (
-	//go:embed template/license.tpl
+	//go:embed template/LICENSE.gotmpl
 	licenseRaw string
 	licenseTpl = template.Must(template.New("license").Parse(licenseRaw))
 
-	//go:embed template/readme.tpl
+	//go:embed template/README.md.gotmpl
 	readmeRaw string
 	readmeTpl = template.Must(template.New("readme").Parse(readmeRaw))
 )

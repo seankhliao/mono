@@ -24,7 +24,7 @@ var (
 	//go:embed index.md
 	indexRaw []byte
 
-	//go:embed repo.md.tpl
+	//go:embed repo.md.gotmpl
 	repoRaw string
 	repoTpl = template.Must(template.New("").Parse(repoRaw))
 

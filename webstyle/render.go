@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	//go:embed layout.tpl
+	//go:embed layout.html.gotmpl
 	layoutTpl string
 	//go:embed base.css
 	baseCss string
