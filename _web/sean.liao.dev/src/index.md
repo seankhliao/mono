@@ -426,7 +426,7 @@ but I can't say I understood the singing parts.
 
 ##### _12023-08-29_ UPSAHL
 
-With [_clarence_]
+With _clarence_
 
 [_UPSAHL_] was one of my favourite shows last year,
 and it is most definitely making the list this year.
@@ -942,147 +942,144 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 
 [_Against the Current_]: https://www.instagram.com/againstthecurrent
 [_Air Drawn Dagger_]: https://www.instagram.com/airdrawndaggerband
-
-[_Aisling McGlynn_]:
+[_Aisling McGlynn_]: https://www.anuna.ie/aisling-mcglynn
 [_AJA_]: https://www.instagram.com/itsaja
 [_Akase Akari_]: https://www.instagram.com/akaseakari_official
 [_Alessandra_]: https://www.instagram.com/alessandram02
 [_Allie X_]: https://www.instagram.com/alliex
-[_Anna of the North_]:
-[_Annika Bennett_]:
-[_ari abdul_]:
-[_Ashnikko_]:
+[_Anna of the North_]: https://www.instagram.com/annaofthenorth
+[_Annika Bennett_]: https://www.instagram.com/annikabennetttt
+[_ari abdul_]: https://www.instagram.com/arianna.abdul
+[_Ashnikko_]: https://www.instagram.com/ashnikko
 [_ATARASHII GAKKO_]: https://www.instagram.com/japan_leaders
-[_Ava Max_]:
+[_Ava Max_]: https://www.instagram.com/avamax/reels
 [_AViVA_]: https://www.instagram.com/thisisaviva
-[_Avril Lavigne_]:
-[_BANKS_]:
-[_Bear’s Den_]:
-[_Beth McCarthy_]:
-[_Billie Eilish_]:
-[_Blackpink_]:
-[_Black Veil Brides_]:
-[_briskin_]:
-[_Caity Baser_]:
-[_Call Me Amour_]:
+[_Avril Lavigne_]: https://www.instagram.com/avrillavigne
+[_BANKS_]: https://www.instagram.com/hernameisbanks
+[_Bear’s Den_]: https://www.instagram.com/bearsdenmusic
+[_Beth McCarthy_]: https://www.instagram.com/bethmaymccarthy
+[_Billie Eilish_]: https://www.instagram.com/billieeilish
+[_Blackpink_]: https://www.instagram.com/blackpinkofficial
+[_Black Veil Brides_]: https://www.instagram.com/blackveilbrides
+[_briskin_]: https://www.instagram.com/briskin
+[_Caity Baser_]: https://www.instagram.com/caitybaser
+[_Call Me Amour_]: https://www.instagram.com/callmeamour
 [_Cannons_]: https://www.instagram.com/cannonstheband
-[_Caroline Polachek_]:
-[_carpark_]:
+[_Caroline Polachek_]: https://www.instagram.com/carolineplz
+[_carpark_]: https://www.instagram.com/carparkband
 [_charlieonnafriday_]: https://www.instagram.com/charlieonnafriday
-[_Charli XCX_]:
+[_Charli XCX_]: https://www.instagram.com/charli_xcx
 [_Charlotte Sands_]: https://www.instagram.com/charlottesands
-[_Cherry Dream_]:
-[_Chineke Orchestra_]:
-[_Chloe Adams_]:
-[_Chloe Levaillant_]:
-[_Chrissy Costanza_]:
-[_Christof Van Der Ven_]:
-[_clarence_]:
-[_Clean Bandit_]:
+[_Cherry Dream_]: https://www.instagram.com/itscherrydream
+[_Chineke Orchestra_]: https://www.instagram.com/chinekeorchestra
+[_Chloe Adams_]: https://www.instagram.com/chloeadamsmusic
+[_Chloe Levaillant_]: https://www.instagram.com/chloe_levaillant_music
+[_Chrissy Costanza_]: https://www.instagram.com/chrissycostanza
+[_Christof Van Der Ven_]: https://www.instagram.com/christofvanderven
+[_Clean Bandit_]: https://www.instagram.com/cleanbandit
 [_Cloudy June_]: https://www.instagram.com/cloudyjune
-[_Deadbeat girl_]:
+[_Deadbeat girl_]: https://www.instagram.com/deadbeatgirl
 [_Dead Pony_]: https://www.instagram.com/deadponyband
-[_Delain_]:
-[_Detweiler_]:
-[_Echosmith_]:
-[_Eden Hunter_]:
-[_Elena Flury_]:
+[_Delain_]: https://www.instagram.com/delainofficial
+[_Detweiler_]: https://www.instagram.com/detweilerband
+[_Echosmith_]: https://www.instagram.com/echosmith
+[_Eden Hunter_]: https://www.instagram.com/edenhunter_
+[_Elena Flury_]: https://www.instagram.com/elenaflury
 [_Emi Jeen_]: https://www.instagram.com/emijeen
-[_Emilia Clarke_]:
-[_Emlyn_]:
-[_eundohee_]:
-[_Eva Under Fire_]:
-[_Eyelar_]:
-[_Fall Out Boy_]:
-[_FEMM_]:
-[_Fletcher_]:
+[_Emilia Clarke_]: https://www.instagram.com/emilia_clarke
+[_Emlyn_]: https://www.instagram.com/emlynmusic
+[_eundohee_]: https://www.instagram.com/eundohee
+[_Eva Under Fire_]: https://www.instagram.com/evaunderfire
+[_Eyelar_]: https://www.instagram.com/eyelarx
+[_Fall Out Boy_]: https://www.instagram.com/falloutboy
+[_FEMM_]: https://www.instagram.com/femm____
+[_Fletcher_]: https://www.instagram.com/findingxfletcher
 [_galacticbpd_]: https://www.instagram.com/galacticbpd_
-[\_girli_]:
-[_girl in red_]:
-[_Gracey_]:
-[_Gretta Ray_]:
-[_Griff_]:
-[_HAIM_]:
-[_Halestorm_]:
-[_Halflives_]:
-[_Halocene_]:
-[_Hemlocke Springs_]:
-[_ili_]:
-[_Isabel LaRosa_]:
+[_girli_]: https://www.instagram.com/girlimusic
+[_girl in red_]: https://www.instagram.com/girlinred
+[_Gracey_]: https://www.instagram.com/gracey
+[_Gretta Ray_]: https://www.instagram.com/grettaray
+[_Griff_]: https://www.instagram.com/wiffygriffy
+[_HAIM_]: https://www.instagram.com/haimtheband
+[_Halestorm_]: https://www.instagram.com/halestormrocks
+[_Halflives_]: https://www.instagram.com/wehavehalflives
+[_Halocene_]: https://www.instagram.com/halocene
+[_Hemlocke Springs_]: https://www.instagram.com/hemlockesprings
+[_ili_]: https://www.instagram.com/thisisili
+[_Isabel LaRosa_]: https://www.instagram.com/isabel.s.larosa
 [_IVE_]: https://www.instagram.com/ivestarship
-[_Jack Garratt_]:
-[_Jasmine Jethwa_]:
-[_Jayd Marie_]:
-[_July Jones_]:
-[_Kaeto_]:
+[_Jack Garratt_]: https://www.instagram.com/jackgarratt
+[_Jasmine Jethwa_]: https://www.instagram.com/jasminejethwa_
+[_Jayd Marie_]: https://www.instagram.com/jayd.marie
+[_July Jones_]: https://www.instagram.com/julyjones
+[_Kaeto_]: https://www.instagram.com/katieeyo
 [_Kanna Hashimoto_]: https://www.instagram.com/kannahashimoto.mg
-[_Katelyn Tarver_]:
-[_Kimbra_]:
+[_Katelyn Tarver_]: https://www.instagram.com/katelyntarver
+[_Kimbra_]: https://www.instagram.com/kimbramusic
 [_King Mala_]: https://www.instagram.com/kingmalamusic
-[_Kings Elliot_]:
+[_Kings Elliot_]: https://www.instagram.com/kingselliot
 [_Kotaro Daigo_]: https://www.instagram.com/daigo_kotaro
-[_Larkins_]:
-[_Lekna_]:
-[_Like a Storm_]:
-[_Lizzie Esau_]:
+[_Larkins_]: https://www.instagram.com/larkinsband
+[_Lekna_]: https://www.instagram.com/lekna_music
+[_Like a Storm_]: https://www.instagram.com/likeastorm
+[_Lizzie Esau_]: https://www.instagram.com/lizzieesau
 [_lleo_]: https://www.instagram.com/lleoworld
-[_LØLØ_]:
-[_London Grammar_]:
-[_LonelyTwin_]:
-[_Louis III_]:
-[_Lucia_]:
-[_Lucia & the Best Boys_]:
+[_LØLØ_]: https://www.instagram.com/lolo
+[_London Grammar_]: https://www.instagram.com/londongrammar
+[_LonelyTwin_]: https://www.instagram.com/lonelytwin__
+[_Louis III_]: https://www.instagram.com/louisiii
+[_Lucia_]: https://www.instagram.com/lucifer_fearfull
+[_Lucia & the Best Boys_]: https://www.instagram.com/luciabestboys
 [_Madison Beer_]: https://www.instagram.com/madisonbeer
-[_Mae Stephens_]:
-[_Maeve_]:
-[_Maggie Lindemann_]:
-[_Maisie Peters_]:
-[_McKenna Michels_]:
-[_Melanie Martinez_]:
+[_Mae Stephens_]: https://www.instagram.com/maestephens_
+[_Maeve_]: https://www.instagram.com/maevemusic
+[_Maggie Lindemann_]: https://www.instagram.com/maggielindemann
+[_Maisie Peters_]: https://www.instagram.com/maisiehpeters
+[_McKenna Michels_]: https://www.instagram.com/mckennamichelsmusic
+[_Melanie Martinez_]: https://www.instagram.com/littlebodybigheart
 [_Mone Kamishiraishi_]: https://www.instagram.com/mone_kamishiraishi
-[_Mothica_]:
-[_National Children's Orchestra_]:
-[_Nectar Woode_]:
-[_Nessa Barrett_]:
-[_Nieve Ella_]:
+[_Mothica_]: https://www.instagram.com/mothica
+[_National Children's Orchestra_]: https://www.instagram.com/nco_gb
+[_Nectar Woode_]: https://www.instagram.com/nectarwoode
+[_Nessa Barrett_]: https://www.instagram.com/nessabarrett
+[_Nieve Ella_]: https://www.instagram.com/nieveella
 [_NINA_]: https://www.instagram.com/ninasounduk
-[_Nina Nesbitt_]:
-[_Nothing, Nowhere_]:
-[_Overlaps_]:
-[_Paris Paloma_]:
-[_Peach PRC_]:
-[_phem_]:
-[_Pierce the Veil_]:
+[_Nina Nesbitt_]: https://www.instagram.com/ninanesbitt
+[_Nothing, Nowhere_]: https://www.instagram.com/nothingnowhere
+[_Overlaps_]: https://www.instagram.com/overlapsofficial
+[_Paris Paloma_]: https://www.instagram.com/parispaloma
+[_Peach PRC_]: https://www.instagram.com/peachprc
+[_phem_]: https://www.instagram.com/phem
+[_Pierce the Veil_]: https://www.instagram.com/piercetheveil
 [_Poppy_]: https://www.instagram.com/impoppy
-[_PVRIS_]:
+[_PVRIS_]: https://www.instagram.com/thisispvris
 [_Radio Wolf_]: https://www.instagram.com/radiowolfmusic
-[_Rebecca Black_]:
-[_Rebmoe_]:
-[_renforshort_]:
+[_Rebecca Black_]: https://www.instagram.com/msrebeccablack
+[_Rebmoe_]: https://www.instagram.com/rebmoe
+[_renforshort_]: https://www.instagram.com/renforshort
 [_RØRY_]: https://www.instagram.com/its_r_o_r_y
-[_Sabrina Carpenter_]:
-[_Sadie Fine_]:
-[_Scene Queen_]:
-[_Skillet_]:
-[_Sonia Stein_]:
-[_Sophia Alexa_]:
+[_Sabrina Carpenter_]: https://www.instagram.com/sabrinacarpenter
+[_Sadie Fine_]: https://www.instagram.com/sadiefinesingsfine
+[_Scene Queen_]: https://www.instagram.com/scenequeenrocks
+[_Skillet_]: https://www.instagram.com/skilletmusic
+[_Sonia Stein_]: https://www.instagram.com/soniasteinmusic
+[_Sophia Alexa_]: https://www.instagram.com/sophiaalexamusic
 [_Spirited Away_]: https://www.instagram.com/spiritedldn
 [_Tate McRae_]: https://www.instagram.com/tatemcrae
-[_Taylor Acorns_]:
-[_The Cruel Knives_]:
-[_The Pretty Reckless_]:
-[_The Rose_]:
-[_The Staves_]:
-[_Unflirt_]:
+[_Taylor Acorns_]: https://www.instagram.com/tayloracornmusic
+[_The Cruel Knives_]: https://www.instagram.com/thecruelknives
+[_The Pretty Reckless_]: https://www.instagram.com/theprettyreckless
+[_The Rose_]: https://www.instagram.com/official_therose
+[_The Staves_]: https://www.instagram.com/thestaves
+[_Unflirt_]: https://www.instagram.com/unflirt
 [_Uninvited_]: https://www.instagram.com/officialuninvited
-[_UPSAHL_]:
-[_Valencia Grace_]:
-[_Wargasm_]:
-[_Wargasm_]: https://www.instagram.com/thisiswargasmuk/
-[_Xandria_]:
-[_XYLO_]:
+[_UPSAHL_]: https://www.instagram.com/whatsupsahl
+[_Valencia Grace_]: https://www.instagram.com/valenciagrace
+[_Wargasm_]: https://www.instagram.com/thisiswargasmuk
+[_Xandria_]: https://www.instagram.com/xandria_official
+[_XYLO_]: https://www.instagram.com/xylo
 [_Yaeger_]: https://www.instagram.com/yaegerofficial
-[_Yeule_]:
-[_Yours Truly_]:
+[_Yeule_]: https://www.instagram.com/yeule
+[_Yours Truly_]: https://www.instagram.com/yourstruly_band
 [_Zara Larsson_]: https://www.instagram.com/zaralarsson
-[_Zoey Lily_]:
+[_Zoey Lily_]: https://www.instagram.com/mezoeylily
