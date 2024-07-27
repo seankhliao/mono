@@ -21,11 +21,13 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-11-15_ UPSAHL
 - _12024-11-02_ Kamelot with Blackbriar
 - _12024-10-26_ Hatsune Miku
+- _12024-10-25_ MCM London
 - _12024-10-04_ Visions of Atlantis
 - _12024-10-02_ Aurora
 - _12024-09-26_ Mothica
 - _12024-09-03_ girl in red
 - _12024-08-28_ WACK in the UK Vol 3
+- _12024-08-04_ Animangapop London
 
 ##### _12024-07-21_ Hyper Japan Festival 2024
 
@@ -862,7 +864,7 @@ overall the show by [_BANKS_] a bit of a throwback for me (Gemini Feed).
 
 ##### _12022-08-25_ Nadeah
 
-This show by _Nadeah_ was set in a cozy little bar, 
+This show by _Nadeah_ was set in a cozy little bar,
 a little reminiscent of times past.
 Halfway bwteen acoustic and rock.
 
@@ -940,6 +942,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 
 [_Against the Current_]: https://www.instagram.com/againstthecurrent
 [_Air Drawn Dagger_]: https://www.instagram.com/airdrawndaggerband
+
 [_Aisling McGlynn_]:
 [_AJA_]: https://www.instagram.com/itsaja
 [_Akase Akari_]: https://www.instagram.com/akaseakari_official
@@ -994,7 +997,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_FEMM_]:
 [_Fletcher_]:
 [_galacticbpd_]: https://www.instagram.com/galacticbpd_
-[_girli_]:
+[\_girli_]:
 [_girl in red_]:
 [_Gracey_]:
 [_Gretta Ray_]:
