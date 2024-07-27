@@ -1,6 +1,12 @@
+# lockfile-esque
 buf.lock linguist-generated=true
 go.sum linguist-generated=true
-cue.mod/pkg/ linguist-generated=true
+
+# vendored
+cue.mod/gen/ linguist-generated=true linguist-vendored
+
+# generated
 deploy/**/kubernetes.yaml linguist-generated=true
-*.sopsecret.yaml diff=sopsdiffer
+
+# manual, diff
 *.md -whitespace
