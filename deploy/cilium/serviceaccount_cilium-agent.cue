@@ -73,51 +73,52 @@ cilium_agent_rbac: #Rbac & {
 				"list",
 				"watch",
 			]
+		},
 			// This is used when validating policies in preflight. This will need to stay
 			// until we figure out how to avoid "get" inside the preflight, and then
 			// should be removed ideally.
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: [
-				"ciliumidentities",
-				"ciliumendpoints",
-				"ciliumnodes",
-			]
-			verbs: ["create"]
-		}, {
-			apiGroups: ["cilium.io"]
-			// To synchronize garbage collection of such resources
-			resources: ["ciliumidentities"]
-			verbs: ["update"]
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: ["ciliumendpoints"]
-			verbs: [
-				"delete",
-				"get",
-			]
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: [
-				"ciliumnodes",
-				"ciliumnodes/status",
-			]
-			verbs: [
-				"get",
-				"update",
-			]
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: [
-				"ciliumnetworkpolicies/status",
-				"ciliumclusterwidenetworkpolicies/status",
-				"ciliumendpoints/status",
-				"ciliumendpoints",
-				"ciliuml2announcementpolicies/status",
-				"ciliumbgpnodeconfigs/status",
-			]
-			verbs: ["patch"]
-		}]
+			{
+				apiGroups: ["cilium.io"]
+				resources: [
+					"ciliumidentities",
+					"ciliumendpoints",
+					"ciliumnodes",
+				]
+				verbs: ["create"]
+			}, {
+				apiGroups: ["cilium.io"]
+				// To synchronize garbage collection of such resources
+				resources: ["ciliumidentities"]
+				verbs: ["update"]
+			}, {
+				apiGroups: ["cilium.io"]
+				resources: ["ciliumendpoints"]
+				verbs: [
+					"delete",
+					"get",
+				]
+			}, {
+				apiGroups: ["cilium.io"]
+				resources: [
+					"ciliumnodes",
+					"ciliumnodes/status",
+				]
+				verbs: [
+					"get",
+					"update",
+				]
+			}, {
+				apiGroups: ["cilium.io"]
+				resources: [
+					"ciliumnetworkpolicies/status",
+					"ciliumclusterwidenetworkpolicies/status",
+					"ciliumendpoints/status",
+					"ciliumendpoints",
+					"ciliuml2announcementpolicies/status",
+					"ciliumbgpnodeconfigs/status",
+				]
+				verbs: ["patch"]
+			}]
 
 		namespaceRules: "kube-system": [{
 			apiGroups: [""]

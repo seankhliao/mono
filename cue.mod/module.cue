@@ -1,3 +1,3 @@
-language: version: "v0.8.1"
+language: version: "v0.9.2"
 
 module: "go.seankhliao.com/mono@v1"

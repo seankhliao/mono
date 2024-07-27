@@ -111,163 +111,165 @@ cilium_operator_rbac: #Rbac & {
 				"patch",
 				"update",
 			]
+		},
 			// To update the status of the CNPs and CCNPs
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: [
-				"ciliumendpoints",
-				"ciliumidentities",
-			]
-			verbs:
-			// To perform garbage collection of such resources
-			[
-				"delete",
-				"list",
-				"watch",
-			]
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: ["ciliumidentities"]
-			verbs:
-			// To synchronize garbage collection of such resources
-			["update"]
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: ["ciliumnodes"]
-			verbs: [
-				"create",
-				"update",
-				"get",
-				"list",
-				"watch",
-				"delete",
-			]
-		}, {
+			{
+				apiGroups: ["cilium.io"]
+				resources: [
+					"ciliumendpoints",
+					"ciliumidentities",
+				]
+				verbs:
+				// To perform garbage collection of such resources
+				[
+					"delete",
+					"list",
+					"watch",
+				]
+			}, {
+				apiGroups: ["cilium.io"]
+				resources: ["ciliumidentities"]
+				verbs:
+				// To synchronize garbage collection of such resources
+				["update"]
+			}, {
+				apiGroups: ["cilium.io"]
+				resources: ["ciliumnodes"]
+				verbs: [
+					"create",
+					"update",
+					"get",
+					"list",
+					"watch",
+					"delete",
+				]
+			}, {
 
-			apiGroups: ["cilium.io"]
-			resources: ["ciliumnodes/status"]
-			verbs: ["update"]
+				apiGroups: ["cilium.io"]
+				resources: ["ciliumnodes/status"]
+				verbs: ["update"]
+			},
 			// To perform CiliumNode garbage collector
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: [
-				"ciliumendpointslices",
-				"ciliumenvoyconfigs",
-				"ciliumbgppeerconfigs",
-				"ciliumbgpadvertisements",
-				"ciliumbgpnodeconfigs",
-			]
-			verbs: [
-				"create",
-				"update",
-				"get",
-				"list",
-				"watch",
-				"delete",
-				"patch",
-			]
-		}, {
-			apiGroups: ["apiextensions.k8s.io"]
-			resources: ["customresourcedefinitions"]
-			verbs: [
-				"create",
-				"get",
-				"list",
-				"watch",
-			]
-		}, {
-			apiGroups: ["apiextensions.k8s.io"]
-			resources: ["customresourcedefinitions"]
-			verbs: ["update"]
-			resourceNames: [
-				"ciliumloadbalancerippools.cilium.io",
-				"ciliumbgppeeringpolicies.cilium.io",
-				"ciliumbgpclusterconfigs.cilium.io",
-				"ciliumbgppeerconfigs.cilium.io",
-				"ciliumbgpadvertisements.cilium.io",
-				"ciliumbgpnodeconfigs.cilium.io",
-				"ciliumbgpnodeconfigoverrides.cilium.io",
-				"ciliumclusterwideenvoyconfigs.cilium.io",
-				"ciliumclusterwidenetworkpolicies.cilium.io",
-				"ciliumegressgatewaypolicies.cilium.io",
-				"ciliumendpoints.cilium.io",
-				"ciliumendpointslices.cilium.io",
-				"ciliumenvoyconfigs.cilium.io",
-				"ciliumexternalworkloads.cilium.io",
-				"ciliumidentities.cilium.io",
-				"ciliumlocalredirectpolicies.cilium.io",
-				"ciliumnetworkpolicies.cilium.io",
-				"ciliumnodes.cilium.io",
-				"ciliumnodeconfigs.cilium.io",
-				"ciliumcidrgroups.cilium.io",
-				"ciliuml2announcementpolicies.cilium.io",
-				"ciliumpodippools.cilium.io",
-			]
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: [
-				"ciliumloadbalancerippools",
-				"ciliumpodippools",
-				"ciliumbgpclusterconfigs",
-				"ciliumbgpnodeconfigoverrides",
-			]
-			verbs: [
-				"get",
-				"list",
-				"watch",
-			]
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: ["ciliumpodippools"]
-			verbs: ["create"]
-		}, {
-			apiGroups: ["cilium.io"]
-			resources: ["ciliumloadbalancerippools/status"]
-			verbs: ["patch"]
-		}, {
-			// For cilium-operator running in HA mode.
-			//
-			// Cilium operator running in HA mode requires the use of ResourceLock for Leader Election
-			// between multiple running instances.
-			// The preferred way of doing this is to use LeasesResourceLock as edits to Leases are less
-			// common and fewer objects in the cluster watch "all Leases".
-			apiGroups: ["coordination.k8s.io"]
-			resources: ["leases"]
-			verbs: [
-				"create",
-				"get",
-				"update",
-			]
-		}, {
-			apiGroups: ["gateway.networking.k8s.io"]
-			resources: [
-				"gatewayclasses",
-				"gateways",
-				"tlsroutes",
-				"httproutes",
-				"grpcroutes",
-				"referencegrants",
-				"referencepolicies",
-			]
-			verbs: [
-				"get",
-				"list",
-				"watch",
-			]
-		}, {
-			apiGroups: ["gateway.networking.k8s.io"]
-			resources: [
-				"gatewayclasses/status",
-				"gateways/status",
-				"httproutes/status",
-				"grpcroutes/status",
-				"tlsroutes/status",
-			]
-			verbs: [
-				"update",
-				"patch",
-			]
-		}]
+			{
+				apiGroups: ["cilium.io"]
+				resources: [
+					"ciliumendpointslices",
+					"ciliumenvoyconfigs",
+					"ciliumbgppeerconfigs",
+					"ciliumbgpadvertisements",
+					"ciliumbgpnodeconfigs",
+				]
+				verbs: [
+					"create",
+					"update",
+					"get",
+					"list",
+					"watch",
+					"delete",
+					"patch",
+				]
+			}, {
+				apiGroups: ["apiextensions.k8s.io"]
+				resources: ["customresourcedefinitions"]
+				verbs: [
+					"create",
+					"get",
+					"list",
+					"watch",
+				]
+			}, {
+				apiGroups: ["apiextensions.k8s.io"]
+				resources: ["customresourcedefinitions"]
+				verbs: ["update"]
+				resourceNames: [
+					"ciliumloadbalancerippools.cilium.io",
+					"ciliumbgppeeringpolicies.cilium.io",
+					"ciliumbgpclusterconfigs.cilium.io",
+					"ciliumbgppeerconfigs.cilium.io",
+					"ciliumbgpadvertisements.cilium.io",
+					"ciliumbgpnodeconfigs.cilium.io",
+					"ciliumbgpnodeconfigoverrides.cilium.io",
+					"ciliumclusterwideenvoyconfigs.cilium.io",
+					"ciliumclusterwidenetworkpolicies.cilium.io",
+					"ciliumegressgatewaypolicies.cilium.io",
+					"ciliumendpoints.cilium.io",
+					"ciliumendpointslices.cilium.io",
+					"ciliumenvoyconfigs.cilium.io",
+					"ciliumexternalworkloads.cilium.io",
+					"ciliumidentities.cilium.io",
+					"ciliumlocalredirectpolicies.cilium.io",
+					"ciliumnetworkpolicies.cilium.io",
+					"ciliumnodes.cilium.io",
+					"ciliumnodeconfigs.cilium.io",
+					"ciliumcidrgroups.cilium.io",
+					"ciliuml2announcementpolicies.cilium.io",
+					"ciliumpodippools.cilium.io",
+				]
+			}, {
+				apiGroups: ["cilium.io"]
+				resources: [
+					"ciliumloadbalancerippools",
+					"ciliumpodippools",
+					"ciliumbgpclusterconfigs",
+					"ciliumbgpnodeconfigoverrides",
+				]
+				verbs: [
+					"get",
+					"list",
+					"watch",
+				]
+			}, {
+				apiGroups: ["cilium.io"]
+				resources: ["ciliumpodippools"]
+				verbs: ["create"]
+			}, {
+				apiGroups: ["cilium.io"]
+				resources: ["ciliumloadbalancerippools/status"]
+				verbs: ["patch"]
+			}, {
+				// For cilium-operator running in HA mode.
+				//
+				// Cilium operator running in HA mode requires the use of ResourceLock for Leader Election
+				// between multiple running instances.
+				// The preferred way of doing this is to use LeasesResourceLock as edits to Leases are less
+				// common and fewer objects in the cluster watch "all Leases".
+				apiGroups: ["coordination.k8s.io"]
+				resources: ["leases"]
+				verbs: [
+					"create",
+					"get",
+					"update",
+				]
+			}, {
+				apiGroups: ["gateway.networking.k8s.io"]
+				resources: [
+					"gatewayclasses",
+					"gateways",
+					"tlsroutes",
+					"httproutes",
+					"grpcroutes",
+					"referencegrants",
+					"referencepolicies",
+				]
+				verbs: [
+					"get",
+					"list",
+					"watch",
+				]
+			}, {
+				apiGroups: ["gateway.networking.k8s.io"]
+				resources: [
+					"gatewayclasses/status",
+					"gateways/status",
+					"httproutes/status",
+					"grpcroutes/status",
+					"tlsroutes/status",
+				]
+				verbs: [
+					"update",
+					"patch",
+				]
+			}]
 
 		namespaceRules: "cilium-secrets": [{
 			apiGroups: [""]
