@@ -18,7 +18,7 @@ import (
 	"sync"
 	"syscall"
 
-	"go.seankhliao.com/mono/goreleases"
+	"go.seankhliao.com/mono/cmd/gosdkupdate/goreleases"
 )
 
 func main() {

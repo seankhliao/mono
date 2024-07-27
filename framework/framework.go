@@ -9,7 +9,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"go.seankhliao.com/mono/basehttp"
+	"go.seankhliao.com/mono/framework/basehttp"
 	"go.seankhliao.com/mono/observability"
 )
 

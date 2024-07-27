@@ -19,7 +19,7 @@ import (
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/jsonlog"
+	"go.seankhliao.com/mono/observability/jsonlog"
 )
 
 type Config struct {

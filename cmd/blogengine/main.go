@@ -8,7 +8,7 @@ import (
 	"log/slog"
 	"os"
 
-	"go.seankhliao.com/mono/jsonlog"
+	"go.seankhliao.com/mono/observability/jsonlog"
 	"go.seankhliao.com/mono/webstyle"
 )
 
