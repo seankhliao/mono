@@ -2,18 +2,19 @@ package main
 
 import (
 	"bytes"
-	"context"
 	_ "embed"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path"
 	"path/filepath"
 	"sync"
+	"text/tabwriter"
 	"text/template"
 
-	"github.com/google/subcommands"
+	"go.seankhliao.com/mono/ycli"
 )
 
 var (
@@ -26,70 +27,82 @@ var (
 	readmeTpl = template.Must(template.New("readme").Parse(readmeRaw))
 )
 
-type syncCmd struct {
-	parallel int
+func cmdSync() ycli.Command {
+	var parallel int
+	return ycli.New(
+		"sync",
+		"sync repositories with upstream origins",
+		func(fs *flag.FlagSet) {
+			fs.IntVar(&parallel, "parallel", 5, "max parallel git operations")
+		},
+		func(stdout, stderr io.Writer) error {
+			err := runSync(stderr, parallel)
+			if err != nil {
+				return fmt.Errorf("repos sync: %w", err)
+			}
+			return nil
+		},
+	)
 }
 
-func (c syncCmd) Name() string     { return "sync" }
-func (c syncCmd) Synopsis() string { return "sync repositories with upstream" }
-func (c syncCmd) Usage() string    { return "repos sync [-parallel=N]\n" }
-func (c *syncCmd) SetFlags(fset *flag.FlagSet) {
-	fset.IntVar(&c.parallel, "parallel", 5, "parallel syncs to run")
-}
-
-func (c syncCmd) Execute(ctx context.Context, fset *flag.FlagSet, args ...any) subcommands.ExitStatus {
-	if fset.NArg() > 0 {
-		fmt.Fprintln(os.Stderr, "repos sync: unexpected args:", args)
-		return subcommands.ExitUsageError
-	}
-
-	err := c.run(ctx)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "repos sync:", err)
-		return subcommands.ExitFailure
-	}
-	return subcommands.ExitSuccess
-}
-
-func (c syncCmd) run(ctx context.Context) error {
+func runSync(stderr io.Writer, parallel int) error {
 	baseDir := "."
-
 	des, err := os.ReadDir(baseDir)
 	if err != nil {
 		return fmt.Errorf("sync: read %s: %w", baseDir, err)
 	}
-	dirs := make(chan string, len(des))
+	dirs := make([]string, 0, len(des))
 	for _, de := range des {
 		if de.IsDir() {
-			dirs <- filepath.Join(baseDir, de.Name())
+			dirs = append(dirs, filepath.Join(baseDir, de.Name()))
 		}
 	}
-	close(dirs)
 
-	resc := make(chan syncResult)
+	done, bar := progress(stderr, len(dirs), "syncing repos")
+
+	results := make(chan syncResult, len(dirs))
+	parallelToken := make(chan struct{}, parallel)
 	var wg sync.WaitGroup
-	for i := 0; i < c.parallel; i++ {
+	for _, repo := range dirs {
+		parallelToken <- struct{}{}
 		wg.Add(1)
-		go syncWorker(&wg, dirs, resc)
+		go func() {
+			defer func() { <-parallelToken }()
+			defer wg.Done()
+			results <- syncRepo(repo)
+		}()
 	}
+
 	go func() {
 		wg.Wait()
-		close(resc)
+		close(results)
 	}()
 
-	var i int
-	for res := range resc {
-		i++
-		msg := fmt.Sprintf("%4d %s: ", i, res.dir)
-		if res.err != nil {
-			msg += res.err.Error()
-		} else if res.oldRef == res.newRef {
-			msg += res.newRef
+	var errs []syncResult
+	for res := range results {
+		if res.err == nil {
+			bar.Describe(fmt.Sprintf("Synced %s to %s", filepath.Base(res.dir), res.newRef))
 		} else {
-			msg += res.oldRef + " -> " + res.newRef
+			bar.Describe(fmt.Sprintf("Error syncing %s", filepath.Base(res.dir)))
+			errs = append(errs, res)
 		}
-		fmt.Fprintln(os.Stderr, msg)
+		bar.Add(1)
 	}
+
+	<-done
+	fmt.Fprintln(stderr)
+	fmt.Fprintf(stderr, "Synced %d repos\n\n", len(dirs)-len(errs))
+
+	if len(errs) > 0 {
+		fmt.Fprintln(stderr, "Errors with the following repos:")
+		w := tabwriter.NewWriter(stderr, 0, 8, 1, ' ', 0)
+
+		for _, res := range errs {
+			fmt.Fprintf(w, "%s\t%v\n", res.dir, res.err)
+		}
+		w.Flush()
+	}
+
 	return nil
 }
 

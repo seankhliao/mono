@@ -2,10 +2,10 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"os/exec"
@@ -13,122 +13,112 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/google/subcommands"
+	"go.seankhliao.com/mono/ycli"
 )
 
-const (
-	versionFile = "testrepo-version"
-)
+const versionFile = "testrepo-version"
 
-type newCmd struct{}
+func cmdNew() ycli.Command {
+	var name string
+	return ycli.New(
+		"new",
+		"creates a new repository",
+		func(fs *flag.FlagSet) {
+			fs.StringVar(&name, "name", "", "create a named repository in the current directory")
+		},
+		func(stdout, stderr io.Writer) error {
+			var base string
+			if name == "" {
+				var err error
+				name, err = newTestrepoVersion()
+				if err != nil {
+					return fmt.Errorf("repos new: get repo sequence: %w", err)
+				}
 
-func (c newCmd) Name() string                { return "new" }
-func (c newCmd) Synopsis() string            { return "create a new repository" }
-func (c newCmd) Usage() string               { return "repos new [repo-name]\n" }
-func (c newCmd) SetFlags(fset *flag.FlagSet) {}
-func (c newCmd) Execute(ctx context.Context, fset *flag.FlagSet, _ ...any) subcommands.ExitStatus {
-	var base, name string
-	switch fset.NArg() {
-	case 0:
-		var err error
-		name, err = newTestrepoVersion()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "repos new: get testrepo version:", err)
-			return subcommands.ExitFailure
-		}
+				base, err = os.UserHomeDir()
+				if err != nil {
+					return fmt.Errorf("repos new: get home dir: %w", err)
+				}
+				base = filepath.Join(base, "tmp")
+			} else {
+				var err error
+				base, err = os.Getwd()
+				if err != nil {
+					return fmt.Errorf("repos new: get current dir: %w", err)
+				}
+			}
 
-		base, err = os.UserHomeDir()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "repos new: get home dir:", err)
-			return subcommands.ExitFailure
-		}
-		base = filepath.Join(base, "tmp")
-
-	case 1:
-		name = fset.Arg(0)
-
-		var err error
-		base, err = os.Getwd()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "repos new: get current dir:", err)
-			return subcommands.ExitFailure
-		}
-
-	default:
-		fmt.Fprintln(os.Stderr, "repos new: got args:", fset.NArg(), "expected at most 1")
-		return subcommands.ExitUsageError
-	}
-
-	err := c.run(ctx, base, name)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "repos new:", err)
-		return subcommands.ExitFailure
-	}
-	return subcommands.ExitSuccess
+			err := runNew(stdout, base, name)
+			if err != nil {
+				return fmt.Errorf("repos new: %w", err)
+			}
+			return nil
+		},
+	)
 }
 
-func (c newCmd) run(ctx context.Context, base, name string) error {
+func runNew(stdout io.Writer, base, name string) error {
 	fp := filepath.Join(base, name)
 	err := os.MkdirAll(fp, 0o755)
 	if err != nil {
-		return fmt.Errorf("new: mkdir %s: %w", fp, err)
+		return fmt.Errorf("mkdir %s: %w", fp, err)
 	}
 
 	cmd := exec.Command("go", "mod", "init", "go.seankhliao.com/"+name)
 	cmd.Dir = fp
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("new: go mod init: %w\n%s", err, out)
+		return fmt.Errorf("go mod init: %w\n%s", err, out)
 	}
 
 	cmd = exec.Command("git", "init")
 	cmd.Dir = fp
 	out, err = cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("new: git init: %w\n%s", err, out)
+		return fmt.Errorf("git init: %w\n%s", err, out)
 	}
 
 	cmd = exec.Command("git", "commit", "--allow-empty", "-m", "root-commit")
 	cmd.Dir = fp
 	out, err = cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("new: git commit: %w\n%s", err, out)
+		return fmt.Errorf("git commit: %w\n%s", err, out)
 	}
 
 	cmd = exec.Command("git", "remote", "add", "origin", "s:"+name)
 	cmd.Dir = fp
 	out, err = cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("new: git remote add: %w\n%s", err, out)
+		return fmt.Errorf("git remote add: %w\n%s", err, out)
 	}
 
 	lf := filepath.Join(fp, "LICENSE")
 	f, err := os.Create(lf)
 	if err != nil {
-		return fmt.Errorf("new: create %s: %w", lf, err)
+		return fmt.Errorf("create %s: %w", lf, err)
 	}
 	defer f.Close()
 	err = licenseTpl.Execute(f, map[string]string{
 		"Date": time.Now().Format("2006"),
 	})
 	if err != nil {
-		return fmt.Errorf("new: render license: %w", err)
+		return fmt.Errorf("render license: %w", err)
 	}
 
 	lf = filepath.Join(fp, "README.md")
 	f, err = os.Create(lf)
 	if err != nil {
-		return fmt.Errorf("new: create %s: %w", lf, err)
+		return fmt.Errorf("create %s: %w", lf, err)
 	}
 	defer f.Close()
 	err = readmeTpl.Execute(f, map[string]string{
 		"Name": name,
 	})
 	if err != nil {
-		return fmt.Errorf("new tmp: render readme: %w", err)
+		return fmt.Errorf("render readme: %w", err)
 	}
 
-	fmt.Println("cd", fp)
+	fmt.Fprintln(stdout, "cd", fp)
 	return nil
 }
 

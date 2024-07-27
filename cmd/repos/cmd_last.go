@@ -1,55 +1,29 @@
 package main
 
 import (
-	"context"
-	"flag"
 	"fmt"
-	"os"
+	"io"
 	"path/filepath"
-	"strings"
 
-	"github.com/google/subcommands"
+	"go.seankhliao.com/mono/ycli"
 )
 
-type lastCmd struct{}
+func cmdLast() ycli.Command {
+	return ycli.New(
+		"last",
+		"switches to the newest temporary repository",
+		nil,
+		func(stdout, stderr io.Writer) error {
+			tmpDir, repos, err := tmpRepos()
+			if err != nil {
+				return fmt.Errorf("repos last: %w", err)
+			} else if len(repos) == 0 {
+				return fmt.Errorf("repos last: no temporary directories")
+			}
 
-func (c lastCmd) Name() string                { return "last" }
-func (c lastCmd) Synopsis() string            { return "jumps to the most recently created test repo" }
-func (c lastCmd) Usage() string               { return "repos last\n" }
-func (c lastCmd) SetFlags(fset *flag.FlagSet) {}
-func (c lastCmd) Execute(ctx context.Context, fset *flag.FlagSet, args ...any) subcommands.ExitStatus {
-	if fset.NArg() > 0 {
-		fmt.Fprintln(os.Stderr, "repos last: unexpected args:", args)
-		return subcommands.ExitUsageError
-	}
-	err := c.run(ctx)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "repos last:", err)
-		return subcommands.ExitFailure
-	}
-	return subcommands.ExitSuccess
-}
-
-func (c lastCmd) run(ctx context.Context) error {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return fmt.Errorf("tmp: get home directory: %w", err)
-	}
-	tmpDir := filepath.Join(homeDir, "tmp")
-	des, err := os.ReadDir(tmpDir)
-	if err != nil {
-		return fmt.Errorf("tmp: read %s: %w", tmpDir, err)
-	}
-	var last string
-	for _, de := range des {
-		if n := de.Name(); strings.HasPrefix(n, "testrepo") && n > last {
-			last = n
-		}
-	}
-	if last == "" {
-		return fmt.Errorf("tmp: no repo found")
-	}
-
-	fmt.Printf("cd %s\n", filepath.Join(tmpDir, last))
-	return nil
+			repoName := repos[len(repos)-1].Name()
+			fmt.Fprintf(stdout, "cd %s\n", filepath.Join(tmpDir, repoName))
+			return nil
+		},
+	)
 }

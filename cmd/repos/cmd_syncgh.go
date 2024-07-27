@@ -2,15 +2,20 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"sort"
+	"text/tabwriter"
 
+	"cuelang.org/go/cue"
+	"cuelang.org/go/cue/cuecontext"
 	"github.com/google/go-github/v60/github"
-	"github.com/google/subcommands"
+	"go.seankhliao.com/mono/ycli"
 	"golang.org/x/oauth2"
 )
 
@@ -18,79 +23,63 @@ const (
 	GithubTokenEnv = "GH_TOKEN"
 )
 
-type syncGHCmd struct {
-	archived bool
-	dryRun   bool
-	prune    bool
-	worktree bool
-	sync     bool
-	users    []string
-	orgs     []string
-	exclude  []string
+//go:embed schema.cue
+var schemaBytes []byte
+
+type SyncGithubConfig struct {
+	Parallel     int
+	Worktree     bool
+	Archived     bool
+	Orgs         []string
+	Users        []string
+	ExcludeRegex []string
 }
 
-func (c syncGHCmd) Name() string { return "syncgh" }
-func (c syncGHCmd) Synopsis() string {
-	return "sync list of checked out repositories with a github user/org"
+func cmdSyncGithub() ycli.Command {
+	cuectx := cuecontext.New()
+	configVal := cuectx.CompileBytes(schemaBytes)
+	var configFile string
+
+	return ycli.New(
+		"sync-github",
+		"sync repositories with a github account / org",
+		func(fs *flag.FlagSet) {
+			fs.StringVar(&configFile, "config", "sync-github.repos.cue", "path to config file")
+		},
+		func(stdout, stderr io.Writer) error {
+			configBytes, err := os.ReadFile(configFile)
+			if err != nil {
+				return fmt.Errorf("repos sync-github: read config file: %w", err)
+			}
+			configVal = configVal.Unify(cuectx.CompileBytes(configBytes))
+			err = configVal.Validate()
+			if err != nil {
+				return fmt.Errorf("repos sync-github: validate config: %w", err)
+			}
+
+			var config SyncGithubConfig
+			err = configVal.LookupPath(cue.ParsePath("config")).Decode(&config)
+			if err != nil {
+				return fmt.Errorf("repos sync-github: decode config: %w", err)
+			}
+
+			err = runSyncGithub(stderr, config)
+			if err != nil {
+				return fmt.Errorf("repos sync-github: %w", err)
+			}
+
+			err = cmdSync().Run(stdout, stderr)
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+	)
 }
 
-func (c syncGHCmd) Usage() string {
-	return `repos syncgh [-archived] [-dryrun] [-prune] [-worktree] [-user=XXX]... [-org=XXX]...
+func runSyncGithub(stderr io.Writer, config SyncGithubConfig) error {
+	ctx := context.Background()
 
-Authentication uses the GH_TOKEN environent variable.
-`
-}
-
-func (c *syncGHCmd) SetFlags(fset *flag.FlagSet) {
-	fset.BoolVar(&c.archived, "archived", false, "include archived repositories")
-	fset.BoolVar(&c.dryRun, "dryrun", false, "print actions instead of executing them")
-	fset.BoolVar(&c.prune, "prune", false, "prune repositories not found on the remote")
-	fset.BoolVar(&c.worktree, "worktree", false, "nest checkouts under repo/default")
-	fset.BoolVar(&c.sync, "sync", false, "sync existing repos")
-	fset.Func("user", "github user", func(s string) error {
-		c.users = append(c.users, s)
-		return nil
-	})
-	fset.Func("org", "github org", func(s string) error {
-		c.orgs = append(c.orgs, s)
-		return nil
-	})
-	fset.Func("exclude", "glob pattern against repo name to exclude, repeatable", func(s string) error {
-		c.exclude = append(c.exclude, s)
-		return nil
-	})
-}
-
-func (c syncGHCmd) Execute(ctx context.Context, fset *flag.FlagSet, args ...any) subcommands.ExitStatus {
-	if fset.NArg() > 0 {
-		fmt.Fprintln(os.Stderr, "repos syncgh: unexpected args:", args)
-		return subcommands.ExitUsageError
-	}
-
-	if len(c.orgs)+len(c.users) == 0 {
-		fmt.Fprintln(os.Stderr, "no users or orgs given")
-		return subcommands.ExitUsageError
-	}
-
-	err := c.run(ctx)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "repos syncgh:", err)
-		return subcommands.ExitFailure
-	}
-
-	synccmd := syncCmd{
-		parallel: 5,
-	}
-	err = synccmd.run(ctx)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "repos sync:", err)
-		return subcommands.ExitFailure
-	}
-
-	return subcommands.ExitSuccess
-}
-
-func (c syncGHCmd) run(ctx context.Context) error {
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: os.Getenv(GithubTokenEnv)},
 	)
@@ -98,7 +87,10 @@ func (c syncGHCmd) run(ctx context.Context) error {
 	client := github.NewClient(tc)
 
 	allReposM := make(map[string]string)
-	for _, user := range c.users {
+	for _, user := range config.Users {
+		workItems := 1
+		done, bar := progress(stderr, workItems, "listing repos for "+user)
+		pagesForUser := 0
 		for page := 1; true; page++ {
 			repos, res, err := client.Repositories.ListByUser(ctx, user, &github.RepositoryListByUserOptions{
 				ListOptions: github.ListOptions{
@@ -109,16 +101,31 @@ func (c syncGHCmd) run(ctx context.Context) error {
 			if err != nil {
 				return fmt.Errorf("list repos page %d for %s: %v", page, user, err)
 			}
-			err = c.addRepos(allReposM, repos)
+
+			if pagesForUser != res.LastPage {
+				workItems += res.LastPage - pagesForUser
+				pagesForUser = res.LastPage
+				bar.ChangeMax(workItems)
+			}
+
+			err = addRepos(config, allReposM, repos)
 			if err != nil {
 				return err
 			}
+
+			bar.Add(1)
 			if page >= res.LastPage {
 				break
 			}
 		}
+		bar.Add(1)
+		<-done
+		fmt.Fprintln(stderr)
 	}
-	for _, org := range c.orgs {
+	for _, org := range config.Orgs {
+		workItems := 1
+		done, bar := progress(stderr, workItems, "listing repos for "+org)
+		pagesForOrg := 0
 		for page := 1; true; page++ {
 			repos, res, err := client.Repositories.ListByOrg(ctx, org, &github.RepositoryListByOrgOptions{
 				ListOptions: github.ListOptions{
@@ -129,14 +136,25 @@ func (c syncGHCmd) run(ctx context.Context) error {
 			if err != nil {
 				return fmt.Errorf("list repos page %d for %s: %v", page, org, err)
 			}
-			err = c.addRepos(allReposM, repos)
+
+			if pagesForOrg != res.LastPage {
+				workItems += res.LastPage - pagesForOrg
+				pagesForOrg = res.LastPage
+				bar.ChangeMax(workItems)
+			}
+
+			err = addRepos(config, allReposM, repos)
 			if err != nil {
 				return err
 			}
+			bar.Add(1)
 			if page >= res.LastPage {
 				break
 			}
 		}
+		bar.Add(1)
+		<-done
+		fmt.Fprintln(stderr)
 	}
 
 	localRepoM := make(map[string]struct{})
@@ -178,42 +196,80 @@ func (c syncGHCmd) run(ctx context.Context) error {
 	}
 	sort.Strings(toPrune)
 
+	workItems := len(toClone) + len(toPrune)
+	if workItems == 0 {
+		return nil
+	}
+
+	done, bar := progress(stderr, workItems, "Diffing repo list")
+
+	type syncResult struct {
+		name string
+		op   string
+		err  error
+	}
+
+	var errs []syncResult
+
 	for _, r := range toClone {
+		bar.Describe(fmt.Sprintf("cloning %s/%s", r.owner, r.repo))
+
 		u := fmt.Sprintf("https://github.com/%s/%s", r.owner, r.repo)
 		dst := r.repo
-		if c.worktree {
+		if config.Worktree {
 			dst += "/default"
 		}
-		msg := "git clone " + u + " " + dst
-		if !c.dryRun {
-			cmd := exec.Command("git", "clone", u, dst)
-			out, err := cmd.CombinedOutput()
-			if err != nil {
-				msg += ": " + err.Error() + "\n" + string(out)
-			}
+		cmd := exec.Command("git", "clone", u, dst)
+		_, err := cmd.CombinedOutput()
+		if err != nil {
+			errs = append(errs, syncResult{
+				r.owner + "/" + r.repo,
+				"clone",
+				err,
+			})
 		}
-		fmt.Fprintln(os.Stderr, msg)
+
+		bar.Add(1)
 	}
+
 	for _, r := range toPrune {
-		msg := "rm -rf " + r
-		if !c.dryRun {
-			err := os.RemoveAll(r)
-			if err != nil {
-				msg += ": " + err.Error()
-			}
+		bar.Describe("removing " + r)
+
+		err := os.RemoveAll(r)
+		if err != nil {
+			errs = append(errs, syncResult{
+				r,
+				"rm",
+				err,
+			})
 		}
-		fmt.Fprintln(os.Stderr, msg)
+
+		bar.Add(1)
 	}
+
+	<-done
+	fmt.Fprintln(stderr)
+
+	if len(errs) > 0 {
+		fmt.Fprintln(stderr)
+		fmt.Fprintln(stderr, "Errors:")
+		w := tabwriter.NewWriter(stderr, 0, 8, 1, ' ', 0)
+		for _, err := range errs {
+			fmt.Fprintf(w, "%s\t%s\t%v\n", err.op, err.name, err.err)
+		}
+		w.Flush()
+	}
+
 	return nil
 }
 
-func (c syncGHCmd) addRepos(m map[string]string, repos []*github.Repository) error {
+func addRepos(config SyncGithubConfig, m map[string]string, repos []*github.Repository) error {
 repoLoop:
 	for _, repo := range repos {
-		if !c.archived && *repo.Archived {
+		if !config.Archived && *repo.Archived {
 			continue
 		}
-		for _, pattern := range c.exclude {
+		for _, pattern := range config.ExcludeRegex {
 			ok, err := filepath.Match(pattern, *repo.Name)
 			if err != nil {
 				return fmt.Errorf("match exclude pattern %q against %q: %w", pattern, *repo.Name, err)
