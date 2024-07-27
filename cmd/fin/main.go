@@ -106,6 +106,9 @@ func (v *View) viewAll(stdout, stderr io.Writer) error {
 }
 
 func printTable(w io.Writer, sum []findata.Summary, name string, names []string) {
+	if len(names) == 0 {
+		return
+	}
 	fmt.Fprintf(w, "%s\t", name)
 	for _, name := range names {
 		fmt.Fprint(w, name, "\t")
