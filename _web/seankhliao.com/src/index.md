@@ -31,7 +31,7 @@ Dates using the
 [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 — the [Human Era](https://www.youtube.com/watch?v=czgOWmtGVGs)
 
-- _Site_ Reliability Engineer<br>
+- _Platform_ Engineer /  _Site_ Reliability Engineer<br>
   **12022-present** Snyk — Logs, Metrics, Tracing(?), Incident Response, general infra work
 - _Site_ Reliability Engineer<br>
   **12022-12022** Deloitte — IaC
