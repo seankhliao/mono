@@ -2,13 +2,13 @@ package main
 
 import (
 	"bytes"
-	"context"
-	"log/slog"
+	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 )
 
-func writeRendered(ctx context.Context, lg *slog.Logger, out string, rendered map[string]*bytes.Buffer) error {
+func writeRendered(_ io.Writer, out string, rendered map[string]*bytes.Buffer) error {
 	for p, buf := range rendered {
 		if p == singleKey {
 			p = out
@@ -19,13 +19,11 @@ func writeRendered(ctx context.Context, lg *slog.Logger, out string, rendered ma
 		dir := filepath.Dir(p)
 		err := os.MkdirAll(dir, 0o755)
 		if err != nil {
-			lg.LogAttrs(ctx, slog.LevelError, "create parent directories", slog.String("dir", dir), slog.String("error", err.Error()))
-			return err
+			return fmt.Errorf("create parent dirs: %w", err)
 		}
 		err = os.WriteFile(p, buf.Bytes(), 0o644)
 		if err != nil {
-			lg.LogAttrs(ctx, slog.LevelError, "write file", slog.String("path", p), slog.String("error", err.Error()))
-			return err
+			return fmt.Errorf("write file: %w", err)
 		}
 	}
 	return nil

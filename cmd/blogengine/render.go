@@ -2,11 +2,9 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"io"
 	"io/fs"
-	"log/slog"
 	"os"
 	"path/filepath"
 	"slices"
@@ -19,39 +17,46 @@ const (
 	singleKey = ":single"
 )
 
-func renderSingle(ctx context.Context, lg *slog.Logger, render webstyle.Renderer, in string) (map[string]*bytes.Buffer, error) {
-	lg.LogAttrs(ctx, slog.LevelDebug, "rendering single file", slog.String("file", in))
+func renderSingle(stdout io.Writer, render webstyle.Renderer, in string) (map[string]*bytes.Buffer, error) {
 	inFile, err := os.Open(in)
 	if err != nil {
-		lg.LogAttrs(ctx, slog.LevelError, "open file", slog.String("file", in), slog.String("error", err.Error()))
-		return nil, err
+		return nil, fmt.Errorf("open file: %w", err)
 	}
 	defer inFile.Close()
 	var buf bytes.Buffer
 	err = render.Render(&buf, inFile, webstyle.Data{})
 	if err != nil {
-		lg.LogAttrs(ctx, slog.LevelError, "render", slog.String("error", err.Error()))
-		return nil, err
+		return nil, fmt.Errorf("render: %w", err)
 	}
 	return map[string]*bytes.Buffer{singleKey: &buf}, nil
 }
 
-func renderMulti(ctx context.Context, lg *slog.Logger, render webstyle.Renderer, in, gtm, baseUrl string) (map[string]*bytes.Buffer, error) {
-	lg.LogAttrs(ctx, slog.LevelDebug, "rendering directory", slog.String("dir", in))
-
-	var siteMapTxt bytes.Buffer
-	rendered := make(map[string]*bytes.Buffer)
+func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl string) (map[string]*bytes.Buffer, error) {
+	var countFiles int
 	fsys := os.DirFS(in)
 	err := fs.WalkDir(fsys, ".", func(p string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
 			return err
 		}
-		lg := lg.With(slog.String("src", p))
+		countFiles++
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("walk source: %w", err)
+	}
+	done, bar := progress(stdout, countFiles, "rendering pages")
+
+	var siteMapTxt bytes.Buffer
+	rendered := make(map[string]*bytes.Buffer)
+	err = fs.WalkDir(fsys, ".", func(p string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() {
+			return err
+		}
+		defer bar.Add(1)
 
 		inFile, err := fsys.Open(p)
 		if err != nil {
-			lg.LogAttrs(ctx, slog.LevelError, "open file", slog.String("error", err.Error()))
-			return err
+			return fmt.Errorf("open file: %w", err)
 		}
 		defer inFile.Close()
 
@@ -64,27 +69,23 @@ func renderMulti(ctx context.Context, lg *slog.Logger, render webstyle.Renderer,
 			if p == "index.md" { // root index
 				data.Desc = `hi, i'm sean, available for adoption by extroverts for the low, low cost of your love.`
 			} else if strings.HasSuffix(p, "/index.md") { // exclude root index
-				data.Main, err = directoryList(ctx, lg, fsys, p)
+				data.Main, err = directoryList(fsys, p)
 				if err != nil {
 					return err
 				}
 			}
 
-			lg.LogAttrs(ctx, slog.LevelDebug, "rendering page")
 			err = render.Render(&buf, inFile, data)
 			if err != nil {
-				lg.LogAttrs(ctx, slog.LevelError, "render", slog.String("error", err.Error()))
-				return err
+				return fmt.Errorf("render: %w", err)
 			}
 
 			fmt.Fprintf(&siteMapTxt, "%s%s\n", baseUrl, canonicalPathFromRelPath(p))
 			p = p[:len(p)-3] + ".html"
 		} else {
-			lg.LogAttrs(ctx, slog.LevelDebug, "copying static file")
 			_, err = io.Copy(&buf, inFile)
 			if err != nil {
-				lg.LogAttrs(ctx, slog.LevelError, "copy file", slog.String("error", err.Error()))
-				return err
+				return fmt.Errorf("copy: %w", err)
 			}
 		}
 
@@ -93,30 +94,25 @@ func renderMulti(ctx context.Context, lg *slog.Logger, render webstyle.Renderer,
 		return nil
 	})
 	if err != nil {
-		lg.LogAttrs(ctx, slog.LevelError, "walk", slog.String("file", in), slog.String("error", err.Error()))
-		return nil, err
+		return nil, fmt.Errorf("process source: %w", err)
 	}
+
+	<-done
+	fmt.Fprintln(stdout)
 
 	rendered["sitemap.txt"] = &siteMapTxt
 	return rendered, nil
 }
 
-func directoryList(ctx context.Context, lg *slog.Logger, fsys fs.FS, p string) (string, error) {
-	lg.LogAttrs(ctx, slog.LevelDebug, "creating index listing")
+func directoryList(fsys fs.FS, p string) (string, error) {
 	des, err := fs.ReadDir(fsys, filepath.Dir(p))
 	if err != nil {
-		lg.LogAttrs(ctx, slog.LevelError, "readdir", slog.String("dir", filepath.Dir(p)), slog.String("error", err.Error()))
-		return "", err
+		return "", fmt.Errorf("read dir: %w", err)
 	}
 
 	// reverse order
 	slices.SortFunc(des, func(a, b fs.DirEntry) int {
-		if a.Name() > b.Name() {
-			return -1
-		} else if a.Name() == b.Name() {
-			return 0
-		}
-		return 1
+		return strings.Compare(b.Name(), a.Name())
 	})
 
 	var buf bytes.Buffer
