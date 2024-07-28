@@ -8,7 +8,6 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.11.0
 	github.com/go-webauthn/webauthn v0.10.2
 	github.com/google/go-github/v60 v60.0.0
-	github.com/google/subcommands v1.2.0
 	github.com/klauspost/compress v1.17.9
 	github.com/maragudk/gomponents v0.20.4
 	github.com/schollz/progressbar/v3 v3.14.4
