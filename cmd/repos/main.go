@@ -2,6 +2,8 @@
 package main
 
 import (
+	_ "embed"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -9,27 +11,71 @@ import (
 	"slices"
 	"strings"
 
+	"cuelang.org/go/cue"
+	"cuelang.org/go/cue/cuecontext"
 	"github.com/schollz/progressbar/v3"
 	"go.seankhliao.com/mono/ycli"
 )
 
 func main() {
+	conf := new(CommonConfig)
 	ycli.OSExec(ycli.NewGroup(
 		"repos",
 		"tool for managing git repos",
-		nil,
+		func(fs *flag.FlagSet) {
+			fs.StringVar(&conf.configFile, "config", "repos.cue", "path to config file")
+			fs.Func("eval-file", "path to a file to output commands to eval", func(s string) error {
+				var err error
+				conf.eval, err = os.OpenFile(s, os.O_RDWR, 0o644)
+				return err
+			})
+		},
 		cmdSync(),
-		cmdSyncGithub(),
-		cmdLast(),
-		cmdNew(),
+		cmdSyncGithub(conf),
+		cmdLast(conf),
+		cmdNew(conf),
 		cmdClean(),
+		cmdConfig(conf),
 	))
 }
 
-func progress(stderr io.Writer, n int, desc string) (<-chan struct{}, *progressbar.ProgressBar) {
+//go:embed schema.cue
+var schemaBytes []byte
+
+type CommonConfig struct {
+	configFile string
+	configVal  cue.Value
+	cueCtx     *cue.Context
+
+	evalFile string
+	eval     *os.File
+}
+
+func (c *CommonConfig) defaultConfig() (*cue.Context, cue.Value) {
+	if c.cueCtx == nil {
+		c.cueCtx = cuecontext.New()
+		c.configVal = c.cueCtx.CompileBytes(schemaBytes)
+	}
+	return c.cueCtx, c.configVal
+}
+
+func (c *CommonConfig) resolvedConfig() (cue.Value, error) {
+	configBytes, err := os.ReadFile(c.configFile)
+	if err != nil {
+		return cue.Value{}, fmt.Errorf("repos: read config file: %w", err)
+	}
+	c.configVal = c.configVal.Unify(c.cueCtx.CompileBytes(configBytes))
+	err = c.configVal.Validate()
+	if err != nil {
+		return cue.Value{}, fmt.Errorf("repos: validate config: %w", err)
+	}
+	return c.configVal, nil
+}
+
+func progress(stdout io.Writer, n int, desc string) (<-chan struct{}, *progressbar.ProgressBar) {
 	done := make(chan struct{}, 1)
 	bar := progressbar.NewOptions(n,
-		progressbar.OptionSetWriter(stderr),
+		progressbar.OptionSetWriter(stdout),
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionSetPredictTime(false),
 		progressbar.OptionShowCount(),

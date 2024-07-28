@@ -8,7 +8,7 @@ import (
 	"go.seankhliao.com/mono/ycli"
 )
 
-func cmdLast() ycli.Command {
+func cmdLast(conf *CommonConfig) ycli.Command {
 	return ycli.New(
 		"last",
 		"switches to the newest temporary repository",
@@ -22,7 +22,7 @@ func cmdLast() ycli.Command {
 			}
 
 			repoName := repos[len(repos)-1].Name()
-			fmt.Fprintf(stdout, "cd %s\n", filepath.Join(tmpDir, repoName))
+			fmt.Fprintf(conf.eval, "cd %s\n", filepath.Join(tmpDir, repoName))
 			return nil
 		},
 	)

@@ -18,7 +18,7 @@ import (
 
 const versionFile = "testrepo-version"
 
-func cmdNew() ycli.Command {
+func cmdNew(conf *CommonConfig) ycli.Command {
 	var name string
 	return ycli.New(
 		"new",
@@ -48,7 +48,7 @@ func cmdNew() ycli.Command {
 				}
 			}
 
-			err := runNew(stdout, base, name)
+			err := runNew(conf.eval, base, name)
 			if err != nil {
 				return fmt.Errorf("repos new: %w", err)
 			}
@@ -57,7 +57,7 @@ func cmdNew() ycli.Command {
 	)
 }
 
-func runNew(stdout io.Writer, base, name string) error {
+func runNew(evalFile io.Writer, base, name string) error {
 	fp := filepath.Join(base, name)
 	err := os.MkdirAll(fp, 0o755)
 	if err != nil {
@@ -118,7 +118,7 @@ func runNew(stdout io.Writer, base, name string) error {
 		return fmt.Errorf("render readme: %w", err)
 	}
 
-	fmt.Fprintln(stdout, "cd", fp)
+	fmt.Fprintln(evalFile, "cd", fp)
 	return nil
 }
 

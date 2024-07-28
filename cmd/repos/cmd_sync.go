@@ -35,8 +35,8 @@ func cmdSync() ycli.Command {
 		func(fs *flag.FlagSet) {
 			fs.IntVar(&parallel, "parallel", 5, "max parallel git operations")
 		},
-		func(stdout, stderr io.Writer) error {
-			err := runSync(stderr, parallel)
+		func(stdout, _ io.Writer) error {
+			err := runSync(stdout, parallel)
 			if err != nil {
 				return fmt.Errorf("repos sync: %w", err)
 			}
@@ -45,7 +45,7 @@ func cmdSync() ycli.Command {
 	)
 }
 
-func runSync(stderr io.Writer, parallel int) error {
+func runSync(stdout io.Writer, parallel int) error {
 	baseDir := "."
 	des, err := os.ReadDir(baseDir)
 	if err != nil {
@@ -58,7 +58,7 @@ func runSync(stderr io.Writer, parallel int) error {
 		}
 	}
 
-	done, bar := progress(stderr, len(dirs), "syncing repos")
+	done, bar := progress(stdout, len(dirs), "syncing repos")
 
 	results := make(chan syncResult, len(dirs))
 	parallelToken := make(chan struct{}, parallel)
@@ -90,12 +90,12 @@ func runSync(stderr io.Writer, parallel int) error {
 	}
 
 	<-done
-	fmt.Fprintln(stderr)
-	fmt.Fprintf(stderr, "Synced %d repos\n\n", len(dirs)-len(errs))
+	fmt.Fprintln(stdout)
+	fmt.Fprintf(stdout, "Synced %d repos\n\n", len(dirs)-len(errs))
 
 	if len(errs) > 0 {
-		fmt.Fprintln(stderr, "Errors with the following repos:")
-		w := tabwriter.NewWriter(stderr, 0, 8, 1, ' ', 0)
+		fmt.Fprintln(stdout, "Errors with the following repos:")
+		w := tabwriter.NewWriter(stdout, 0, 8, 1, ' ', 0)
 
 		for _, res := range errs {
 			fmt.Fprintf(w, "%s\t%v\n", res.dir, res.err)

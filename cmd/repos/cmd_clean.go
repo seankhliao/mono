@@ -15,17 +15,17 @@ func cmdClean() ycli.Command {
 		"clean",
 		"clean up temporary repositories",
 		nil,
-		func(stdout, stderr io.Writer) error {
+		func(stdout, _ io.Writer) error {
 			tmpDir, repos, err := tmpRepos()
 			if err != nil {
 				return fmt.Errorf("repos clean: %w", err)
 			}
 			if len(repos) == 0 {
-				fmt.Fprintln(stderr, "repos clean: no repos to remove")
+				fmt.Fprintln(stdout, "repos clean: no repos to remove")
 				return nil
 			}
 
-			done, bar := progress(stderr, len(repos), "Removing repositories")
+			done, bar := progress(stdout, len(repos), "Removing repositories")
 
 			type repoError struct {
 				name string
@@ -46,12 +46,12 @@ func cmdClean() ycli.Command {
 
 			<-done
 
-			fmt.Fprintln(stderr)
-			fmt.Fprintf(stderr, "Removed %d repos\n\n", len(repos)-len(errs))
+			fmt.Fprintln(stdout)
+			fmt.Fprintf(stdout, "Removed %d repos\n\n", len(repos)-len(errs))
 
 			if len(errs) > 0 {
-				fmt.Fprintln(stderr, "Error removing repos:")
-				w := tabwriter.NewWriter(os.Stderr, 1, 8, 1, ' ', 0)
+				fmt.Fprintln(stdout, "Error removing repos:")
+				w := tabwriter.NewWriter(stdout, 1, 8, 1, ' ', 0)
 				for _, err := range errs {
 					fmt.Fprintf(w, "%s\t%v\n", err.name, err.err)
 				}

@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	_ "embed"
-	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -13,7 +11,6 @@ import (
 	"text/tabwriter"
 
 	"cuelang.org/go/cue"
-	"cuelang.org/go/cue/cuecontext"
 	"github.com/google/go-github/v60/github"
 	"go.seankhliao.com/mono/ycli"
 	"golang.org/x/oauth2"
@@ -22,9 +19,6 @@ import (
 const (
 	GithubTokenEnv = "GH_TOKEN"
 )
-
-//go:embed schema.cue
-var schemaBytes []byte
 
 type SyncGithubConfig struct {
 	Parallel     int
@@ -35,35 +29,24 @@ type SyncGithubConfig struct {
 	ExcludeRegex []string
 }
 
-func cmdSyncGithub() ycli.Command {
-	cuectx := cuecontext.New()
-	configVal := cuectx.CompileBytes(schemaBytes)
-	var configFile string
-
+func cmdSyncGithub(conf *CommonConfig) ycli.Command {
 	return ycli.New(
 		"sync-github",
 		"sync repositories with a github account / org",
-		func(fs *flag.FlagSet) {
-			fs.StringVar(&configFile, "config", "sync-github.repos.cue", "path to config file")
-		},
+		nil,
 		func(stdout, stderr io.Writer) error {
-			configBytes, err := os.ReadFile(configFile)
+			configVal, err := conf.resolvedConfig()
 			if err != nil {
-				return fmt.Errorf("repos sync-github: read config file: %w", err)
-			}
-			configVal = configVal.Unify(cuectx.CompileBytes(configBytes))
-			err = configVal.Validate()
-			if err != nil {
-				return fmt.Errorf("repos sync-github: validate config: %w", err)
+				return err
 			}
 
 			var config SyncGithubConfig
-			err = configVal.LookupPath(cue.ParsePath("config")).Decode(&config)
+			err = configVal.LookupPath(cue.ParsePath("SyncGithub")).Decode(&config)
 			if err != nil {
 				return fmt.Errorf("repos sync-github: decode config: %w", err)
 			}
 
-			err = runSyncGithub(stderr, config)
+			err = runSyncGithub(stdout, config)
 			if err != nil {
 				return fmt.Errorf("repos sync-github: %w", err)
 			}
@@ -77,7 +60,7 @@ func cmdSyncGithub() ycli.Command {
 	)
 }
 
-func runSyncGithub(stderr io.Writer, config SyncGithubConfig) error {
+func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 	ctx := context.Background()
 
 	ts := oauth2.StaticTokenSource(
@@ -89,7 +72,7 @@ func runSyncGithub(stderr io.Writer, config SyncGithubConfig) error {
 	allReposM := make(map[string]string)
 	for _, user := range config.Users {
 		workItems := 1
-		done, bar := progress(stderr, workItems, "listing repos for "+user)
+		done, bar := progress(stdout, workItems, "listing repos for "+user)
 		pagesForUser := 0
 		for page := 1; true; page++ {
 			repos, res, err := client.Repositories.ListByUser(ctx, user, &github.RepositoryListByUserOptions{
@@ -120,11 +103,11 @@ func runSyncGithub(stderr io.Writer, config SyncGithubConfig) error {
 		}
 		bar.Add(1)
 		<-done
-		fmt.Fprintln(stderr)
+		fmt.Fprintln(stdout)
 	}
 	for _, org := range config.Orgs {
 		workItems := 1
-		done, bar := progress(stderr, workItems, "listing repos for "+org)
+		done, bar := progress(stdout, workItems, "listing repos for "+org)
 		pagesForOrg := 0
 		for page := 1; true; page++ {
 			repos, res, err := client.Repositories.ListByOrg(ctx, org, &github.RepositoryListByOrgOptions{
@@ -154,7 +137,7 @@ func runSyncGithub(stderr io.Writer, config SyncGithubConfig) error {
 		}
 		bar.Add(1)
 		<-done
-		fmt.Fprintln(stderr)
+		fmt.Fprintln(stdout)
 	}
 
 	localRepoM := make(map[string]struct{})
@@ -201,7 +184,7 @@ func runSyncGithub(stderr io.Writer, config SyncGithubConfig) error {
 		return nil
 	}
 
-	done, bar := progress(stderr, workItems, "Diffing repo list")
+	done, bar := progress(stdout, workItems, "Diffing repo list")
 
 	type syncResult struct {
 		name string
@@ -248,12 +231,12 @@ func runSyncGithub(stderr io.Writer, config SyncGithubConfig) error {
 	}
 
 	<-done
-	fmt.Fprintln(stderr)
+	fmt.Fprintln(stdout)
 
 	if len(errs) > 0 {
-		fmt.Fprintln(stderr)
-		fmt.Fprintln(stderr, "Errors:")
-		w := tabwriter.NewWriter(stderr, 0, 8, 1, ' ', 0)
+		fmt.Fprintln(stdout)
+		fmt.Fprintln(stdout, "Errors:")
+		w := tabwriter.NewWriter(stdout, 0, 8, 1, ' ', 0)
 		for _, err := range errs {
 			fmt.Fprintf(w, "%s\t%s\t%v\n", err.op, err.name, err.err)
 		}
