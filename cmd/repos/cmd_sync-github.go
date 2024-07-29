@@ -252,7 +252,7 @@ repoLoop:
 		if !config.Archived && *repo.Archived {
 			continue
 		}
-		for _, pattern := range config.ExcludeRegex {
+		for _, pattern := range config.ExcludeRegexes {
 			ok, err := filepath.Match(pattern, *repo.Name)
 			if err != nil {
 				return fmt.Errorf("match exclude pattern %q against %q: %w", pattern, *repo.Name, err)
