@@ -21,12 +21,12 @@ const (
 )
 
 type SyncGithubConfig struct {
-	Parallel     int
-	Worktree     bool
-	Archived     bool
-	Orgs         []string
-	Users        []string
-	ExcludeRegex []string
+	Parallel       int
+	Worktree       bool
+	Archived       bool
+	Orgs           []string
+	Users          []string
+	ExcludeRegexes []string
 }
 
 func cmdSyncGithub(conf *CommonConfig) ycli.Command {
