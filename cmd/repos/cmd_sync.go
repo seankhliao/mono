@@ -63,15 +63,17 @@ func runSync(stdout io.Writer, parallel int) error {
 	results := make(chan syncResult, len(dirs))
 	parallelToken := make(chan struct{}, parallel)
 	var wg sync.WaitGroup
-	for _, repo := range dirs {
-		parallelToken <- struct{}{}
-		wg.Add(1)
-		go func() {
-			defer func() { <-parallelToken }()
-			defer wg.Done()
-			results <- syncRepo(repo)
-		}()
-	}
+	go func() {
+		for _, repo := range dirs {
+			parallelToken <- struct{}{}
+			wg.Add(1)
+			go func() {
+				defer func() { <-parallelToken }()
+				defer wg.Done()
+				results <- syncRepo(repo)
+			}()
+		}
+	}()
 
 	go func() {
 		wg.Wait()
