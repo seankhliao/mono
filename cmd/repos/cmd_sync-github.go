@@ -85,8 +85,8 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 				return fmt.Errorf("list repos page %d for %s: %v", page, user, err)
 			}
 
-			if pagesForUser != res.LastPage {
-				workItems += res.LastPage - pagesForUser
+			if pagesForUser == 0 {
+				workItems += res.LastPage
 				pagesForUser = res.LastPage
 				bar.ChangeMax(workItems)
 			}
@@ -120,8 +120,8 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 				return fmt.Errorf("list repos page %d for %s: %v", page, org, err)
 			}
 
-			if pagesForOrg != res.LastPage {
-				workItems += res.LastPage - pagesForOrg
+			if pagesForOrg == 0 {
+				workItems += res.LastPage
 				pagesForOrg = res.LastPage
 				bar.ChangeMax(workItems)
 			}
