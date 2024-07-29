@@ -60,6 +60,7 @@ func (c *CommonConfig) defaultConfig() (*cue.Context, cue.Value) {
 }
 
 func (c *CommonConfig) resolvedConfig() (cue.Value, error) {
+	c.defaultConfig()
 	configBytes, err := os.ReadFile(c.configFile)
 	if err != nil {
 		return cue.Value{}, fmt.Errorf("repos: read config file: %w", err)
