@@ -10,6 +10,7 @@ cue.mod/gen/** linguist-generated
 
 # local generated
 deploy/**/kubernetes.yaml linguist-generated
+webstyle/midnight/out.html linguist-generated
 
 # manual, diff
 *.md -whitespace
