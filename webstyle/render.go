@@ -9,6 +9,7 @@ import (
 	"text/template"
 
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
+	"github.com/alecthomas/chroma/v2/styles"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/ast"
@@ -17,6 +18,7 @@ import (
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/text"
+	"go.seankhliao.com/mono/webstyle/midnight"
 	"go.seankhliao.com/mono/webstyle/picture"
 )
 
@@ -58,6 +60,12 @@ type Renderer struct {
 
 // NewRenderer creates a rendered with default options
 func NewRenderer(t *template.Template) Renderer {
+	s, err := midnight.Style()
+	if err != nil {
+		panic(err)
+	}
+	styles.Register(s)
+
 	return Renderer{
 		extensions: []goldmark.Extender{
 			extension.Strikethrough,
@@ -86,7 +94,7 @@ func (r Renderer) Render(w io.Writer, src io.Reader, d Data) error {
 	highlightCSS := bytes.NewBufferString(d.Style)
 	highlightCSS.WriteString("\n")
 	hl := highlighting.NewHighlighting(
-		highlighting.WithStyle("borland"),
+		highlighting.WithStyle("midnight"),
 		highlighting.WithCSSWriter(highlightCSS),
 		highlighting.WithFormatOptions(
 			chromahtml.WithLineNumbers(true),
