@@ -22,12 +22,18 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-11-02_ Kamelot with Blackbriar
 - _12024-10-26_ Hatsune Miku
 - _12024-10-25_ MCM London
+- _12024-10-11_ One OK Rock
 - _12024-10-04_ Visions of Atlantis
 - _12024-10-02_ Aurora
 - _12024-09-26_ Mothica
 - _12024-09-03_ girl in red
 - _12024-08-28_ WACK in the UK Vol 3
-- _12024-08-04_ Animangapop London
+
+##### _12024-08-04_ Animangapop London
+
+This was a much smaller event than I expected...
+but also with a much younger crowd of what looked like mostly teens
+doing the cosplay?
 
 ##### _12024-07-21_ Hyper Japan Festival 2024
 
