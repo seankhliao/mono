@@ -16,6 +16,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12025-07-17_ Billie Eilish
+- _12025-03-13_ Clairo
 - _12024-11-29_ renforshort
 - _12024-11-27_ Sasha Alex Sloan
 - _12024-11-15_ UPSAHL
