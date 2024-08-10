@@ -24,7 +24,7 @@ k8s: apps: v1: Deployment: "cert-manager": {
 			}
 			containers: [{
 				name:            "cert-manager-webhook"
-				image:           "quay.io/jetstack/cert-manager-webhook:v1.15.1"
+				image:           "quay.io/jetstack/cert-manager-webhook:v1.15.2"
 				imagePullPolicy: "IfNotPresent"
 				args: [
 					"--v=2",
