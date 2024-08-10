@@ -14,4 +14,4 @@ _txt:_
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
 
 _img:_
-[ghostblade](https://tapas.io/series/GhostBlade/info)
+[ghostblade ep 45](https://tapas.io/series/GhostBlade/info)
