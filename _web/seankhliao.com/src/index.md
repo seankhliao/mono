@@ -69,7 +69,7 @@ Dates using the
 - Ireland — 12023-06
 - Italy — 12021-12
 - Japan — 12018-03, 12023-02
-- Lithuania — 12022-12
+- Lithuania — 12022-12, 12024-05
 - Luxembourg — 12019-10
 - Malta — 12024-02
 - Netherlands — **12019—12022**
@@ -84,7 +84,7 @@ Dates using the
 - Spain — 12023-09
 - Sweden — 12018-01
 - Switzerland — 12023-10
-- Taiwan — **11996—12000, 12005—12009, 12011—12019**, 12023-03
+- Taiwan — **11996—12000, 12005—12009, 12011—12019**, 12023-03, 12024-08
 - Timor-Leste — 12018-02
 - Turkey — 12022-09
 - United States — 12019-04, 12023-07, 12024-03
