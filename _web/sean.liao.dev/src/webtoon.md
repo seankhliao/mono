@@ -11,6 +11,7 @@ _These I really love_
 
 - [Hero Killer](https://www.webtoons.com/en/action/hero-killer/list?title_no=2745)
 - [Ten Ways to Get Dumped by a Tyrant](https://www.webtoons.com/en/fantasy/ten-ways-to-get-dumped-by-a-tyrant/list?title_no=5811)
+- [The Price Is Your Everything](https://www.webtoons.com/en/drama/the-price-is-your-everything/list?title_no=6054)
 - [Your Throne](https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009)
 
 Very good, just missing that tiny but of something.
@@ -20,12 +21,12 @@ Very good, just missing that tiny but of something.
 - [Cry, or Better Yet, Beg](https://www.webtoons.com/en/drama/cry-or-better-yet-beg/list?title_no=5815)
 - [God, Please Make Me a Demon!](https://www.webtoons.com/en/comedy/god-please-make-me-a-demon/list?title_no=3198)
 - [Leave Me Alone, I Don't Want a Romantic Comedy](https://www.webtoons.com/en/canvas/leave-me-alone-i-dont-want-a-romantic-comedy/list?title_no=506168)
+- [My Lord was AlreadyInto Me When I Noticed](https://www.webtoons.com/en/romance/my-lord-was-already-into-me-when-i-noticed/list?title_no=6406)
 - [Obsidian Bride](https://www.webtoons.com/en/romance/obsidian-bride/list?title_no=5896)
 - [That Which Flows By](https://www.webtoons.com/en/historical/that-which-flows-by/list?title_no=5419)
 - [The Crown Princess Scandal](https://www.webtoons.com/en/fantasy/the-crown-princess-scandal/list?title_no=5478)
 - [The Dark Lord's Confession](https://www.webtoons.com/en/fantasy/the-dark-lords-confession/list?title_no=4464)
 - [The Fateful Invitation](https://www.webtoons.com/en/romance/the-fateful-invitation/list?title_no=5730)
-- [The Price Is Your Everything](https://www.webtoons.com/en/drama/the-price-is-your-everything/list?title_no=6054)
 - [There's Love Hidden in Lies](https://www.webtoons.com/en/romance/theres-love-hidden-in-lies/list?title_no=2467)
 - [Tower of God](https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95)
 - [Twilight Poem](https://www.webtoons.com/en/fantasy/twilight-poem/list?title_no=4209)
@@ -33,6 +34,7 @@ Very good, just missing that tiny but of something.
 
 Good entertainment.
 
+-
 - [Beyond Blood](https://www.webtoons.com/en/canvas/beyond-blood/list?title_no=812729)
 - [Clinic of Horrors](https://www.webtoons.com/en/supernatural/clinic-of-horrors/list?title_no=3414)
 - [Crow Time](https://www.webtoons.com/en/canvas/crow-time/list?title_no=693372)
@@ -40,12 +42,17 @@ Good entertainment.
 - [I Will Live the Life of a Villainess](https://www.webtoons.com/en/romance/i-will-live-the-life-of-a-villainess/list?title_no=5954)
 - [Lucid](https://www.webtoons.com/en/canvas/lucid/list?title_no=250209)
 - [Meme Girls](https://www.webtoons.com/en/canvas/meme-girls/list?title_no=304446)
+- [Monster Duke's Daughter](https://www.webtoons.com/en/fantasy/monster-dukes-daughter/list?title_no=4469)
 - [My Dear Cold-Blooded King](https://www.webtoons.com/en/romance/my-dear-cold-blooded-king/list?title_no=961)
 - [My Emo Crush!](https://www.webtoons.com/en/canvas/my-emo-crush/list?title_no=902138)
+- [Peace Restaurant](https://www.webtoons.com/en/fantasy/peace-restaurant/list?title_no=6416)
 - [The Age of Arrogance](https://www.webtoons.com/en/fantasy/the-age-of-arrogance/list?title_no=5839)
+- [The Demon King's Warrior Daughter](https://www.webtoons.com/en/fantasy/the-demon-kings-warrior-daughter/list?title_no=6531)
 - [The Dragon King’s Bride](https://www.webtoons.com/en/romance/the-dragon-kings-bride/list?title_no=5517)
 - [The Newlywed Diary of a Witch and a Dragon](https://www.webtoons.com/en/romance/the-newlywed-diary-of-a-witch-and-a-dragon/list?title_no=2448)
 - [The Princess's Jewels](https://www.webtoons.com/en/fantasy/the-princesss-jewels/list?title_no=2966)
+- [The Reason for the Twin Lady’s Disguise](https://www.webtoons.com/en/romance/the-reason-for-the-twin-ladys-disguise/list?title_no=6315)
+- [The Tyrant Wants to Be Good](https://www.webtoons.com/en/fantasy/the-tyrant-wants-to-be-good/list?title_no=5201)
 - [What the Evil Dragon Lives For](https://www.webtoons.com/en/romance/what-the-evil-dragon-lives-for/list?title_no=5844)
 - [Winter Moon](https://www.webtoons.com/en/fantasy/winter-moon/list?title_no=1093)
 
