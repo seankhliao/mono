@@ -32,9 +32,15 @@ k8s: "": "v1": "ConfigMap": "opentelemetry": "otelcol": "data": {
 		}
 
 		extensions: {
-			health_check: {}
-			pprof: {}
-			zpages: {}
+			health_check: {
+				endpoint: "0.0.0.0:13133"
+			}
+			pprof: {
+				endpoint: "0.0.0.0:1777"
+			}
+			zpages: {
+				endpoint: "0.0.0.0:55679"
+			}
 		}
 
 		service: extensions: ["health_check", "pprof", "zpages"]

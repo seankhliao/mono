@@ -31,9 +31,12 @@ data:
         project: com-seankhliao
       nop: {}
     extensions:
-      health_check: {}
-      pprof: {}
-      zpages: {}
+      health_check:
+        endpoint: "0.0.0.0:13133"
+      pprof:
+        endpoint: "0.0.0.0:1777"
+      zpages:
+        endpoint: "0.0.0.0:55679"
     service:
       extensions:
         - health_check
@@ -146,7 +149,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: otelcol
-          image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.104.0
+          image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.106.1
           args:
             - --config=file:/etc/otelcol/config.yaml
           env:
