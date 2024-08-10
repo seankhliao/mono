@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
@@ -26,11 +27,14 @@ func main() {
 				html.H3(html.Em(gomponents.Text("inter")), gomponents.Text("webs")),
 				html.P(
 					html.Em(gomponents.Text("Congratulations")),
-					gomponents.Text("You've found a server on the internet."),
+					gomponents.Text(" You've found a server on the internet."),
 				),
 			})
 			var buf bytes.Buffer
-			webstyle.Structured(&buf, ro)
+			err := webstyle.Structured(&buf, ro)
+			if err != nil {
+				return nil, fmt.Errorf("render web page: %w", err)
+			}
 
 			webstatic.Register(m)
 			m.Handle("GET /{$}", httpencoding.Handler(handle(o, t0, "index.html", buf.Bytes())))
