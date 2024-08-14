@@ -18,6 +18,7 @@ _Highlighted_ are top tier.
 | 12024-05-13 | **_10_** | [_Bocchi the Rock!_][Bocchi_1] <br> Bocchi the Rock!                                                                                                                                                                                    | **Bocchi** is relatable                                                     |
 | 12024-06-20 | **8**    | [Chainsaw Ma][Chainsaw_1] <br> Chainsaw Man                                                                                                                                                                                             | **Makima** dominates, **Power** is playfully wild                           |
 | 12024-05-27 | 6        | [Edomae El][Edomae_1] <br> Otaku Elf                                                                                                                                                                                                    |                                                                             |
+| 12024-08-13 | 8        | [Girls Band Cry][Girls_1] <br> Girls Band Cry                                                                                                                                                                                           |                                                                             |
 | 12024-05-27 | 5        | [Inu ni Nattara Suki na Hito ni Hirowareta][Inu_1] <br> My Life as Inukai-san's Dog                                                                                                                                                     |                                                                             |
 | 12024-05-27 | 5        | [Inu ni Nattara Suki na Hito ni Hirowareta. Special][Inu_2] <br> My Life as Inukai-sanâs Dog. OVA                                                                                                                                       |                                                                             |
 | 12024-05-16 | _9_      | [Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunouse][Kaguya-sama_1] <br> Kaguya-sama: Love is War                                                                                                                                | **Fujiwara Chika** is chaotic good                                          |
@@ -26,6 +27,7 @@ _Highlighted_ are top tier.
 | 12024-05-18 | **8**    | [Kaguya-sama wa Kokurasetai: Ultra Romanti][Kaguya-sama_4] <br> Kaguya-sama: Love is War - Ultra Romantic                                                                                                                               |                                                                             |
 | 12024-05-18 | **8**    | [Kaguya-sama wa Kokurasetai: First Kiss wa Owarana][Kaguya-sama_5] <br> Kaguya-sama: Love is War - The First Kiss That Never Ends                                                                                                       |                                                                             |
 | 12024-05-11 | **8**    | [Kami no To][Kami_1] <br> Tower of God                                                                                                                                                                                                  |                                                                             |
+| 12024-07-22 | 6        | [Kiss x Sis][Kiss_1] <br> Kiss x Sis                                                                                                                                                                                                    |                                                                             |
 | 12024-05-31 | 7        | [Kamisama Hajimemashit][Kamisama_1] <br> Kamisama Kiss                                                                                                                                                                                  |                                                                             |
 | 12024-06-06 | 7        | [Kamisama Hajimemashita OV][Kamisama_2] <br> Kamisama Kiss OVA                                                                                                                                                                          |                                                                             |
 | 12024-06-04 | 7        | [Kamisama Hajimemashitaâ][Kamisama_3] <br> Kamisama Kiss Season 2                                                                                                                                                                       |                                                                             |
@@ -75,6 +77,7 @@ _Highlighted_ are top tier.
 [Edomae_1]: https://myanimelist.net/anime/52081
 [Inu_1]: https://myanimelist.net/anime/51265
 [Inu_2]: https://myanimelist.net/anime/54225
+[Girls_1]: https://myanimelist.net/anime/55102
 [Kaguya-sama_1]: https://myanimelist.net/anime/37999
 [Kaguya-sama_2]: https://myanimelist.net/anime/40591
 [Kaguya-sama_3]: https://myanimelist.net/anime/43609
@@ -86,6 +89,7 @@ _Highlighted_ are top tier.
 [Kamisama_3]: https://myanimelist.net/anime/25681
 [Kamisama_4]: https://myanimelist.net/anime/30709
 [Kamisama_5]: https://myanimelist.net/anime/33323
+[Kiss_1]: https://myanimelist.net/anime/5042
 [Kono_1]: https://myanimelist.net/anime/30831
 [Kono_2]: https://myanimelist.net/anime/32380
 [Kono_3]: https://myanimelist.net/anime/51958
