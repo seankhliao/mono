@@ -43,6 +43,7 @@ _Highlighted_ are top tier.
 | 12024-05-19 | _9_      | [Kusuriya no Hitorigot][Kusuriya_1] <br> The Apothecary Diaries                                                                                                                                                                         |                                                                             |
 | 12024-08-14 | 8        | [Loop 7-kaime no Akuyaku Reijou wa, Moto Tekikoku de Jiyuu Kimama na Hanayome Seikatsu wo Mankitsu suru][Loop_1] <br> 7th Time Loop: The Villainess Enjoys a Carefree Life Married to Her Worst Enemy!                                  |                                                                             |
 | 12024-05-20 | 7        | [Paripi Koume][Paripi_1] <br> Ya Boy Kongming!                                                                                                                                                                                          |                                                                             |
+| 12024-08-21 | 7 | [Mahou Shoujo ni Akogarete][Mahou_1] <br> Gushing over Magical Girls | |
 | 12024-06-29 | **8**    | [Majo no Tabitab][Majo_1] <br> Wandering Witch: The Journey of Elaina                                                                                                                                                                   | **Elaina** is confidently cute                                              |
 | 12024-06-21 | **8**    | [Mushoku Tensei: Isekai Ittara Honki Das][Mushoku_1] <br> Mushoku Tensei: Jobless Reincarnation                                                                                                                                         | **Roxy** is cute (and surrounded by creeps), **Eris** is wild in a cute way |
 | 12024-06-22 | **8**    | [Mushoku Tensei: Isekai Ittara Honki Dasu Part ][Mushoku_2] <br> Mushoku Tensei: Jobless Reincarnation Part 2                                                                                                                           |                                                                             |
@@ -101,6 +102,7 @@ _Highlighted_ are top tier.
 [Kusuriya_1]: https://myanimelist.net/anime/54492
 [Loop_1]: https://myanimelist.net/anime/56352
 [Paripi_1]: https://myanimelist.net/anime/50380
+[Mahou_1]: https://myanimelist.net/anime/54722
 [Majo_1]: https://myanimelist.net/anime/40571
 [Mushoku_1]: https://myanimelist.net/anime/39535
 [Mushoku_2]: https://myanimelist.net/anime/45576
