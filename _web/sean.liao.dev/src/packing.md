@@ -20,16 +20,16 @@
   - [ ] Socks
   - [ ] Coat
   - [ ] Bags
-  - Cold Weather
-    - [ ] Scarf
-    - [ ] Hat
-    - [ ] Gloves
-    - [ ] Thick Coat
-  - Hot Weather
-    - [ ] Hat
-    - [ ] Sunglasses
-    - [ ] Sunscreen
-    - [ ] Swimwear
+- Cold Weather
+  - [ ] Scarf
+  - [ ] Hat
+  - [ ] Gloves
+  - [ ] Thick Coat
+- Hot Weather
+  - [ ] Hat
+  - [ ] Sunglasses
+  - [ ] Sunscreen
+  - [ ] Swimwear
 - Tech
   - [ ] Wall Wart
   - [ ] Adapter plug
