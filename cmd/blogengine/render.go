@@ -9,7 +9,9 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"go.seankhliao.com/mono/webstyle"
 )
 
@@ -44,7 +46,8 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 	if err != nil {
 		return nil, fmt.Errorf("walk source: %w", err)
 	}
-	done, bar := progress(stdout, countFiles, "rendering pages")
+	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+	spin.Start()
 
 	var siteMapTxt bytes.Buffer
 	rendered := make(map[string]*bytes.Buffer)
@@ -52,7 +55,8 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 		if err != nil || d.IsDir() {
 			return err
 		}
-		defer bar.Add(1)
+
+		spin.Suffix = "processing " + p
 
 		inFile, err := fsys.Open(p)
 		if err != nil {
@@ -97,7 +101,7 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 		return nil, fmt.Errorf("process source: %w", err)
 	}
 
-	<-done
+	spin.Stop()
 	fmt.Fprintln(stdout)
 
 	rendered["sitemap.txt"] = &siteMapTxt
