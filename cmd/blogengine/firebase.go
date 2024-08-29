@@ -10,8 +10,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
-	"github.com/schollz/progressbar/v3"
+	"github.com/briandowns/spinner"
 	"golang.org/x/oauth2/google"
 	firebasehosting "google.golang.org/api/firebasehosting/v1beta1"
 )
@@ -19,7 +20,9 @@ import (
 func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*bytes.Buffer) error {
 	ctx := context.TODO()
 
-	done, bar := progress(stdout, len(rendered), "checksumming files")
+	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+	spin.Suffix = "checksumming files"
+	spin.Start()
 
 	pathToHash := make(map[string]string)
 	hashToGzip := make(map[string]io.Reader)
@@ -39,56 +42,47 @@ func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*
 		}
 		pathToHash["/"+p] = sum
 		hashToGzip[sum] = zipped
-		bar.Add(1)
 	}
-	<-done
+	spin.Stop()
 	fmt.Fprintln(stdout)
 
-	baseSteps := 6 // client, service, version, required, upload, release
-	done, bar = progress(stdout, baseSteps, "preparing upload")
+	spin = spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+	spin.Start()
 
 	httpClient, err := google.DefaultClient(ctx, "https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/firebase")
 	if err != nil {
 		return fmt.Errorf("create http client: %w", err)
 	}
-	bar.Add(1)
 
 	client, err := firebasehosting.NewService(ctx)
 	if err != nil {
 		return fmt.Errorf("create firebase client: %w", err)
 	}
-	bar.Add(1)
 
-	bar.Describe("creating new version")
+	spin.Suffix = "creating new version"
 	site, version, err := createVersion(ctx, client, conf)
 	if err != nil {
 		return fmt.Errorf("create new version: %w", err)
 	}
-	bar.Add(1)
 
-	bar.Describe("get required uploads")
+	spin.Suffix = "get required uploads"
 	toUpload, uploadURL, err := getRequiredUploads(ctx, client, version, pathToHash)
 	if err != nil {
 		return fmt.Errorf("get required uploads: %w", err)
 	}
-	bar.ChangeMax(baseSteps + len(toUpload))
-	bar.Add(1)
 
-	bar.Describe("uploading files")
-	err = uploadFiles(ctx, bar, client, httpClient, version, toUpload, uploadURL, hashToGzip)
+	spin.Suffix = "uploading files"
+	err = uploadFiles(ctx, client, httpClient, version, toUpload, uploadURL, hashToGzip)
 	if err != nil {
 		return err
 	}
-	bar.Add(1)
-
-	bar.Describe("releasing")
+	spin.Suffix = "releasing"
 	err = release(ctx, client, site, version)
 	if err != nil {
 		return err
 	}
-	bar.Add(1)
 
-	<-done
+	spin.Stop()
 	fmt.Fprintln(stdout)
 
 	return nil
@@ -135,7 +129,7 @@ func getRequiredUploads(ctx context.Context, client *firebasehosting.Service, ve
 	return populateResponse.UploadRequiredHashes, populateResponse.UploadUrl, nil
 }
 
-func uploadFiles(ctx context.Context, bar *progressbar.ProgressBar, client *firebasehosting.Service, httpClient *http.Client, version string, toUpload []string, uploadURL string, hashToGzip map[string]io.Reader) error {
+func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClient *http.Client, version string, toUpload []string, uploadURL string, hashToGzip map[string]io.Reader) error {
 	for _, uploadHash := range toUpload {
 		endpoint := uploadURL + "/" + uploadHash
 		req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, hashToGzip[uploadHash])
@@ -152,8 +146,6 @@ func uploadFiles(ctx context.Context, bar *progressbar.ProgressBar, client *fire
 		}
 		io.Copy(io.Discard, res.Body)
 		res.Body.Close()
-
-		bar.Add(1)
 	}
 
 	patchResponse, err := client.Sites.Versions.Patch(version, &firebasehosting.Version{
