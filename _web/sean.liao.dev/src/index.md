@@ -28,7 +28,26 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-10-02_ Aurora
 - _12024-09-26_ Mothica
 - _12024-09-03_ girl in red
-- _12024-08-28_ WACK in the UK Vol 3
+
+##### _12024-08-28_ WACK in the UK Vol 3
+
+With [_MONSTERIDOL_], [_BiS_], and [_ASP_]
+
+Idol culture, not something I get to see a lot of here in the UK.
+I get the sense that you don't go to these for great music,
+either the audio or my ears were clipping the entire night,
+but more for the experience,
+both with the actual idols but also the other fans.
+It's also very much a visual affair,
+the choreography is what we're here for.
+[_MONSTERIDOL_] looked traditionally cute,
+and also had the most interaction with the audience (better english?).
+[_BiS_] had the most individually distinct appearance,
+which was quite refreshing.
+I liked the music of [_ASP_] the best,
+though with 7 people on stage it was quite crowded on the small stage
+and a bit hard to focus on specific people.
+Visually, coordinated and... hardcore?
 
 ##### _12024-08-04_ Animangapop London
 
@@ -1090,3 +1109,6 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Yours Truly_]: https://www.instagram.com/yourstruly_band
 [_Zara Larsson_]: https://www.instagram.com/zaralarsson
 [_Zoey Lily_]: https://www.instagram.com/mezoeylily
+[_MONSTERIDOL_]: https://monsteridol.jp/
+[_BiS_]: https://www.brandnewidolsociety.tokyo/
+[_ASP_]: https://asp-japan.tokyo/
