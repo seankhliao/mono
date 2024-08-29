@@ -9,8 +9,10 @@ import (
 	"path/filepath"
 	"sort"
 	"text/tabwriter"
+	"time"
 
 	"cuelang.org/go/cue"
+	"github.com/briandowns/spinner"
 	"github.com/google/go-github/v60/github"
 	"go.seankhliao.com/mono/ycli"
 	"golang.org/x/oauth2"
@@ -72,9 +74,11 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 	allReposM := make(map[string]string)
 	for _, user := range config.Users {
 		workItems := 1
-		done, bar := progress(stdout, workItems, "listing repos for "+user)
+		spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+		spin.Start()
 		pagesForUser := 0
 		for page := 1; true; page++ {
+			spin.Suffix = fmt.Sprintf("list page %d for user %s", page, user)
 			repos, res, err := client.Repositories.ListByUser(ctx, user, &github.RepositoryListByUserOptions{
 				ListOptions: github.ListOptions{
 					Page:    page,
@@ -88,7 +92,6 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 			if pagesForUser == 0 {
 				workItems += res.LastPage
 				pagesForUser = res.LastPage
-				bar.ChangeMax(workItems)
 			}
 
 			err = addRepos(config, allReposM, repos)
@@ -96,20 +99,21 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 				return err
 			}
 
-			bar.Add(1)
 			if page >= res.LastPage {
 				break
 			}
 		}
-		bar.Add(1)
-		<-done
+		spin.FinalMSG = fmt.Sprintf("got %d repos for user %s\n", len(allReposM), user)
+		spin.Stop()
 		fmt.Fprintln(stdout)
 	}
 	for _, org := range config.Orgs {
 		workItems := 1
-		done, bar := progress(stdout, workItems, "listing repos for "+org)
+		spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+		spin.Start()
 		pagesForOrg := 0
 		for page := 1; true; page++ {
+			spin.Suffix = fmt.Sprintf("list page %d for org %s", page, org)
 			repos, res, err := client.Repositories.ListByOrg(ctx, org, &github.RepositoryListByOrgOptions{
 				ListOptions: github.ListOptions{
 					Page:    page,
@@ -123,20 +127,18 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 			if pagesForOrg == 0 {
 				workItems += res.LastPage
 				pagesForOrg = res.LastPage
-				bar.ChangeMax(workItems)
 			}
 
 			err = addRepos(config, allReposM, repos)
 			if err != nil {
 				return err
 			}
-			bar.Add(1)
 			if page >= res.LastPage {
 				break
 			}
 		}
-		bar.Add(1)
-		<-done
+		spin.FinalMSG = fmt.Sprintf("got %d repos for org %s\n", len(allReposM), org)
+		spin.Stop()
 		fmt.Fprintln(stdout)
 	}
 
@@ -184,7 +186,9 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 		return nil
 	}
 
-	done, bar := progress(stdout, workItems, "Diffing repo list")
+	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+	spin.Suffix = "diffing repo list"
+	spin.Start()
 
 	type syncResult struct {
 		name string
@@ -195,7 +199,7 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 	var errs []syncResult
 
 	for _, r := range toClone {
-		bar.Describe(fmt.Sprintf("cloning %s/%s", r.owner, r.repo))
+		spin.Suffix = fmt.Sprintf("cloning %s/%s", r.owner, r.repo)
 
 		u := fmt.Sprintf("https://github.com/%s/%s", r.owner, r.repo)
 		dst := r.repo
@@ -212,11 +216,10 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 			})
 		}
 
-		bar.Add(1)
 	}
 
 	for _, r := range toPrune {
-		bar.Describe("removing " + r)
+		spin.Suffix = "removing " + r
 
 		err := os.RemoveAll(r)
 		if err != nil {
@@ -227,10 +230,9 @@ func runSyncGithub(stdout io.Writer, config SyncGithubConfig) error {
 			})
 		}
 
-		bar.Add(1)
 	}
 
-	<-done
+	spin.Stop()
 	fmt.Fprintln(stdout)
 
 	if len(errs) > 0 {

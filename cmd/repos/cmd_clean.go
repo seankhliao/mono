@@ -6,7 +6,9 @@ import (
 	"os"
 	"path/filepath"
 	"text/tabwriter"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"go.seankhliao.com/mono/ycli"
 )
 
@@ -25,7 +27,8 @@ func cmdClean() ycli.Command {
 				return nil
 			}
 
-			done, bar := progress(stdout, len(repos), "Removing repositories")
+			spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+			spin.Start()
 
 			type repoError struct {
 				name string
@@ -35,17 +38,15 @@ func cmdClean() ycli.Command {
 			var errs []repoError
 
 			for _, r := range repos {
-				bar.Describe(fmt.Sprintf("Removing %s", r.Name()))
+				spin.Suffix = fmt.Sprintf("Removing %s", r.Name())
 				repoPath := filepath.Join(tmpDir, r.Name())
 				err := os.RemoveAll(repoPath)
 				if err != nil {
 					errs = append(errs, repoError{r.Name(), err})
 				}
-				bar.Add(1)
 			}
 
-			<-done
-
+			spin.Stop()
 			fmt.Fprintln(stdout)
 			fmt.Fprintf(stdout, "Removed %d repos\n\n", len(repos)-len(errs))
 

@@ -5,7 +5,6 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"slices"
@@ -13,7 +12,6 @@ import (
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
-	"github.com/schollz/progressbar/v3"
 	"go.seankhliao.com/mono/ycli"
 )
 
@@ -71,29 +69,6 @@ func (c *CommonConfig) resolvedConfig() (cue.Value, error) {
 		return cue.Value{}, fmt.Errorf("repos: validate config: %w", err)
 	}
 	return c.configVal, nil
-}
-
-func progress(stdout io.Writer, n int, desc string) (<-chan struct{}, *progressbar.ProgressBar) {
-	done := make(chan struct{}, 1)
-	bar := progressbar.NewOptions(n,
-		progressbar.OptionSetWriter(stdout),
-		progressbar.OptionEnableColorCodes(true),
-		progressbar.OptionSetPredictTime(false),
-		progressbar.OptionShowCount(),
-		progressbar.OptionFullWidth(),
-		progressbar.OptionSetDescription(desc),
-		progressbar.OptionSetTheme(progressbar.Theme{
-			Saucer:        "[green]=[reset]",
-			SaucerHead:    "[green]>[reset]",
-			SaucerPadding: " ",
-			BarStart:      "[",
-			BarEnd:        "]",
-		}),
-		progressbar.OptionOnCompletion(func() {
-			done <- struct{}{}
-		}),
-	)
-	return done, bar
 }
 
 // tmpRepos returns direntries of temporary repos in sorted order
