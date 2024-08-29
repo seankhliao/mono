@@ -6,6 +6,7 @@ require (
 	cuelang.org/go v0.9.2
 	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/bradleyfalzon/ghinstallation/v2 v2.11.0
+	github.com/briandowns/spinner v1.23.1
 	github.com/go-webauthn/webauthn v0.10.2
 	github.com/google/go-github/v60 v60.0.0
 	github.com/klauspost/compress v1.17.9
@@ -51,6 +52,7 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dlclark/regexp2 v1.11.2 // indirect
 	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
+	github.com/fatih/color v1.7.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.6.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
@@ -80,6 +82,8 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/mattn/go-colorable v0.1.2 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect

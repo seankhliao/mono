@@ -13,7 +13,9 @@ import (
 	"sync"
 	"text/tabwriter"
 	"text/template"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"go.seankhliao.com/mono/ycli"
 )
 
@@ -58,7 +60,8 @@ func runSync(stdout io.Writer, parallel int) error {
 		}
 	}
 
-	done, bar := progress(stdout, len(dirs), "syncing repos")
+	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+	spin.Start()
 
 	results := make(chan syncResult, len(dirs))
 	parallelToken := make(chan struct{}, parallel)
@@ -82,15 +85,14 @@ func runSync(stdout io.Writer, parallel int) error {
 	var errs []syncResult
 	for res := range results {
 		if res.err == nil {
-			bar.Describe(fmt.Sprintf("Synced %s to %s", filepath.Base(res.dir), res.newRef))
+			spin.Suffix = fmt.Sprintf("Synced %s to %s", filepath.Base(res.dir), res.newRef)
 		} else {
-			bar.Describe(fmt.Sprintf("Error syncing %s", filepath.Base(res.dir)))
+			spin.Suffix = fmt.Sprintf("Error syncing %s", filepath.Base(res.dir))
 			errs = append(errs, res)
 		}
-		bar.Add(1)
 	}
 
-	<-done
+	spin.Stop()
 	fmt.Fprintln(stdout)
 	fmt.Fprintf(stdout, "Synced %d repos\n\n", len(dirs)-len(errs))
 
