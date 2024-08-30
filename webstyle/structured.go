@@ -17,6 +17,8 @@ var (
 	//go:embed gtag_inline.js
 	gtagInlineScript string
 	gtagConfig       = `gtag('config', '%s');`
+	//go:embed tablesort.js
+	tableSortScript string
 
 	defaultFooter = []OptionsFooter{
 		{"me", "https://seankhliao.com/"},
@@ -37,6 +39,7 @@ type Options struct {
 	Subtitle    string // link home, h2
 	Description string // meta description
 
+	Head    []gomponents.Node
 	Content []gomponents.Node
 
 	FooterLinks []OptionsFooter
@@ -64,6 +67,7 @@ func Structured(w io.Writer, o Options) error {
 	var head []gomponents.Node
 	head = append(head, html.Meta(html.Charset("utf-8")))
 	head = append(head, html.Meta(html.Name("viewport"), html.Content("width=device-width,minimum-scale=1,initial-scale=1")))
+	head = append(head, o.Head...)
 	head = append(head, html.Meta(html.Name("theme-color"), html.Content("#000")))
 	head = append(head, html.TitleEl(gomponents.Text(o.Title)))
 	head = append(head, html.Meta(html.Name("description"), html.Content(o.Description)))
@@ -121,6 +125,7 @@ func Structured(w io.Writer, o Options) error {
 	body = append(body, html.Footer(footer...))
 	body = append(body, html.Script(gomponents.Raw(headerLinkScript)))
 	body = append(body, html.Script(gomponents.Raw(codeBlockScript)))
+	body = append(body, html.Script(gomponents.Raw(tableSortScript)))
 
 	page := html.Doctype(
 		html.HTML(

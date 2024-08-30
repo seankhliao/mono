@@ -52,7 +52,7 @@ func main() {
 		Start: func(ctx context.Context, o *observability.O, m *http.ServeMux) (func(), error) {
 			o = o.Component("vanity")
 
-			render := webstyle.NewRenderer(webstyle.TemplateCompact)
+			render := webstyle.NewRenderer(true)
 			index, err := render.RenderBytes(indexRaw, webstyle.Data{})
 			if err != nil {
 				return nil, fmt.Errorf("render index template: %w", err)

@@ -110,15 +110,7 @@ type ConfigFirebase struct {
 }
 
 func run(stdout io.Writer, conf Config) error {
-	var render webstyle.Renderer
-	switch conf.Render.Style {
-	case "compact":
-		render = webstyle.NewRenderer(webstyle.TemplateCompact)
-	case "full":
-		render = webstyle.NewRenderer(webstyle.TemplateFull)
-	default:
-		return fmt.Errorf("unknown renderer style: %s", conf.Render.Style)
-	}
+	render := webstyle.NewRenderer(conf.Render.Style == "compact")
 
 	fi, err := os.Stat(conf.Render.Source)
 	if err != nil {
