@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"io"
 	"slices"
-	"text/template"
 
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/alecthomas/chroma/v2/styles"
+	"github.com/maragudk/gomponents"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/ast"
@@ -23,18 +23,10 @@ import (
 )
 
 var (
-	//go:embed layout.html.gotmpl
-	layoutTpl string
 	//go:embed base.css
 	baseCss string
 	//go:embed compact.css
 	compactCss string
-
-	templateBase    = template.Must(template.New("basecss").Parse(baseCss))
-	templateCompact = template.Must(template.New("basecss").Parse(baseCss + compactCss))
-
-	TemplateFull    = template.Must(templateBase.New("").Parse(layoutTpl))
-	TemplateCompact = template.Must(templateCompact.New("").Parse(layoutTpl))
 )
 
 // Data holds the metadata to render a given page
@@ -55,11 +47,11 @@ type Renderer struct {
 	extensions []goldmark.Extender
 	parserOpts []parser.Option
 	renderOpts []renderer.Option
-	Template   *template.Template
+	compact    bool
 }
 
 // NewRenderer creates a rendered with default options
-func NewRenderer(t *template.Template) Renderer {
+func NewRenderer(compact bool) Renderer {
 	s, err := midnight.Style()
 	if err != nil {
 		panic(err)
@@ -80,7 +72,7 @@ func NewRenderer(t *template.Template) Renderer {
 		renderOpts: []renderer.Option{
 			html.WithUnsafe(),
 		},
-		Template: t,
+		compact: compact,
 	}
 }
 
@@ -133,10 +125,19 @@ func (r Renderer) Render(w io.Writer, src io.Reader, d Data) error {
 	if err != nil {
 		return fmt.Errorf("render markdown: %w", err)
 	}
-	d.Main = mdBuf.String() + d.Main
-	d.Style = highlightCSS.String()
 
-	err = r.Template.Execute(w, d)
+	err = Structured(w, Options{
+		Gtag:         d.GTM,
+		CanonicalURL: d.URL,
+		CustomCSS:    highlightCSS.String(),
+		CompactStyle: r.compact,
+		Minify:       true,
+		Title:        d.Title,
+		Subtitle:     d.Subtitle,
+		Description:  d.Desc,
+		Head:         []gomponents.Node{gomponents.Raw(d.Head)},
+		Content:      []gomponents.Node{gomponents.Raw(mdBuf.String()), gomponents.Raw(d.Main)},
+	})
 	if err != nil {
 		return fmt.Errorf("render template: %w", err)
 	}
