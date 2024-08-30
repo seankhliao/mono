@@ -56,7 +56,7 @@ func chdirWebRoot(configFile string) ([]byte, error) {
 		_, err := os.Stat(configFile)
 		if err != nil {
 			if errors.Is(err, os.ErrNotExist) {
-				_, err := os.Stat(".git")
+				_, err = os.Stat(".git")
 				if err == nil {
 					return nil, fmt.Errorf("config file not found, not checking past repo root")
 				} else if errors.Is(err, os.ErrNotExist) {

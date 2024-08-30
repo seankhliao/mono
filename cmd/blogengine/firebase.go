@@ -20,19 +20,73 @@ import (
 func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*bytes.Buffer) error {
 	ctx := context.TODO()
 
-	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
-	spin.Suffix = "checksumming files"
+	pathToHash, hashToGzip, err := hashAndGzip(rendered)
+	if err != nil {
+		return fmt.Errorf("prepare file hash: %w", err)
+	}
+
+	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond)
 	spin.Start()
+	defer spin.Stop()
+
+	spin.Suffix = "creating http client"
+	httpClient, err := google.DefaultClient(ctx, "https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/firebase")
+	if err != nil {
+		return fmt.Errorf("create http client: %w", err)
+	}
+
+	spin.Suffix = "creating firebase client"
+	client, err := firebasehosting.NewService(ctx)
+	if err != nil {
+		return fmt.Errorf("create firebase client: %w", err)
+	}
+
+	spin.Suffix = "creating new website version"
+	site, version, err := createVersion(ctx, client, conf)
+	if err != nil {
+		return fmt.Errorf("create new version: %w", err)
+	}
+
+	spin.Suffix = "getting required uploads"
+	toUpload, uploadURL, err := getRequiredUploads(ctx, client, version, pathToHash)
+	if err != nil {
+		return fmt.Errorf("get required uploads: %w", err)
+	}
+
+	err = uploadFiles(ctx, client, httpClient, version, toUpload, uploadURL, hashToGzip, spin)
+	if err != nil {
+		return err
+	}
+
+	spin.Suffix = "releasing..."
+	err = release(ctx, client, site, version)
+	if err != nil {
+		return err
+	}
+
+	spin.FinalMSG = fmt.Sprintf("released new version with %d changed files\n", len(toUpload))
+
+	return nil
+}
+
+func hashAndGzip(rendered map[string]*bytes.Buffer) (map[string]string, map[string]io.Reader, error) {
+	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond)
+	spin.FinalMSG = fmt.Sprintf("%3d files checksummed\n", len(rendered))
+	spin.Start()
+	defer spin.Stop()
+	var idx int
 
 	pathToHash := make(map[string]string)
 	hashToGzip := make(map[string]io.Reader)
 	for p, buf := range rendered {
+		idx++
+		spin.Suffix = fmt.Sprintf("%3d/%3d checksumming files", idx, len(rendered))
 		zipped := new(bytes.Buffer)
 		summed := sha256.New()
 		gzw := gzip.NewWriter(io.MultiWriter(zipped, summed))
 		_, err := io.Copy(gzw, buf)
 		if err != nil {
-			return fmt.Errorf("gzip file: %w", err)
+			return nil, nil, fmt.Errorf("gzip file: %w", err)
 		}
 		gzw.Close()
 		sum := hex.EncodeToString(summed.Sum(nil))
@@ -43,49 +97,8 @@ func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*
 		pathToHash["/"+p] = sum
 		hashToGzip[sum] = zipped
 	}
-	spin.Stop()
-	fmt.Fprintln(stdout)
 
-	spin = spinner.New(spinner.CharSets[39], 300*time.Millisecond)
-	spin.Start()
-
-	httpClient, err := google.DefaultClient(ctx, "https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/firebase")
-	if err != nil {
-		return fmt.Errorf("create http client: %w", err)
-	}
-
-	client, err := firebasehosting.NewService(ctx)
-	if err != nil {
-		return fmt.Errorf("create firebase client: %w", err)
-	}
-
-	spin.Suffix = "creating new version"
-	site, version, err := createVersion(ctx, client, conf)
-	if err != nil {
-		return fmt.Errorf("create new version: %w", err)
-	}
-
-	spin.Suffix = "get required uploads"
-	toUpload, uploadURL, err := getRequiredUploads(ctx, client, version, pathToHash)
-	if err != nil {
-		return fmt.Errorf("get required uploads: %w", err)
-	}
-
-	spin.Suffix = "uploading files"
-	err = uploadFiles(ctx, client, httpClient, version, toUpload, uploadURL, hashToGzip)
-	if err != nil {
-		return err
-	}
-	spin.Suffix = "releasing"
-	err = release(ctx, client, site, version)
-	if err != nil {
-		return err
-	}
-
-	spin.Stop()
-	fmt.Fprintln(stdout)
-
-	return nil
+	return pathToHash, hashToGzip, nil
 }
 
 func createVersion(ctx context.Context, client *firebasehosting.Service, conf ConfigFirebase) (string, string, error) {
@@ -129,8 +142,10 @@ func getRequiredUploads(ctx context.Context, client *firebasehosting.Service, ve
 	return populateResponse.UploadRequiredHashes, populateResponse.UploadUrl, nil
 }
 
-func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClient *http.Client, version string, toUpload []string, uploadURL string, hashToGzip map[string]io.Reader) error {
-	for _, uploadHash := range toUpload {
+func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClient *http.Client, version string, toUpload []string, uploadURL string, hashToGzip map[string]io.Reader, spin *spinner.Spinner) error {
+	for idx, uploadHash := range toUpload {
+		spin.Suffix = fmt.Sprintf("%3d/%3d uploading files", idx+1, len(toUpload))
+
 		endpoint := uploadURL + "/" + uploadHash
 		req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, hashToGzip[uploadHash])
 		if err != nil {
@@ -148,6 +163,7 @@ func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClien
 		res.Body.Close()
 	}
 
+	spin.Suffix = "finalizing upload"
 	patchResponse, err := client.Sites.Versions.Patch(version, &firebasehosting.Version{
 		Status: "FINALIZED",
 	}).Context(ctx).Do()

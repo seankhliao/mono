@@ -46,8 +46,10 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 	if err != nil {
 		return nil, fmt.Errorf("walk source: %w", err)
 	}
-	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond)
 	spin.Start()
+	defer spin.Stop()
+	var idx int
 
 	var siteMapTxt bytes.Buffer
 	rendered := make(map[string]*bytes.Buffer)
@@ -56,7 +58,8 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 			return err
 		}
 
-		spin.Suffix = "processing " + p
+		idx++
+		spin.Suffix = fmt.Sprintf("%3d processing %q", idx, p)
 
 		inFile, err := fsys.Open(p)
 		if err != nil {
@@ -101,10 +104,10 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 		return nil, fmt.Errorf("process source: %w", err)
 	}
 
-	spin.Stop()
-	fmt.Fprintln(stdout)
-
 	rendered["sitemap.txt"] = &siteMapTxt
+
+	spin.FinalMSG = fmt.Sprintf("%3d rendered pages\n", len(rendered))
+
 	return rendered, nil
 }
 
