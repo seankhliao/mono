@@ -21,7 +21,7 @@ that I could use to name things.
 | Makima   | [Chainsaw Man][makima]                                  | pixel tablet     |
 | Medea    | [Your Throne][medea]                                    | ... retired ...  |
 | Millenyn | [Wished You Were Dead][millenyn]                        | ... retired ...  |
-| Nerys | [The Price Is Your Everything][nerys] | |
+| Nerys    | [The Price Is Your Everything][nerys]                   |                  |
 | Nyarla   | [Crawling Dreams][nyarla]                               | ... retired ...  |
 
 [asami]: https://www.webtoons.com/en/canvas/leave-me-alone-i-dont-want-a-romantic-comedy/list?title_no=506168
