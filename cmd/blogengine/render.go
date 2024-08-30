@@ -89,6 +89,14 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 
 			fmt.Fprintf(&siteMapTxt, "%s%s\n", baseUrl, canonicalPathFromRelPath(p))
 			p = p[:len(p)-3] + ".html"
+		} else if strings.HasSuffix(p, ".cue") {
+			u := baseUrl + canonicalPathFromRelPath(p)
+			err = processTable(&buf, inFile, u, gtm)
+			if err != nil {
+				return fmt.Errorf("process table: %w", err)
+			}
+			fmt.Fprintf(&siteMapTxt, "%s\n", u)
+			p = p[:len(p)-4] + ".html"
 		} else {
 			_, err = io.Copy(&buf, inFile)
 			if err != nil {
@@ -145,6 +153,7 @@ func directoryList(fsys fs.FS, p string) (string, error) {
 func canonicalPathFromRelPath(in string) string {
 	in = strings.TrimSuffix(in, ".md")
 	in = strings.TrimSuffix(in, ".html")
+	in = strings.TrimSuffix(in, ".cue")
 	in = strings.TrimSuffix(in, "index")
 	if in == "" {
 		return "/"
