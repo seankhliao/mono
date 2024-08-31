@@ -175,9 +175,9 @@ func directoryList(fsys fs.FS, p string) (gomponents.Node, error) {
 				),
 				gomponents.Text(" | "),
 				html.A(
-					html.Href(n[:len(n)-3]+"/"), // 120XX-YY-ZZ-some-title/
+					html.Href(n[:len(n)-3]+"/"),                                   // 120XX-YY-ZZ-some-title/
+					gomponents.Text(strings.ReplaceAll(n[12:len(n)-3], "-", " ")), // some title
 				),
-				gomponents.Text(strings.ReplaceAll(n[12:len(n)-3], "-", " ")), // some title
 			))
 		}
 	}
