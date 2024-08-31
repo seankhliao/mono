@@ -20,11 +20,20 @@ var (
 	//go:embed tablesort.js
 	tableSortScript string
 
+	//go:embed base.css
+	baseCss string
+	//go:embed compact.css
+	compactCss string
+
 	defaultFooter = []OptionsFooter{
 		{"me", "https://seankhliao.com/"},
 		{"blog", "https://seankhliao.com/blog/"},
 		{"elsewhere", "https://sean.liao.dev/"},
 	}
+)
+
+const (
+	DefaultGTAG = "G-9GLEE4YLNC"
 )
 
 type Options struct {
@@ -49,15 +58,14 @@ type OptionsFooter struct {
 	URL  string
 }
 
-func NewOptions(site, title string, content []gomponents.Node) Options {
+func NewOptions(subtitle, title string, content []gomponents.Node) Options {
 	return Options{
-		Gtag: "G-9GLEE4YLNC",
-		// Manifest: "/manifest.json",
+		Gtag:         DefaultGTAG,
 		CompactStyle: true,
 		Minify:       true,
 
 		Title:    title,
-		Subtitle: site,
+		Subtitle: subtitle,
 
 		Content: content,
 	}

@@ -3,43 +3,19 @@ package main
 import (
 	"bytes"
 	"context"
-	_ "embed"
-	"errors"
 	"flag"
 	"fmt"
-	"html/template"
 	"io"
 	"log/slog"
 	"net/http"
-	"strings"
 	"time"
 
+	"github.com/maragudk/gomponents"
+	"github.com/maragudk/gomponents/html"
 	"go.seankhliao.com/mono/framework"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
 	"go.seankhliao.com/mono/webstyle/webstatic"
-)
-
-var (
-	//go:embed index.md
-	indexRaw []byte
-
-	//go:embed repo.md.gotmpl
-	repoRaw string
-	repoTpl = template.Must(template.New("").Parse(repoRaw))
-
-	headRaw = `
-    <meta
-      name="go-import"
-      content="go.seankhliao.com/{{ .Repo }} git https://{{ .Source }}/{{ .Repo }}">
-    <meta
-      name="go-source"
-      content="{{ .Host }}/{{ .Repo }}
-        https://{{ .Source }}/{{ .Repo }}
-        https://{{ .Source }}/{{ .Repo }}/tree/main{/dir}
-        https://{{ .Source }}/{{ .Repo }}/blob/main{/dir}/{file}#L{line}">
-`
-	headTpl = template.Must(template.New("").Parse(headRaw))
 )
 
 func main() {
@@ -52,77 +28,122 @@ func main() {
 		Start: func(ctx context.Context, o *observability.O, m *http.ServeMux) (func(), error) {
 			o = o.Component("vanity")
 
-			render := webstyle.NewRenderer(true)
-			index, err := render.RenderBytes(indexRaw, webstyle.Data{})
+			index, err := indexPage(host)
 			if err != nil {
 				return nil, fmt.Errorf("render index template: %w", err)
 			}
 			t0 := time.Now()
 
 			webstatic.Register(m)
-			m.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+			m.HandleFunc("GET /{$}", func(rw http.ResponseWriter, r *http.Request) {
+				ctx, span := o.T.Start(r.Context(), "serve index page")
+				defer span.End()
+
+				http.ServeContent(rw, r, "index.html", t0, bytes.NewReader(index))
+				o.L.LogAttrs(ctx, slog.LevelInfo, "served index page",
+					requestAttrs(r))
+			})
+			m.HandleFunc("GET /{repo}/", func(rw http.ResponseWriter, r *http.Request) {
 				ctx, span := o.T.Start(r.Context(), "serve vanity")
 				defer span.End()
 
-				slogHTTPRequest := slog.Group("http_request",
-					slog.String("method", r.Method),
-					slog.String("url", r.URL.String()),
-					slog.String("proto", r.Proto),
-					slog.String("user_agent", r.UserAgent()),
-					slog.String("remote_address", r.RemoteAddr),
-					slog.String("referrer", r.Referer()),
-					slog.String("x-forwarded-for", r.Header.Get("x-forwarded-for")),
-					slog.String("forwarded", r.Header.Get("forwarded")),
-				)
-
-				if r.Method != http.MethodGet {
-					o.HTTPErr(ctx, "GET only", errors.New("method not allowed"), rw, http.StatusMethodNotAllowed, slogHTTPRequest)
-					return
-				}
-
-				p := strings.TrimPrefix(r.URL.Path, "/")
-				if p == "" { // index
-					http.ServeContent(rw, r, "index.html", t0, bytes.NewReader(index))
-					o.L.LogAttrs(ctx, slog.LevelInfo, "served index page",
-						slogHTTPRequest,
-					)
-					return
-				}
-
-				// other pages
-				repo, _, _ := strings.Cut(p, "/")
-				data := map[string]string{"Repo": repo, "Source": source, "Host": host}
-
-				var buf1 bytes.Buffer
-				err := repoTpl.Execute(&buf1, data)
-				if err != nil {
-					o.HTTPErr(ctx, "render repo", err, rw, http.StatusInternalServerError)
-					return
-				}
-				var buf2 bytes.Buffer
-				err = headTpl.Execute(&buf2, data)
-				if err != nil {
-					o.HTTPErr(ctx, "render head", err, rw, http.StatusInternalServerError)
-					return
-				}
-
-				var buf3 bytes.Buffer
-				err = render.Render(&buf3, &buf1, webstyle.Data{
-					Head: buf2.String(),
-				})
-				if err != nil {
-					o.HTTPErr(ctx, "render html", err, rw, http.StatusInternalServerError)
-					return
-				}
-				_, err = io.Copy(rw, &buf3)
+				repo := r.PathValue("repo")
+				importPage(rw, host, source, repo)
 				if err != nil {
 					o.HTTPErr(ctx, "write response", err, rw, http.StatusInternalServerError)
 					return
 				}
 
-				o.L.LogAttrs(ctx, slog.LevelInfo, "served module page", slog.String("repo", repo), slogHTTPRequest)
+				o.L.LogAttrs(ctx, slog.LevelInfo, "served module page",
+					slog.String("repo", repo), requestAttrs(r))
 			})
 			return nil, nil
 		},
 	})
+}
+
+func indexPage(host string) ([]byte, error) {
+	buf := new(bytes.Buffer)
+	err := webstyle.Structured(buf, webstyle.Options{
+		CanonicalURL: "https://" + host,
+		CompactStyle: true,
+		Minify:       true,
+		Title:        "vanity",
+		Subtitle:     host,
+		Description:  "vanity go import paths for sean",
+
+		Content: []gomponents.Node{
+			html.H3(html.Em(gomponents.Text("vanity"))),
+			html.P(
+				gomponents.Text("This is a custom "),
+				html.A(
+					html.Href("https://pkg.go.dev/cmd/go#hdr-Remote_import_paths"),
+					gomponents.Text("remote import path"),
+				),
+				gomponents.Text("redirector for Go."),
+			),
+			html.P(gomponents.Text("All requests are redirected to a github repo matching the first path element.")),
+		},
+	})
+	return buf.Bytes(), err
+}
+
+func importPage(w io.Writer, host, gitHost, repo string) error {
+	importPath := host + "/" + repo
+	hostPath := gitHost + "/" + repo
+	return webstyle.Structured(w, webstyle.Options{
+		CanonicalURL: "https://" + importPath,
+		CompactStyle: true,
+		Minify:       true,
+		Title:        repo,
+		Subtitle:     "module " + importPath,
+		Head: []gomponents.Node{
+			html.Meta(
+				html.Name("go-import"),
+				html.Content(importPath+" git "+"https://"+hostPath),
+			),
+			html.Meta(
+				html.Name("go-source"),
+				html.Content(
+					importPath+"\n"+
+						"https://"+hostPath+"\n"+
+						"https://"+hostPath+"/tree/main{/dir}\n"+
+						"https://"+hostPath+"/blob/main{/dir}/{file}#L{line}",
+				),
+			),
+		},
+		Content: []gomponents.Node{
+			html.H3(
+				gomponents.Text(host+"/"),
+				html.Em(gomponents.Text(repo)),
+			),
+			html.P(
+				html.Strong(gomponents.Text("Source: ")),
+				html.A(
+					html.Href("https://"+hostPath),
+					gomponents.Text(hostPath),
+				),
+			),
+			html.P(
+				html.Strong(gomponents.Text("Docs: ")),
+				html.A(
+					html.Href("https://pkg.go.dev/"+importPath),
+					gomponents.Text("pkg.go.dev/"+importPath),
+				),
+			),
+		},
+	})
+}
+
+func requestAttrs(r *http.Request) slog.Attr {
+	return slog.Group("http_request",
+		slog.String("method", r.Method),
+		slog.String("url", r.URL.String()),
+		slog.String("proto", r.Proto),
+		slog.String("user_agent", r.UserAgent()),
+		slog.String("remote_address", r.RemoteAddr),
+		slog.String("referrer", r.Referer()),
+		slog.String("x-forwarded-for", r.Header.Get("x-forwarded-for")),
+		slog.String("forwarded", r.Header.Get("forwarded")),
+	)
 }

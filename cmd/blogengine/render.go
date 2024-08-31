@@ -7,11 +7,14 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 	"slices"
 	"strings"
 	"time"
 
 	"github.com/briandowns/spinner"
+	"github.com/maragudk/gomponents"
+	"github.com/maragudk/gomponents/html"
 	"go.seankhliao.com/mono/webstyle"
 )
 
@@ -19,21 +22,35 @@ const (
 	singleKey = ":single"
 )
 
-func renderSingle(stdout io.Writer, render webstyle.Renderer, in string) (map[string]*bytes.Buffer, error) {
-	inFile, err := os.Open(in)
+var (
+	titleRegex    = regexp.MustCompile(`^# .*$`)
+	subtitleRegex = regexp.MustCompile(`^## .*$`)
+)
+
+func renderSingle(in string, compact bool) (map[string]*bytes.Buffer, error) {
+	b, err := os.ReadFile(in)
 	if err != nil {
-		return nil, fmt.Errorf("open file: %w", err)
+		return nil, fmt.Errorf("read file: %w", err)
 	}
-	defer inFile.Close()
-	var buf bytes.Buffer
-	err = render.Render(&buf, inFile, webstyle.Data{})
+	rawHTML, rawCSS, err := webstyle.Markdown(b)
 	if err != nil {
-		return nil, fmt.Errorf("render: %w", err)
+		return nil, fmt.Errorf("parse markdown: %w", err)
 	}
-	return map[string]*bytes.Buffer{singleKey: &buf}, nil
+	buf := new(bytes.Buffer)
+	o := webstyle.NewOptions(
+		string(subtitleRegex.Find(b)),
+		string(titleRegex.Find(b)),
+		[]gomponents.Node{gomponents.Raw(string(rawHTML))})
+	o.CustomCSS = string(rawCSS)
+	o.CompactStyle = compact
+	err = webstyle.Structured(buf, o)
+	if err != nil {
+		return nil, fmt.Errorf("render result: %w", err)
+	}
+	return map[string]*bytes.Buffer{singleKey: buf}, nil
 }
 
-func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl string) (map[string]*bytes.Buffer, error) {
+func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffer, error) {
 	var countFiles int
 	fsys := os.DirFS(in)
 	err := fs.WalkDir(fsys, ".", func(p string, d fs.DirEntry, err error) error {
@@ -46,7 +63,7 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 	if err != nil {
 		return nil, fmt.Errorf("walk source: %w", err)
 	}
-	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond, spinner.WithWriter(stdout))
+	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond)
 	spin.Start()
 	defer spin.Stop()
 	var idx int
@@ -69,25 +86,40 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 
 		var buf bytes.Buffer
 		if strings.HasSuffix(p, ".md") {
-			data := webstyle.Data{
-				GTM: gtm,
+			u := baseUrl + canonicalPathFromRelPath(p)
+
+			b, err := io.ReadAll(inFile)
+			if err != nil {
+				return fmt.Errorf("read file: %w", err)
+			}
+			rawHTML, rawCSS, err := webstyle.Markdown(b)
+			if err != nil {
+				return fmt.Errorf("render markdown: %w", err)
 			}
 
-			if p == "index.md" { // root index
-				data.Desc = `hi, i'm sean, available for adoption by extroverts for the low, low cost of your love.`
-			} else if strings.HasSuffix(p, "/index.md") { // exclude root index
-				data.Main, err = directoryList(fsys, p)
+			o := webstyle.NewOptions(
+				string(subtitleRegex.Find(b)),
+				string(titleRegex.Find(b)),
+				[]gomponents.Node{gomponents.Raw(string(rawHTML))})
+			o.CompactStyle = compact
+			o.CanonicalURL = u
+			o.CustomCSS = string(rawCSS)
+
+			if strings.HasSuffix(p, "/index.md") { // exclude root index
+				list, err := directoryList(fsys, p)
 				if err != nil {
 					return err
 				}
+				o.Content = append(o.Content, list)
 			}
 
-			err = render.Render(&buf, inFile, data)
+			buf := new(bytes.Buffer)
+			err = webstyle.Structured(buf, o)
 			if err != nil {
 				return fmt.Errorf("render: %w", err)
 			}
 
-			fmt.Fprintf(&siteMapTxt, "%s%s\n", baseUrl, canonicalPathFromRelPath(p))
+			fmt.Fprintf(&siteMapTxt, "%s\n", u)
 			p = p[:len(p)-3] + ".html"
 		} else if strings.HasSuffix(p, ".cue") {
 			u := baseUrl + canonicalPathFromRelPath(p)
@@ -119,10 +151,10 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 	return rendered, nil
 }
 
-func directoryList(fsys fs.FS, p string) (string, error) {
+func directoryList(fsys fs.FS, p string) (gomponents.Node, error) {
 	des, err := fs.ReadDir(fsys, filepath.Dir(p))
 	if err != nil {
-		return "", fmt.Errorf("read dir: %w", err)
+		return nil, fmt.Errorf("read dir: %w", err)
 	}
 
 	// reverse order
@@ -130,24 +162,27 @@ func directoryList(fsys fs.FS, p string) (string, error) {
 		return strings.Compare(b.Name(), a.Name())
 	})
 
-	var buf bytes.Buffer
-	buf.WriteString("<ul>\n")
+	entries := make([]gomponents.Node, 0, len(des))
 	for _, de := range des {
 		if de.IsDir() || de.Name() == "index.md" {
 			continue
 		}
 		n := de.Name() // 120XX-YY-ZZ-some-title.md
 		if strings.HasPrefix(n, "120") && len(n) > 15 && n[11] == '-' {
-			fmt.Fprintf(&buf, `<li><time datetime="%s">%s</time> | <a href="%s">%s</a></li>`,
-				n[1:11],          // 20XX-YY-ZZ
-				n[:11],           // 120XX-YY-ZZ
-				n[:len(n)-3]+"/", // 120XX-YY-ZZ-some-title/
-				strings.ReplaceAll(n[12:len(n)-3], "-", " "), // some title
-			)
+			entries = append(entries, html.Li(
+				html.Time(
+					html.DateTime(n[1:11]),  // 20XX-YY-ZZ
+					gomponents.Text(n[:11]), // 120XX-YY-ZZ
+				),
+				gomponents.Text(" | "),
+				html.A(
+					html.Href(n[:len(n)-3]+"/"), // 120XX-YY-ZZ-some-title/
+				),
+				gomponents.Text(strings.ReplaceAll(n[12:len(n)-3], "-", " ")), // some title
+			))
 		}
 	}
-	buf.WriteString("</ul>\n")
-	return buf.String(), nil
+	return html.Ul(entries...), nil
 }
 
 func canonicalPathFromRelPath(in string) string {
