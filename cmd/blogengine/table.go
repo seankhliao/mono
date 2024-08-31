@@ -10,7 +10,6 @@ import (
 	"cuelang.org/go/cue/cuecontext"
 	"github.com/maragudk/gomponents"
 	"github.com/maragudk/gomponents/html"
-	"github.com/yuin/goldmark"
 	"go.seankhliao.com/mono/webstyle"
 )
 
@@ -85,8 +84,7 @@ func processTable(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 			titles[0] = html.A(html.Href(fmt.Sprintf(data.LinkFormat, row.ID)), titles[0])
 		}
 
-		noteBuf := new(strings.Builder)
-		goldmark.Convert([]byte(row.Note), noteBuf)
+		note, _, _ := webstyle.Markdown([]byte(row.Note))
 
 		tbody = append(tbody, html.Tr(
 			gomponents.If(hasDate, html.Td(
@@ -94,16 +92,12 @@ func processTable(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 				gomponents.Text("1"+row.Date.Format(time.DateOnly)))),
 			html.Td(rating),
 			html.Td(titles...),
-			html.Td(gomponents.Raw(noteBuf.String())),
+			html.Td(gomponents.Raw(string(note))),
 		))
 	}
 
 	pageTitle0, pageTitle1, ok := strings.Cut(data.PageTitle, " ")
-	descBuf := new(strings.Builder)
-	err = goldmark.Convert([]byte(data.Description), descBuf)
-	if err != nil {
-		return fmt.Errorf("parse description markdown: %w", err)
-	}
+	desc, _, _ := webstyle.Markdown([]byte(data.Description))
 
 	err = webstyle.Structured(w, webstyle.Options{
 		Title:        data.Title,
@@ -115,7 +109,7 @@ func processTable(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 
 		Content: []gomponents.Node{
 			html.H3(html.Em(gomponents.Text(pageTitle0)), gomponents.If(ok, gomponents.Text(pageTitle1))),
-			html.P(gomponents.Raw(descBuf.String())),
+			html.P(gomponents.Raw(string(desc))),
 			html.Table(
 				html.THead(
 					html.Tr(

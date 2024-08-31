@@ -10,7 +10,6 @@ import (
 	"os"
 
 	"cuelang.org/go/cue/cuecontext"
-	"go.seankhliao.com/mono/webstyle"
 	"go.seankhliao.com/mono/ycli"
 )
 
@@ -110,17 +109,17 @@ type ConfigFirebase struct {
 }
 
 func run(stdout io.Writer, conf Config) error {
-	render := webstyle.NewRenderer(conf.Render.Style == "compact")
-
 	fi, err := os.Stat(conf.Render.Source)
 	if err != nil {
 		return fmt.Errorf("stat source: %w", err)
 	}
+
+	compact := conf.Render.Style == "compact"
 	var rendered map[string]*bytes.Buffer
 	if !fi.IsDir() {
-		rendered, err = renderSingle(stdout, render, conf.Render.Source)
+		rendered, err = renderSingle(conf.Render.Source, compact)
 	} else {
-		rendered, err = renderMulti(stdout, render, conf.Render.Source, conf.Render.GTM, conf.Render.BaseURL)
+		rendered, err = renderMulti(conf.Render.Source, conf.Render.GTM, conf.Render.BaseURL, compact)
 	}
 	if err != nil {
 		return fmt.Errorf("render: %w", err)
