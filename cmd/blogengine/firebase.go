@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/briandowns/spinner"
@@ -25,7 +26,7 @@ func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*
 		return fmt.Errorf("prepare file hash: %w", err)
 	}
 
-	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond)
+	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond, spinner.WithWriter(stdout))
 	spin.Start()
 	defer spin.Stop()
 
@@ -143,24 +144,49 @@ func getRequiredUploads(ctx context.Context, client *firebasehosting.Service, ve
 }
 
 func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClient *http.Client, version string, toUpload []string, uploadURL string, hashToGzip map[string]io.Reader, spin *spinner.Spinner) error {
+	maxUploads := 5
+	sem := make(chan struct{}, maxUploads)
+	errc := make(chan error, 1)
+	var wg sync.WaitGroup
 	for idx, uploadHash := range toUpload {
+		sem <- struct{}{}
 		spin.Suffix = fmt.Sprintf("%3d/%3d uploading files", idx+1, len(toUpload))
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			defer func() { <-sem }()
 
-		endpoint := uploadURL + "/" + uploadHash
-		req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, hashToGzip[uploadHash])
-		if err != nil {
-			return fmt.Errorf("create upload request: %w", err)
-		}
-		req.Header.Set("content-type", "application/octet-stream")
-		res, err := httpClient.Do(req)
-		if err != nil {
-			return fmt.Errorf("upload file: %w", err)
-		}
-		if res.StatusCode != 200 {
-			return errors.New(res.Status)
-		}
-		io.Copy(io.Discard, res.Body)
-		res.Body.Close()
+			endpoint := uploadURL + "/" + uploadHash
+			req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, hashToGzip[uploadHash])
+			if err != nil {
+				select {
+				case errc <- fmt.Errorf("create upload request: %w", err):
+				default:
+				}
+			}
+			req.Header.Set("content-type", "application/octet-stream")
+			res, err := httpClient.Do(req)
+			if err != nil {
+				select {
+				case errc <- fmt.Errorf("execute upload request: %w", err):
+				default:
+				}
+			}
+			defer res.Body.Close()
+			if res.StatusCode != 200 {
+				select {
+				case errc <- fmt.Errorf("upload request response: %v", res.StatusCode):
+				default:
+				}
+			}
+		}()
+	}
+
+	wg.Wait()
+	close(errc)
+	err, ok := <-errc
+	if ok && err != nil {
+		return fmt.Errorf("upload: %w", err)
 	}
 
 	spin.Suffix = "finalizing upload"

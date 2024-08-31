@@ -11,8 +11,8 @@ import (
 	"github.com/briandowns/spinner"
 )
 
-func writeRendered(_ io.Writer, dst string, rendered map[string]*bytes.Buffer) error {
-	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond)
+func writeRendered(stdout io.Writer, dst string, rendered map[string]*bytes.Buffer) error {
+	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond, spinner.WithWriter(stdout))
 	spin.FinalMSG = fmt.Sprintf("%3d/%3d written to dst %q\n", len(rendered), len(rendered), dst)
 	spin.Start()
 	defer spin.Stop()
