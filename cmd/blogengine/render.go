@@ -84,7 +84,7 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 		}
 		defer inFile.Close()
 
-		var buf bytes.Buffer
+		buf := new(bytes.Buffer)
 		if strings.HasSuffix(p, ".md") {
 			u := baseUrl + canonicalPathFromRelPath(p)
 
@@ -113,7 +113,6 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 				o.Content = append(o.Content, list)
 			}
 
-			buf := new(bytes.Buffer)
 			err = webstyle.Structured(buf, o)
 			if err != nil {
 				return fmt.Errorf("render: %w", err)
@@ -123,20 +122,20 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 			p = p[:len(p)-3] + ".html"
 		} else if strings.HasSuffix(p, ".cue") {
 			u := baseUrl + canonicalPathFromRelPath(p)
-			err = processTable(&buf, inFile, u, gtm)
+			err = processTable(buf, inFile, u, gtm)
 			if err != nil {
 				return fmt.Errorf("process table: %w", err)
 			}
 			fmt.Fprintf(&siteMapTxt, "%s\n", u)
 			p = p[:len(p)-4] + ".html"
 		} else {
-			_, err = io.Copy(&buf, inFile)
+			_, err = io.Copy(buf, inFile)
 			if err != nil {
 				return fmt.Errorf("copy: %w", err)
 			}
 		}
 
-		rendered[p] = &buf
+		rendered[p] = buf
 
 		return nil
 	})
