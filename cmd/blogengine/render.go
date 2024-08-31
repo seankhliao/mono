@@ -46,7 +46,7 @@ func renderMulti(stdout io.Writer, render webstyle.Renderer, in, gtm, baseUrl st
 	if err != nil {
 		return nil, fmt.Errorf("walk source: %w", err)
 	}
-	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond)
+	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond, spinner.WithWriter(stdout))
 	spin.Start()
 	defer spin.Stop()
 	var idx int
