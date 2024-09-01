@@ -9,12 +9,12 @@ import (
 	"io"
 	"os"
 
-	"cuelang.org/go/cue/cuecontext"
+	"go.seankhliao.com/mono/cueconf"
 	"go.seankhliao.com/mono/ycli"
 )
 
 //go:embed schema.cue
-var configSchema []byte
+var configSchema string
 
 func main() {
 	var configFile string
@@ -25,17 +25,12 @@ func main() {
 			fs.StringVar(&configFile, "config", "blogengine.cue", "path to config file")
 		},
 		func(stdout, _ io.Writer) error {
-			configBytes, err := chdirWebRoot(configFile)
+			err := chdirWebRoot(configFile)
 			if err != nil {
 				return fmt.Errorf("blogengine: %w", err)
 			}
 
-			cuectx := cuecontext.New()
-			configVal := cuectx.CompileBytes(configSchema)
-			configVal = configVal.Unify(cuectx.CompileBytes(configBytes))
-
-			var config Config
-			err = configVal.Decode(&config)
+			config, err := cueconf.ForFile[Config](configSchema, configFile)
 			if err != nil {
 				return fmt.Errorf("blogengine: decode config: %w", err)
 			}
@@ -49,7 +44,7 @@ func main() {
 	))
 }
 
-func chdirWebRoot(configFile string) ([]byte, error) {
+func chdirWebRoot(configFile string) error {
 	// find and change to web root
 	for {
 		_, err := os.Stat(configFile)
@@ -57,30 +52,25 @@ func chdirWebRoot(configFile string) ([]byte, error) {
 			if errors.Is(err, os.ErrNotExist) {
 				_, err = os.Stat(".git")
 				if err == nil {
-					return nil, fmt.Errorf("config file not found, not checking past repo root")
+					return fmt.Errorf("config file not found, not checking past repo root")
 				} else if errors.Is(err, os.ErrNotExist) {
 					if dir, _ := os.Getwd(); dir == "/" {
-						return nil, fmt.Errorf("at system root /, config file not found")
+						return fmt.Errorf("at system root /, config file not found")
 					}
 					os.Chdir("..")
 
 					continue
 				} else {
-					return nil, fmt.Errorf("error checking for git root: %w", err)
+					return fmt.Errorf("error checking for git root: %w", err)
 				}
 			} else {
-				return nil, fmt.Errorf("error checking for config file: %w", err)
+				return fmt.Errorf("error checking for config file: %w", err)
 			}
 		}
 		break
 	}
 
-	b, err := os.ReadFile(configFile)
-	if err != nil {
-		return nil, fmt.Errorf("read config file: %w", err)
-	}
-
-	return b, nil
+	return nil
 }
 
 type Config struct {
