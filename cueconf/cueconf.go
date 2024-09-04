@@ -13,7 +13,7 @@ func ForBytes[T any](schema string, config []byte) (conf T, err error) {
 	val := ctx.CompileString(schema)
 	val = val.Unify(ctx.CompileBytes(config))
 
-	err = val.Validate(cue.Final(), cue.Concrete(true))
+	err = val.Validate(cue.Final())
 	if err != nil {
 		return conf, fmt.Errorf("validate config: %w", err)
 	}
