@@ -26,8 +26,21 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-10-11_ One OK Rock
 - _12024-10-04_ Visions of Atlantis
 - _12024-10-02_ Aurora
-- _12024-09-26_ Mothica
-- _12024-09-03_ girl in red
+
+##### _12024-09-03_ girl in red
+
+With [_Nieve Ella_]
+
+I forgot to review [_gitl in red_]'s music before the show,
+but that didn't really take away from the experience.
+What sort of experience was it?
+It felt slightly less scripted than usual for an event this size,
+more like a smaller more intimate show.
+But... with a few thousand people jumping around,
+I don't think that counts as intimate.
+It was pretty fun, I was up close to the front,
+and with a crowd that was majority female,
+I could actually see the stage.
 
 ##### _12024-08-28_ WACK in the UK Vol 3
 
