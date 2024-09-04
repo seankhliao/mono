@@ -162,6 +162,7 @@ func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClien
 				select {
 				case errc <- fmt.Errorf("create upload request: %w", err):
 				default:
+					return
 				}
 			}
 			req.Header.Set("content-type", "application/octet-stream")
@@ -170,6 +171,7 @@ func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClien
 				select {
 				case errc <- fmt.Errorf("execute upload request: %w", err):
 				default:
+					return
 				}
 			}
 			defer res.Body.Close()
