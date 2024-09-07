@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"net/http"
 	"os"
 	"path"
 	"runtime/debug"
@@ -48,6 +49,8 @@ type O struct {
 	H slog.Handler
 	T trace.Tracer
 	M metric.Meter
+
+	ZLogs http.Handler
 }
 
 func New(c *Config) *O {
@@ -71,6 +74,10 @@ func New(c *Config) *O {
 	if out == nil {
 		out = os.Stdout
 	}
+
+	zlogs := jsonlog.NewZPage(256)
+	out = io.MultiWriter(out, zlogs)
+
 	switch c.LogFormat {
 	case "json":
 		o.H = jsonlog.New(c.LogLevel, out)
@@ -80,6 +87,7 @@ func New(c *Config) *O {
 		})
 	}
 	o.L = slog.New(o.H)
+	o.ZLogs = zlogs
 
 	if os.Getenv("OTEL_EXPORTER_OTLP_ENDPOINT") != "" {
 		ctx := context.Background()
