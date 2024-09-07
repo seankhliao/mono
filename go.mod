@@ -17,6 +17,7 @@ require (
 	github.com/zmb3/spotify/v2 v2.4.2
 	go.etcd.io/bbolt v1.3.11
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.54.0
+	go.opentelemetry.io/contrib/zpages v0.54.0
 	go.opentelemetry.io/otel v1.29.0
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.29.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.29.0

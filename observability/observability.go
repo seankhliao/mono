@@ -12,6 +12,7 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"go.opentelemetry.io/contrib/zpages"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
@@ -50,7 +51,8 @@ type O struct {
 	T trace.Tracer
 	M metric.Meter
 
-	ZLogs http.Handler
+	ZLogs  http.Handler
+	ZTrace http.Handler
 }
 
 func New(c *Config) *O {
@@ -104,6 +106,9 @@ func New(c *Config) *O {
 		serviceConfig := `{"loadBalancingConfig":[{"round_robin":{}}]}`
 
 		// tracing
+		ztrace := zpages.NewSpanProcessor()
+		o.ZTrace = zpages.NewTracezHandler(ztrace)
+
 		te, err := otlptracegrpc.New(ctx,
 			otlptracegrpc.WithServiceConfig(serviceConfig),
 		)
@@ -115,6 +120,7 @@ func New(c *Config) *O {
 		}
 		tp := sdktrace.NewTracerProvider(
 			sdktrace.WithBatcher(te),
+			sdktrace.WithSpanProcessor(ztrace),
 		)
 		otel.SetTracerProvider(tp)
 		otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(
