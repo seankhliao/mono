@@ -10,4 +10,8 @@ document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() =
   Array.from(tbody.querySelectorAll('tr'))
     .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
     .forEach(tr => tbody.appendChild(tr) );
-    })));
+    gtag("event", "sort_table", {
+      location: window.location.href,
+      column: th.innerText,
+    });
+})));
