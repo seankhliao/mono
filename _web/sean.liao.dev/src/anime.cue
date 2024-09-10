@@ -28,6 +28,7 @@ Table: [for row in _data {
 }]
 
 _data: [
+	["2024-09-11", 7, 54837, ["Akuyaku Reijou Level 99: Watashi wa Ura-Boss desu ga Maou dewa Arimasen", "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord"]],
 	["2024-05-13", 10, 47917, ["Bocchi the Rock!", "Bocchi the Rock!"], "**Bocchi** is relatable"],
 	["2024-06-20", 8, 44511, ["Chainsaw Man", "Chainsaw Man"], "**Makima** dominates, **Power** is playfully wild"],
 	["2024-05-27", 6, 52081, ["Edomae Elf", "Otaku Elf"]],
