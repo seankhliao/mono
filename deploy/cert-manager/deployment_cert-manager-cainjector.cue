@@ -24,7 +24,7 @@ k8s: apps: v1: Deployment: "cert-manager": {
 			}
 			containers: [{
 				name:            "cert-manager-cainjector"
-				image:           "quay.io/jetstack/cert-manager-cainjector:v1.15.2"
+				image:           "quay.io/jetstack/cert-manager-cainjector:v1.16.0"
 				imagePullPolicy: "IfNotPresent"
 				args: [
 					"--v=2",

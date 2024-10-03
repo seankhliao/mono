@@ -57,6 +57,11 @@ controller_rbac: #Rbac & {
 			apiGroups: ["coordination.k8s.io"]
 			resources: ["leases"]
 			verbs: ["create"]
+		}, {
+			apiGroups: [""]
+			resources: ["serviceaccounts/token"]
+			resourceNames: ["cert-manager-controller"]
+			verbs: ["create"]
 		}]
 	}
 }
