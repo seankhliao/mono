@@ -1,38 +1,42 @@
 package deploy
 
-k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolicies.gateway.envoyproxy.io": {
+k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendlbpolicies.gateway.networking.k8s.io": {
+	//
+	// config/crd/experimental/gateway.networking.k8s.io_backendlbpolicies.yaml
+	//
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.15.0"
-		name: "envoypatchpolicies.gateway.envoyproxy.io"
+		annotations: {
+			"api-approved.kubernetes.io":               "https://github.com/kubernetes-sigs/gateway-api/pull/2997"
+			"gateway.networking.k8s.io/bundle-version": "v1.1.0"
+			"gateway.networking.k8s.io/channel":        "experimental"
+		}
+		creationTimestamp: null
+		name:              "backendlbpolicies.gateway.networking.k8s.io"
 	}
 	spec: {
-		group: "gateway.envoyproxy.io"
+		group: "gateway.networking.k8s.io"
 		names: {
-			categories: ["envoy-gateway"]
-			kind:     "EnvoyPatchPolicy"
-			listKind: "EnvoyPatchPolicyList"
-			plural:   "envoypatchpolicies"
-			shortNames: ["epp"]
-			singular: "envoypatchpolicy"
+			categories: ["gateway-api"]
+			kind:     "BackendLBPolicy"
+			listKind: "BackendLBPolicyList"
+			plural:   "backendlbpolicies"
+			shortNames: ["blbpolicy"]
+			singular: "backendlbpolicy"
 		}
 		scope: "Namespaced"
 		versions: [{
 			additionalPrinterColumns: [{
-				jsonPath: ".status.conditions[?(@.type==\"Programmed\")].reason"
-				name:     "Status"
-				type:     "string"
-			}, {
 				jsonPath: ".metadata.creationTimestamp"
 				name:     "Age"
 				type:     "date"
 			}]
-			name: "v1alpha1"
+			name: "v1alpha2"
 			schema: openAPIV3Schema: {
 				description: """
-					EnvoyPatchPolicy allows the user to modify the generated Envoy xDS
-					resources by Envoy Gateway using this patch API
+					BackendLBPolicy provides a way to define load balancing rules
+					for a backend.
 					"""
 				properties: {
 					apiVersion: {
@@ -56,152 +60,180 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 					}
 					metadata: type: "object"
 					spec: {
-						description: "Spec defines the desired state of EnvoyPatchPolicy."
+						description: "Spec defines the desired state of BackendLBPolicy."
 						properties: {
-							jsonPatches: {
-								description: "JSONPatch defines the JSONPatch configuration."
-								items: {
-									description: """
-	EnvoyJSONPatchConfig defines the configuration for patching a Envoy xDS Resource
-	using JSONPatch semantic
+							sessionPersistence: {
+								description: """
+	SessionPersistence defines and configures session persistence
+	for the backend.
+
+
+	Support: Extended
 	"""
-									properties: {
-										name: {
-											description: "Name is the name of the resource"
-											type:        "string"
-										}
-										operation: {
-											description: "Patch defines the JSON Patch Operation"
-											properties: {
-												from: {
-													description: """
-	From is the source location of the value to be copied or moved. Only valid
-	for move or copy operations
-	Refer to https://datatracker.ietf.org/doc/html/rfc6901 for more details.
+								properties: {
+									absoluteTimeout: {
+										description: """
+	AbsoluteTimeout defines the absolute timeout of the persistent
+	session. Once the AbsoluteTimeout duration has elapsed, the
+	session becomes invalid.
+
+
+	Support: Extended
 	"""
-													type: "string"
-												}
-												op: {
-													description: "Op is the type of operation to perform"
-													enum: [
-														"add",
-														"remove",
-														"replace",
-														"move",
-														"copy",
-														"test",
-													]
-													type: "string"
-												}
-												path: {
-													description: """
-	Path is the location of the target document/field where the operation will be performed
-	Refer to https://datatracker.ietf.org/doc/html/rfc6901 for more details.
+										pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+										type:    "string"
+									}
+									cookieConfig: {
+										description: """
+	CookieConfig provides configuration settings that are specific
+	to cookie-based session persistence.
+
+
+	Support: Core
 	"""
-													type: "string"
-												}
-												value: {
-													description: """
-	Value is the new value of the path location. The value is only used by
-	the `add` and `replace` operations.
+										properties: lifetimeType: {
+											default: "Session"
+											description: """
+	LifetimeType specifies whether the cookie has a permanent or
+	session-based lifetime. A permanent cookie persists until its
+	specified expiry time, defined by the Expires or Max-Age cookie
+	attributes, while a session cookie is deleted when the current
+	session ends.
+
+
+	When set to "Permanent", AbsoluteTimeout indicates the
+	cookie's lifetime via the Expires or Max-Age cookie attributes
+	and is required.
+
+
+	When set to "Session", AbsoluteTimeout indicates the
+	absolute lifetime of the cookie tracked by the gateway and
+	is optional.
+
+
+	Support: Core for "Session" type
+
+
+	Support: Extended for "Permanent" type
 	"""
-													"x-kubernetes-preserve-unknown-fields": true
-												}
-											}
-											required: [
-												"op",
-												"path",
-											]
-											type: "object"
-										}
-										type: {
-											description: "Type is the typed URL of the Envoy xDS Resource"
 											enum: [
-												"type.googleapis.com/envoy.config.listener.v3.Listener",
-												"type.googleapis.com/envoy.config.route.v3.RouteConfiguration",
-												"type.googleapis.com/envoy.config.cluster.v3.Cluster",
-												"type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment",
-												"type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.Secret",
+												"Permanent",
+												"Session",
 											]
 											type: "string"
 										}
+										type: "object"
+									}
+									idleTimeout: {
+										description: """
+	IdleTimeout defines the idle timeout of the persistent session.
+	Once the session has been idle for more than the specified
+	IdleTimeout duration, the session becomes invalid.
+
+
+	Support: Extended
+	"""
+										pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+										type:    "string"
+									}
+									sessionName: {
+										description: """
+	SessionName defines the name of the persistent session token
+	which may be reflected in the cookie or the header. Users
+	should avoid reusing session names to prevent unintended
+	consequences, such as rejection or unpredictable behavior.
+
+
+	Support: Implementation-specific
+	"""
+										maxLength: 128
+										type:      "string"
+									}
+									type: {
+										default: "Cookie"
+										description: """
+	Type defines the type of session persistence such as through
+	the use a header or cookie. Defaults to cookie based session
+	persistence.
+
+
+	Support: Core for "Cookie" type
+
+
+	Support: Extended for "Header" type
+	"""
+										enum: [
+											"Cookie",
+											"Header",
+										]
+										type: "string"
+									}
+								}
+								type: "object"
+								"x-kubernetes-validations": [{
+									message: "AbsoluteTimeout must be specified when cookie lifetimeType is Permanent"
+									rule:    "!has(self.cookieConfig.lifetimeType) || self.cookieConfig.lifetimeType != 'Permanent' || has(self.absoluteTimeout)"
+								}]
+							}
+							targetRefs: {
+								description: """
+	TargetRef identifies an API object to apply policy to.
+	Currently, Backends (i.e. Service, ServiceImport, or any
+	implementation-specific backendRef) are the only valid API
+	target references.
+	"""
+								items: {
+									description: """
+	LocalPolicyTargetReference identifies an API object to apply a direct or
+	inherited policy to. This should be used as part of Policy resources
+	that can target Gateway API resources. For more information on how this
+	policy attachment model works, and a sample Policy resource, refer to
+	the policy attachment documentation for Gateway API.
+	"""
+									properties: {
+										group: {
+											description: "Group is the group of the target resource."
+											maxLength:   253
+											pattern:     "^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+											type:        "string"
+										}
+										kind: {
+											description: "Kind is kind of the target resource."
+											maxLength:   63
+											minLength:   1
+											pattern:     "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
+											type:        "string"
+										}
+										name: {
+											description: "Name is the name of the target resource."
+											maxLength:   253
+											minLength:   1
+											type:        "string"
+										}
 									}
 									required: [
+										"group",
+										"kind",
 										"name",
-										"operation",
-										"type",
 									]
 									type: "object"
 								}
-								type: "array"
-							}
-							priority: {
-								description: """
-	Priority of the EnvoyPatchPolicy.
-	If multiple EnvoyPatchPolicies are applied to the same
-	TargetRef, they will be applied in the ascending order of
-	the priority i.e. int32.min has the highest priority and
-	int32.max has the lowest priority.
-	Defaults to 0.
-	"""
-								format: "int32"
-								type:   "integer"
-							}
-							targetRef: {
-								description: """
-	TargetRef is the name of the Gateway API resource this policy
-	is being attached to.
-	By default, attaching to Gateway is supported and
-	when mergeGateways is enabled it should attach to GatewayClass.
-	This Policy and the TargetRef MUST be in the same namespace
-	for this Policy to have effect and be applied to the Gateway
-	TargetRef
-	"""
-								properties: {
-									group: {
-										description: "Group is the group of the target resource."
-										maxLength:   253
-										pattern:     "^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
-										type:        "string"
-									}
-									kind: {
-										description: "Kind is kind of the target resource."
-										maxLength:   63
-										minLength:   1
-										pattern:     "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
-										type:        "string"
-									}
-									name: {
-										description: "Name is the name of the target resource."
-										maxLength:   253
-										minLength:   1
-										type:        "string"
-									}
-								}
-								required: [
+								maxItems: 16
+								minItems: 1
+								type:     "array"
+								"x-kubernetes-list-map-keys": [
 									"group",
 									"kind",
 									"name",
 								]
-								type: "object"
-							}
-							type: {
-								description: """
-	Type decides the type of patch.
-	Valid EnvoyPatchType values are "JSONPatch".
-	"""
-								enum: ["JSONPatch"]
-								type: "string"
+								"x-kubernetes-list-type": "map"
 							}
 						}
-						required: [
-							"targetRef",
-							"type",
-						]
+						required: ["targetRefs"]
 						type: "object"
 					}
 					status: {
-						description: "Status defines the current status of EnvoyPatchPolicy."
+						description: "Status defines the current state of BackendLBPolicy."
 						properties: ancestors: {
 							description: """
 	Ancestors is a list of ancestor resources (usually Gateways) that are
@@ -344,7 +376,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	generic way to enable any other kind of cross-namespace reference.
 
 
-	<gateway:experimental:description>
+
 	ParentRefs from a Route to a Service in the same namespace are "producer"
 	routes, which apply default routing rules to inbound connections from
 	any namespace to the Service.
@@ -355,7 +387,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	connections originating from the same namespace as the Route, for which
 	the intended destination of the connections are a Service targeted as a
 	ParentRef of the Route.
-	</gateway:experimental:description>
+
 
 
 	Support: Core
@@ -380,11 +412,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	must match both specified values.
 
 
-	<gateway:experimental:description>
+
 	When the parent resource is a Service, this targets a specific port in the
 	Service spec. When both Port (experimental) and SectionName are specified,
 	the name and port of the selected port must match both specified values.
-	</gateway:experimental:description>
+
 
 
 	Implementations MAY choose to support other parent resources.
