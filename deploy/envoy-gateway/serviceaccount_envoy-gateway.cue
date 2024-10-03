@@ -35,11 +35,11 @@ k8s: (#Rbac & {
 			verbs: ["get", "list", "watch"]
 		}, {
 			apiGroups: ["gateway.envoyproxy.io"]
-			resources: ["envoyproxies", "envoypatchpolicies", "clienttrafficpolicies", "backendtrafficpolicies", "securitypolicies"]
+			resources: ["envoyproxies", "envoypatchpolicies", "clienttrafficpolicies", "backendtrafficpolicies", "securitypolicies", "envoyextensionpolicies", "backends"]
 			verbs: ["get", "list", "watch"]
 		}, {
 			apiGroups: ["gateway.envoyproxy.io"]
-			resources: ["envoypatchpolicies/status", "clienttrafficpolicies/status", "backendtrafficpolicies/status", "securitypolicies/status"]
+			resources: ["envoypatchpolicies/status", "clienttrafficpolicies/status", "backendtrafficpolicies/status", "securitypolicies/status", "envoyextensionpolicies/status", "backends/status"]
 			verbs: ["update"]
 		}, {
 			apiGroups: ["gateway.networking.k8s.io"]
@@ -57,11 +57,15 @@ k8s: (#Rbac & {
 			verbs: ["create", "get", "delete", "patch"]
 		}, {
 			apiGroups: ["apps"]
-			resources: ["deployments"]
+			resources: ["deployments", "daemonsets"]
 			verbs: ["create", "get", "delete", "patch"]
 		}, {
 			apiGroups: ["autoscaling"]
 			resources: ["horizontalpodautoscalers"]
+			verbs: ["create", "get", "delete", "patch"]
+		}, {
+			apiGroups: ["policy"]
+			resources: ["poddisruptionbudgets"]
 			verbs: ["create", "get", "delete", "patch"]
 		}, {
 			apiGroups: [""]

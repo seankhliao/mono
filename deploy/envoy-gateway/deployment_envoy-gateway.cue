@@ -11,7 +11,7 @@ k8s: "apps": "v1": "Deployment": "envoy-gateway-system": {
 		spec: template: spec: {
 			containers: [{
 				name:  "envoy-gateway"
-				image: "docker.io/envoyproxy/gateway:v1.0.2"
+				image: "docker.io/envoyproxy/gateway:v1.1.2"
 				args: [
 					"server",
 					"--config-path=/config/envoy-gateway.yaml",
@@ -32,6 +32,9 @@ k8s: "apps": "v1": "Deployment": "envoy-gateway-system": {
 				}, {
 					containerPort: 18001
 					name:          "ratelimit"
+				}, {
+					containerPort: 18002
+					name:          "wasm"
 				}, {
 					containerPort: 19001
 					name:          "http-metrics"
