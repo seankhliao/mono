@@ -21,7 +21,7 @@ k8s: apps: v1: Deployment: "kube-system": {
 		spec: template: spec: {
 			containers: [{
 				name:            "cilium-operator"
-				image:           "quay.io/cilium/operator-generic:v1.15.4@sha256:404890a83cca3f28829eb7e54c1564bb6904708cdb7be04ebe69c2b60f164e9a"
+				image:           "quay.io/cilium/operator-generic:v1.16.2@sha256:cccfd3b886d52cb132c06acca8ca559f0fce91a6bd99016219b1a81fdbc4813a"
 				imagePullPolicy: "IfNotPresent"
 				command: ["cilium-operator-generic"]
 				args: [
