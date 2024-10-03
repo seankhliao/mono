@@ -33,7 +33,7 @@ k8s: apps: v1: DaemonSet: "kube-system": {
 				spec: {
 					containers: [{
 						name:            "cilium-agent"
-						image:           "quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426"
+						image:           "quay.io/cilium/cilium:v1.16.2@sha256:4386a8580d8d86934908eea022b0523f812e6a542f30a86a47edd8bed90d51ea"
 						imagePullPolicy: "IfNotPresent"
 						command: ["cilium-agent"]
 						args: ["--config-dir=/tmp/cilium/config-map"]
@@ -211,7 +211,7 @@ k8s: apps: v1: DaemonSet: "kube-system": {
 					}]
 					initContainers: [{
 						name:            "config"
-						image:           "quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426"
+						image:           "quay.io/cilium/cilium:v1.16.2@sha256:4386a8580d8d86934908eea022b0523f812e6a542f30a86a47edd8bed90d51ea"
 						imagePullPolicy: "IfNotPresent"
 						command: [
 							"cilium-dbg",
@@ -245,7 +245,7 @@ k8s: apps: v1: DaemonSet: "kube-system": {
 						// Required to mount cgroup2 filesystem on the underlying Kubernetes node.
 						// We use nsenter command with host's cgroup and mount namespaces enabled.
 						name:            "mount-cgroup"
-						image:           "quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426"
+						image:           "quay.io/cilium/cilium:v1.16.2@sha256:4386a8580d8d86934908eea022b0523f812e6a542f30a86a47edd8bed90d51ea"
 						imagePullPolicy: "IfNotPresent"
 						env: [{
 							name:  "CGROUP_ROOT"
@@ -294,7 +294,7 @@ k8s: apps: v1: DaemonSet: "kube-system": {
 						}
 					}, {
 						name:            "apply-sysctl-overwrites"
-						image:           "quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426"
+						image:           "quay.io/cilium/cilium:v1.16.2@sha256:4386a8580d8d86934908eea022b0523f812e6a542f30a86a47edd8bed90d51ea"
 						imagePullPolicy: "IfNotPresent"
 						env: [{
 							name:  "BIN_PATH"
@@ -343,7 +343,7 @@ k8s: apps: v1: DaemonSet: "kube-system": {
 						// from a privileged container because the mount propagation bidirectional
 						// only works from privileged containers.
 						name:            "mount-bpf-fs"
-						image:           "quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426"
+						image:           "quay.io/cilium/cilium:v1.16.2@sha256:4386a8580d8d86934908eea022b0523f812e6a542f30a86a47edd8bed90d51ea"
 						imagePullPolicy: "IfNotPresent"
 						args: ["mount | grep \"/sys/fs/bpf type bpf\" || mount -t bpf bpf /sys/fs/bpf"]
 						command: [
@@ -360,7 +360,7 @@ k8s: apps: v1: DaemonSet: "kube-system": {
 						}]
 					}, {
 						name:            "clean-cilium-state"
-						image:           "quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426"
+						image:           "quay.io/cilium/cilium:v1.16.2@sha256:4386a8580d8d86934908eea022b0523f812e6a542f30a86a47edd8bed90d51ea"
 						imagePullPolicy: "IfNotPresent"
 						command: ["/init-container.sh"]
 						env: [{
@@ -423,7 +423,7 @@ k8s: apps: v1: DaemonSet: "kube-system": {
 						// wait-for-kube-proxy
 						// Install the CNI binaries in an InitContainer so we don't have a writable host mount in the agent
 						name:            "install-cni-binaries"
-						image:           "quay.io/cilium/cilium:v1.15.4@sha256:b760a4831f5aab71c711f7537a107b751d0d0ce90dd32d8b358df3c5da385426"
+						image:           "quay.io/cilium/cilium:v1.16.2@sha256:4386a8580d8d86934908eea022b0523f812e6a542f30a86a47edd8bed90d51ea"
 						imagePullPolicy: "IfNotPresent"
 						command: ["/install-plugin.sh"]
 						resources: requests: {
