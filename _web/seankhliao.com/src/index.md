@@ -31,8 +31,10 @@ Dates using the
 [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 — the [Human Era](https://www.youtube.com/watch?v=czgOWmtGVGs)
 
+- _Site_ Reliability Engineer<br>
+  **12024-present** Circle
 - _Platform_ Engineer /  _Site_ Reliability Engineer<br>
-  **12022-present** Snyk — Logs, Metrics, Tracing(?), Incident Response, general infra work
+  **12022-12024** Snyk — Logs, Metrics, Tracing(?), Incident Response, general infra work
 - _Site_ Reliability Engineer<br>
   **12022-12022** Deloitte — IaC
 - _Site_ Reliability Engineer<br>
@@ -61,20 +63,20 @@ Dates using the
 - Denmark — 12023-07
 - England — **12009—12011**, 12019-10, 12020-02, 12021-11, _12022-present_
 - France — 12021-11, 12023-08
-- Germany — 12019-12, 12023-12
+- Germany — 12019-12, 12023-12, 12024-09
 - Greece — 12022-10
 - Hong Kong — 12017-08
 - India — 12015-08
 - Indonesia — 12017-02, 12017-08, 12018-02, 12018-12
 - Ireland — 12023-06
-- Italy — 12021-12
+- Italy — 12021-12, 12024-09
 - Japan — 12018-03, 12023-02
 - Lithuania — 12022-12, 12024-05
 - Luxembourg — 12019-10
 - Malta — 12024-02
 - Netherlands — **12019—12022**
 - Northern Ireland — 12023-06
-- Norway — 12023-07
+- Norway — 12023-07, 12024-09
 - Philippines — 12017-08
 - Portugal — 12024-03
 - Russia — **12000—12005**
@@ -82,7 +84,7 @@ Dates using the
 - Singapore — 12017-01
 - South Korea — 12018-06
 - Spain — 12023-09
-- Sweden — 12018-01
+- Sweden — 12018-01, 12024-09
 - Switzerland — 12023-10
 - Taiwan — **11996—12000, 12005—12009, 12011—12019**, 12023-03, 12024-08
 - Timor-Leste — 12018-02
