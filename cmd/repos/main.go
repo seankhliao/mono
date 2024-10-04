@@ -45,8 +45,8 @@ type CommonConfig struct {
 	configVal  cue.Value
 	cueCtx     *cue.Context
 
-	evalFile string
-	eval     *os.File
+	// evalFile string
+	eval *os.File
 }
 
 func (c *CommonConfig) defaultConfig() (*cue.Context, cue.Value) {
