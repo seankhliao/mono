@@ -116,13 +116,6 @@ type syncResult struct {
 	newRef string
 }
 
-func syncWorker(wg *sync.WaitGroup, in <-chan string, out chan syncResult) {
-	defer wg.Done()
-	for dir := range in {
-		out <- syncRepo(dir)
-	}
-}
-
 func syncRepo(dir string) syncResult {
 	res := syncResult{
 		dir: filepath.Base(dir),
