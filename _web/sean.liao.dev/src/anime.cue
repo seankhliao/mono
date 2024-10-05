@@ -37,6 +37,7 @@ _data: [
 	["2024-08-26", 7, 17729, ["Grisaia no Kajitsu", "The Fruit of Grisaia"]],
 	["2024-05-27", 5, 51265, ["Inu ni Nattara Suki na Hito ni Hirowareta", "My Life as Inukai-san's Dog"]],
 	["2024-05-27", 5, 54225, ["Inu ni Nattara Suki na Hito ni Hirowareta Special", "My Life as Inukai-sanâs Dog. OVA"]],
+	["2024-10-05", 6, 51219, ["Isekai One Turn Kill Neesan: Ane Douhan no Isekai Seikatsu Hajimemashita", "My One-Hit Kill Sister"]],
 	["2024-05-16", 9, 37999, ["Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen", "Kaguya-sama: Love is War"], "**Fujiwara Chika** is chaotic good"],
 	["2024-05-17", 9, 40591, ["Kaguya-sama wa Kokurasetai? Tensai-tachi no Renai Zunousen", "Kaguya-sama: Love is War Season 2"]],
 	["2024-05-18", 9, 43609, ["Kaguya-sama wa Kokurasetai? Tensai-tachi no Renai Zunousen OVA", "Kaguya-sama: Love is War OVA"]],
