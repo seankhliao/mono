@@ -18,6 +18,9 @@ type App struct {
 }
 
 func New(ctx context.Context, c Config, o yrun.O11y) (a *App, err error) {
+	// TODO: remove hack
+	c.RegLog.Host = "reqlog.liao.dev"
+
 	a = &App{}
 	a.ReqLog, err = reqlog.New(c.RegLog, o)
 

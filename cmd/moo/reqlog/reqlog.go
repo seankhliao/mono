@@ -23,7 +23,7 @@ func New(c Config, o yrun.O11y) (*App, error) {
 		o11y: yrun.O11y{
 			T: otel.Tracer("reqlog"),
 			M: otel.Meter("reqlog"),
-			L: o.L.With("reqlog"),
+			L: o.L.WithGroup("reqlog"),
 			H: o.H.WithGroup("reqlog"),
 		},
 	}, nil

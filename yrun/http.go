@@ -66,10 +66,7 @@ func (r *muxRegister) Handle(method, host, pattern string, handler http.Handler)
 		pat.WriteString(method)
 		pat.WriteString(" ")
 	}
-	if host != "" {
-		pat.WriteString(host)
-		pat.WriteString(" ")
-	}
+	pat.WriteString(host)
 	pat.WriteString(pattern)
 	r.mux.Handle(pat.String(), handler)
 }
