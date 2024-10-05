@@ -21,7 +21,6 @@ var (
 // Registrar is the interface used by Register,
 // usually a http.ServeMux
 type Registrar interface {
-	HandleFunc(string, func(http.ResponseWriter, *http.Request))
 	Handle(string, http.Handler)
 }
 

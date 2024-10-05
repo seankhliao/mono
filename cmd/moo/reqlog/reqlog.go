@@ -43,5 +43,5 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Handle("", a.config.Host, "/", a)
+	r.Pattern("", a.config.Host, "/", a)
 }

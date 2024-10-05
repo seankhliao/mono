@@ -42,7 +42,7 @@ func debugMux() (reg HTTPRegistrar, getMux func() *http.ServeMux) {
 			).Render(buf)
 			index := buf.Bytes()
 			t := time.Now()
-			register.Handle("GET", "", "/{$}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			register.Pattern("GET", "", "/{$}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				http.ServeContent(w, r, "index.html", t, bytes.NewReader(index))
 			}))
 		})
@@ -53,14 +53,15 @@ func debugMux() (reg HTTPRegistrar, getMux func() *http.ServeMux) {
 }
 
 type HTTPRegistrar interface {
-	Handle(method, host, pattern string, handler http.Handler)
+	Handle(string, http.Handler)
+	Pattern(method, host, pattern string, handler http.Handler)
 }
 
 type muxRegister struct {
 	mux *http.ServeMux
 }
 
-func (r *muxRegister) Handle(method, host, pattern string, handler http.Handler) {
+func (r *muxRegister) Pattern(method, host, pattern string, handler http.Handler) {
 	var pat strings.Builder
 	if method != "" {
 		pat.WriteString(method)
@@ -71,12 +72,20 @@ func (r *muxRegister) Handle(method, host, pattern string, handler http.Handler)
 	r.mux.Handle(pat.String(), handler)
 }
 
+func (r *muxRegister) Handle(s string, h http.Handler) {
+	r.mux.Handle(s, h)
+}
+
 type debugRegister struct {
 	mux   muxRegister
 	links []gomponents.Node
 }
 
-func (r *debugRegister) Handle(method, host, pattern string, handler http.Handler) {
-	r.mux.Handle(method, host, pattern, handler)
+func (r *debugRegister) Pattern(method, host, pattern string, handler http.Handler) {
+	r.mux.Pattern(method, host, pattern, handler)
 	r.links = append(r.links, html.Li(html.A(html.Href(pattern), gomponents.Text(pattern))))
+}
+
+func (r *debugRegister) Handle(s string, h http.Handler) {
+	r.mux.Handle(s, h)
 }

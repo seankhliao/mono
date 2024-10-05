@@ -123,19 +123,19 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 	{
 		mx, getMux := debugMux()
 		// zpages
-		mx.Handle("GET", "", "/debug/log/", o11yRef.LogZpage)
-		mx.Handle("GET", "", "/debug/trace/", o11yRef.TraceZpage)
-		mx.Handle("GET", "", "/debug/config", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		mx.Pattern("GET", "", "/debug/log/", o11yRef.LogZpage)
+		mx.Pattern("GET", "", "/debug/trace/", o11yRef.TraceZpage)
+		mx.Pattern("GET", "", "/debug/config", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 			cuectx := cuecontext.New()
 			val := cuectx.Encode(conf)
 			fmt.Fprintln(rw, val)
 		}))
 		// pprof
-		mx.Handle("GET", "", "/debug/pprof/", http.HandlerFunc(pprof.Index))
-		mx.Handle("GET", "", "/debug/pprof/cmdline", http.HandlerFunc(pprof.Cmdline))
-		mx.Handle("GET", "", "/debug/pprof/profile", http.HandlerFunc(pprof.Profile))
-		mx.Handle("GET", "", "/debug/pprof/symbol", http.HandlerFunc(pprof.Symbol))
-		mx.Handle("GET", "", "/debug/pprof/trace", http.HandlerFunc(pprof.Trace))
+		mx.Pattern("GET", "", "/debug/pprof/", http.HandlerFunc(pprof.Index))
+		mx.Pattern("GET", "", "/debug/pprof/cmdline", http.HandlerFunc(pprof.Cmdline))
+		mx.Pattern("GET", "", "/debug/pprof/profile", http.HandlerFunc(pprof.Profile))
+		mx.Pattern("GET", "", "/debug/pprof/symbol", http.HandlerFunc(pprof.Symbol))
+		mx.Pattern("GET", "", "/debug/pprof/trace", http.HandlerFunc(pprof.Trace))
 
 		if r.Debug != nil {
 			r.Debug(app, mx)

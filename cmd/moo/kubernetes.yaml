@@ -66,6 +66,7 @@ metadata:
 spec:
   hostnames:
     - reqlog.liao.dev
+    - justia.liao.dev
   parentRefs:
     - name: http-gateway
       namespace: envoy-gateway-system
