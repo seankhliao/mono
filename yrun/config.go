@@ -4,14 +4,9 @@ import (
 	"context"
 	_ "embed"
 	"fmt"
-	"io"
-	"log/slog"
-	"net/http"
-	"os"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
-	"go.seankhliao.com/mono/observability/jsonlog"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/fileblob"
 	_ "gocloud.dev/blob/gcsblob"
@@ -24,54 +19,11 @@ var baseSchema string
 // It carries common config, and embeds application
 // specific config
 type Config[AppConfig any] struct {
-	O11y  ConfigO11y
-	HTTP  ConfigHTTP
-	Debug ConfigHTTP
-	GRPC  ConfiggRPC
+	O11y  O11yConfig
+	HTTP  HTTPConfig
+	Debug HTTPConfig
+	GRPC  gRPCConfig
 	App   AppConfig
-}
-
-type ConfigO11y struct {
-	Log    ConfigLog
-	Metric ConfigMetric
-	Trace  ConfigTrace
-}
-
-type ConfigLog struct {
-	Format string
-	Level  slog.Level
-}
-
-func (c ConfigLog) New() (*slog.Logger, slog.Handler, http.Handler) {
-	zpage := jsonlog.NewZPage(256)
-	writer := io.MultiWriter(os.Stderr, zpage)
-	var handler slog.Handler
-	switch c.Format {
-	case "json":
-		handler = jsonlog.New(c.Level, writer)
-	case "text":
-		fallthrough
-	default:
-		handler = slog.NewTextHandler(writer, &slog.HandlerOptions{Level: c.Level})
-	}
-	logger := slog.New(handler)
-	return logger, handler, zpage
-}
-
-type ConfigMetric struct{}
-
-type ConfigTrace struct{}
-
-// ConfigHTTP is the config for an http server
-type ConfigHTTP struct {
-	// host:port listening address
-	Address string
-}
-
-// ConfiggRPC is the config for a grpc server
-type ConfiggRPC struct {
-	// host:port listening address
-	Address string
 }
 
 func defaultConfig[AppConfig any](ctx context.Context) (Config[AppConfig], error) {

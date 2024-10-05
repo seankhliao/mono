@@ -1,15 +1,15 @@
-#ConfigHTTP: {
+#HTTPConfig: {
 	Address: string
 }
-#ConfiggRPC: {
+#gRPCConfig: {
 	Address: string
 }
-HTTP: #ConfigHTTP & {
+HTTP: #HTTPConfig & {
 	Address: string | *":8080"
 }
-Debug: #ConfigHTTP & {
+Debug: #HTTPConfig & {
 	Address: string | *":8081"
 }
-GRPC: #ConfiggRPC & {
+GRPC: #gRPCConfig & {
 	Address: string | *":8000"
 }

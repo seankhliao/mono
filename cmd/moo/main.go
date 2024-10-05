@@ -7,6 +7,6 @@ import (
 func main() {
 	yrun.Run(yrun.RunConfig[Config, App]{
 		New:  New,
-		HTTP: (*App).RegisterHTTP,
+		HTTP: Register,
 	})
 }
