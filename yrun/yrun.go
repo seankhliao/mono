@@ -94,7 +94,7 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 
 	if r.HTTP != nil {
 		mux := http.NewServeMux()
-		r.HTTP(app, mux)
+		r.HTTP(app, &muxRegister{mux})
 
 		// add http server
 		group.Go(func() error {
@@ -121,24 +121,24 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 
 	// TODO: conditional creation?
 	{
-		handle, getMux := debugMux()
+		mx, getMux := debugMux()
 		// zpages
-		handle("GET /debug/log/", o11yRef.LogZpage)
-		handle("GET /debug/trace/", o11yRef.TraceZpage)
-		handle("GET /debug/config", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		mx.Handle("GET", "", "/debug/log/", o11yRef.LogZpage)
+		mx.Handle("GET", "", "/debug/trace/", o11yRef.TraceZpage)
+		mx.Handle("GET", "", "/debug/config", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 			cuectx := cuecontext.New()
 			val := cuectx.Encode(conf)
 			fmt.Fprintln(rw, val)
 		}))
 		// pprof
-		handle("GET /debug/pprof/", http.HandlerFunc(pprof.Index))
-		handle("GET /debug/pprof/cmdline", http.HandlerFunc(pprof.Cmdline))
-		handle("GET /debug/pprof/profile", http.HandlerFunc(pprof.Profile))
-		handle("GET /debug/pprof/symbol", http.HandlerFunc(pprof.Symbol))
-		handle("GET /debug/pprof/trace", http.HandlerFunc(pprof.Trace))
+		mx.Handle("GET", "", "/debug/pprof/", http.HandlerFunc(pprof.Index))
+		mx.Handle("GET", "", "/debug/pprof/cmdline", http.HandlerFunc(pprof.Cmdline))
+		mx.Handle("GET", "", "/debug/pprof/profile", http.HandlerFunc(pprof.Profile))
+		mx.Handle("GET", "", "/debug/pprof/symbol", http.HandlerFunc(pprof.Symbol))
+		mx.Handle("GET", "", "/debug/pprof/trace", http.HandlerFunc(pprof.Trace))
 
 		if r.Debug != nil {
-			r.Debug(app, handle)
+			r.Debug(app, mx)
 		}
 
 		// add debug server
