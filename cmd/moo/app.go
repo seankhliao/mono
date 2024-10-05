@@ -4,28 +4,30 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+
+	"go.seankhliao.com/mono/cmd/moo/reqlog"
+	"go.seankhliao.com/mono/yrun"
 )
 
-type Config struct{}
+type Config struct {
+	RegLog reqlog.Config
+}
 
-type App struct{}
+type App struct {
+	ReqLog *reqlog.App
+}
 
-func New(ctx context.Context, c Config) (*App, error) {
-	a := &App{}
+func New(ctx context.Context, c Config, o yrun.O11y) (a *App, err error) {
+	a = &App{}
+	a.ReqLog, err = reqlog.New(c.RegLog, o)
+
 	return a, nil
 }
 
-func (a *App) RegisterHTTP(sm *http.ServeMux) {
-	mux := muxRegister{sm}
-	mux.Handle("GET", "", "/{$}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+func Register(a *App, r yrun.HTTPRegistrar) {
+	reqlog.Register(a.ReqLog, r)
+
+	r.Handle("GET", "", "/{$}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "hello world")
 	}))
-}
-
-type muxRegister struct {
-	mux *http.ServeMux
-}
-
-func (r *muxRegister) Handle(method, host, pattern string, handler http.Handler) {
-	r.mux.Handle(method+" "+host+" "+pattern, handler)
 }

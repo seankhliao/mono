@@ -1,7 +1,6 @@
 package yrun
 
 import (
-	"bytes"
 	"context"
 	"flag"
 	"fmt"
@@ -9,13 +8,10 @@ import (
 	"net/http"
 	"net/http/pprof"
 	"os"
-	"strings"
-	"sync"
 	"time"
 
 	"cuelang.org/go/cue/cuecontext"
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -34,11 +30,11 @@ type RunConfig[C, A any] struct {
 	// [FromBytes[Config[C]]] or [FromBucket[C]]
 	Config func(context.Context) (Config[C], error)
 	// New creates an application struct from the application config struct.
-	New func(context.Context, C) (*A, error)
+	New func(context.Context, C, O11y) (*A, error)
 	// HTTP is for registering http handlers to the main listener
-	HTTP func(*A, *http.ServeMux)
+	HTTP func(*A, HTTPRegistrar)
 	// Debug is for registering http handlers to the debug handler
-	Debug func(*A, func(string, http.Handler))
+	Debug func(*A, HTTPRegistrar)
 	// StartTasks should use the given function to start any background tasks.
 	// Tasks should exit when the given context is canceled.
 	StartTasks func(*A, context.Context, func(func() error))
@@ -84,11 +80,11 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 		return
 	}
 
-	lg, lh, lz := conf.O11y.Log.New()
+	o11y, o11yRef := NewO11y(conf.O11y)
 
 	var app *A
 	if r.New != nil {
-		app, err = r.New(ctx, conf.App)
+		app, err = r.New(ctx, conf.App, o11y)
 		if err != nil {
 			return
 		}
@@ -102,12 +98,12 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 
 		// add http server
 		group.Go(func() error {
-			httplh := lh.WithGroup("external-http")
+			httplh := o11y.H.WithGroup("external-http")
 			httplg := slog.New(httplh)
 
 			server := &http.Server{
 				Addr:              conf.HTTP.Address,
-				Handler:           mux, // todo o11y
+				Handler:           otelhttp.NewHandler(mux, "serve http"),
 				ReadHeaderTimeout: 10 * time.Second,
 				ErrorLog:          slog.NewLogLogger(httplh, slog.LevelWarn),
 			}
@@ -119,7 +115,7 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 	}
 
 	if r.StartTasks != nil {
-		lg.WithGroup("background-tasks").LogAttrs(ctx, slog.LevelInfo, "starting background tasks")
+		o11y.L.WithGroup("background-tasks").LogAttrs(ctx, slog.LevelInfo, "starting background tasks")
 		r.StartTasks(app, ctx, group.Go)
 	}
 
@@ -127,7 +123,8 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 	{
 		handle, getMux := debugMux()
 		// zpages
-		handle("GET /debug/log", lz)
+		handle("GET /debug/log/", o11yRef.LogZpage)
+		handle("GET /debug/trace/", o11yRef.TraceZpage)
 		handle("GET /debug/config", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 			cuectx := cuecontext.New()
 			val := cuectx.Encode(conf)
@@ -146,7 +143,7 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 
 		// add debug server
 		group.Go(func() error {
-			httplh := lh.WithGroup("internal-http")
+			httplh := o11y.H.WithGroup("internal-http")
 			httplg := slog.New(httplh)
 			server := &http.Server{
 				Addr:              conf.Debug.Address,
@@ -162,7 +159,7 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 	}
 
 	if r.RegisterShutdown != nil {
-		shutlg := lg.WithGroup("register-shutdown")
+		shutlg := o11y.L.WithGroup("register-shutdown")
 		shutlg.LogAttrs(ctx, slog.LevelInfo, "registering shutdown functions")
 		r.RegisterShutdown(app, ctx, func(f func(context.Context) error) {
 			group.Go(func() error {
@@ -179,51 +176,4 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 
 	err = group.Wait()
 	return
-}
-
-func debugMux() (handle func(string, http.Handler), getMux func() *http.ServeMux) {
-	mux := http.NewServeMux()
-	var rendered bool
-	var finalize sync.Once
-	var links []gomponents.Node
-
-	handle = func(s string, h http.Handler) {
-		if rendered {
-			panic("handle() called after getMux()")
-		}
-		mux.Handle(s, h)
-		_, p, ok := strings.Cut(s, " ")
-		if ok {
-			s = p
-		}
-		links = append(links, html.Li(html.A(html.Href(s), gomponents.Text(s))))
-	}
-
-	getMux = func() *http.ServeMux {
-		finalize.Do(func() {
-			rendered = true
-			buf := new(bytes.Buffer)
-			html.Doctype(
-				html.HTML(
-					html.Lang("en"),
-					html.Head(
-						html.Meta(html.Charset("utf-8")),
-						html.Meta(html.Name("viewport"), html.Content("width=device-width,minimum-scale=1,initial-scale=1")),
-						html.TitleEl(gomponents.Text("Debug Endpoints")),
-					),
-					html.Body(
-						html.H1(gomponents.Text("Debug Endpoints")),
-						html.Ul(),
-					),
-				),
-			).Render(buf)
-			index := buf.Bytes()
-			t := time.Now()
-			mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
-				http.ServeContent(w, r, "index.html", t, bytes.NewReader(index))
-			})
-		})
-		return mux
-	}
-	return handle, getMux
 }
