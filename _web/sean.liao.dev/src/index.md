@@ -24,8 +24,28 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-10-26_ Hatsune Miku
 - _12024-10-25_ MCM London
 - _12024-10-11_ One OK Rock
-- _12024-10-04_ Visions of Atlantis
-- _12024-10-02_ Aurora
+
+##### _12024-10-04_ Visions of Atlantis
+
+With [_SERAINA TELLI_], and [_ILLUMISHADE_]
+
+[_SERAINA TELLI_] was fine, nothing that really caught my attention.
+[_ILLUMISHADE_] was better I think?
+[_Visions of Atlantis_] was what I was here for,
+fully committed to the pirate theme,
+there was quite a bit of audience involvement too,
+though maybe less singing and more pumping fists and shouting.
+It was quite a melodic experience that reminded me of a turbulent ocean.
+
+##### _12024-10-02_ AURORA
+
+As dreamy as you would imagine,
+[_AURORA_] put on an amazing show at the Royal Albert Hall,
+which couldn't have been a better choice of venue.
+You know it's all eyes on her, when the band's been sequestered to the side,
+and the stage is wide open with just her in the center.
+The dreamy style did fall away towards the end with a more joyous
+celebration of... something.
 
 ##### _12024-09-03_ girl in red
 
@@ -991,6 +1011,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_ari abdul_]: https://www.instagram.com/arianna.abdul
 [_Ashnikko_]: https://www.instagram.com/ashnikko
 [_ATARASHII GAKKO_]: https://www.instagram.com/japan_leaders
+[_AURORA_]: https://www.instagram.com/auroramusic/
 [_Ava Max_]: https://www.instagram.com/avamax/reels
 [_AViVA_]: https://www.instagram.com/thisisaviva
 [_Avril Lavigne_]: https://www.instagram.com/avrillavigne
@@ -1045,6 +1066,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Halocene_]: https://www.instagram.com/halocene
 [_Hemlocke Springs_]: https://www.instagram.com/hemlockesprings
 [_ili_]: https://www.instagram.com/thisisili
+[_ILLUMISHADE_]: https://www.instagram.com/illumishade_official/
 [_Isabel LaRosa_]: https://www.instagram.com/isabel.s.larosa
 [_IVE_]: https://www.instagram.com/ivestarship
 [_Jack Garratt_]: https://www.instagram.com/jackgarratt
@@ -1100,6 +1122,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Sabrina Carpenter_]: https://www.instagram.com/sabrinacarpenter
 [_Sadie Fine_]: https://www.instagram.com/sadiefinesingsfine
 [_Scene Queen_]: https://www.instagram.com/scenequeenrocks
+[_SERAINA TELLI_]: https://www.instagram.com/serainatelliofficial/
 [_Skillet_]: https://www.instagram.com/skilletmusic
 [_Sonia Stein_]: https://www.instagram.com/soniasteinmusic
 [_Sophia Alexa_]: https://www.instagram.com/sophiaalexamusic
@@ -1125,3 +1148,4 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_MONSTERIDOL_]: https://monsteridol.jp/
 [_BiS_]: https://www.brandnewidolsociety.tokyo/
 [_ASP_]: https://asp-japan.tokyo/
+[_Visions of Atlantis_]: https://www.instagram.com/visionsofatlantis/
