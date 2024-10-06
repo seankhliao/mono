@@ -8,6 +8,9 @@ Note to self on clothing items I may need to rebuy in the future.
 
 #### Jacket
 
+_Rains Long Jacket_
+Light, packable, kind annoyed mine has a hole from when it got caught on a fence.
+
 _The North Face Canyonlands hoodie_
 it was fine but kinda thin especially in the pockets.
 
