@@ -42,6 +42,5 @@ func (z *ZPage) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 		w.Write(z.buf[idx])
-		io.WriteString(w, "\n")
 	}
 }
