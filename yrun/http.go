@@ -2,7 +2,9 @@ package yrun
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -25,6 +27,10 @@ func debugMux() (reg HTTPRegistrar, getMux func() *http.ServeMux) {
 	var finalize sync.Once
 	getMux = func() *http.ServeMux {
 		finalize.Do(func() {
+			var links []gomponents.Node
+			for _, link := range register.links {
+				links = append(links, html.Li(html.A(html.Href(link), gomponents.Text(link))))
+			}
 			buf := new(bytes.Buffer)
 			html.Doctype(
 				html.HTML(
@@ -36,14 +42,24 @@ func debugMux() (reg HTTPRegistrar, getMux func() *http.ServeMux) {
 					),
 					html.Body(
 						html.H1(gomponents.Text("Debug Endpoints")),
-						html.Ul(register.links...),
+						html.Ul(links...),
 					),
 				),
 			).Render(buf)
 			index := buf.Bytes()
 			t := time.Now()
 			register.Pattern("GET", "", "/{$}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				http.ServeContent(w, r, "index.html", t, bytes.NewReader(index))
+				if strings.Contains(r.Header.Get("accept"), "text/html") {
+					http.ServeContent(w, r, "index.html", t, bytes.NewReader(index))
+					return
+				}
+				for _, link := range register.links {
+					u := &url.URL{}
+					u.Scheme = "http"
+					u.Host = r.Host
+					u.Path = link
+					fmt.Fprintf(w, "%s\n", u.String())
+				}
 			}))
 		})
 		return register.mux.mux
@@ -78,12 +94,14 @@ func (r *muxRegister) Handle(s string, h http.Handler) {
 
 type debugRegister struct {
 	mux   muxRegister
-	links []gomponents.Node
+	links []string
 }
 
 func (r *debugRegister) Pattern(method, host, pattern string, handler http.Handler) {
 	r.mux.Pattern(method, host, pattern, handler)
-	r.links = append(r.links, html.Li(html.A(html.Href(pattern), gomponents.Text(pattern))))
+	if !strings.Contains(pattern, "{") {
+		r.links = append(r.links, pattern)
+	}
 }
 
 func (r *debugRegister) Handle(s string, h http.Handler) {
