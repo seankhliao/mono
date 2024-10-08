@@ -11,12 +11,6 @@ _buildopts: &buildopts
     - -w
 
 builds:
-  - id: authsvr
-    main: ./cmd/authsvr
-    <<: *buildopts
-  - id: earbug
-    main: ./cmd/earbug
-    <<: *buildopts
   - id: fin
     main: ./cmd/fin
     <<: *buildopts

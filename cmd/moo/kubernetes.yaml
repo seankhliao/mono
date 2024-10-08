@@ -114,6 +114,7 @@ metadata:
   namespace: moo
 spec:
   hostnames:
+    - earbug.liao.dev
     - ghdefaults.liao.dev
     - justia.liao.dev
     - reqlog.liao.dev
