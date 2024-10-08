@@ -1,4 +1,4 @@
-package main
+package earbug
 
 import (
 	"bytes"
@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"flag"
 	"fmt"
 	"io"
 	"log/slog"
@@ -25,13 +24,13 @@ import (
 	"github.com/maragudk/gomponents/html"
 	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
-	"go.seankhliao.com/mono/authed"
-	"go.seankhliao.com/mono/cmd/earbug/earbugv4"
-	"go.seankhliao.com/mono/framework"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
+	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv4"
 	"go.seankhliao.com/mono/httpencoding"
-	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
-	"go.seankhliao.com/mono/webstyle/webstatic"
+	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/gcsblob"
 	"golang.org/x/oauth2"
@@ -40,45 +39,32 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
-func main() {
-	conf := &Config{}
-	framework.Run(framework.Config{
-		RegisterFlags: conf.SetFlags,
-		Start: func(ctx context.Context, o *observability.O, m *http.ServeMux) (func(), error) {
-			app, err := New(ctx, o, conf)
-			if err != nil {
-				return nil, err
-			}
-
-			mux := http.NewServeMux()
-			webstatic.Register(mux)
-			app.Register(mux)
-			m.Handle("/", authed.New(o).Authed(mux))
-
-			return func() { app.export(context.Background()) }, nil
-		},
-	})
-}
-
 type Config struct {
-	dataBucket string
-	dataKey    string
-	authURL    string
+	Host string
 
-	updateFreq time.Duration
-	exportFreq time.Duration
+	Bucket  string
+	Key     string
+	AuthURL string
+
+	UpdateFreq time.Duration
+	ExportFreq time.Duration
 }
 
-func (c *Config) SetFlags(fset *flag.FlagSet) {
-	fset.StringVar(&c.dataBucket, "data.bucket", "gs://earbug-liao-dev", "bucket to load/store data")
-	fset.StringVar(&c.dataKey, "data.key", "ihwa.pb.zstd", "key to load/store data")
-	fset.StringVar(&c.authURL, "auth.url", "http://earbug-ihwa.badger-altered.ts.net/auth/callback", "auth callback url")
-	fset.DurationVar(&c.updateFreq, "update.interval", 5*time.Minute, "how often to update")
-	fset.DurationVar(&c.exportFreq, "export.interval", 30*time.Minute, "how often to export")
+func Register(a *App, r yrun.HTTPRegistrar) {
+	r.Pattern("GET", a.host, "/", httpencoding.Handler(http.HandlerFunc(a.handleIndex)))
+	r.Pattern("GET", a.host, "/artists", httpencoding.Handler(http.HandlerFunc(a.handleArtists)))
+	r.Pattern("GET", a.host, "/playbacks", httpencoding.Handler(http.HandlerFunc(a.handlePlaybacks)))
+	r.Pattern("GET", a.host, "/tracks", httpencoding.Handler(http.HandlerFunc(a.handleTracks)))
+	r.Pattern("GET", a.host, "/api/export", http.HandlerFunc(a.hExport))
+	r.Pattern("POST", a.host, "/api/export", http.HandlerFunc(a.hExport))
+	r.Pattern("GET", a.host, "/api/auth", http.HandlerFunc(a.hAuthorize))
+	r.Pattern("GET", a.host, "/api/update", http.HandlerFunc(a.hUpdate))
+	r.Pattern("POST", a.host, "/api/update", http.HandlerFunc(a.hUpdate))
+	r.Pattern("GET", a.host, "/auth/callback", http.HandlerFunc(a.hAuthCallback))
 }
 
 type App struct {
-	o *observability.O
+	o yrun.O11y
 
 	// New
 	http    *http.Client
@@ -87,6 +73,7 @@ type App struct {
 	store   earbugv4.Store
 
 	// config
+	host       string
 	dataBucket string
 	dataKey    string
 	authURL    string
@@ -94,42 +81,50 @@ type App struct {
 	authState atomic.Pointer[AuthState]
 }
 
-func New(ctx context.Context, o *observability.O, conf *Config) (*App, error) {
+func New(c Config, o yrun.O11y) (*App, error) {
+	ctx := context.Background()
+
 	a := &App{
-		o: o,
+		o: yrun.O11y{
+			T: otel.Tracer("earbug"),
+			M: otel.Meter("earbug"),
+			L: o.L.WithGroup("earbug"),
+			H: o.H.WithGroup("earbug"),
+		},
 		http: &http.Client{
 			Transport: otelhttp.NewTransport(http.DefaultTransport),
 		},
-		dataBucket: conf.dataBucket,
-		dataKey:    conf.dataKey,
-		authURL:    conf.authURL,
+		host:       c.Host,
+		dataBucket: c.Bucket,
+		dataKey:    c.Key,
+		authURL:    c.AuthURL,
 	}
 
 	ctx, span := o.T.Start(ctx, "initData")
 	defer span.End()
 
-	bkt, err := blob.OpenBucket(ctx, conf.dataBucket)
+	bkt, err := blob.OpenBucket(ctx, a.dataBucket)
 	if err != nil {
-		return nil, o.Err(ctx, "open bucket", err)
+		return nil, a.Err(ctx, "open bucket", err)
 	}
 	defer bkt.Close()
-	or, err := bkt.NewReader(ctx, conf.dataKey, nil)
+	or, err := bkt.NewReader(ctx, a.dataKey, nil)
 	if err != nil {
-		return nil, o.Err(ctx, "open object", err)
+		return nil, a.Err(ctx, "open object", err)
 	}
 	defer or.Close()
 	zr, err := zstd.NewReader(or)
 	if err != nil {
-		return nil, o.Err(ctx, "new zstd reader", err)
+		return nil, a.Err(ctx, "new zstd reader", err)
 	}
 	defer or.Close()
 	b, err := io.ReadAll(zr)
 	if err != nil {
-		return nil, o.Err(ctx, "read object", err)
+		return nil, a.Err(ctx, "read object", err)
 	}
 	err = proto.Unmarshal(b, &a.store)
 	if err != nil {
-		return nil, o.Err(ctx, "unmarshal store", err)
+		return nil, a.Err(ctx, "unmarshal store", err)
 	}
 
 	var token oauth2.Token
@@ -137,7 +132,7 @@ func New(ctx context.Context, o *observability.O, conf *Config) (*App, error) {
 		rawToken := a.store.Auth.Token // new value
 		err = json.Unmarshal(rawToken, &token)
 		if err != nil {
-			return nil, o.Err(ctx, "unmarshal oauth token", err)
+			return nil, a.Err(ctx, "unmarshal oauth token", err)
 		}
 	} else {
 		o.L.LogAttrs(ctx, slog.LevelWarn, "no auth token found")
@@ -149,23 +144,10 @@ func New(ctx context.Context, o *observability.O, conf *Config) (*App, error) {
 	httpClient = as.conf.Client(ctx, &token)
 	a.spot = spotify.New(httpClient)
 
-	go a.exportLoop(ctx, conf.exportFreq)
-	go a.updateLoop(ctx, conf.updateFreq)
+	go a.exportLoop(ctx, c.ExportFreq)
+	go a.updateLoop(ctx, c.UpdateFreq)
 
 	return a, nil
-}
-
-func (a *App) Register(mux *http.ServeMux) {
-	mux.Handle("GET /", httpencoding.Handler(http.HandlerFunc(a.handleIndex)))
-	mux.Handle("GET /artists", httpencoding.Handler(http.HandlerFunc(a.handleArtists)))
-	mux.Handle("GET /playbacks", httpencoding.Handler(http.HandlerFunc(a.handlePlaybacks)))
-	mux.Handle("GET /tracks", httpencoding.Handler(http.HandlerFunc(a.handleTracks)))
-	mux.HandleFunc("GET /api/export", a.hExport)
-	mux.HandleFunc("POST /api/export", a.hExport)
-	mux.HandleFunc("GET /api/auth", a.hAuthorize)
-	mux.HandleFunc("GET /api/update", a.hUpdate)
-	mux.HandleFunc("POST /api/update", a.hUpdate)
-	mux.HandleFunc("GET /auth/callback", a.hAuthCallback)
 }
 
 func (a *App) hAuthorize(rw http.ResponseWriter, r *http.Request) {
@@ -193,7 +175,7 @@ func (a *App) hAuthorize(rw http.ResponseWriter, r *http.Request) {
 		return
 	}()
 	if clientID == "" || clientSecret == "" {
-		a.o.HTTPErr(ctx, "no client id/secret", errors.New("missing oauth client"), rw, http.StatusBadRequest)
+		a.HTTPErr(ctx, "no client id/secret", errors.New("missing oauth client"), rw, http.StatusBadRequest)
 		return
 	}
 
@@ -210,7 +192,7 @@ func (a *App) hAuthCallback(rw http.ResponseWriter, r *http.Request) {
 	as := a.authState.Load()
 	token, err := as.conf.Exchange(ctx, r.FormValue("code"))
 	if err != nil {
-		a.o.HTTPErr(ctx, "get token from request", err, rw, http.StatusBadRequest)
+		a.HTTPErr(ctx, "get token from request", err, rw, http.StatusBadRequest)
 		return
 	}
 
@@ -221,7 +203,7 @@ func (a *App) hAuthCallback(rw http.ResponseWriter, r *http.Request) {
 
 	tokenMarshaled, err := json.Marshal(token)
 	if err != nil {
-		a.o.HTTPErr(ctx, "marshal token", err, rw, http.StatusBadRequest)
+		a.HTTPErr(ctx, "marshal token", err, rw, http.StatusBadRequest)
 		return
 	}
 
@@ -269,31 +251,31 @@ func (a *App) hExport(rw http.ResponseWriter, r *http.Request) {
 		return proto.Marshal(&a.store)
 	}()
 	if err != nil {
-		a.o.HTTPErr(ctx, "marshal store", err, rw, http.StatusInternalServerError)
+		a.HTTPErr(ctx, "marshal store", err, rw, http.StatusInternalServerError)
 		return
 	}
 
 	bkt, err := blob.OpenBucket(ctx, a.dataBucket)
 	if err != nil {
-		a.o.HTTPErr(ctx, "open destination bucket", err, rw, http.StatusFailedDependency)
+		a.HTTPErr(ctx, "open destination bucket", err, rw, http.StatusFailedDependency)
 		return
 	}
 
 	ow, err := bkt.NewWriter(ctx, a.dataKey, nil)
 	if err != nil {
-		a.o.HTTPErr(ctx, "open destination key", err, rw, http.StatusFailedDependency)
+		a.HTTPErr(ctx, "open destination key", err, rw, http.StatusFailedDependency)
 		return
 	}
 	defer ow.Close()
 	zw, err := zstd.NewWriter(ow)
 	if err != nil {
-		a.o.HTTPErr(ctx, "new zstd writer", err, rw, http.StatusFailedDependency)
+		a.HTTPErr(ctx, "new zstd writer", err, rw, http.StatusFailedDependency)
 		return
 	}
 	defer zw.Close()
 	_, err = io.Copy(zw, bytes.NewReader(b))
 	if err != nil {
-		a.o.HTTPErr(ctx, "write store", err, rw, http.StatusFailedDependency)
+		a.HTTPErr(ctx, "write store", err, rw, http.StatusFailedDependency)
 		return
 	}
 	fmt.Fprintln(rw, "ok")
@@ -305,7 +287,7 @@ func (a *App) hUpdate(rw http.ResponseWriter, r *http.Request) {
 
 	items, err := a.spot.PlayerRecentlyPlayedOpt(ctx, &spotify.RecentlyPlayedOptions{Limit: 50})
 	if err != nil {
-		a.o.HTTPErr(ctx, "get recently played", err, rw, http.StatusFailedDependency)
+		a.HTTPErr(ctx, "get recently played", err, rw, http.StatusFailedDependency)
 		return
 	}
 
@@ -761,4 +743,21 @@ func (a *App) update(ctx context.Context) {
 	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, "http://localhost/api/update", nil)
 	rec := httptest.NewRecorder()
 	a.hUpdate(rec, req)
+}
+
+func (a *App) Err(ctx context.Context, msg string, err error, attrs ...slog.Attr) error {
+	a.o.L.LogAttrs(ctx, slog.LevelError, msg,
+		append(attrs, slog.String("error", err.Error()))...,
+	)
+	if span := trace.SpanFromContext(ctx); span.SpanContext().IsValid() {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, msg)
+	}
+
+	return fmt.Errorf("%s: %w", msg, err)
+}
+
+func (a *App) HTTPErr(ctx context.Context, msg string, err error, rw http.ResponseWriter, code int, attrs ...slog.Attr) {
+	err = a.Err(ctx, msg, err, attrs...)
+	http.Error(rw, err.Error(), code)
 }
