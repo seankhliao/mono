@@ -12,7 +12,7 @@ import (
 )
 
 type Config struct {
-	RegLog   reqlog.Config
+	ReqLog   reqlog.Config
 	Homepage homepage.Config
 }
 
@@ -22,12 +22,8 @@ type App struct {
 }
 
 func New(ctx context.Context, c Config, o yrun.O11y) (a *App, err error) {
-	// TODO: remove hack
-	c.RegLog.Host = "reqlog.liao.dev"
-	c.Homepage.Host = "justia.liao.dev"
-
 	a = &App{}
-	a.ReqLog, err = reqlog.New(c.RegLog, o)
+	a.ReqLog, err = reqlog.New(c.ReqLog, o)
 	a.Homepage, err = homepage.New(c.Homepage, o)
 
 	return a, nil
