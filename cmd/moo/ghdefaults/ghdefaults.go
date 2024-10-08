@@ -1,86 +1,56 @@
-package main
+package ghdefaults
 
 import (
 	"context"
 	"errors"
-	"flag"
 	"fmt"
-	"io"
 	"log/slog"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
 	"github.com/google/go-github/v60/github"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/framework"
-	"go.seankhliao.com/mono/observability"
+	"go.seankhliao.com/mono/yrun"
 	"golang.org/x/oauth2"
 )
 
-func main() {
-	conf := &Config{}
-	framework.Run(framework.Config{
-		RegisterFlags: conf.SetFlags,
-		Start: func(ctx context.Context, o *observability.O, m *http.ServeMux) (func(), error) {
-			app := New(ctx, o, *conf)
-			app.Register(m)
-			return nil, nil
-		},
-	})
-}
-
 type Config struct {
-	webhookSecret string
-	appID         int64
-	privateKey    string
+	Host          string
+	AppID         int64
+	PrivateKey    string
+	WebhookSecret string
 }
 
-func (c *Config) SetFlags(fset *flag.FlagSet) {
-	t := &http.Transport{}
-	t.RegisterProtocol("file", http.NewFileTransport(http.Dir("/")))
-	t.RegisterProtocol("data", dataTransport{})
-	client := &http.Client{Transport: t}
-
-	fset.Func("gh.app.id", "file: or data: to github app id", func(s string) error {
-		val, err := getBody(client, s)
-		if err != nil {
-			return err
-		}
-		c.appID, err = strconv.ParseInt(val, 10, 64)
-		return err
-	})
-	fset.Func("gh.app.private-key", "file: or data: uri to private key", func(s string) (err error) {
-		c.privateKey, err = getBody(client, s)
-		return
-	})
-	fset.Func("gh.webhook.secret", "file: or data: uri to webhook secret", func(s string) (err error) {
-		c.webhookSecret, err = getBody(client, s)
-		return
-	})
-}
-
-type Server struct {
-	o             *observability.O
+type App struct {
+	host          string
+	o             yrun.O11y
 	webhookSecret string
 	privateKey    string
 	appID         int64
 }
 
-func New(ctx context.Context, o *observability.O, c Config) *Server {
-	return &Server{
-		o:             o,
-		webhookSecret: strings.TrimSpace(c.webhookSecret),
-		privateKey:    c.privateKey + "\n",
-		appID:         c.appID,
-	}
+func New(c Config, o yrun.O11y) (*App, error) {
+	return &App{
+		host: c.Host,
+		o: yrun.O11y{
+			T: otel.Tracer("ghdefaults"),
+			M: otel.Meter("ghdefaults"),
+			L: o.L.WithGroup("ghdefaults"),
+			H: o.H.WithGroup("ghdefaults"),
+		},
+		webhookSecret: strings.TrimSpace(c.WebhookSecret),
+		privateKey:    c.PrivateKey + "\n",
+		appID:         c.AppID,
+	}, nil
 }
 
-func (s *Server) Register(mux *http.ServeMux) {
-	mux.Handle("/webhook", otelhttp.NewHandler(http.HandlerFunc(s.hWebhook), "hWebhook"))
+func Register(a *App, r yrun.HTTPRegistrar) {
+	r.Pattern("POST", a.host, "/webhook", a)
 }
 
 var defaultConfig = map[string]github.Repository{
@@ -122,42 +92,42 @@ var (
 	ErrSetDefaults = errors.New("errors setting repo defaults")
 )
 
-func (s *Server) hWebhook(rw http.ResponseWriter, r *http.Request) {
-	ctx, span := s.o.T.Start(r.Context(), "hWebhook")
+func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	ctx, span := a.o.T.Start(r.Context(), "handle webhook")
 	defer span.End()
 
-	event, eventType, err := s.getPayload(ctx, r)
+	event, eventType, err := a.getPayload(ctx, r)
 	if err != nil {
-		s.o.HTTPErr(ctx, "invalid payload", err, rw, http.StatusBadRequest)
+		a.HTTPErr(ctx, "invalid payload", err, rw, http.StatusBadRequest)
 		return
 	}
 
 	err = ErrIgnore
 	switch event := event.(type) {
 	case *github.InstallationEvent:
-		err = s.installEvent(ctx, event)
+		err = a.installEvent(ctx, event)
 	case *github.RepositoryEvent:
-		err = s.repoEvent(ctx, event)
+		err = a.repoEvent(ctx, event)
 	}
 
 	lvl := slog.LevelInfo
 	if ig := errors.Is(err, ErrIgnore); err != nil && !ig {
-		s.o.HTTPErr(ctx, "process event", err, rw, http.StatusInternalServerError)
+		a.HTTPErr(ctx, "process event", err, rw, http.StatusInternalServerError)
 		return
 	} else if ig {
 		lvl = slog.LevelDebug
 	}
-	s.o.L.LogAttrs(ctx, lvl, "processed event",
+	a.o.L.LogAttrs(ctx, lvl, "processed event",
 		slog.String("eventType", eventType),
 	)
 	rw.Write([]byte("ok"))
 }
 
-func (s *Server) getPayload(ctx context.Context, r *http.Request) (any, string, error) {
-	_, span := s.o.T.Start(ctx, "getPayload")
+func (a *App) getPayload(ctx context.Context, r *http.Request) (any, string, error) {
+	_, span := a.o.T.Start(ctx, "getPayload")
 	defer span.End()
 
-	payload, err := github.ValidatePayload(r, []byte(s.webhookSecret))
+	payload, err := github.ValidatePayload(r, []byte(a.webhookSecret))
 	if err != nil {
 		return nil, "", fmt.Errorf("validate: %w", err)
 	}
@@ -170,8 +140,8 @@ func (s *Server) getPayload(ctx context.Context, r *http.Request) (any, string, 
 	return event, eventType, nil
 }
 
-func (s *Server) installEvent(ctx context.Context, event *github.InstallationEvent) error {
-	ctx, span := s.o.T.Start(ctx, "installEvent")
+func (a *App) installEvent(ctx context.Context, event *github.InstallationEvent) error {
+	ctx, span := a.o.T.Start(ctx, "installEvent")
 	defer span.End()
 
 	owner := *event.Installation.Account.Login
@@ -186,19 +156,19 @@ func (s *Server) installEvent(ctx context.Context, event *github.InstallationEve
 	switch *event.Action {
 	case "created":
 		if _, ok := defaultConfig[owner]; !ok {
-			return s.o.Err(ctx, "ignoring owner", errors.New("unknown owner"))
+			return a.Err(ctx, "ignoring owner", errors.New("unknown owner"))
 		}
 
 		for _, repo := range event.Repositories {
-			err := s.setDefaults(ctx, installID, owner, *repo.Name, *repo.Fork)
+			err := a.setDefaults(ctx, installID, owner, *repo.Name, *repo.Fork)
 			if err != nil {
-				s.o.Err(ctx, "set defaults", err)
+				a.Err(ctx, "set defaults", err)
 				errs = ErrSetDefaults
 				continue
 			}
 		}
 	default:
-		s.o.L.LogAttrs(ctx, slog.LevelDebug, "ignoring action",
+		a.o.L.LogAttrs(ctx, slog.LevelDebug, "ignoring action",
 			slog.String("action", *event.Action),
 		)
 	}
@@ -206,8 +176,8 @@ func (s *Server) installEvent(ctx context.Context, event *github.InstallationEve
 	return errs
 }
 
-func (s *Server) repoEvent(ctx context.Context, event *github.RepositoryEvent) error {
-	ctx, span := s.o.T.Start(ctx, "repoEvent")
+func (a *App) repoEvent(ctx context.Context, event *github.RepositoryEvent) error {
+	ctx, span := a.o.T.Start(ctx, "repoEvent")
 	defer span.End()
 
 	installID := *event.Installation.ID
@@ -225,20 +195,20 @@ func (s *Server) repoEvent(ctx context.Context, event *github.RepositoryEvent) e
 		if _, ok := defaultConfig[owner]; !ok {
 			return nil
 		}
-		err := s.setDefaults(ctx, installID, owner, repo, *event.Repo.Fork)
+		err := a.setDefaults(ctx, installID, owner, repo, *event.Repo.Fork)
 		if err != nil {
 			return ErrSetDefaults
 		}
 	default:
-		s.o.L.LogAttrs(ctx, slog.LevelDebug, "ignoring action",
+		a.o.L.LogAttrs(ctx, slog.LevelDebug, "ignoring action",
 			slog.String("action", *event.Action),
 		)
 	}
 	return nil
 }
 
-func (s *Server) setDefaults(ctx context.Context, installID int64, owner, repo string, fork bool) error {
-	ctx, span := s.o.T.Start(ctx, "setDefaults", trace.WithAttributes(
+func (a *App) setDefaults(ctx context.Context, installID int64, owner, repo string, fork bool) error {
+	ctx, span := a.o.T.Start(ctx, "setDefaults", trace.WithAttributes(
 		attribute.String("owner", owner),
 		attribute.String("repo", repo),
 		attribute.Bool("fork", fork),
@@ -247,7 +217,7 @@ func (s *Server) setDefaults(ctx context.Context, installID int64, owner, repo s
 
 	config := defaultConfig[owner]
 	tr := http.DefaultTransport
-	tr, err := ghinstallation.NewAppsTransport(tr, s.appID, []byte(s.privateKey))
+	tr, err := ghinstallation.NewAppsTransport(tr, a.appID, []byte(a.privateKey))
 	if err != nil {
 		return fmt.Errorf("create ghinstallation transport: %w", err)
 	}
@@ -279,23 +249,19 @@ func (s *Server) setDefaults(ctx context.Context, installID int64, owner, repo s
 	return nil
 }
 
-type dataTransport struct{}
+func (a *App) Err(ctx context.Context, msg string, err error, attrs ...slog.Attr) error {
+	a.o.L.LogAttrs(ctx, slog.LevelError, msg,
+		append(attrs, slog.String("error", err.Error()))...,
+	)
+	if span := trace.SpanFromContext(ctx); span.SpanContext().IsValid() {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, msg)
+	}
 
-func (dataTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	return &http.Response{
-		Body: io.NopCloser(strings.NewReader(req.URL.Opaque)),
-	}, nil
+	return fmt.Errorf("%s: %w", msg, err)
 }
 
-func getBody(client *http.Client, uri string) (string, error) {
-	res, err := client.Get(uri)
-	if err != nil {
-		return "", fmt.Errorf("get %q: %w", uri, err)
-	}
-	defer res.Body.Close()
-	b, err := io.ReadAll(res.Body)
-	if err != nil {
-		return "", fmt.Errorf("read %q: %w", uri, err)
-	}
-	return string(b), nil
+func (a *App) HTTPErr(ctx context.Context, msg string, err error, rw http.ResponseWriter, code int, attrs ...slog.Attr) {
+	err = a.Err(ctx, msg, err, attrs...)
+	http.Error(rw, err.Error(), code)
 }
