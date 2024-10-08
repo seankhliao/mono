@@ -49,6 +49,8 @@ spec:
               value: k8s.pod.uid=$(POD_UID),k8s.container.name=moo
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://otelcol.opentelemetry.svc:4317
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /etc/workload-identity/creds.json
           image: ko://go.seankhliao.com/mono/cmd/moo
           name: moo
           ports:
@@ -56,7 +58,54 @@ spec:
               name: http
             - containerPort: 8081
               name: debug
+          volumeMounts:
+            - name: token
+              mountPath: /var/run/service-account
+              readOnly: true
+            - name: gcp-creds
+              mountPath: /etc/workload-identity
+              readOnly: true
       enableServiceLinks: false
+      serviceAccountName: moo
+      volumes:
+        - name: token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  audience: https://iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami
+                  expirationSeconds: 3600
+                  path: token
+        - name: gcp-creds
+          configMap:
+            name: gcp
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: moo
+  namespace: moo
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gcp
+  namespace: moo
+data:
+  creds.json: |
+    {
+      "universe_domain": "googleapis.com",
+      "type": "external_account",
+      "audience": "//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami",
+      "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+      "token_url": "https://sts.googleapis.com/v1/token",
+      "credential_source": {
+        "file": "/var/run/service-account/token",
+        "format": {
+          "type": "text"
+        }
+      },
+      "token_info_url": "https://sts.googleapis.com/v1/introspect"
+    }
 ---
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute

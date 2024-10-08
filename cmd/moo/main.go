@@ -6,7 +6,8 @@ import (
 
 func main() {
 	yrun.Run(yrun.RunConfig[Config, App]{
-		New:  New,
-		HTTP: Register,
+		Config: yrun.FromBucket[Config]("gs://config-liao-dev", "moo.cue"),
+		New:    New,
+		HTTP:   Register,
 	})
 }
