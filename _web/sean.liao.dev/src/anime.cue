@@ -85,6 +85,7 @@ _data: [
 	["2024-06-13", 8, 42351, ["Senpai ga Uzai Kouhai no Hanashi", "My Senpai is Annoying"]],
 	["2024-05-27", 8, 18119, ["Servant x Service", "Servant x Service"]],
 	["2024-06-07", 7, 38759, ["Sewayaki Kitsune no Senko-san", "The Helpful Fox Senko-san"]],
+	["2024-10-09", 7, 58426, ["Shikanoko Nokonoko Koshitantan", "My Deer Friend Nokotan"]],
 	["2024-05-07", 10, 52991, ["Sousou no Frieren", "Frieren: Beyond Journey's End"]],
 	["2024-05-18", 8, 56885, ["Sousou no Frieren: ●● no Mahou", "Frieren: Beyond Journey's End Mini Anime"]],
 	["2024-07-02", 8, 50265, ["Spy x Family", "SPY×FAMILY"]],
