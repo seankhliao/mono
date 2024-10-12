@@ -76,6 +76,7 @@ _data: [
 	["2024-06-03", 8, 33674, ["No Game No Life: Zero", "No Game, No Life: Zero"]],
 	["2024-06-19", 9, 52034, ["Oshi no Ko", "Oshi no Ko"], "**Hoshino Ai** is the embodiment of the perfect lie we want to believe in"],
 	["2024-06-02", 8, 50739, ["Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken", "The Angel Next Door Spoils Me Rotten"]],
+	["2024-10-12", 5, 40436, ["Peter Grill to Kenja no Jikan", "Peter Grill and the Philosopher's Time"]],
 	["2024-09-09", 7, 48363, ["RPG Fudousan", "RPG Real Estate"]],
 	["2024-07-07", 8, 37450, ["Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai", "Rascal Does Not Dream of Bunny Girl Senpai"]],
 	["2024-07-08", 8, 38329, ["Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai", "Rascal Does Not Dream of a Dreaming Girl"]],
