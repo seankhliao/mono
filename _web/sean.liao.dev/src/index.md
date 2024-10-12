@@ -23,7 +23,17 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-11-02_ Kamelot with Blackbriar
 - _12024-10-26_ Hatsune Miku
 - _12024-10-25_ MCM London
-- _12024-10-11_ One OK Rock
+
+##### _12024-10-11_ ONE OK rock
+
+I remember being really impressed by the lights at this show.
+I felt a sense of familiarity from the music of [_ONE OK ROCK_],
+not sure if it was the fragments reused between songs or if it was from elsewhere.
+In style, I think I should have liked it more,
+they felt quite similar to [_Against the Current_] 
+(I can see why they worked together for [Dreaming Alone](https://www.youtube.com/watch?v=G6aBAQsq5jI)).
+I probably liked the guitarist more than the vocalist...
+Plus, there was a surprise appearance from [_Ed Sheeran_].
 
 ##### _12024-10-04_ Visions of Atlantis
 
@@ -1010,6 +1020,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Annika Bennett_]: https://www.instagram.com/annikabennetttt
 [_ari abdul_]: https://www.instagram.com/arianna.abdul
 [_Ashnikko_]: https://www.instagram.com/ashnikko
+[_ASP_]: https://www.youtube.com/@ASPOfficialChannel
 [_ATARASHII GAKKO_]: https://www.instagram.com/japan_leaders
 [_AURORA_]: https://www.instagram.com/auroramusic/
 [_Ava Max_]: https://www.instagram.com/avamax/reels
@@ -1019,6 +1030,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Bear’s Den_]: https://www.instagram.com/bearsdenmusic
 [_Beth McCarthy_]: https://www.instagram.com/bethmaymccarthy
 [_Billie Eilish_]: https://www.instagram.com/billieeilish
+[_BiS_]: https://www.youtube.com/@BiS_official
 [_Blackpink_]: https://www.instagram.com/blackpinkofficial
 [_Black Veil Brides_]: https://www.instagram.com/blackveilbrides
 [_briskin_]: https://www.instagram.com/briskin
@@ -1043,6 +1055,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Delain_]: https://www.instagram.com/delainofficial
 [_Detweiler_]: https://www.instagram.com/detweilerband
 [_Echosmith_]: https://www.instagram.com/echosmith
+[_Ed Sheeran_]: https://www.youtube.com/@EdSheeran
 [_Eden Hunter_]: https://www.instagram.com/edenhunter_
 [_Elena Flury_]: https://www.instagram.com/elenaflury
 [_Emi Jeen_]: https://www.instagram.com/emijeen
@@ -1099,6 +1112,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_McKenna Michels_]: https://www.instagram.com/mckennamichelsmusic
 [_Melanie Martinez_]: https://www.instagram.com/littlebodybigheart
 [_Mone Kamishiraishi_]: https://www.instagram.com/mone_kamishiraishi
+[_MONSTERIDOL_]: https://www.youtube.com/@MONSTERIDOL
 [_Mothica_]: https://www.instagram.com/mothica
 [_National Children's Orchestra_]: https://www.instagram.com/nco_gb
 [_Nectar Woode_]: https://www.instagram.com/nectarwoode
@@ -1107,6 +1121,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_NINA_]: https://www.instagram.com/ninasounduk
 [_Nina Nesbitt_]: https://www.instagram.com/ninanesbitt
 [_Nothing, Nowhere_]: https://www.instagram.com/nothingnowhere
+[_ONE OK ROCK_]: https://www.youtube.com/@ONEOKROCK
 [_Overlaps_]: https://www.instagram.com/overlapsofficial
 [_Paris Paloma_]: https://www.instagram.com/parispaloma
 [_Peach PRC_]: https://www.instagram.com/peachprc
@@ -1133,19 +1148,16 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_The Pretty Reckless_]: https://www.instagram.com/theprettyreckless
 [_The Rose_]: https://www.instagram.com/official_therose
 [_The Staves_]: https://www.instagram.com/thestaves
-[_Unflirt_]: https://www.instagram.com/unflirt
-[_Uninvited_]: https://www.instagram.com/officialuninvited
-[_UPSAHL_]: https://www.instagram.com/whatsupsahl
-[_Valencia Grace_]: https://www.instagram.com/valenciagrace
-[_Wargasm_]: https://www.instagram.com/thisiswargasmuk
-[_Xandria_]: https://www.instagram.com/xandria_official
-[_XYLO_]: https://www.instagram.com/xylo
-[_Yaeger_]: https://www.instagram.com/yaegerofficial
-[_Yeule_]: https://www.instagram.com/yeule
-[_Yours Truly_]: https://www.instagram.com/yourstruly_band
-[_Zara Larsson_]: https://www.instagram.com/zaralarsson
-[_Zoey Lily_]: https://www.instagram.com/mezoeylily
-[_MONSTERIDOL_]: https://monsteridol.jp/
-[_BiS_]: https://www.brandnewidolsociety.tokyo/
-[_ASP_]: https://asp-japan.tokyo/
-[_Visions of Atlantis_]: https://www.instagram.com/visionsofatlantis/
+[_Unflirt_]: https://www.youtube.com/@unflirt
+[_Uninvited_]: https://www.youtube.com/@uninvitedmusicuk
+[_UPSAHL_]: https://www.youtube.com/@UPSAHL
+[_Valencia Grace_]: https://www.youtube.com/@valenciagrace
+[_Visions of Atlantis_]: https://www.youtube.com/channel/UCApO4MrBvEpTflysX3c2gOQ
+[_Wargasm_]: https://www.youtube.com/@wargasm135
+[_Xandria_]: https://www.youtube.com/channel/UCKfzrr0MMPH_xFAx0JCD0-A
+[_XYLO_]: https://www.youtube.com/channel/UCjGluI_WgtTXBTQDDtNcCVw
+[_Yaeger_]: https://www.youtube.com/channel/UCtOP4Y7jv2v4-25P9rpEA0Q
+[_Yeule_]: https://www.youtube.com/channel/UCAAAQDyYsbuJbixvl1Z0k0w
+[_Yours Truly_]: https://www.youtube.com/channel/UCEZKZZtotUSaAnzJVuW-uvA
+[_Zara Larsson_]: https://www.youtube.com/channel/UCjNRJBlxvvS0UXAT2Ack-QQ
+[_Zoey Lily_]: https://www.youtube.com/@ZoeyLily
