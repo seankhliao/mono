@@ -1009,51 +1009,51 @@ the energy levels are high.
 for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Chrissy Costanza_] is a bundle of energy bouncing around the front of the stage.
 
-[_Against the Current_]: https://www.instagram.com/againstthecurrent
-[_Air Drawn Dagger_]: https://www.instagram.com/airdrawndaggerband
+[_Against the Current_]: https://www.youtube.com/@againstthecurrent
+[_Air Drawn Dagger_]: https://www.youtube.com/@AirDrawnDagger
 [_Aisling McGlynn_]: https://www.anuna.ie/aisling-mcglynn
-[_AJA_]: https://www.instagram.com/itsaja
-[_Akase Akari_]: https://www.instagram.com/akaseakari_official
-[_Alessandra_]: https://www.instagram.com/alessandram02
-[_Allie X_]: https://www.instagram.com/alliex
-[_Anna of the North_]: https://www.instagram.com/annaofthenorth
-[_Annika Bennett_]: https://www.instagram.com/annikabennetttt
-[_ari abdul_]: https://www.instagram.com/arianna.abdul
-[_Ashnikko_]: https://www.instagram.com/ashnikko
+[_AJA_]: https://www.youtube.com/@itsAJAmusic
+[_Akase Akari_]: https://www.youtube.com/@akaseakari174
+[_Alessandra_]: https://www.youtube.com/@alessandrasmusic
+[_Allie X_]: https://www.youtube.com/@AllieXXXXandra
+[_Anna of the North_]: https://www.youtube.com/@annaofthenorthforreal
+[_Annika Bennett_]: https://www.youtube.com/@AnnikaBennett
+[_ari abdul_]: https://www.youtube.com/@AriAbdul
+[_Ashnikko_]: https://www.youtube.com/@Ashnikko
 [_ASP_]: https://www.youtube.com/@ASPOfficialChannel
-[_ATARASHII GAKKO_]: https://www.instagram.com/japan_leaders
-[_AURORA_]: https://www.instagram.com/auroramusic/
-[_Ava Max_]: https://www.instagram.com/avamax/reels
-[_AViVA_]: https://www.instagram.com/thisisaviva
-[_Avril Lavigne_]: https://www.instagram.com/avrillavigne
-[_BANKS_]: https://www.instagram.com/hernameisbanks
-[_Bear’s Den_]: https://www.instagram.com/bearsdenmusic
-[_Beth McCarthy_]: https://www.instagram.com/bethmaymccarthy
-[_Billie Eilish_]: https://www.instagram.com/billieeilish
+[_ATARASHII GAKKO_]: https://www.youtube.com/@ATARASHIIGAKKO
+[_AURORA_]: https://www.youtube.com/@AuroraMusic
+[_Ava Max_]: https://www.youtube.com/@avamax
+[_AViVA_]: https://www.youtube.com/@thisisaviva
+[_Avril Lavigne_]: https://www.youtube.com/@AvrilLavigne
+[_BANKS_]: https://www.youtube.com/@banks
+[_Bear’s Den_]: https://www.youtube.com/@bearsdenmusic
+[_Beth McCarthy_]: https://www.youtube.com/@BethMcCarthy
+[_Billie Eilish_]: https://www.youtube.com/@BillieEilish
 [_BiS_]: https://www.youtube.com/@BiS_official
-[_Blackpink_]: https://www.instagram.com/blackpinkofficial
-[_Black Veil Brides_]: https://www.instagram.com/blackveilbrides
-[_briskin_]: https://www.instagram.com/briskin
-[_Caity Baser_]: https://www.instagram.com/caitybaser
-[_Call Me Amour_]: https://www.instagram.com/callmeamour
-[_Cannons_]: https://www.instagram.com/cannonstheband
-[_Caroline Polachek_]: https://www.instagram.com/carolineplz
-[_carpark_]: https://www.instagram.com/carparkband
-[_charlieonnafriday_]: https://www.instagram.com/charlieonnafriday
-[_Charli XCX_]: https://www.instagram.com/charli_xcx
-[_Charlotte Sands_]: https://www.instagram.com/charlottesands
-[_Cherry Dream_]: https://www.instagram.com/itscherrydream
-[_Chineke Orchestra_]: https://www.instagram.com/chinekeorchestra
-[_Chloe Adams_]: https://www.instagram.com/chloeadamsmusic
-[_Chloe Levaillant_]: https://www.instagram.com/chloe_levaillant_music
-[_Chrissy Costanza_]: https://www.instagram.com/chrissycostanza
-[_Christof Van Der Ven_]: https://www.instagram.com/christofvanderven
-[_Clean Bandit_]: https://www.instagram.com/cleanbandit
-[_Cloudy June_]: https://www.instagram.com/cloudyjune
-[_Deadbeat girl_]: https://www.instagram.com/deadbeatgirl
-[_Dead Pony_]: https://www.instagram.com/deadponyband
-[_Delain_]: https://www.instagram.com/delainofficial
-[_Detweiler_]: https://www.instagram.com/detweilerband
+[_Blackpink_]: https://www.youtube.com/@BLACKPINK
+[_Black Veil Brides_]: https://www.youtube.com/@blackveilbrides
+[_briskin_]: https://www.youtube.com/@briskin01
+[_Caity Baser_]: https://www.youtube.com/@caitybaser
+[_Call Me Amour_]: https://www.youtube.com/@CALLMEAMOUR
+[_Cannons_]: https://www.youtube.com/@CannonsTheBand
+[_Caroline Polachek_]: https://www.youtube.com/@CarolinePolachek
+[_carpark_]: https://www.youtube.com/@carparkband
+[_charlieonnafriday_]: https://www.youtube.com/@charlieonnafriday111
+[_Charli XCX_]: https://www.youtube.com/@officialcharlixcx
+[_Charlotte Sands_]: https://www.youtube.com/@charlottesands
+[_Cherry Dream_]: https://www.youtube.com/@itscherrydream
+[_Chineke Orchestra_]: https://www.youtube.com/@ChinekeFoundation
+[_Chloe Adams_]: https://www.youtube.com/@ChloeAdamsMusic
+[_Chloe Levaillant_]: https://www.youtube.com/@chloelevaillant
+[_Chrissy Costanza_]: https://www.youtube.com/@chrissycostanza
+[_Christof Van Der Ven_]: https://www.youtube.com/@CHRISTOFVANDERVEN
+[_Clean Bandit_]: https://www.youtube.com/@cleanbandit
+[_Cloudy June_]: https://www.youtube.com/@CloudyJune
+[_Deadbeat girl_]: https://www.youtube.com/@deadbeatgirl.mp3
+[_Dead Pony_]: https://www.youtube.com/@deadponyband
+[_Delain_]: https://www.youtube.com/@delainofficial
+[_Detweiler_]: https://www.youtube.com/@detweiler5838
 [_Echosmith_]: https://www.youtube.com/@echosmith
 [_Ed Sheeran_]: https://www.youtube.com/@EdSheeran
 [_Eden Hunter_]: https://www.youtube.com/@edenhunter_

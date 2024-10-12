@@ -60,3 +60,6 @@ func Register(a *App, r yrun.HTTPRegistrar) {
 		fmt.Fprintln(w, "hello world")
 	}))
 }
+
+func Debug(a *App, r yrun.HTTPRegistrar) {
+}
