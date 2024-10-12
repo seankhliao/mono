@@ -9,5 +9,6 @@ func main() {
 		Config: yrun.FromBucket[Config]("gs://config-liao-dev", "moo.cue"),
 		New:    New,
 		HTTP:   Register,
+		Debug:  Debug,
 	})
 }
