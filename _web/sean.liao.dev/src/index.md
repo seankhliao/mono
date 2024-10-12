@@ -581,12 +581,12 @@ With [_lleo_], and [_carpark_]
 I think the music for the night was fine.
 [_Beth McCarthy_] was palpably excited.
 
-##### _12023-06-13_ Taylor Acorns
+##### _12023-06-13_ Taylor Acorn
 
 With [_Uninvited_]
 
 Active, intense.
-I don't think I've heard much of [_Taylor Acorns_] songs before then,
+I don't think I've heard much of [_Taylor Acorn_] songs before then,
 but it was good fun for the night.
 
 ##### _12023-06-09_ PRINS
@@ -1054,110 +1054,110 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Dead Pony_]: https://www.instagram.com/deadponyband
 [_Delain_]: https://www.instagram.com/delainofficial
 [_Detweiler_]: https://www.instagram.com/detweilerband
-[_Echosmith_]: https://www.instagram.com/echosmith
+[_Echosmith_]: https://www.youtube.com/@echosmith
 [_Ed Sheeran_]: https://www.youtube.com/@EdSheeran
-[_Eden Hunter_]: https://www.instagram.com/edenhunter_
-[_Elena Flury_]: https://www.instagram.com/elenaflury
-[_Emi Jeen_]: https://www.instagram.com/emijeen
+[_Eden Hunter_]: https://www.youtube.com/@edenhunter_
+[_Elena Flury_]: https://www.youtube.com/@elenaflury
+[_Emi Jeen_]: https://www.youtube.com/@emijeenofficial
 [_Emilia Clarke_]: https://www.instagram.com/emilia_clarke
-[_Emlyn_]: https://www.instagram.com/emlynmusic
-[_eundohee_]: https://www.instagram.com/eundohee
-[_Eva Under Fire_]: https://www.instagram.com/evaunderfire
-[_Eyelar_]: https://www.instagram.com/eyelarx
-[_Fall Out Boy_]: https://www.instagram.com/falloutboy
-[_FEMM_]: https://www.instagram.com/femm____
-[_Fletcher_]: https://www.instagram.com/findingxfletcher
+[_Emlyn_]: https://www.youtube.com/@emlynmusicofficial
+[_eundohee_]: https://www.youtube.com/@eundohee
+[_Eva Under Fire_]: https://www.youtube.com/@EvaUnderFire
+[_Eyelar_]: https://www.youtube.com/@eyelar1201
+[_Fall Out Boy_]: https://www.youtube.com/@falloutboy
+[_FEMM_]: https://www.youtube.com/@FEMM____
+[_Fletcher_]: https://www.youtube.com/@fletcher
 [_galacticbpd_]: https://www.instagram.com/galacticbpd_
-[_girli_]: https://www.instagram.com/girlimusic
-[_girl in red_]: https://www.instagram.com/girlinred
-[_Gracey_]: https://www.instagram.com/gracey
-[_Gretta Ray_]: https://www.instagram.com/grettaray
-[_Griff_]: https://www.instagram.com/wiffygriffy
-[_HAIM_]: https://www.instagram.com/haimtheband
-[_Halestorm_]: https://www.instagram.com/halestormrocks
-[_Halflives_]: https://www.instagram.com/wehavehalflives
-[_Halocene_]: https://www.instagram.com/halocene
-[_Hemlocke Springs_]: https://www.instagram.com/hemlockesprings
-[_ili_]: https://www.instagram.com/thisisili
-[_ILLUMISHADE_]: https://www.instagram.com/illumishade_official/
-[_Isabel LaRosa_]: https://www.instagram.com/isabel.s.larosa
-[_IVE_]: https://www.instagram.com/ivestarship
-[_Jack Garratt_]: https://www.instagram.com/jackgarratt
-[_Jasmine Jethwa_]: https://www.instagram.com/jasminejethwa_
-[_Jayd Marie_]: https://www.instagram.com/jayd.marie
-[_July Jones_]: https://www.instagram.com/julyjones
-[_Kaeto_]: https://www.instagram.com/katieeyo
+[_girli_]: https://www.youtube.com/@girlimusic
+[_girl in red_]: https://www.youtube.com/@girlinred
+[_Gracey_]: https://www.youtube.com/@gracey
+[_Gretta Ray_]: https://www.youtube.com/@GrettaRay
+[_Griff_]: https://www.youtube.com/@wiffygriffy
+[_HAIM_]: https://www.youtube.com/@HaimTheBand
+[_Halestorm_]: https://www.youtube.com/@HalestormRocks
+[_Halflives_]: https://www.youtube.com/@wehavehalflives
+[_Halocene_]: https://www.youtube.com/@Halocene
+[_Hemlocke Springs_]: https://www.youtube.com/@hemlockespringsmusic
+[_ili_]: https://www.youtube.com/@thisisili
+[_ILLUMISHADE_]: https://www.youtube.com/@ILLUMISHADE
+[_Isabel LaRosa_]: https://www.youtube.com/@isabellarosa5800
+[_IVE_]: https://www.youtube.com/@IVEstarship
+[_Jack Garratt_]: https://www.youtube.com/@JackGarratt
+[_Jasmine Jethwa_]: https://www.youtube.com/@jasminejethwa7269
+[_Jayd Marie_]: https://www.youtube.com/@Jayd_Marie
+[_July Jones_]: https://www.youtube.com/@JulyJones
+[_Kaeto_]: https://www.youtube.com/@KaetoEYO
 [_Kanna Hashimoto_]: https://www.instagram.com/kannahashimoto.mg
-[_Katelyn Tarver_]: https://www.instagram.com/katelyntarver
-[_Kimbra_]: https://www.instagram.com/kimbramusic
-[_King Mala_]: https://www.instagram.com/kingmalamusic
-[_Kings Elliot_]: https://www.instagram.com/kingselliot
+[_Katelyn Tarver_]: https://www.youtube.com/@katelyntarver
+[_Kimbra_]: https://www.youtube.com/@kimbramusic
+[_King Mala_]: https://www.youtube.com/@KiNGMALA
+[_Kings Elliot_]: https://www.youtube.com/@KingsElliot
 [_Kotaro Daigo_]: https://www.instagram.com/daigo_kotaro
-[_Larkins_]: https://www.instagram.com/larkinsband
-[_Lekna_]: https://www.instagram.com/lekna_music
-[_Like a Storm_]: https://www.instagram.com/likeastorm
-[_Lizzie Esau_]: https://www.instagram.com/lizzieesau
+[_Larkins_]: https://www.youtube.com/@Larkinsband
+[_Lekna_]: https://www.youtube.com/@leknamusic
+[_Like a Storm_]: https://www.youtube.com/@officiallikeastorm
+[_Lizzie Esau_]: https://www.youtube.com/@lizzieesau
 [_lleo_]: https://www.instagram.com/lleoworld
-[_LØLØ_]: https://www.instagram.com/lolo
-[_London Grammar_]: https://www.instagram.com/londongrammar
-[_LonelyTwin_]: https://www.instagram.com/lonelytwin__
-[_Louis III_]: https://www.instagram.com/louisiii
+[_LØLØ_]: https://www.youtube.com/@lolopopgurl
+[_London Grammar_]: https://www.youtube.com/@LondonGrammar
+[_LonelyTwin_]: https://www.youtube.com/@lonelytwin5291
+[_Louis III_]: https://www.youtube.com/@louisiiiofficial
 [_Lucia_]: https://www.instagram.com/lucifer_fearfull
-[_Lucia & the Best Boys_]: https://www.instagram.com/luciabestboys
-[_Madison Beer_]: https://www.instagram.com/madisonbeer
-[_Mae Stephens_]: https://www.instagram.com/maestephens_
-[_Maeve_]: https://www.instagram.com/maevemusic
-[_Maggie Lindemann_]: https://www.instagram.com/maggielindemann
-[_Maisie Peters_]: https://www.instagram.com/maisiehpeters
-[_McKenna Michels_]: https://www.instagram.com/mckennamichelsmusic
-[_Melanie Martinez_]: https://www.instagram.com/littlebodybigheart
-[_Mone Kamishiraishi_]: https://www.instagram.com/mone_kamishiraishi
+[_Lucia & the Best Boys_]: https://www.youtube.com/@luciabestboys
+[_Madison Beer_]: https://www.youtube.com/@MadisonBeer
+[_Mae Stephens_]: https://www.youtube.com/@MaeStephensOfficial
+[_Maeve_]: https://www.youtube.com/@internetmaeve
+[_Maggie Lindemann_]: https://www.youtube.com/@maggielindemann
+[_Maisie Peters_]: https://www.youtube.com/@MaisieHPeters
+[_McKenna Michels_]: https://www.youtube.com/@mckennamichelsmusic
+[_Melanie Martinez_]: https://www.youtube.com/@MelanieMartinez
+[_Mone Kamishiraishi_]: https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p
 [_MONSTERIDOL_]: https://www.youtube.com/@MONSTERIDOL
-[_Mothica_]: https://www.instagram.com/mothica
-[_National Children's Orchestra_]: https://www.instagram.com/nco_gb
-[_Nectar Woode_]: https://www.instagram.com/nectarwoode
-[_Nessa Barrett_]: https://www.instagram.com/nessabarrett
-[_Nieve Ella_]: https://www.instagram.com/nieveella
-[_NINA_]: https://www.instagram.com/ninasounduk
-[_Nina Nesbitt_]: https://www.instagram.com/ninanesbitt
-[_Nothing, Nowhere_]: https://www.instagram.com/nothingnowhere
+[_Mothica_]: https://www.youtube.com/@Mothica
+[_National Children's Orchestra_]: https://www.youtube.com/@ncogb
+[_Nectar Woode_]: https://www.youtube.com/@NectarWoode
+[_Nessa Barrett_]: https://www.youtube.com/@NessaBarrett
+[_Nieve Ella_]: https://www.youtube.com/@nieveella
+[_NINA_]: https://www.youtube.com/@iloveninamusic
+[_Nina Nesbitt_]: https://www.youtube.com/@ninanesbitt
+[_Nothing, Nowhere_]: https://www.youtube.com/@nothingnowheremusic
 [_ONE OK ROCK_]: https://www.youtube.com/@ONEOKROCK
-[_Overlaps_]: https://www.instagram.com/overlapsofficial
-[_Paris Paloma_]: https://www.instagram.com/parispaloma
-[_Peach PRC_]: https://www.instagram.com/peachprc
-[_phem_]: https://www.instagram.com/phem
-[_Pierce the Veil_]: https://www.instagram.com/piercetheveil
-[_Poppy_]: https://www.instagram.com/impoppy
-[_PVRIS_]: https://www.instagram.com/thisispvris
-[_Radio Wolf_]: https://www.instagram.com/radiowolfmusic
-[_Rebecca Black_]: https://www.instagram.com/msrebeccablack
-[_Rebmoe_]: https://www.instagram.com/rebmoe
-[_renforshort_]: https://www.instagram.com/renforshort
-[_RØRY_]: https://www.instagram.com/its_r_o_r_y
-[_Sabrina Carpenter_]: https://www.instagram.com/sabrinacarpenter
-[_Sadie Fine_]: https://www.instagram.com/sadiefinesingsfine
-[_Scene Queen_]: https://www.instagram.com/scenequeenrocks
-[_SERAINA TELLI_]: https://www.instagram.com/serainatelliofficial/
-[_Skillet_]: https://www.instagram.com/skilletmusic
-[_Sonia Stein_]: https://www.instagram.com/soniasteinmusic
-[_Sophia Alexa_]: https://www.instagram.com/sophiaalexamusic
-[_Spirited Away_]: https://www.instagram.com/spiritedldn
-[_Tate McRae_]: https://www.instagram.com/tatemcrae
-[_Taylor Acorns_]: https://www.instagram.com/tayloracornmusic
-[_The Cruel Knives_]: https://www.instagram.com/thecruelknives
-[_The Pretty Reckless_]: https://www.instagram.com/theprettyreckless
-[_The Rose_]: https://www.instagram.com/official_therose
-[_The Staves_]: https://www.instagram.com/thestaves
+[_Overlaps_]: https://www.youtube.com/@Overlaps
+[_Paris Paloma_]: https://www.youtube.com/@parispaloma
+[_Peach PRC_]: https://www.youtube.com/@PeachPrc
+[_phem_]: https://www.youtube.com/@phem4evr
+[_Pierce the Veil_]: https://www.youtube.com/@piercetheveil
+[_Poppy_]: https://www.youtube.com/@poppy
+[_PVRIS_]: https://www.youtube.com/@PVRIS
+[_Radio Wolf_]: https://www.youtube.com/@RadioWolfMusic
+[_Rebecca Black_]: https://www.youtube.com/@rebecca
+[_Rebmoe_]: https://www.youtube.com/@TheMoestyle
+[_renforshort_]: https://www.youtube.com/@renforshortofficial
+[_RØRY_]: https://www.youtube.com/@its_r_o_r_y
+[_Sabrina Carpenter_]: https://www.youtube.com/@sabrinacarpenter
+[_Sadie Fine_]: https://www.youtube.com/@SadieFineSingsFine
+[_Scene Queen_]: https://www.youtube.com/@scenequeenrocks
+[_SERAINA TELLI_]: https://www.youtube.com/@serainatelli
+[_Skillet_]: https://www.youtube.com/@skilletband
+[_Sonia Stein_]: https://www.youtube.com/@SoniaStein
+[_Sophia Alexa_]: https://www.youtube.com/@SophiaAlexa
+[_Spirited Away_]: https://www.youtube.com/@SpiritedAwayLDN
+[_Tate McRae_]: https://www.youtube.com/@TateMcRae
+[_Taylor Acorn_]: https://www.youtube.com/@TaylorAcorn
+[_The Cruel Knives_]: https://www.youtube.com/@TheCruelKnives
+[_The Pretty Reckless_]: https://www.youtube.com/@tprofficial
+[_The Rose_]: https://www.youtube.com/@theroseofficial
+[_The Staves_]: https://www.youtube.com/@thestaves
 [_Unflirt_]: https://www.youtube.com/@unflirt
 [_Uninvited_]: https://www.youtube.com/@uninvitedmusicuk
 [_UPSAHL_]: https://www.youtube.com/@UPSAHL
 [_Valencia Grace_]: https://www.youtube.com/@valenciagrace
-[_Visions of Atlantis_]: https://www.youtube.com/channel/UCApO4MrBvEpTflysX3c2gOQ
+[_Visions of Atlantis_]: https://www.youtube.com/@VisionsOfAtlantisOfficial
 [_Wargasm_]: https://www.youtube.com/@wargasm135
-[_Xandria_]: https://www.youtube.com/channel/UCKfzrr0MMPH_xFAx0JCD0-A
-[_XYLO_]: https://www.youtube.com/channel/UCjGluI_WgtTXBTQDDtNcCVw
-[_Yaeger_]: https://www.youtube.com/channel/UCtOP4Y7jv2v4-25P9rpEA0Q
-[_Yeule_]: https://www.youtube.com/channel/UCAAAQDyYsbuJbixvl1Z0k0w
-[_Yours Truly_]: https://www.youtube.com/channel/UCEZKZZtotUSaAnzJVuW-uvA
-[_Zara Larsson_]: https://www.youtube.com/channel/UCjNRJBlxvvS0UXAT2Ack-QQ
+[_Xandria_]: https://www.youtube.com/@XandriaOfficial
+[_XYLO_]: https://www.youtube.com/@xylo
+[_Yaeger_]: https://www.youtube.com/@yaegerofficial
+[_Yeule_]: https://www.youtube.com/@yeule
+[_Yours Truly_]: https://www.youtube.com/@yourstrulyofficialband6610
+[_Zara Larsson_]: https://www.youtube.com/@ZaraLarssonOfficial
 [_Zoey Lily_]: https://www.youtube.com/@ZoeyLily
