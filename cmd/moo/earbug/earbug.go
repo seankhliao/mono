@@ -336,14 +336,14 @@ func optionsFromRequest(r *http.Request) getPlaybacksOptions {
 	o := getPlaybacksOptions{
 		Artist: r.FormValue("artist"),
 		Track:  r.FormValue("track"),
+		From:   time.Now().Add(-720 * time.Hour),
+		To:     time.Now(),
 	}
 	if t := r.FormValue("from"); t != "" {
 		ts, err := time.Parse(time.DateOnly, t)
 		if err == nil {
 			o.From = ts
 		}
-	} else {
-		o.From = time.Now().Add(-720 * time.Hour)
 	}
 	if t := r.FormValue("to"); t != "" {
 		ts, err := time.Parse(time.DateOnly, t)
