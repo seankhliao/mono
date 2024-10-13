@@ -514,7 +514,7 @@ func (a *App) handleArtists(rw http.ResponseWriter, r *http.Request) {
 					html.Th(gomponents.Text("time")),
 				),
 			),
-			html.Body(body...),
+			html.TBody(body...),
 		),
 	})
 	webstyle.Structured(rw, o)
@@ -600,7 +600,7 @@ func (a *App) handleTracks(rw http.ResponseWriter, r *http.Request) {
 					html.Th(gomponents.Text("artists")),
 				),
 			),
-			html.Body(body...),
+			html.TBody(body...),
 		),
 	})
 	webstyle.Structured(rw, o)
@@ -644,7 +644,7 @@ func (a *App) handlePlaybacks(rw http.ResponseWriter, r *http.Request) {
 					html.Th(gomponents.Text("artists")),
 				),
 			),
-			html.Body(body...),
+			html.TBody(body...),
 		),
 	})
 	webstyle.Structured(rw, o)
