@@ -338,7 +338,7 @@ func optionsFromRequest(r *http.Request) getPlaybacksOptions {
 		Track:  r.FormValue("track"),
 	}
 	if t := r.FormValue("from"); t != "" {
-		ts, err := time.Parse(time.RFC3339, t)
+		ts, err := time.Parse(time.DateOnly, t)
 		if err == nil {
 			o.From = ts
 		}
@@ -346,7 +346,7 @@ func optionsFromRequest(r *http.Request) getPlaybacksOptions {
 		o.From = time.Now().Add(-720 * time.Hour)
 	}
 	if t := r.FormValue("to"); t != "" {
-		ts, err := time.Parse(time.RFC3339, t)
+		ts, err := time.Parse(time.DateOnly, t)
 		if err == nil {
 			o.To = ts
 		}
@@ -381,7 +381,8 @@ func (a *App) handleArtists(rw http.ResponseWriter, r *http.Request) {
 		sortOrder = "plays"
 	}
 
-	plays := a.getPlaybacks(ctx, optionsFromRequest(r))
+	opts := optionsFromRequest(r)
+	plays := a.getPlaybacks(ctx, opts)
 
 	type TrackData struct {
 		ID    string
@@ -497,6 +498,12 @@ func (a *App) handleArtists(rw http.ResponseWriter, r *http.Request) {
 
 	o := webstyle.NewOptions("earbug", "artists", []gomponents.Node{
 		html.H3(html.Em(gomponents.Text("artist")), gomponents.Text(" by "+sortOrder)),
+		html.P(
+			html.Em(gomponents.Text("from ")),
+			gomponents.Text(opts.From.Format(time.DateOnly)),
+			html.Em(gomponents.Text(" to ")),
+			gomponents.Text(opts.To.Format(time.DateOnly)),
+		),
 		html.Table(
 			html.THead(
 				html.Tr(
@@ -522,7 +529,8 @@ func (a *App) handleTracks(rw http.ResponseWriter, r *http.Request) {
 		sortOrder = "plays"
 	}
 
-	plays := a.getPlaybacks(ctx, optionsFromRequest(r))
+	opts := optionsFromRequest(r)
+	plays := a.getPlaybacks(ctx, opts)
 
 	type TrackData struct {
 		Name    string
@@ -577,6 +585,12 @@ func (a *App) handleTracks(rw http.ResponseWriter, r *http.Request) {
 	}
 	o := webstyle.NewOptions("earbug", "playbacks", []gomponents.Node{
 		html.H3(html.Em(gomponents.Text("tracks")), gomponents.Textf(" by %s", sortOrder)),
+		html.P(
+			html.Em(gomponents.Text("from ")),
+			gomponents.Text(opts.From.Format(time.DateOnly)),
+			html.Em(gomponents.Text(" to ")),
+			gomponents.Text(opts.To.Format(time.DateOnly)),
+		),
 		html.Table(
 			html.THead(
 				html.Tr(
@@ -596,7 +610,8 @@ func (a *App) handlePlaybacks(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "handlePlaybacks")
 	defer span.End()
 
-	plays := a.getPlaybacks(ctx, optionsFromRequest(r))
+	opts := optionsFromRequest(r)
+	plays := a.getPlaybacks(ctx, opts)
 
 	var body []gomponents.Node
 	for _, play := range plays {
@@ -614,6 +629,12 @@ func (a *App) handlePlaybacks(rw http.ResponseWriter, r *http.Request) {
 
 	o := webstyle.NewOptions("earbug", "playbacks", []gomponents.Node{
 		html.H3(html.Em(gomponents.Text("playbacks"))),
+		html.P(
+			html.Em(gomponents.Text("from ")),
+			gomponents.Text(opts.From.Format(time.DateOnly)),
+			html.Em(gomponents.Text(" to ")),
+			gomponents.Text(opts.To.Format(time.DateOnly)),
+		),
 		html.Table(
 			html.THead(
 				html.Tr(
