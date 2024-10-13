@@ -23,6 +23,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-11-02_ Kamelot with Blackbriar
 - _12024-10-26_ Hatsune Miku
 - _12024-10-25_ MCM London
+- _12024-10-23_ Isabel LaRosa
 
 ##### _12024-10-11_ ONE OK rock
 
