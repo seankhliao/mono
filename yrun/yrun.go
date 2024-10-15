@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"net/http/pprof"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"cuelang.org/go/cue/cuecontext"
@@ -90,6 +92,13 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 			return
 		}
 	}
+
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		// only handle once
+		<-ctx.Done()
+		stop()
+	}()
 
 	group, groupCtx := errgroup.WithContext(ctx)
 
