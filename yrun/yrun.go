@@ -2,6 +2,7 @@ package yrun
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"log/slog"
@@ -110,7 +111,11 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 			httplg.LogAttrs(ctx, slog.LevelInfo, "starting http server",
 				slog.String("addr", server.Addr),
 			)
-			return server.ListenAndServe()
+			err := server.ListenAndServe()
+			if err == nil || errors.Is(err, http.ErrServerClosed) {
+				return nil
+			}
+			return err
 		})
 	}
 
@@ -154,7 +159,11 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 			httplg.LogAttrs(ctx, slog.LevelInfo, "starting http server",
 				slog.String("addr", server.Addr),
 			)
-			return server.ListenAndServe()
+			err := server.ListenAndServe()
+			if err == nil || errors.Is(err, http.ErrServerClosed) {
+				return nil
+			}
+			return err
 		})
 	}
 
