@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"go.seankhliao.com/mono/cmd/moo/auth"
 	"go.seankhliao.com/mono/cmd/moo/earbug"
 	"go.seankhliao.com/mono/cmd/moo/ghdefaults"
 	"go.seankhliao.com/mono/cmd/moo/homepage"
@@ -14,6 +15,7 @@ import (
 )
 
 type Config struct {
+	Auth       auth.Config
 	Earbug     earbug.Config
 	GHDefaults ghdefaults.Config
 	Homepage   homepage.Config
@@ -21,6 +23,7 @@ type Config struct {
 }
 
 type App struct {
+	Auth       *auth.App
 	Earbug     *earbug.App
 	GHDefaults *ghdefaults.App
 	Homepage   *homepage.App
@@ -29,6 +32,10 @@ type App struct {
 
 func New(ctx context.Context, c Config, o yrun.O11y) (a *App, err error) {
 	a = &App{}
+	a.Auth, err = auth.New(c.Auth, o)
+	if err != nil {
+		return nil, err
+	}
 	a.Earbug, err = earbug.New(c.Earbug, o)
 	if err != nil {
 		return nil, err
@@ -51,6 +58,7 @@ func New(ctx context.Context, c Config, o yrun.O11y) (a *App, err error) {
 func Register(a *App, r yrun.HTTPRegistrar) {
 	webstatic.Register(r)
 
+	auth.Register(a.Auth, r)
 	earbug.Register(a.Earbug, r)
 	ghdefaults.Register(a.GHDefaults, r)
 	homepage.Register(a.Homepage, r)
@@ -62,4 +70,5 @@ func Register(a *App, r yrun.HTTPRegistrar) {
 }
 
 func Debug(a *App, r yrun.HTTPRegistrar) {
+	auth.Admin(a.Auth, r)
 }
