@@ -498,12 +498,7 @@ func (a *App) handleArtists(rw http.ResponseWriter, r *http.Request) {
 
 	o := webstyle.NewOptions("earbug", "artists", []gomponents.Node{
 		html.H3(html.Em(gomponents.Text("artist")), gomponents.Text(" by "+sortOrder)),
-		html.P(
-			html.Em(gomponents.Text("from ")),
-			gomponents.Text(opts.From.Format(time.DateOnly)),
-			html.Em(gomponents.Text(" to ")),
-			gomponents.Text(opts.To.Format(time.DateOnly)),
-		),
+		form("/artists", sortOrder, opts),
 		html.Table(
 			html.THead(
 				html.Tr(
@@ -585,12 +580,7 @@ func (a *App) handleTracks(rw http.ResponseWriter, r *http.Request) {
 	}
 	o := webstyle.NewOptions("earbug", "playbacks", []gomponents.Node{
 		html.H3(html.Em(gomponents.Text("tracks")), gomponents.Textf(" by %s", sortOrder)),
-		html.P(
-			html.Em(gomponents.Text("from ")),
-			gomponents.Text(opts.From.Format(time.DateOnly)),
-			html.Em(gomponents.Text(" to ")),
-			gomponents.Text(opts.To.Format(time.DateOnly)),
-		),
+		form("/tracks", sortOrder, opts),
 		html.Table(
 			html.THead(
 				html.Tr(
@@ -629,12 +619,7 @@ func (a *App) handlePlaybacks(rw http.ResponseWriter, r *http.Request) {
 
 	o := webstyle.NewOptions("earbug", "playbacks", []gomponents.Node{
 		html.H3(html.Em(gomponents.Text("playbacks"))),
-		html.P(
-			html.Em(gomponents.Text("from ")),
-			gomponents.Text(opts.From.Format(time.DateOnly)),
-			html.Em(gomponents.Text(" to ")),
-			gomponents.Text(opts.To.Format(time.DateOnly)),
-		),
+		form("/playbacks", "", opts),
 		html.Table(
 			html.THead(
 				html.Tr(
@@ -648,6 +633,40 @@ func (a *App) handlePlaybacks(rw http.ResponseWriter, r *http.Request) {
 		),
 	})
 	webstyle.Structured(rw, o)
+}
+
+func form(page, sort string, o getPlaybacksOptions) gomponents.Node {
+	var sortOption []gomponents.Node
+	for _, order := range []string{"plays", "time", "tracks", ""} {
+		sortOption = append(sortOption,
+			html.Option(
+				html.Value(order),
+				gomponents.Text(order),
+				gomponents.If(order == sort, html.Selected())))
+	}
+	return html.Form(
+		html.Action(page), html.Method("get"),
+
+		html.Label(html.For("sort"), gomponents.Text("Sort by")),
+		html.Select(
+			html.ID("sort"), html.Name("sort"), html.Required(),
+			gomponents.Group(sortOption),
+		),
+
+		html.Label(html.For("from"), gomponents.Text("From")),
+		html.Input(html.Type("date"), html.ID("from"), html.Name("from"), html.Required(), html.Value(o.From.Format(time.DateOnly))),
+
+		html.Label(html.For("to"), gomponents.Text("To")),
+		html.Input(html.Type("date"), html.ID("to"), html.Name("to"), html.Required(), html.Value(o.To.Format(time.DateOnly))),
+
+		html.Label(html.For("artist"), gomponents.Text("Artist")),
+		html.Input(html.Type("text"), html.ID("artist"), html.Name("artist"), html.Value(o.Artist)),
+
+		html.Label(html.For("track"), gomponents.Text("Track")),
+		html.Input(html.Type("text"), html.ID("track"), html.Name("track"), html.Value(o.Track)),
+
+		html.Input(html.Type("submit"), html.Value("search")),
+	)
 }
 
 type getPlaybacksOptions struct {
