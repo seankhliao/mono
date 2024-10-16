@@ -292,9 +292,11 @@ fieldset {
 }
 
 /* == texty == */
-input {
+input,
+select {
   appearance: none;
   caret-color: var(--primary);
+  color: var(--text);
   font-size: 1rem;
   height: 2em;
   background-color: var(--background-light);
