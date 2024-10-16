@@ -146,14 +146,6 @@ Some textarea text
 </optgroup>
 </select>
 
-<label for=text-datalist>text input with datalist</label>
-<input type=text list=datalist id=text-datalist name=text-datalist>
-<datalist id=datalist>
-
-<option value=1>option 1</option>
-<option value=2>option 2</option>
-<option value=3>option 3</option>
-</datalist>
 
 <fieldset>
 <legend>a fieldset</legend>
@@ -180,5 +172,13 @@ Some textarea text
 <input type=reset id=reset name=reset>
 <label for=submit>submit input</label>
 <input type=submit id=submit name=submit>
+
+<label for=text-datalist>text input with datalist</label>
+<input type=text list=datalist id=text-datalist name=text-datalist>
+<datalist id=datalist>
+  <option value=1>option 1</option>
+  <option value=2>option 2</option>
+  <option value=3>option 3</option>
+</datalist>
 
 </form>
