@@ -126,7 +126,3 @@ spec:
     - backendRefs:
         - name: moo
           port: 80
-      matches:
-        - path:
-            type: PathPrefix
-            value: /
