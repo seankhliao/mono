@@ -15,6 +15,9 @@ import (
 
 	"cuelang.org/go/cue/cuecontext"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"gocloud.dev/blob"
+	_ "gocloud.dev/blob/fileblob"
+	_ "gocloud.dev/blob/gcsblob"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -26,14 +29,10 @@ type RunConfig[C, A any] struct {
 	// Name is the application name
 	// Name             string
 
-	// Config should return the config to be used for the application,
-	// being an parent [Config] embedding the application config
-	// within the App field.
-	// This uwll usually be a function wrapping one of
-	// [FromBytes[Config[C]]] or [FromBucket[C]]
-	Config func(context.Context) (Config[C], error)
+	// A cue schema, all config should be under the "App" key.
+	AppConfigSchema string
 	// New creates an application struct from the application config struct.
-	New func(context.Context, C, O11y) (*A, error)
+	New func(context.Context, C, *blob.Bucket, O11y) (*A, error)
 	// HTTP is for registering http handlers to the main listener
 	HTTP func(*A, HTTPRegistrar)
 	// Debug is for registering http handlers to the debug handler
@@ -51,48 +50,49 @@ type RunConfig[C, A any] struct {
 
 // Run is intended to be called as the sole function in main.
 func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
-	var err error
-	defer func() {
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			exitCode = 1
-		}
-	}()
+	err := run(r)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		exitCode = 1
+	}
+	return
+}
 
+func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 	ctx := context.Background()
 
+	// command line
 	var configBucket string
 	var configPath string
-	flag.StringVar(&configBucket, "config-bucket", "", "url reference to bucket") // TODO
-	flag.StringVar(&configPath, "config-path", "", "path to config file in bucket")
+	flag.StringVar(&configBucket, "config-bucket", "file://", "url reference to bucket (file:// or gs://)")
+	flag.StringVar(&configPath, "config-path", "config.cue", "path to config file in bucket")
 	flag.Parse()
 	if flag.NArg() > 0 {
-		err = fmt.Errorf("unexpected args: %v", flag.Args())
-		return
+		return fmt.Errorf("unexpected args: %v", flag.Args())
 	}
 
-	if r.Config == nil {
-		if configBucket != "" && configPath != "" {
-			r.Config = FromBucket[C](configBucket, configPath)
-		} else {
-			r.Config = defaultConfig[C]
-		}
-	}
-	conf, err := r.Config(ctx)
+	// storage
+	bkt, err := blob.OpenBucket(ctx, configBucket)
 	if err != nil {
-		return
+		return fmt.Errorf("open config bucket %q: %w", configBucket, err)
+	}
+	defer bkt.Close()
+
+	// config file
+	configBytes, err := bkt.ReadAll(ctx, configPath)
+	if err != nil {
+		return fmt.Errorf("read config file bucket = %q path = %q: %w", configBucket, configPath, err)
+	}
+	mergedSchema := baseSchema + "\n" + runConfig.AppConfigSchema
+	config, err := FromBytes[Config[AppConfig]](mergedSchema, configBytes)
+	if err != nil {
+		return fmt.Errorf("parse config file: %w", err)
 	}
 
-	o11y, o11yRef := NewO11y(conf.O11y)
+	// o11y
+	o11y, o11yRef := NewO11y(config.O11y)
 
-	var app *A
-	if r.New != nil {
-		app, err = r.New(ctx, conf.App, o11y)
-		if err != nil {
-			return
-		}
-	}
-
+	// signal handling, groyp runner
 	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		// only handle once
@@ -100,11 +100,18 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 		stop()
 	}()
 
+	// app setup
+	app, err := runConfig.New(ctx, config.App, bkt, o11y)
+	if err != nil {
+		return fmt.Errorf("instantiate app: %w", err)
+	}
+
 	group, groupCtx := errgroup.WithContext(ctx)
 
-	if r.HTTP != nil {
+	// HTTP app
+	if runConfig.HTTP != nil {
 		mux := http.NewServeMux()
-		r.HTTP(app, &muxRegister{mux})
+		runConfig.HTTP(app, &muxRegister{mux, make(map[string]struct{})})
 
 		// add http server
 		group.Go(func() error {
@@ -112,7 +119,7 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 			httplg := slog.New(httplh)
 
 			server := &http.Server{
-				Addr:              conf.HTTP.Address,
+				Addr:              config.HTTP.Address,
 				Handler:           otelhttp.NewHandler(mux, "serve http"),
 				ReadHeaderTimeout: 10 * time.Second,
 				ErrorLog:          slog.NewLogLogger(httplh, slog.LevelWarn),
@@ -128,12 +135,13 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 		})
 	}
 
-	if r.StartTasks != nil {
+	// Background tasks
+	if runConfig.StartTasks != nil {
 		o11y.L.WithGroup("background-tasks").LogAttrs(ctx, slog.LevelInfo, "starting background tasks")
-		r.StartTasks(app, ctx, group.Go)
+		runConfig.StartTasks(app, ctx, group.Go)
 	}
 
-	// TODO: conditional creation?
+	// Debug http server
 	{
 		mx, getMux := debugMux()
 		// zpages
@@ -141,7 +149,7 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 		mx.Pattern("GET", "", "/debug/trace/", o11yRef.TraceZpage)
 		mx.Pattern("GET", "", "/debug/config", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 			cuectx := cuecontext.New()
-			val := cuectx.Encode(conf)
+			val := cuectx.Encode(config)
 			fmt.Fprintln(rw, val)
 		}))
 		// pprof
@@ -151,8 +159,8 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 		mx.Pattern("GET", "", "/debug/pprof/symbol", http.HandlerFunc(pprof.Symbol))
 		mx.Pattern("GET", "", "/debug/pprof/trace", http.HandlerFunc(pprof.Trace))
 
-		if r.Debug != nil {
-			r.Debug(app, mx)
+		if runConfig.Debug != nil {
+			runConfig.Debug(app, mx)
 		}
 
 		// add debug server
@@ -160,7 +168,7 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 			httplh := o11y.H.WithGroup("internal-http")
 			httplg := slog.New(httplh)
 			server := &http.Server{
-				Addr:              conf.Debug.Address,
+				Addr:              config.Debug.Address,
 				Handler:           getMux(),
 				ReadHeaderTimeout: 10 * time.Second,
 				ErrorLog:          slog.NewLogLogger(httplh, slog.LevelWarn),
@@ -176,10 +184,10 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 		})
 	}
 
-	if r.RegisterShutdown != nil {
+	if runConfig.RegisterShutdown != nil {
 		shutlg := o11y.L.WithGroup("register-shutdown")
 		shutlg.LogAttrs(ctx, slog.LevelInfo, "registering shutdown functions")
-		r.RegisterShutdown(app, ctx, func(f func(context.Context) error) {
+		runConfig.RegisterShutdown(app, ctx, func(f func(context.Context) error) {
 			group.Go(func() error {
 				<-groupCtx.Done()
 				timeOut := 5 * time.Second
@@ -192,6 +200,5 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 		})
 	}
 
-	err = group.Wait()
-	return
+	return group.Wait()
 }
