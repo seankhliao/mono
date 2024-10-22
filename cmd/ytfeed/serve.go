@@ -14,8 +14,8 @@ import (
 	"time"
 
 	"cuelang.org/go/cue/cuecontext"
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/httpencoding"

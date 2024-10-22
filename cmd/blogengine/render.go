@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"go.seankhliao.com/mono/webstyle"
 )
 

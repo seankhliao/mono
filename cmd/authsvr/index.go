@@ -11,8 +11,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"go.etcd.io/bbolt"
 	"go.seankhliao.com/mono/webstyle"
 )

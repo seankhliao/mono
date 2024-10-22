@@ -10,8 +10,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"go.seankhliao.com/mono/framework"
 	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"

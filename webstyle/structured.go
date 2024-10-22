@@ -5,8 +5,8 @@ import (
 	_ "embed"
 	"io"
 
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
 var (

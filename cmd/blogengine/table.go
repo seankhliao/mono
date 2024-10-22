@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"cuelang.org/go/cue/cuecontext"
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"go.seankhliao.com/mono/webstyle"
 )
 
