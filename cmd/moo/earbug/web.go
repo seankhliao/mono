@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv4"
 	"go.seankhliao.com/mono/webstyle"
 )

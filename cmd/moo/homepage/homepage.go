@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/webstyle"
 	"go.seankhliao.com/mono/yrun"

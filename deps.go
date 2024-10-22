@@ -7,8 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-
-	_ "github.com/bufbuild/buf/cmd/buf"
 )
 
 //go:generate go run deps.go
