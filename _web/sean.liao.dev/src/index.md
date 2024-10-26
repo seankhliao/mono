@@ -16,12 +16,41 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12025-07-17_ Billie Eilish
+- _12025-05-30_ Babymetal
 - _12025-03-13_ Clairo
 - _12024-11-29_ renforshort
 - _12024-11-27_ WACK in the UK Vol 4 <!-- MONSTER IDOL , ASP , ExWHYZ -->
 - _12024-11-15_ UPSAHL
 - _12024-11-02_ Kamelot with Blackbriar
-- _12024-10-26_ Hatsune Miku
+
+###### _12024-10-26_ Hatsune Miku
+
+So there's a real band,
+but for this concert,
+[_Hatsune Miku_] was just on a really large screen.
+The motion was fluid (I think motion captured),
+and the hair physic pretty good (for the non crary hair styles).
+It was certainly a special experience,
+but I was more hoping that they would have taken advantage of the fact that Miku was digital
+and wouldn't be limited by real world physics.
+As it stands, it's like a real concert, but the lead vocals is... virtual.
+
+###### _12024-10-26_ MCM London Comic Con
+
+Second day,
+I was only here for a short while to see the cosplays.
+As usual, I just wandered around,
+this time I discovered that there was an entire outdoors section
+full of cosplayers and photographers.
+About the cosplays:
+
+- Frieren and Fern were in abundance
+- Lots of Spidermans and Deadpools
+- Quite a few Yor Forgers, children as Anya were especially cute
+- Nezuko was another popular choice for children
+- Lots of jedis, some clone/storm troopers
+- Ciri was also quite recognizable
+- Makima seemed difficult for a lot people to pull of properly
 
 ###### _12024-10-25_ MCM London Comic Con
 
@@ -1090,6 +1119,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Halestorm_]: https://www.youtube.com/@HalestormRocks
 [_Halflives_]: https://www.youtube.com/@wehavehalflives
 [_Halocene_]: https://www.youtube.com/@Halocene
+[_Hatsune Miku_]: https://www.youtube.com/@HatsuneMiku
 [_Hemlocke Springs_]: https://www.youtube.com/@hemlockespringsmusic
 [_ili_]: https://www.youtube.com/@thisisili
 [_ILLUMISHADE_]: https://www.youtube.com/@ILLUMISHADE
