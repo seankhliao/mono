@@ -22,8 +22,20 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-11-15_ UPSAHL
 - _12024-11-02_ Kamelot with Blackbriar
 - _12024-10-26_ Hatsune Miku
-- _12024-10-25_ MCM London
-- _12024-10-23_ Isabel LaRosa
+
+###### _12024-10-25_ MCM London Comic Con
+
+Lots of cosplays to see,
+though I'm not sure if I can accurately judge the quality of them...
+Obviously whatever's trending is going to get a lot of cosplays,
+I saw quite a few people as Frieren, Fern, Marcille
+Lots of stalls selling trinkets.
+Most of the stage things were kinda meh tbh.
+
+##### _12024-10-23_ Isabel LaRosa
+
+[_Isabel LaRosa_] was a bit less dreamy than in the recordings.
+It felt a bit like yet another pop show...
 
 ##### _12024-10-11_ ONE OK rock
 
@@ -31,7 +43,7 @@ I remember being really impressed by the lights at this show.
 I felt a sense of familiarity from the music of [_ONE OK ROCK_],
 not sure if it was the fragments reused between songs or if it was from elsewhere.
 In style, I think I should have liked it more,
-they felt quite similar to [_Against the Current_] 
+they felt quite similar to [_Against the Current_]
 (I can see why they worked together for [Dreaming Alone](https://www.youtube.com/watch?v=G6aBAQsq5jI)).
 I probably liked the guitarist more than the vocalist...
 Plus, there was a surprise appearance from [_Ed Sheeran_].
