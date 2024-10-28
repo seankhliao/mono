@@ -65,6 +65,7 @@ _data: [
 	["2024-05-20", 7, 50380, ["Paripi Koumei", "Ya Boy Kongming!"]],
 	["2024-08-21", 7, 54722, ["Mahou Shoujo ni Akogarete", "Gushing over Magical Girls"]],
 	["2024-06-29", 8, 40571, ["Majo no Tabitabi", "Wandering Witch: The Journey of Elaina"], "**Elaina** is confidently cute"],
+	["2024-10-28", 7, 52973, ["Megami no Café Terrace", "The Café Terrace and Its Goddesses"]],
 	["2024-06-21", 8, 39535, ["Mushoku Tensei: Isekai Ittara Honki Dasu", "Mushoku Tensei: Jobless Reincarnation"], "**Roxy** is cute (and surrounded by creeps), **Eris** is wild in a cute way"],
 	["2024-06-22", 8, 45576, ["Mushoku Tensei: Isekai Ittara Honki Dasu Part 2", "Mushoku Tensei: Jobless Reincarnation Part 2"]],
 	["2024-06-22", 8, 50360, ["Mushoku Tensei: Isekai Ittara Honki Dasu - Eris no Goblin Toubatsu", "Mushoku Tensei: Jobless Reincarnation - Eris the Goblin Slayer"]],
