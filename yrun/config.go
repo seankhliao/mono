@@ -22,9 +22,10 @@ type Config[AppConfig any] struct {
 	App   AppConfig
 }
 
-func FromBytes[T any](schema string, config []byte) (conf T, err error) {
+func FromBytes[T any](baseSchema, appSchema string, config []byte) (conf T, err error) {
 	ctx := cuecontext.New()
-	val := ctx.CompileString(schema)
+	val := ctx.CompileString(baseSchema)
+	val = val.Unify(ctx.CompileString(appSchema))
 	val = val.Unify(ctx.CompileBytes(config))
 
 	err = val.Validate(cue.Final())

@@ -23,10 +23,16 @@ type Store[T proto.Message] struct {
 	nextUpdate *time.Timer
 }
 
-func NewStore[T proto.Message](ctx context.Context, bkt *blob.Bucket, key string) (*Store[T], error) {
-	s := &Store[T]{
-		bkt: bkt,
-		key: key,
+type storer[T any] interface {
+	proto.Message
+	*T
+}
+
+func NewStore[T any, P storer[T]](ctx context.Context, bkt *blob.Bucket, key string) (*Store[P], error) {
+	s := &Store[P]{
+		bkt:  bkt,
+		key:  key,
+		Data: new(T),
 	}
 	s.nextUpdate = time.AfterFunc(24*time.Hour, s.sync)
 

@@ -49,10 +49,11 @@ type App struct {
 	store *yrun.Store[*earbugv4.Store]
 
 	// config
-	host    string
-	bkt     *blob.Bucket
-	dataKey string
-	authURL string
+	host       string
+	bkt        *blob.Bucket
+	dataKey    string
+	authURL    string
+	updateFreq time.Duration
 
 	authState atomic.Pointer[AuthState]
 }
@@ -70,16 +71,17 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 		http: &http.Client{
 			Transport: otelhttp.NewTransport(http.DefaultTransport),
 		},
-		host:    c.Host,
-		bkt:     bkt,
-		dataKey: c.Key,
-		authURL: c.AuthURL,
+		host:       c.Host,
+		bkt:        bkt,
+		dataKey:    c.Key,
+		authURL:    c.AuthURL,
+		updateFreq: c.UpdateFreq,
 	}
 
 	ctx, span := o.T.Start(ctx, "initData")
 	defer span.End()
 
-	store, err := yrun.NewStore[*earbugv4.Store](ctx, bkt, c.Key)
+	store, err := yrun.NewStore[earbugv4.Store](ctx, bkt, c.Key)
 	if err != nil {
 		return nil, fmt.Errorf("init data.store.Data: %w", err)
 	}
@@ -120,4 +122,15 @@ func (a *App) Err(ctx context.Context, msg string, err error, attrs ...slog.Attr
 func (a *App) HTTPErr(ctx context.Context, msg string, err error, rw http.ResponseWriter, code int, attrs ...slog.Attr) {
 	err = a.Err(ctx, msg, err, attrs...)
 	http.Error(rw, err.Error(), code)
+}
+
+func (a *App) Update() error {
+	for {
+		ctx := context.Background()
+		ctx, cancel := context.WithTimeout(ctx, a.updateFreq)
+		a.update(ctx)
+		cancel()
+
+		time.Sleep(a.updateFreq)
+	}
 }

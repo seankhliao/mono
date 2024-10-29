@@ -83,8 +83,7 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 	if err != nil {
 		return fmt.Errorf("read config file bucket = %q path = %q: %w", configBucket, configPath, err)
 	}
-	mergedSchema := baseSchema + "\n" + runConfig.AppConfigSchema
-	config, err := FromBytes[Config[AppConfig]](mergedSchema, configBytes)
+	config, err := FromBytes[Config[AppConfig]](baseSchema, runConfig.AppConfigSchema, configBytes)
 	if err != nil {
 		return fmt.Errorf("parse config file: %w", err)
 	}

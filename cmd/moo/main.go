@@ -21,6 +21,7 @@ func main() {
 		AppConfigSchema: schema,
 		New:             New,
 		HTTP:            Register,
+		StartTasks:      StartTasks,
 		Debug:           Debug,
 	})
 }
@@ -86,4 +87,8 @@ func Register(a *App, r yrun.HTTPRegistrar) {
 
 func Debug(a *App, r yrun.HTTPRegistrar) {
 	auth.Admin(a.Auth, r)
+}
+
+func StartTasks(a *App, ctx context.Context, start func(func() error)) {
+	start(a.Earbug.Update)
 }

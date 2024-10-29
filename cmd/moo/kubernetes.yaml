@@ -52,6 +52,8 @@ spec:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /etc/workload-identity/creds.json
           image: ko://go.seankhliao.com/mono/cmd/moo
+          args:
+            - -config-bucket=gs://moo-liao-dev
           name: moo
           ports:
             - containerPort: 8080
