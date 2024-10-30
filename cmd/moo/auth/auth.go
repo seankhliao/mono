@@ -77,10 +77,13 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 		return nil, fmt.Errorf("init store: %w", err)
 	}
 	if a.store.Data == nil {
-		a.store.Data = &Store{
-			Sessions: make(map[string]*TokenInfo),
-			Users:    make(map[int64]*UserInfo),
-		}
+		a.store.Data = &Store{}
+	}
+	if a.store.Data.Users == nil {
+		a.store.Data.Users = make(map[int64]*UserInfo)
+	}
+	if a.store.Data.Sessions == nil {
+		a.store.Data.Sessions = make(map[string]*TokenInfo)
 	}
 
 	return a, nil
