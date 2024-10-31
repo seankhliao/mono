@@ -36,8 +36,8 @@ func Register(a *App, r yrun.HTTPRegistrar) {
 	r.Pattern("GET", a.host, "/artists", httpencoding.Handler(http.HandlerFunc(a.handleArtists)))
 	r.Pattern("GET", a.host, "/playbacks", httpencoding.Handler(http.HandlerFunc(a.handlePlaybacks)))
 	r.Pattern("GET", a.host, "/tracks", httpencoding.Handler(http.HandlerFunc(a.handleTracks)))
-	r.Pattern("GET", a.host, "/api/auth", http.HandlerFunc(a.hAuthorize))
-	r.Pattern("GET", a.host, "/auth/callback", http.HandlerFunc(a.hAuthCallback))
+	r.Pattern("GET", a.host, "/api/auth", a.Auth(http.HandlerFunc(a.hAuthorize)))
+	r.Pattern("GET", a.host, "/auth/callback", a.Auth(http.HandlerFunc(a.hAuthCallback)))
 }
 
 type App struct {
@@ -47,6 +47,9 @@ type App struct {
 	http  *http.Client
 	spot  *spotify.Client
 	store *yrun.Store[*earbugv4.Store]
+
+	// inserted
+	Auth func(http.Handler) http.Handler
 
 	// config
 	host       string

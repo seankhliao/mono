@@ -52,18 +52,23 @@ func New(ctx context.Context, c Config, bkt *blob.Bucket, o yrun.O11y) (a *App, 
 	if err != nil {
 		return nil, err
 	}
+
 	a.Earbug, err = earbug.New(c.Earbug, bkt, o)
 	if err != nil {
 		return nil, err
 	}
+	a.Earbug.Auth = a.Auth.RequireAuth
+
 	a.GHDefaults, err = ghdefaults.New(c.GHDefaults, o)
 	if err != nil {
 		return nil, err
 	}
+
 	a.Homepage, err = homepage.New(c.Homepage, o)
 	if err != nil {
 		return nil, err
 	}
+
 	a.ReqLog, err = reqlog.New(c.ReqLog, o)
 	if err != nil {
 		return nil, err
