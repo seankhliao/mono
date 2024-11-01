@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"encoding/csv"
 	"flag"
 	"fmt"
 	"io"
@@ -26,8 +27,161 @@ func main() {
 		ViewCommand(),
 		PushCommand(),
 		PullCommand(),
+		ConvertCommand(),
 	))
 }
+
+type Convert struct {
+	filepath string
+	hsbcCard string
+}
+
+func ConvertCommand() ycli.Command {
+	c := &Convert{}
+	return ycli.NewGroup(
+		"convert",
+		"convert card statements to fin data",
+		c.register,
+		ycli.New(
+			"amex",
+			"convert amex statements",
+			nil,
+			c.amex,
+		),
+		ycli.New(
+			"hsbc",
+			"convert hsbc statements",
+			nil,
+			c.hsbc,
+		),
+	)
+}
+
+func (c *Convert) register(fs *flag.FlagSet) {
+	fs.StringVar(&c.filepath, "file", "", "path to statement file")
+	fs.StringVar(&c.hsbcCard, "hsbc", "debit", "hsbc account debit or credit")
+}
+
+func (c *Convert) amex(stdout, stderr io.Writer) error {
+	if c.filepath == "" {
+		return fmt.Errorf("no file given")
+	}
+	b, err := os.ReadFile(c.filepath)
+	if err != nil {
+		return fmt.Errorf("read file: %w", err)
+	}
+	cr := csv.NewReader(bytes.NewReader(b))
+	records, err := cr.ReadAll()
+	if err != nil {
+		return fmt.Errorf("read all records: %w", err)
+	}
+
+	records = records[1:]
+	for i := len(records) - 1; i >= 0; i-- {
+		rec := records[i]
+		date, desc, val := rec[0], rec[1], rec[2]
+		desc = date + " " + desc
+		desc = strings.Join(strings.Fields(desc), " ")
+
+		src := "AMX"
+		dst := categorize(desc)
+
+		val = strings.ReplaceAll(val, ".", "")
+		if val[0] == '-' {
+			val = val[1:]
+			src, dst = dst, src
+		}
+		val = strings.TrimLeft(val, "0")
+
+		fmt.Fprintf(stdout, "[%s, %s, %s, %q],\n", src, dst, val, desc)
+	}
+	return nil
+}
+
+func (c *Convert) hsbc(stdout, stderr io.Writer) error {
+	if c.filepath == "" {
+		return fmt.Errorf("no file given")
+	}
+	b, err := os.ReadFile(c.filepath)
+	if err != nil {
+		return fmt.Errorf("read file: %w", err)
+	}
+	cr := csv.NewReader(bytes.NewReader(b))
+	records, err := cr.ReadAll()
+	if err != nil {
+		return fmt.Errorf("read all records: %w", err)
+	}
+
+	card := "HSB"
+	if c.hsbcCard == "credit" {
+		card = "HSC"
+	}
+
+	for i := len(records) - 1; i >= 0; i-- {
+		rec := records[i]
+		date, desc, val := rec[0], rec[1], rec[2]
+		desc = date + " " + desc
+		desc = strings.Join(strings.Fields(desc), " ")
+
+		dst := card
+		src := categorize(desc)
+
+		val = strings.ReplaceAll(val, ".", "")
+		val = strings.ReplaceAll(val, ",", "")
+		if val[0] == '-' {
+			val = val[1:]
+			src, dst = dst, src
+		}
+
+		val = strings.TrimLeft(val, "0")
+
+		fmt.Fprintf(stdout, "[%s, %s, %s, %q],\n", src, dst, val, desc)
+	}
+	return nil
+}
+
+// func (c *Convert) trading(stdout, stderr io.Writer) error {
+// 	if c.filepath == "" {
+// 		return fmt.Errorf("no file given")
+// 	}
+// 	b, err := os.ReadFile(c.filepath)
+// 	if err != nil {
+// 		return fmt.Errorf("read file: %w", err)
+// 	}
+// 	cr := csv.NewReader(bytes.NewReader(b))
+// 	records, err := cr.ReadAll()
+// 	if err != nil {
+// 		return fmt.Errorf("read all records: %w", err)
+// 	}
+//
+// 	var cashback, interest int
+//
+// 	records = records[1:]
+// 	for i := len(records) - 1; i >= 0; i-- {
+// 		rec := records[i]
+// 		cur := rec[3]
+// 		if cur != "GBP" {
+// 			continue
+// 		}
+//
+// 		val := rec[2]
+// 		val = strings.ReplaceAll(val, ".", "")
+// 		val = strings.TrimPrefix(val, "0")
+// 		value, _ := strconv.Atoi(val)
+// 		switch rec[0] {
+// 		case "Interest on cash":
+// 			interest += value
+// 		case "Spending cashback":
+// 			cashback += value
+// 		case "Card debit":
+// 			date := rec[1]
+//
+// 		}
+//
+// 	}
+//
+// 	return nil
+// }
 
 type View struct {
 	configPath string
