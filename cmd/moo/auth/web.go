@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"time"
 
-	"maragu.dev/gomponents"
-	"maragu.dev/gomponents/html"
 	"go.seankhliao.com/mono/webstyle"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
 //go:embed script.js
@@ -30,9 +30,9 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		// store it
-		a.store.Lock()
-		a.store.Data.Sessions[*tokenInfo.SessionID] = &tokenInfo
-		a.store.Unlock()
+		a.store.Do(func(s *Store) {
+			s.Sessions[tokenInfo.GetSessionID()] = &tokenInfo
+		})
 
 		// send it to the client
 		http.SetCookie(rw, &http.Cookie{
@@ -72,9 +72,10 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a.store.RLock()
-	user := a.store.Data.Users[*info.UserID]
-	a.store.RUnlock()
+	var user *UserInfo
+	a.store.RDo(func(s *Store) {
+		user = s.Users[info.GetUserID()]
+	})
 
 	webstyle.Structured(rw, webstyle.NewOptions("hello "+user.GetUsername(), "auth", []gomponents.Node{
 		html.Script(gomponents.Raw(scriptJS)),
@@ -115,14 +116,11 @@ func (a *App) update(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	func() {
-		a.store.Lock()
-		defer a.store.Unlock()
-
-		user := a.store.Data.Users[*info.UserID]
+	a.store.Do(func(s *Store) {
+		user := s.Users[*info.UserID]
 		user.Username = ptr(r.FormValue("username"))
-		a.store.Data.Users[*info.UserID] = user
-	}()
+		s.Users[*info.UserID] = user
+	})
 
 	http.Redirect(rw, r, "/", http.StatusFound)
 }
@@ -131,9 +129,10 @@ func (a *App) logoutPage(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
-	a.store.RLock()
-	user := a.store.Data.Users[*info.UserID]
-	a.store.RUnlock()
+	var user *UserInfo
+	a.store.RDo(func(s *Store) {
+		user = s.Users[*info.UserID]
+	})
 
 	webstyle.Structured(rw, webstyle.NewOptions("end this session", "logout", []gomponents.Node{
 		html.H3(gomponents.Text("Log out?")),
@@ -149,9 +148,9 @@ func (a *App) logoutAction(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
-	a.store.Lock()
-	delete(a.store.Data.Sessions, *info.SessionID)
-	a.store.Unlock()
+	a.store.Do(func(s *Store) {
+		delete(s.Sessions, info.GetSessionID())
+	})
 
 	http.SetCookie(rw, &http.Cookie{
 		Name:        a.cookieName,

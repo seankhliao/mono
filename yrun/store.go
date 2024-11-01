@@ -16,8 +16,8 @@ type Store[T proto.Message] struct {
 	bkt *blob.Bucket
 	key string
 
-	sync.RWMutex
-	Data T
+	mu   sync.RWMutex
+	data T
 
 	lastUpdate time.Time
 	nextUpdate *time.Timer
@@ -28,11 +28,11 @@ type storer[T any] interface {
 	*T
 }
 
-func NewStore[T any, P storer[T]](ctx context.Context, bkt *blob.Bucket, key string) (*Store[P], error) {
+func NewStore[T any, P storer[T]](ctx context.Context, bkt *blob.Bucket, key string, init func() P) (*Store[P], error) {
 	s := &Store[P]{
 		bkt:  bkt,
 		key:  key,
-		Data: new(T),
+		data: new(T),
 	}
 	s.nextUpdate = time.AfterFunc(24*time.Hour, s.sync)
 
@@ -56,11 +56,25 @@ func NewStore[T any, P storer[T]](ctx context.Context, bkt *blob.Bucket, key str
 		return nil, fmt.Errorf("read from key %q: %w", key, err)
 	}
 
-	err = proto.Unmarshal(b, s.Data)
+	err = proto.Unmarshal(b, s.data)
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal data for key %q: %w", key, err)
 	}
 	return s, nil
+}
+
+func (s *Store[T]) RDo(f func(T)) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	f(s.data)
+}
+
+func (s *Store[T]) Do(f func(T)) {
+	defer s.Sync(context.Background())
+
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	f(s.data)
 }
 
 func (s *Store[T]) Sync(ctx context.Context) {
@@ -79,11 +93,11 @@ func (s *Store[T]) sync() {
 
 	// TODO: handle error
 	_ = func(ctx context.Context) error {
-		b, err := func() ([]byte, error) {
-			s.RLock()
-			defer s.RUnlock()
-			return proto.Marshal(s.Data)
-		}()
+		var b []byte
+		var err error
+		s.RDo(func(t T) {
+			b, err = proto.Marshal(t)
+		})
 		if err != nil {
 			return fmt.Errorf("marshal data: %w", err)
 		}

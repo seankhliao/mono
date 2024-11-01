@@ -1,4 +1,4 @@
-package earbug
+package ulist
 
 import (
 	"context"
@@ -7,9 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
-	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv4"
 	"golang.org/x/oauth2"
 )
 
@@ -35,7 +33,8 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	httpClient := &http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
-	a.spot = spotify.New(a.oauth2.Client(context.WithValue(context.Background(), oauth2.HTTPClient, httpClient), token))
+	ctx = context.WithValue(ctx, oauth2.HTTPClient, httpClient)
+	// a.spo = spotify.New(a.oauth2.Client(ctx, token))
 
 	tokenMarshaled, err := json.Marshal(token)
 	if err != nil {
@@ -43,7 +42,7 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a.store.Do(func(s *earbugv4.Store) {
+	a.store.Do(func(s *Store) {
 		s.Auth.Token = tokenMarshaled
 	})
 

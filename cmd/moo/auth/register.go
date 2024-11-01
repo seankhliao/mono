@@ -21,9 +21,10 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			if adminToken == "" {
 				return nil, fmt.Errorf("no admin token")
 			}
-			a.store.RLock()
-			_, ok := a.store.Data.Sessions[adminToken]
-			a.store.RUnlock()
+			var ok bool
+			a.store.RDo(func(s *Store) {
+				_, ok = s.Sessions[adminToken]
+			})
 			if !ok {
 				return nil, fmt.Errorf("invalid admin token")
 			}
@@ -33,44 +34,41 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 				return nil, fmt.Errorf("empty username")
 			}
 
-			err := func() error {
-				a.store.Lock()
-				defer a.store.Unlock()
-
+			var err error
+			a.store.Do(func(s *Store) {
 				userID := mathrand.Int64()
 				for {
-					_, ok := a.store.Data.Users[userID]
+					_, ok := s.Users[userID]
 					if !ok {
 						break
 					}
 					userID = mathrand.Int64()
 				}
-				for _, user := range a.store.Data.Users {
+				for _, user := range s.Users {
 					if user.GetUsername() == username {
-						return fmt.Errorf("username in use")
+						err = fmt.Errorf("username in use")
+						return
 					}
 				}
-				a.store.Data.Users[userID] = &UserInfo{
+				s.Users[userID] = &UserInfo{
 					UserID:   ptr(userID),
 					Username: ptr(username),
 				}
 
 				info.UserID = &userID
 
-				return nil
-			}()
+				delete(s.Sessions, adminToken)
+			})
 			if err != nil {
 				return nil, err
 			}
-
-			a.store.Lock()
-			delete(a.store.Data.Sessions, adminToken)
-			a.store.Unlock()
 		}
 
-		a.store.RLock()
-		user, ok := a.store.Data.Users[*info.UserID]
-		a.store.RUnlock()
+		var user *UserInfo
+		var ok bool
+		a.store.RDo(func(s *Store) {
+			user, ok = s.Users[info.GetUserID()]
+		})
 		if !ok {
 			return nil, errors.New("user not found")
 		}
@@ -81,9 +79,9 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		info.SessionData, err = json.Marshal(sess)
-		a.store.Lock()
-		a.store.Data.Sessions[*info.SessionID] = info
-		a.store.Unlock()
+		a.store.Do(func(s *Store) {
+			s.Sessions[info.GetSessionID()] = info
+		})
 
 		return create, nil
 	}()
@@ -105,9 +103,11 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
-		a.store.RLock()
-		user, ok := a.store.Data.Users[*info.UserID]
-		a.store.RUnlock()
+		var user *UserInfo
+		var ok bool
+		a.store.RDo(func(s *Store) {
+			user, ok = s.Users[info.GetUserID()]
+		})
 		if !ok {
 			return errors.New("user not found")
 		}
@@ -132,9 +132,9 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 		}
 		user.Credentials = append(user.Credentials, credb)
 
-		a.store.Lock()
-		a.store.Data.Users[*user.UserID] = user
-		a.store.Unlock()
+		a.store.Do(func(s *Store) {
+			s.Users[*user.UserID] = user
+		})
 
 		return nil
 	}()

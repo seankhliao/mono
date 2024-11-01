@@ -21,36 +21,38 @@ func (a *App) update(ctx context.Context) {
 	}
 
 	var added int
-	for _, item := range items {
-		ts := item.PlayedAt.Format(time.RFC3339Nano)
-		if _, ok := a.store.Data.Playbacks[ts]; !ok {
-			added++
-			a.store.Data.Playbacks[ts] = &earbugv4.Playback{
-				TrackId:     item.Track.ID.String(),
-				TrackUri:    string(item.Track.URI),
-				ContextType: item.PlaybackContext.Type,
-				ContextUri:  string(item.PlaybackContext.URI),
+	a.store.Do(func(s *earbugv4.Store) {
+		for _, item := range items {
+			ts := item.PlayedAt.Format(time.RFC3339Nano)
+			if _, ok := s.Playbacks[ts]; !ok {
+				added++
+				s.Playbacks[ts] = &earbugv4.Playback{
+					TrackId:     item.Track.ID.String(),
+					TrackUri:    string(item.Track.URI),
+					ContextType: item.PlaybackContext.Type,
+					ContextUri:  string(item.PlaybackContext.URI),
+				}
 			}
-		}
 
-		if _, ok := a.store.Data.Tracks[item.Track.ID.String()]; !ok {
-			t := &earbugv4.Track{
-				Id:       item.Track.ID.String(),
-				Uri:      string(item.Track.URI),
-				Type:     item.Track.Type,
-				Name:     item.Track.Name,
-				Duration: durationpb.New(item.Track.TimeDuration()),
+			if _, ok := s.Tracks[item.Track.ID.String()]; !ok {
+				t := &earbugv4.Track{
+					Id:       item.Track.ID.String(),
+					Uri:      string(item.Track.URI),
+					Type:     item.Track.Type,
+					Name:     item.Track.Name,
+					Duration: durationpb.New(item.Track.TimeDuration()),
+				}
+				for _, artist := range item.Track.Artists {
+					t.Artists = append(t.Artists, &earbugv4.Artist{
+						Id:   artist.ID.String(),
+						Uri:  string(artist.URI),
+						Name: artist.Name,
+					})
+				}
+				s.Tracks[item.Track.ID.String()] = t
 			}
-			for _, artist := range item.Track.Artists {
-				t.Artists = append(t.Artists, &earbugv4.Artist{
-					Id:   artist.ID.String(),
-					Uri:  string(artist.URI),
-					Name: artist.Name,
-				})
-			}
-			a.store.Data.Tracks[item.Track.ID.String()] = t
 		}
-	}
+	})
 
 	if added > 0 {
 		a.o.L.LogAttrs(ctx, slog.LevelInfo, "updated record", slog.Int("added", added))

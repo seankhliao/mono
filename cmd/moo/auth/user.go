@@ -42,25 +42,25 @@ func (a *App) discoverableUserHandler(rawID, userHandle []byte) (user webauthn.U
 	var u *UserInfo
 	var found bool
 
-	a.store.RLock()
-	defer a.store.RUnlock()
-loop:
-	for _, user := range a.store.Data.Users {
-		creds := User{user}.WebAuthnCredentials()
-		for _, cred := range creds {
-			if string(cred.ID) == string(userHandle) {
-				u = user
-				found = true
-				break loop
-			}
-			if string(cred.ID) == string(rawID) {
-				u = user
-				found = true
-				break loop
-			}
+	a.store.RDo(func(s *Store) {
+	loop:
+		for _, user := range s.Users {
+			creds := User{user}.WebAuthnCredentials()
+			for _, cred := range creds {
+				if string(cred.ID) == string(userHandle) {
+					u = user
+					found = true
+					break loop
+				}
+				if string(cred.ID) == string(rawID) {
+					u = user
+					found = true
+					break loop
+				}
 
+			}
 		}
-	}
+	})
 
 	if !found {
 		return nil, errors.New("handle not found")

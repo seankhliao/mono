@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"maragu.dev/gomponents"
-	"maragu.dev/gomponents/html"
 	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv4"
 	"go.seankhliao.com/mono/webstyle"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
 // /artists?sort=tracks
@@ -378,38 +378,38 @@ func (a *App) getPlaybacks(ctx context.Context, o getPlaybacksOptions) []Playbac
 
 	var plays []Playback
 
-	a.store.RLock()
-	defer a.store.RUnlock()
-	for ts, play := range a.store.Data.Playbacks {
-		startTime, _ := time.Parse(time.RFC3339, ts)
+	a.store.RDo(func(s *earbugv4.Store) {
+		for ts, play := range s.Playbacks {
+			startTime, _ := time.Parse(time.RFC3339, ts)
 
-		if !o.From.IsZero() && o.From.After(startTime) {
-			continue
-		} else if !o.To.IsZero() && o.To.Before(startTime) {
-			continue
-		}
-
-		track := a.store.Data.Tracks[play.TrackId]
-
-		if o.Track != "" && !strings.Contains(strings.ToLower(track.Name), strings.ToLower(o.Track)) {
-			continue
-		}
-
-		artistMatch := o.Artist == ""
-		for _, artist := range track.Artists {
-			if !artistMatch && strings.Contains(strings.ToLower(artist.Name), strings.ToLower(o.Artist)) {
-				artistMatch = true
+			if !o.From.IsZero() && o.From.After(startTime) {
+				continue
+			} else if !o.To.IsZero() && o.To.Before(startTime) {
+				continue
 			}
-		}
-		if !artistMatch {
-			continue
-		}
 
-		plays = append(plays, Playback{
-			StartTime: startTime,
-			Track:     track,
-		})
-	}
+			track := s.Tracks[play.TrackId]
+
+			if o.Track != "" && !strings.Contains(strings.ToLower(track.Name), strings.ToLower(o.Track)) {
+				continue
+			}
+
+			artistMatch := o.Artist == ""
+			for _, artist := range track.Artists {
+				if !artistMatch && strings.Contains(strings.ToLower(artist.Name), strings.ToLower(o.Artist)) {
+					artistMatch = true
+				}
+			}
+			if !artistMatch {
+				continue
+			}
+
+			plays = append(plays, Playback{
+				StartTime: startTime,
+				Track:     track,
+			})
+		}
+	})
 
 	sort.Slice(plays, func(i, j int) bool {
 		return plays[i].StartTime.After(plays[j].StartTime)

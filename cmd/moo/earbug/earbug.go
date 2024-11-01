@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"sync/atomic"
 	"time"
 
 	"github.com/zmb3/spotify/v2"
@@ -25,8 +24,9 @@ import (
 type Config struct {
 	Host string
 
-	Key     string
-	AuthURL string
+	Oauth2 oauth2.Config
+
+	Key string
 
 	UpdateFreq time.Duration
 }
@@ -36,8 +36,8 @@ func Register(a *App, r yrun.HTTPRegistrar) {
 	r.Pattern("GET", a.host, "/artists", httpencoding.Handler(http.HandlerFunc(a.handleArtists)))
 	r.Pattern("GET", a.host, "/playbacks", httpencoding.Handler(http.HandlerFunc(a.handlePlaybacks)))
 	r.Pattern("GET", a.host, "/tracks", httpencoding.Handler(http.HandlerFunc(a.handleTracks)))
-	r.Pattern("GET", a.host, "/api/auth", a.Auth(http.HandlerFunc(a.hAuthorize)))
-	r.Pattern("GET", a.host, "/auth/callback", a.Auth(http.HandlerFunc(a.hAuthCallback)))
+	r.Pattern("GET", a.host, "/auth/begin", a.Auth(http.HandlerFunc(a.authBegin)))
+	r.Pattern("GET", a.host, "/auth/callback", a.Auth(http.HandlerFunc(a.authCallback)))
 }
 
 type App struct {
@@ -55,10 +55,8 @@ type App struct {
 	host       string
 	bkt        *blob.Bucket
 	dataKey    string
-	authURL    string
+	oauth2     oauth2.Config
 	updateFreq time.Duration
-
-	authState atomic.Pointer[AuthState]
 }
 
 func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
@@ -77,36 +75,36 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 		host:       c.Host,
 		bkt:        bkt,
 		dataKey:    c.Key,
-		authURL:    c.AuthURL,
+		oauth2:     c.Oauth2,
 		updateFreq: c.UpdateFreq,
 	}
 
 	ctx, span := o.T.Start(ctx, "initData")
 	defer span.End()
 
-	store, err := yrun.NewStore[earbugv4.Store](ctx, bkt, c.Key)
+	store, err := yrun.NewStore[earbugv4.Store](ctx, bkt, c.Key, func() *earbugv4.Store {
+		return &earbugv4.Store{
+			Auth:      &earbugv4.Auth{},
+			Playbacks: make(map[string]*earbugv4.Playback),
+			Tracks:    make(map[string]*earbugv4.Track),
+		}
+	})
 	if err != nil {
 		return nil, fmt.Errorf("init data.store.Data: %w", err)
 	}
 	a.store = store
 
 	var token oauth2.Token
-	if a.store.Data.Auth != nil && len(a.store.Data.Auth.Token) > 0 {
-		rawToken := a.store.Data.Auth.Token // new value
-		err = json.Unmarshal(rawToken, &token)
-		if err != nil {
-			return nil, a.Err(ctx, "unmarshal oauth token", err)
-		}
-	} else {
-		o.L.LogAttrs(ctx, slog.LevelWarn, "no auth token found")
+	a.store.RDo(func(s *earbugv4.Store) {
+		err = json.Unmarshal(s.Auth.Token, &token)
+	})
+	if err != nil {
+		a.Err(ctx, "get token from storage", err)
 	}
 
 	httpClient := &http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
 	ctx = context.WithValue(ctx, oauth2.HTTPClient, httpClient)
-	as := NewAuthState(a.store.Data.Auth.ClientId, a.store.Data.Auth.ClientSecret, "")
-	httpClient = as.conf.Client(ctx, &token)
-	a.spot = spotify.New(httpClient)
-
+	a.spot = spotify.New(a.oauth2.Client(ctx, &token))
 	return a, nil
 }
 

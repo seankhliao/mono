@@ -72,18 +72,14 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	}
 
 	ctx := context.Background()
-	a.store, err = yrun.NewStore[Store](ctx, bkt, "auth.pb.zstd")
+	a.store, err = yrun.NewStore[Store](ctx, bkt, "auth.pb.zstd", func() *Store {
+		return &Store{
+			Users:    make(map[int64]*UserInfo),
+			Sessions: make(map[string]*TokenInfo),
+		}
+	})
 	if err != nil {
 		return nil, fmt.Errorf("init store: %w", err)
-	}
-	if a.store.Data == nil {
-		a.store.Data = &Store{}
-	}
-	if a.store.Data.Users == nil {
-		a.store.Data.Users = make(map[int64]*UserInfo)
-	}
-	if a.store.Data.Sessions == nil {
-		a.store.Data.Sessions = make(map[string]*TokenInfo)
 	}
 
 	return a, nil
@@ -122,15 +118,15 @@ func (a *App) adminToken(rw http.ResponseWriter, r *http.Request) {
 	token := []byte("mooa_")
 	token = base32.StdEncoding.AppendEncode(token, rawToken)
 
-	tokenInfo := TokenInfo{
+	tokenInfo := &TokenInfo{
 		SessionID: ptr(string(token)),
 		Created:   timestamppb.Now(),
 		UserID:    ptr[int64](-1),
 	}
 
-	a.store.Lock()
-	a.store.Data.Sessions[*tokenInfo.SessionID] = &tokenInfo
-	a.store.Unlock()
+	a.store.Do(func(s *Store) {
+		s.Sessions[tokenInfo.GetSessionID()] = tokenInfo
+	})
 
 	rw.Write(token)
 }

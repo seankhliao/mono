@@ -14,19 +14,16 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (a *App) requestUser(r *http.Request) (*TokenInfo, bool) {
+func (a *App) requestUser(r *http.Request) (info *TokenInfo, ok bool) {
 	c, err := r.Cookie(a.cookieName)
 	if err != nil {
 		return nil, false
 	}
 
-	a.store.RLock()
-	info, ok := a.store.Data.Sessions[c.Value]
-	a.store.RUnlock()
-	if !ok {
-		return nil, false
-	}
-	return info, true
+	a.store.RDo(func(s *Store) {
+		info, ok = s.Sessions[c.Value]
+	})
+	return
 }
 
 func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
@@ -41,9 +38,9 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 
 		// store session data for finish
 		info.SessionData, _ = json.Marshal(sess)
-		a.store.Lock()
-		a.store.Data.Sessions[*info.SessionID] = info
-		a.store.Unlock()
+		a.store.Do(func(s *Store) {
+			s.Sessions[*info.SessionID] = info
+		})
 		return cred, nil
 	}()
 	rw.Header().Set("content-type", "application/json")
@@ -96,10 +93,10 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		// swap tokens
-		a.store.Lock()
-		delete(a.store.Data.Sessions, *info.SessionID)
-		a.store.Data.Sessions[*tokenInfo.SessionID] = &tokenInfo
-		a.store.Unlock()
+		a.store.Do(func(s *Store) {
+			delete(s.Sessions, *info.SessionID)
+			s.Sessions[tokenInfo.GetSessionID()] = &tokenInfo
+		})
 
 		// send it to the client
 		http.SetCookie(rw, &http.Cookie{

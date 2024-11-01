@@ -14,7 +14,6 @@ App: {
 	Earbug: {
 		Host:       string | *"earbug.\(BaseDomain)"
 		Key:        string | *"earbug.pb.zstd"
-		AuthURL:    string | *"https://\(Host)/auth/callback"
 		UpdateFreq: time.ParseDuration("5m")
 	}
 	GHDefaults: {
