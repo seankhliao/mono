@@ -9,7 +9,6 @@ import (
 
 	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
-	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv4"
 	"golang.org/x/oauth2"
 )
 
@@ -43,7 +42,7 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a.store.Do(func(s *earbugv4.Store) {
+	a.store.Do(func(s *Store) {
 		s.Auth.Token = tokenMarshaled
 	})
 

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/zmb3/spotify/v2"
-	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv4"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
@@ -21,32 +20,32 @@ func (a *App) update(ctx context.Context) {
 	}
 
 	var added int
-	a.store.Do(func(s *earbugv4.Store) {
+	a.store.Do(func(s *Store) {
 		for _, item := range items {
 			ts := item.PlayedAt.Format(time.RFC3339Nano)
 			if _, ok := s.Playbacks[ts]; !ok {
 				added++
-				s.Playbacks[ts] = &earbugv4.Playback{
-					TrackId:     item.Track.ID.String(),
-					TrackUri:    string(item.Track.URI),
-					ContextType: item.PlaybackContext.Type,
-					ContextUri:  string(item.PlaybackContext.URI),
+				s.Playbacks[ts] = &Playback{
+					TrackId:     ptr(item.Track.ID.String()),
+					TrackUri:    ptr(string(item.Track.URI)),
+					ContextType: ptr(item.PlaybackContext.Type),
+					ContextUri:  ptr(string(item.PlaybackContext.URI)),
 				}
 			}
 
 			if _, ok := s.Tracks[item.Track.ID.String()]; !ok {
-				t := &earbugv4.Track{
-					Id:       item.Track.ID.String(),
-					Uri:      string(item.Track.URI),
-					Type:     item.Track.Type,
-					Name:     item.Track.Name,
+				t := &Track{
+					Id:       ptr(item.Track.ID.String()),
+					Uri:      ptr(string(item.Track.URI)),
+					Type:     ptr(item.Track.Type),
+					Name:     ptr(item.Track.Name),
 					Duration: durationpb.New(item.Track.TimeDuration()),
 				}
 				for _, artist := range item.Track.Artists {
-					t.Artists = append(t.Artists, &earbugv4.Artist{
-						Id:   artist.ID.String(),
-						Uri:  string(artist.URI),
-						Name: artist.Name,
+					t.Artists = append(t.Artists, &Artist{
+						Id:   ptr(artist.ID.String()),
+						Uri:  ptr(string(artist.URI)),
+						Name: ptr(artist.Name),
 					})
 				}
 				s.Tracks[item.Track.ID.String()] = t

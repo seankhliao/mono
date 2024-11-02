@@ -8,7 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv4"
 	"go.seankhliao.com/mono/webstyle"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -91,12 +90,12 @@ func (a *App) handleArtists(rw http.ResponseWriter, r *http.Request) {
 
 	for _, play := range plays {
 		for _, artist := range play.Track.Artists {
-			idx, ok := artistIdx[artist.Id]
+			idx, ok := artistIdx[artist.GetId()]
 			if !ok {
-				artistIdx[artist.Id] = len(artistData)
+				artistIdx[artist.GetId()] = len(artistData)
 				idx = len(artistData)
 				artistData = append(artistData, ArtistData{
-					Name: artist.Name,
+					Name: artist.GetName(),
 				})
 			}
 			artistData[idx].Plays += 1
@@ -104,7 +103,7 @@ func (a *App) handleArtists(rw http.ResponseWriter, r *http.Request) {
 
 			var foundTrack bool
 			for i, track := range artistData[idx].Tracks {
-				if track.ID == play.Track.Id {
+				if track.ID == play.Track.GetId() {
 					foundTrack = true
 					artistData[idx].Tracks[i].Plays += 1
 					artistData[idx].Tracks[i].Time += play.PlaybackTime
@@ -112,8 +111,8 @@ func (a *App) handleArtists(rw http.ResponseWriter, r *http.Request) {
 			}
 			if !foundTrack {
 				artistData[idx].Tracks = append(artistData[idx].Tracks, TrackData{
-					ID:    play.Track.Id,
-					Name:  play.Track.Name,
+					ID:    play.Track.GetId(),
+					Name:  play.Track.GetName(),
 					Plays: 1,
 					Time:  play.PlaybackTime,
 				})
@@ -220,19 +219,19 @@ func (a *App) handleTracks(rw http.ResponseWriter, r *http.Request) {
 		Name    string
 		Plays   int
 		Time    time.Duration
-		Artists []*earbugv4.Artist
+		Artists []*Artist
 	}
 
 	trackIdx := make(map[string]int)
 	trackData := []TrackData{}
 
 	for _, play := range plays {
-		idx, ok := trackIdx[play.Track.Id]
+		idx, ok := trackIdx[play.Track.GetId()]
 		if !ok {
-			trackIdx[play.Track.Id] = len(trackData)
+			trackIdx[play.Track.GetId()] = len(trackData)
 			idx = len(trackData)
 			trackData = append(trackData, TrackData{
-				Name:    play.Track.Name,
+				Name:    play.Track.GetName(),
 				Artists: play.Track.Artists,
 			})
 		}
@@ -258,7 +257,7 @@ func (a *App) handleTracks(rw http.ResponseWriter, r *http.Request) {
 	for _, track := range trackData {
 		var artists []string
 		for _, artist := range track.Artists {
-			artists = append(artists, artist.Name)
+			artists = append(artists, artist.GetName())
 		}
 		body = append(body, html.Tr(
 			html.Td(gomponents.Text(track.Name)),
@@ -296,12 +295,12 @@ func (a *App) handlePlaybacks(rw http.ResponseWriter, r *http.Request) {
 	for _, play := range plays {
 		var artists []string
 		for _, artist := range play.Track.Artists {
-			artists = append(artists, artist.Name)
+			artists = append(artists, artist.GetName())
 		}
 		body = append(body, html.Tr(
 			html.Td(gomponents.Text(play.StartTime.Format(time.DateTime))),
 			html.Td(gomponents.Text(play.PlaybackTime.Round(time.Second).String())),
-			html.Td(gomponents.Text(play.Track.Name)),
+			html.Td(gomponents.Text(play.Track.GetName())),
 			html.Td(gomponents.Text(strings.Join(artists, ", "))),
 		))
 	}
@@ -366,19 +365,19 @@ type getPlaybacksOptions struct {
 	Track  string
 }
 
-type Playback struct {
+type DisplayPlayback struct {
 	StartTime    time.Time
 	PlaybackTime time.Duration
-	Track        *earbugv4.Track
+	Track        *Track
 }
 
-func (a *App) getPlaybacks(ctx context.Context, o getPlaybacksOptions) []Playback {
+func (a *App) getPlaybacks(ctx context.Context, o getPlaybacksOptions) []DisplayPlayback {
 	_, span := a.o.T.Start(ctx, "getPlaybacks")
 	defer span.End()
 
-	var plays []Playback
+	var plays []DisplayPlayback
 
-	a.store.RDo(func(s *earbugv4.Store) {
+	a.store.RDo(func(s *Store) {
 		for ts, play := range s.Playbacks {
 			startTime, _ := time.Parse(time.RFC3339, ts)
 
@@ -388,15 +387,15 @@ func (a *App) getPlaybacks(ctx context.Context, o getPlaybacksOptions) []Playbac
 				continue
 			}
 
-			track := s.Tracks[play.TrackId]
+			track := s.Tracks[play.GetTrackId()]
 
-			if o.Track != "" && !strings.Contains(strings.ToLower(track.Name), strings.ToLower(o.Track)) {
+			if o.Track != "" && !strings.Contains(strings.ToLower(track.GetName()), strings.ToLower(o.Track)) {
 				continue
 			}
 
 			artistMatch := o.Artist == ""
 			for _, artist := range track.Artists {
-				if !artistMatch && strings.Contains(strings.ToLower(artist.Name), strings.ToLower(o.Artist)) {
+				if !artistMatch && strings.Contains(strings.ToLower(artist.GetName()), strings.ToLower(o.Artist)) {
 					artistMatch = true
 				}
 			}
@@ -404,7 +403,7 @@ func (a *App) getPlaybacks(ctx context.Context, o getPlaybacksOptions) []Playbac
 				continue
 			}
 
-			plays = append(plays, Playback{
+			plays = append(plays, DisplayPlayback{
 				StartTime: startTime,
 				Track:     track,
 			})

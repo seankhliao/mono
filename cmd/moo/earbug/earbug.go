@@ -13,7 +13,6 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv4"
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"
@@ -46,7 +45,7 @@ type App struct {
 	// New
 	http  *http.Client
 	spot  *spotify.Client
-	store *yrun.Store[*earbugv4.Store]
+	store *yrun.Store[*Store]
 
 	// inserted
 	Auth func(http.Handler) http.Handler
@@ -82,11 +81,11 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	ctx, span := o.T.Start(ctx, "initData")
 	defer span.End()
 
-	store, err := yrun.NewStore[earbugv4.Store](ctx, bkt, c.Key, func() *earbugv4.Store {
-		return &earbugv4.Store{
-			Auth:      &earbugv4.Auth{},
-			Playbacks: make(map[string]*earbugv4.Playback),
-			Tracks:    make(map[string]*earbugv4.Track),
+	store, err := yrun.NewStore[Store](ctx, bkt, c.Key, func() *Store {
+		return &Store{
+			Auth:      &Auth{},
+			Playbacks: make(map[string]*Playback),
+			Tracks:    make(map[string]*Track),
 		}
 	})
 	if err != nil {
@@ -95,7 +94,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	a.store = store
 
 	var token oauth2.Token
-	a.store.RDo(func(s *earbugv4.Store) {
+	a.store.RDo(func(s *Store) {
 		err = json.Unmarshal(s.Auth.Token, &token)
 	})
 	if err != nil {
@@ -134,4 +133,8 @@ func (a *App) Update() error {
 
 		time.Sleep(a.updateFreq)
 	}
+}
+
+func ptr[T any](v T) *T {
+	return &v
 }

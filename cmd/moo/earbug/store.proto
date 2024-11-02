@@ -1,6 +1,6 @@
-syntax = "proto3";
+edition = "2023";
 
-package seankhliao.earbug.v4;
+package earbug;
 
 import "google/protobuf/duration.proto";
 
