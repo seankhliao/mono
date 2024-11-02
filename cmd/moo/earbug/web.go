@@ -333,25 +333,41 @@ func form(page, sort string, o getPlaybacksOptions) gomponents.Node {
 				gomponents.If(order == sort, html.Selected())))
 	}
 	return html.Form(
+		html.Style(`
+label {
+  display: inline-block;
+}
+input {
+  width: 40%;
+}
+                        `),
 		html.Action(page), html.Method("get"),
+
+		html.FieldSet(
+			html.Legend(gomponents.Text("Date range (required)")),
+
+			html.Label(html.For("from"), gomponents.Text("From *")),
+			html.Input(html.Type("date"), html.ID("from"), html.Name("from"), html.Required(), html.Value(o.From.Format(time.DateOnly))),
+
+			html.Label(html.For("to"), gomponents.Text("To *")),
+			html.Input(html.Type("date"), html.ID("to"), html.Name("to"), html.Required(), html.Value(o.To.Format(time.DateOnly))),
+		),
+
+		html.FieldSet(
+			html.Legend(gomponents.Text("Filtering (optinal)")),
+
+			html.Label(html.For("artist"), gomponents.Text("Artist")),
+			html.Input(html.Type("text"), html.ID("artist"), html.Name("artist"), html.Value(o.Artist)),
+
+			html.Label(html.For("track"), gomponents.Text("Track")),
+			html.Input(html.Type("text"), html.ID("track"), html.Name("track"), html.Value(o.Track)),
+		),
 
 		html.Label(html.For("sort"), gomponents.Text("Sort by")),
 		html.Select(
 			html.ID("sort"), html.Name("sort"), html.Required(),
 			gomponents.Group(sortOption),
 		),
-
-		html.Label(html.For("from"), gomponents.Text("From")),
-		html.Input(html.Type("date"), html.ID("from"), html.Name("from"), html.Required(), html.Value(o.From.Format(time.DateOnly))),
-
-		html.Label(html.For("to"), gomponents.Text("To")),
-		html.Input(html.Type("date"), html.ID("to"), html.Name("to"), html.Required(), html.Value(o.To.Format(time.DateOnly))),
-
-		html.Label(html.For("artist"), gomponents.Text("Artist")),
-		html.Input(html.Type("text"), html.ID("artist"), html.Name("artist"), html.Value(o.Artist)),
-
-		html.Label(html.For("track"), gomponents.Text("Track")),
-		html.Input(html.Type("text"), html.ID("track"), html.Name("track"), html.Value(o.Track)),
 
 		html.Input(html.Type("submit"), html.Value("search")),
 	)
