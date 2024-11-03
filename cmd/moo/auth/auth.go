@@ -72,7 +72,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	}
 
 	ctx := context.Background()
-	a.store, err = yrun.NewStore[Store](ctx, bkt, "auth.pb.zstd", func() *Store {
+	a.store, err = yrun.NewStore(ctx, bkt, "auth.pb.zstd", func() *Store {
 		return &Store{
 			Users:    make(map[int64]*UserInfo),
 			Sessions: make(map[string]*TokenInfo),
@@ -82,8 +82,26 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 		return nil, fmt.Errorf("init store: %w", err)
 	}
 
+	// a.store.Do(a.migrate)
+	// a.store.Sync(ctx)
+
 	return a, nil
 }
+
+// func (a *App) migrate(s *Store) {
+// 	for id, user := range s.Users {
+// 		if len(user.Credentials) == 0 {
+// 			continue
+// 		}
+// 		for _, cred := range user.Credentials {
+// 			user.Creds = append(user.Creds, &Credential{
+// 				Name: ptr("google"),
+// 				Cred: cred,
+// 			})
+// 		}
+// 		s.Users[id] = user
+// 	}
+// }
 
 func (a *App) RequireAuth(next http.Handler) http.Handler {
 	return a.requireAuth(next, false)

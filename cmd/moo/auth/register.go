@@ -64,6 +64,11 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			}
 		}
 
+		credname := r.FormValue("credname")
+		if credname == "" {
+			return nil, errors.New("credential name not given")
+		}
+
 		var user *UserInfo
 		var ok bool
 		a.store.RDo(func(s *Store) {
@@ -79,6 +84,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		info.SessionData, err = json.Marshal(sess)
+		info.Credname = &credname
 		a.store.Do(func(s *Store) {
 			s.Sessions[info.GetSessionID()] = info
 		})
@@ -130,7 +136,10 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return err
 		}
-		user.Credentials = append(user.Credentials, credb)
+		user.Creds = append(user.Creds, &Credential{
+			Name: info.Credname,
+			Cred: credb,
+		})
 
 		a.store.Do(func(s *Store) {
 			s.Users[*user.UserID] = user

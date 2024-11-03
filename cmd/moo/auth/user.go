@@ -31,9 +31,9 @@ func (u User) WebAuthnID() []byte          { return []byte(strconv.FormatInt(u.u
 func (u User) WebAuthnName() string        { return u.u.GetUsername() }
 func (u User) WebAuthnDisplayName() string { return u.u.GetUsername() }
 func (u User) WebAuthnCredentials() []webauthn.Credential {
-	creds := make([]webauthn.Credential, len(u.u.Credentials))
-	for i, b := range u.u.Credentials {
-		json.Unmarshal(b, &creds[i])
+	creds := make([]webauthn.Credential, len(u.u.Creds))
+	for i, b := range u.u.Creds {
+		json.Unmarshal(b.Cred, &creds[i])
 	}
 	return creds
 }

@@ -15,7 +15,7 @@ function bufferDecode(value) {
 async function login() {
   const startResponse = await fetch("/login/start", {
     method: "POST",
-    credentials: "same-origin",
+    credentials: "include",
   });
   if (!startResponse.ok) {
     alert("failed to start");
@@ -38,7 +38,7 @@ async function login() {
   // const finishResponse = await fetch(`/login/finish?${params}`, {
   const finishResponse = await fetch(`/login/finish`, {
     method: "POST",
-    credentials: "same-origin",
+    credentials: "include",
     body: JSON.stringify({
       id: assertion.id,
       rawId: bufferEncode(assertion.rawId),
@@ -69,10 +69,12 @@ async function register() {
   formdata.append("adminToken", adminToken);
   let username = encodeURIComponent(document.querySelector("#username").value);
   formdata.append("username", username);
+  let credname = encodeURIComponent(document.querySelector("#credname").value);
+  formdata.append("credname", credname);
 
   const startResponse = await fetch(`/register/start`, {
     method: "POST",
-    credentials: "same-origin",
+    credentials: "include",
     body: formdata,
   });
   if (!startResponse.ok) {
@@ -92,7 +94,7 @@ async function register() {
   });
   const finishResponse = await fetch(`/register/finish`, {
     method: "POST",
-    credentials: "same-origin",
+    credentials: "include",
     body: JSON.stringify({
       id: cred.id,
       rawId: bufferEncode(cred.rawId),

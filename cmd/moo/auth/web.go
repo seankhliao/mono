@@ -61,10 +61,13 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 				html.Action("javascript:register()"),
 
 				html.Label(html.For("username"), gomponents.Text("username")),
-				html.Input(html.Type("text"), html.ID("username"), html.Name("username"), html.Placeholder("a username")),
+				html.Input(html.Type("text"), html.ID("username"), html.Name("username"), html.Placeholder("a username"), html.Required()),
 
 				html.Label(html.For("adminToken"), gomponents.Text("admin token: mooa_xxxxxx...")),
-				html.Input(html.Type("password"), html.ID("adminToken"), html.Name("adminToken")),
+				html.Input(html.Type("password"), html.ID("adminToken"), html.Name("adminToken"), html.Required()),
+
+				html.Label(html.For("credname"), gomponents.Text("credential name")),
+				html.Input(html.Type("credname"), html.ID("credname"), html.Name("credname"), html.Required()),
 
 				html.Input(html.Type("submit"), html.ID("register"), html.Value("begin registration")),
 			),
@@ -77,23 +80,37 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 		user = s.Users[info.GetUserID()]
 	})
 
+	var credIDs []gomponents.Node
+	for _, cred := range user.Creds {
+		credIDs = append(credIDs, html.Li(gomponents.Text(cred.GetName())))
+	}
+
 	webstyle.Structured(rw, webstyle.NewOptions("hello "+user.GetUsername(), "auth", []gomponents.Node{
 		html.Script(gomponents.Raw(scriptJS)),
 		html.H3(html.Em(gomponents.Text("hello ")), gomponents.Text(user.GetUsername())),
+		html.Ul(
+			html.Li(html.Em(gomponents.Text("User ID:")), gomponents.Textf("%v", user.GetUserID())),
+		),
 
 		html.H4(gomponents.Text("account details")),
 		html.Form(
 			html.Action("/update"), html.Method("post"),
 
 			html.Label(html.For("username"), gomponents.Text("username")),
-			html.Input(html.Type("text"), html.ID("username"), html.Name("username")),
+			html.Input(html.Type("text"), html.ID("username"), html.Name("username"), html.Value(user.GetUsername()), html.Required()),
 
 			html.Input(html.Type("submit"), html.Value("Update")),
 		),
 
 		html.H4(gomponents.Text("register new credential")),
+		html.Ul(credIDs...),
 		html.Form(
 			html.Action("javascript:register()"),
+
+			html.Input(html.Type("password"), html.ID("adminToken"), html.Name("adminToken"), html.Hidden("hidden"), html.Value("placeholder")),
+
+			html.Label(html.For("credname"), gomponents.Text("credential name")),
+			html.Input(html.Type("credname"), html.ID("credname"), html.Name("credname"), html.Required()),
 
 			html.Input(html.Type("submit"), html.ID("register"), html.Value("begin registration")),
 		),

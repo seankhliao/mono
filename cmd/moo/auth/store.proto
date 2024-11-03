@@ -14,10 +14,17 @@ message TokenInfo {
   google.protobuf.Timestamp created = 2;
   int64 userID = 3;
   bytes sessionData = 4;
+  string credname =5;
 }
 
 message UserInfo {
+  reserved 3;
   int64 userID = 1;
   string username = 2;
-  repeated bytes credentials = 3;
+  repeated Credential creds = 4;
+}
+
+message Credential {
+  string name = 1;
+  bytes cred = 2;
 }
