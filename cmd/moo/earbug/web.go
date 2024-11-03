@@ -332,35 +332,30 @@ func form(page, sort string, o getPlaybacksOptions) gomponents.Node {
 				gomponents.Text(order),
 				gomponents.If(order == sort, html.Selected())))
 	}
+
+	labelStyle := html.Style(`display: inline-block`)
+	inputStyle := html.Style(`width: 40%`)
 	return html.Form(
-		html.Style(`
-label {
-  display: inline-block;
-}
-input {
-  width: 40%;
-}
-                        `),
 		html.Action(page), html.Method("get"),
 
 		html.FieldSet(
 			html.Legend(gomponents.Text("Date range (required)")),
 
-			html.Label(html.For("from"), gomponents.Text("From *")),
-			html.Input(html.Type("date"), html.ID("from"), html.Name("from"), html.Required(), html.Value(o.From.Format(time.DateOnly))),
+			html.Label(html.For("from"), gomponents.Text("From *"), labelStyle),
+			html.Input(html.Type("date"), html.ID("from"), html.Name("from"), html.Required(), html.Value(o.From.Format(time.DateOnly)), inputStyle),
 
-			html.Label(html.For("to"), gomponents.Text("To *")),
-			html.Input(html.Type("date"), html.ID("to"), html.Name("to"), html.Required(), html.Value(o.To.Format(time.DateOnly))),
+			html.Label(html.For("to"), gomponents.Text("To *"), labelStyle),
+			html.Input(html.Type("date"), html.ID("to"), html.Name("to"), html.Required(), html.Value(o.To.Format(time.DateOnly)), inputStyle),
 		),
 
 		html.FieldSet(
 			html.Legend(gomponents.Text("Filtering (optinal)")),
 
-			html.Label(html.For("artist"), gomponents.Text("Artist")),
-			html.Input(html.Type("text"), html.ID("artist"), html.Name("artist"), html.Value(o.Artist)),
+			html.Label(html.For("artist"), gomponents.Text("Artist"), labelStyle),
+			html.Input(html.Type("text"), html.ID("artist"), html.Name("artist"), html.Value(o.Artist), inputStyle),
 
-			html.Label(html.For("track"), gomponents.Text("Track")),
-			html.Input(html.Type("text"), html.ID("track"), html.Name("track"), html.Value(o.Track)),
+			html.Label(html.For("track"), gomponents.Text("Track"), labelStyle),
+			html.Input(html.Type("text"), html.ID("track"), html.Name("track"), html.Value(o.Track), inputStyle),
 		),
 
 		html.Label(html.For("sort"), gomponents.Text("Sort by")),
