@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/klauspost/compress/zstd"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 	"gocloud.dev/blob"
 	"google.golang.org/protobuf/proto"
 )
@@ -18,6 +20,11 @@ type Store[T proto.Message] struct {
 
 	mu   sync.RWMutex
 	data T
+
+	tracer   trace.Tracer
+	muLinks  sync.Mutex
+	links    []trace.Link
+	dataType string
 
 	lastUpdate time.Time
 	nextUpdate *time.Timer
@@ -30,11 +37,13 @@ type storer[T any] interface {
 
 func NewStore[T any, P storer[T]](ctx context.Context, bkt *blob.Bucket, key string, init func() P) (*Store[P], error) {
 	s := &Store[P]{
-		bkt:  bkt,
-		key:  key,
-		data: new(T),
+		bkt:    bkt,
+		key:    key,
+		data:   new(T),
+		tracer: otel.Tracer("yrun/store"),
 	}
 	s.nextUpdate = time.AfterFunc(24*time.Hour, s.sync)
+	s.dataType = fmt.Sprintf("%T", s.data)
 
 	if exists, err := bkt.Exists(ctx, key); err != nil {
 		return nil, fmt.Errorf("check for key %q: %w", key, err)
@@ -78,6 +87,13 @@ func (s *Store[T]) Do(f func(T)) {
 }
 
 func (s *Store[T]) Sync(ctx context.Context) {
+	spanCtx := trace.SpanContextFromContext(ctx)
+	if spanCtx.IsValid() {
+		s.muLinks.Lock()
+		s.links = append(s.links, trace.LinkFromContext(ctx))
+		s.muLinks.Unlock()
+	}
+
 	d := time.Since(s.lastUpdate)
 	if d < 3*time.Minute {
 		s.nextUpdate.Reset(3*time.Minute - d)
@@ -90,6 +106,14 @@ func (s *Store[T]) sync() {
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Minute)
 	defer cancel()
+
+	s.muLinks.Lock()
+	linkOpt := trace.WithLinks(s.links...)
+	s.links = s.links[:0]
+	s.muLinks.Unlock()
+
+	ctx, span := s.tracer.Start(ctx, "sync "+s.dataType, linkOpt)
+	defer span.End()
 
 	// TODO: handle error
 	_ = func(ctx context.Context) error {

@@ -31,7 +31,10 @@ k8s: "": "v1": "ConfigMap": "opentelemetry": "otelcol": "data": {
 			googlecloud: project: "com-seankhliao"
 			"otlp/honeycomb": {
 				endpoint: "api.honeycomb.io:443"
-				headers: "x-honeycomb-team": "${env:X_HONEYCOMB_TEAM}"
+				headers: {
+					"x-honeycomb-team":    "${env:X_HONEYCOMB_TEAM}"
+					"x-honeycomb-dataset": "justia-asami"
+				}
 			}
 			nop: {}
 		}

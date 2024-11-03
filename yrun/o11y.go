@@ -10,19 +10,24 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"go.opentelemetry.io/contrib/bridges/otelslog"
 	"go.opentelemetry.io/contrib/instrumentation/runtime"
 	"go.opentelemetry.io/contrib/zpages"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	"go.opentelemetry.io/otel/log/global"
 	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/metric/noop"
 	"go.opentelemetry.io/otel/propagation"
+	sdklog "go.opentelemetry.io/otel/sdk/log"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
 	tracenoop "go.opentelemetry.io/otel/trace/noop"
 	"go.seankhliao.com/mono/observability/jsonlog"
+	"go.seankhliao.com/mono/observability/multilog"
 )
 
 const defaultServiceConfig = `{"loadBalancingConfig":[{"round_robin":{}}]}`
@@ -57,10 +62,14 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 
 	_ = shortName
 
-	var o O11y
-	o.L, o.H, r.LogZpage = NewLog(c.Log)
-
 	ctx := context.Background()
+
+	var o O11y
+	var err error
+	o.L, o.H, r.LogZpage, err = NewLog(ctx, c.Log)
+	if err != nil {
+		panic(err)
+	}
 
 	// otel error handling
 	otelLog := o.L.WithGroup("otel")
@@ -70,7 +79,6 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 		)
 	}))
 
-	var err error
 	r.TraceZpage, err = NewTrace(ctx, c.Trace)
 	if err != nil {
 		otelLog.LogAttrs(ctx, slog.LevelWarn, "failed to create trace exporter", slog.String("error", err.Error()))
@@ -95,7 +103,7 @@ type LogConfig struct {
 	Level  slog.Level
 }
 
-func NewLog(c LogConfig) (*slog.Logger, slog.Handler, http.Handler) {
+func NewLog(ctx context.Context, c LogConfig) (*slog.Logger, slog.Handler, http.Handler, error) {
 	zpage := jsonlog.NewZPage(256)
 	writer := io.MultiWriter(os.Stderr, zpage)
 	var handler slog.Handler
@@ -107,8 +115,26 @@ func NewLog(c LogConfig) (*slog.Logger, slog.Handler, http.Handler) {
 	default:
 		handler = slog.NewTextHandler(writer, &slog.HandlerOptions{Level: c.Level})
 	}
+
+	le, err := otlploggrpc.New(ctx,
+		otlploggrpc.WithServiceConfig(defaultServiceConfig),
+	)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	lp := sdklog.NewLoggerProvider(
+		sdklog.WithProcessor(
+			sdklog.NewBatchProcessor(le),
+		),
+	)
+	global.SetLoggerProvider(lp)
+
+	oh := otelslog.NewHandler("")
+	handler = multilog.Handler(oh, handler)
+
 	logger := slog.New(handler)
-	return logger, handler, zpage
+	return logger, handler, zpage, nil
 }
 
 type MetricConfig struct{}
