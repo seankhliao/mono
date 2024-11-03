@@ -9,6 +9,7 @@ data:
           http:
             endpoint: "0.0.0.0:4318"
     processors:
+      batch: {}
       transform:
         error_mode: ignore
         trace_statements:
@@ -29,6 +30,10 @@ data:
     exporters:
       googlecloud:
         project: com-seankhliao
+      otlp/honeycomb:
+        endpoint: api.honeycomb.io:443
+        headers:
+          x-honeycomb-team: ${env:X_HONEYCOMB_TEAM}
       nop: {}
     extensions:
       health_check:
@@ -48,13 +53,16 @@ data:
             - otlp
           processors:
             - transform
+            - batch
           exporters:
             - nop
+            - otlp/honeycomb
         metrics:
           receivers:
             - otlp
           processors:
             - transform
+            - batch
           exporters:
             - nop
         traces:
@@ -62,8 +70,10 @@ data:
             - otlp
           processors:
             - transform
+            - batch
           exporters:
             - googlecloud
+            - otlp/honeycomb
 metadata:
   name: otelcol
   namespace: opentelemetry
@@ -149,12 +159,15 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: otelcol
-          image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.110.0
+          image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.112.0
           args:
             - --config=file:/etc/otelcol/config.yaml
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/run/service-account/creds.json
+          envFrom:
+            - secretRef:
+                name: api-keys
           ports:
             - name: otlp-grpc
               containerPort: 4317

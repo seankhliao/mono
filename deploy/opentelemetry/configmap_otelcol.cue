@@ -12,6 +12,7 @@ k8s: "": "v1": "ConfigMap": "opentelemetry": "otelcol": "data": {
 		}
 
 		processors: {
+			batch: {}
 			transform: {
 				error_mode: "ignore"
 				trace_statements: [{
@@ -28,6 +29,10 @@ k8s: "": "v1": "ConfigMap": "opentelemetry": "otelcol": "data": {
 
 		exporters: {
 			googlecloud: project: "com-seankhliao"
+			"otlp/honeycomb": {
+				endpoint: "api.honeycomb.io:443"
+				headers: "x-honeycomb-team": "${env:X_HONEYCOMB_TEAM}"
+			}
 			nop: {}
 		}
 
@@ -46,18 +51,18 @@ k8s: "": "v1": "ConfigMap": "opentelemetry": "otelcol": "data": {
 		service: extensions: ["health_check", "pprof", "zpages"]
 		service: pipelines: logs: {
 			receivers: ["otlp"]
-			processors: ["transform"]
-			exporters: ["nop"]
+			processors: ["transform", "batch"]
+			exporters: ["nop", "otlp/honeycomb"]
 		}
 		service: pipelines: metrics: {
 			receivers: ["otlp"]
-			processors: ["transform"]
+			processors: ["transform", "batch"]
 			exporters: ["nop"]
 		}
 		service: pipelines: traces: {
 			receivers: ["otlp"]
-			processors: ["transform"]
-			exporters: ["googlecloud"]
+			processors: ["transform", "batch"]
+			exporters: ["googlecloud", "otlp/honeycomb"]
 		}
 	})
 }
