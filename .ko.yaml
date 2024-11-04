@@ -1,4 +1,6 @@
-defaultBaseImage: gcr.io/distroless/static-debian12:nonroot@sha256:67686c9070e7179449c73943d89160c4834c0b4a969434022e11c5b9a8dc6131
+# crane digest gcr.io/distroless/static-debian12:nonroot
+# sha256:3a03fc0826340c7deb82d4755ca391bef5adcedb8892e58412e1a6008199fa91
+defaultBaseImage: gcr.io/distroless/static-debian12:nonroot@sha256:3a03fc0826340c7deb82d4755ca391bef5adcedb8892e58412e1a6008199fa91
 defaultPlatforms:
   - linux/arm64
   - linux/amd64
