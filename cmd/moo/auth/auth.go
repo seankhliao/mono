@@ -132,7 +132,7 @@ func (a *App) requireAuth(next http.Handler, allowAnonymous bool) http.Handler {
 			RawQuery: q.Encode(),
 		}).String()
 
-		info, ok := a.requestUser(r)
+		info, ok := a.requestUser(ctx, r)
 		if !ok {
 			http.Redirect(rw, r, u, http.StatusFound)
 			return
