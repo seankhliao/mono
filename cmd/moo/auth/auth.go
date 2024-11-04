@@ -7,6 +7,7 @@ import (
 	"encoding/base32"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
@@ -44,6 +45,7 @@ type App struct {
 
 	webauthn *webauthn.WebAuthn
 
+	o     yrun.O11y
 	store *yrun.Store[*Store]
 }
 
@@ -52,6 +54,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 		host:         c.Host,
 		cookieName:   c.CookieName,
 		cookieDomain: c.CookieDomain,
+		o:            o.Sub("auth"),
 	}
 
 	var err error
@@ -109,15 +112,33 @@ func (a *App) RequireAuth(next http.Handler) http.Handler {
 
 func (a *App) requireAuth(next http.Handler, allowAnonymous bool) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
+		ctx, span := a.o.T.Start(r.Context(), "require auth")
+		defer span.End()
+
+		q := make(url.Values)
+		if r.Host != a.host {
+			q.Set("return", (&url.URL{
+				Scheme:   "https",
+				Host:     r.Host,
+				Path:     r.URL.Path,
+				RawQuery: r.URL.RawQuery,
+			}).String())
+		}
+
+		u := (&url.URL{
+			Scheme:   "https",
+			Host:     a.host,
+			Path:     "/",
+			RawQuery: q.Encode(),
+		}).String()
 
 		info, ok := a.requestUser(r)
 		if !ok {
-			http.Redirect(rw, r, "/", http.StatusFound)
+			http.Redirect(rw, r, u, http.StatusFound)
 			return
 		}
 		if info.GetUserID() <= 0 && !allowAnonymous {
-			http.Redirect(rw, r, "/", http.StatusFound)
+			http.Redirect(rw, r, u, http.StatusFound)
 			return
 		}
 

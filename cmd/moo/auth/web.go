@@ -5,6 +5,8 @@ import (
 	_ "embed"
 	"encoding/base32"
 	"net/http"
+	"net/url"
+	"strings"
 	"time"
 
 	"go.seankhliao.com/mono/webstyle"
@@ -17,7 +19,10 @@ import (
 var scriptJS string
 
 func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
-	info, ok := a.requestUser(r)
+	ctx, span := a.o.T.Start(r.Context(), "homepage")
+	defer span.End()
+
+	info, ok := a.requestUser(ctx, r)
 	if !ok || info.GetUserID() <= 0 {
 		// generate a new anonymous token
 		rawToken := make([]byte, 16)
@@ -33,6 +38,18 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 		a.store.Do(func(s *Store) {
 			s.Sessions[tokenInfo.GetSessionID()] = &tokenInfo
 		})
+
+		returnTo := r.FormValue("return")
+		if returnTo != "" {
+			u, err := url.Parse(returnTo)
+			if err != nil {
+				returnTo = ""
+			} else if !strings.HasSuffix(u.Host, a.cookieDomain) {
+				returnTo = ""
+			} else {
+				returnTo = u.String()
+			}
+		}
 
 		// send it to the client
 		http.SetCookie(rw, &http.Cookie{
@@ -59,6 +76,8 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 			html.H4(gomponents.Text("register")),
 			html.Form(
 				html.Action("javascript:register()"),
+
+				html.Input(html.Type("text"), html.ID("return"), html.Name("return"), html.Value(returnTo), html.Hidden("hidden")),
 
 				html.Label(html.For("username"), gomponents.Text("username")),
 				html.Input(html.Type("text"), html.ID("username"), html.Name("username"), html.Placeholder("a username"), html.Required()),
@@ -124,7 +143,8 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) update(rw http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
+	ctx, span := a.o.T.Start(r.Context(), "update")
+	defer span.End()
 	info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
 	err := r.ParseForm()
@@ -143,7 +163,8 @@ func (a *App) update(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) logoutPage(rw http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
+	ctx, span := a.o.T.Start(r.Context(), "logoutPage")
+	defer span.End()
 	info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
 	var user *UserInfo
@@ -162,7 +183,8 @@ func (a *App) logoutPage(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) logoutAction(rw http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
+	ctx, span := a.o.T.Start(r.Context(), "logoutAction")
+	defer span.End()
 	info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
 	a.store.Do(func(s *Store) {

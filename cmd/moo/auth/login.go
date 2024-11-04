@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"crypto/rand"
 	_ "embed"
 	"encoding/base32"
@@ -14,7 +15,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (a *App) requestUser(r *http.Request) (info *TokenInfo, ok bool) {
+func (a *App) requestUser(ctx context.Context, r *http.Request) (info *TokenInfo, ok bool) {
 	c, err := r.Cookie(a.cookieName)
 	if err != nil {
 		return nil, false
@@ -27,8 +28,9 @@ func (a *App) requestUser(r *http.Request) (info *TokenInfo, ok bool) {
 }
 
 func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
+	ctx, span := a.o.T.Start(r.Context(), "loginStart")
+	defer span.End()
 	cred, err := func() (*protocol.CredentialAssertion, error) {
-		ctx := r.Context()
 		info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
 		cred, sess, err := a.webauthn.BeginDiscoverableLogin()
@@ -56,8 +58,9 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
+	ctx, span := a.o.T.Start(r.Context(), "loginFinish")
+	defer span.End()
 	err := func() error {
-		ctx := r.Context()
 		info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
 		if info.SessionData == nil {

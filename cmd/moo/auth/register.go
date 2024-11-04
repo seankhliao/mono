@@ -12,8 +12,9 @@ import (
 )
 
 func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
+	ctx, span := a.o.T.Start(r.Context(), "registerStart")
+	defer span.End()
 	create, err := func() (*protocol.CredentialCreation, error) {
-		ctx := r.Context()
 		info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
 		if info.GetUserID() == 0 {
@@ -105,8 +106,9 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
+	ctx, span := a.o.T.Start(r.Context(), "registerFinish")
+	defer span.End()
 	err := func() error {
-		ctx := r.Context()
 		info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
 
 		var user *UserInfo

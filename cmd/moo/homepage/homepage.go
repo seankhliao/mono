@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	"maragu.dev/gomponents"
-	"maragu.dev/gomponents/html"
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/webstyle"
 	"go.seankhliao.com/mono/yrun"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
 type Config struct {

@@ -50,6 +50,15 @@ type O11y struct {
 	H slog.Handler
 }
 
+func (o O11y) Sub(name string) O11y {
+	return O11y{
+		T: otel.Tracer(name),
+		M: otel.Meter(name),
+		L: o.L.WithGroup(name),
+		H: o.H.WithGroup(name),
+	}
+}
+
 func NewO11y(c O11yConfig) (O11y, O11yReg) {
 	var r O11yReg
 

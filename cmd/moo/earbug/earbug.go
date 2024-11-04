@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
-	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/httpencoding"
@@ -59,12 +58,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	ctx := context.Background()
 
 	a := &App{
-		o: yrun.O11y{
-			T: otel.Tracer("earbug"),
-			M: otel.Meter("earbug"),
-			L: o.L.WithGroup("earbug"),
-			H: o.H.WithGroup("earbug"),
-		},
+		o: o.Sub("earbug"),
 		http: &http.Client{
 			Transport: otelhttp.NewTransport(http.DefaultTransport),
 		},

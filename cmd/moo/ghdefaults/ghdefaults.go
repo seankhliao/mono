@@ -11,7 +11,6 @@ import (
 	"github.com/bradleyfalzon/ghinstallation/v2"
 	"github.com/google/go-github/v60/github"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
-	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -36,13 +35,8 @@ type App struct {
 
 func New(c Config, o yrun.O11y) (*App, error) {
 	return &App{
-		host: c.Host,
-		o: yrun.O11y{
-			T: otel.Tracer("ghdefaults"),
-			M: otel.Meter("ghdefaults"),
-			L: o.L.WithGroup("ghdefaults"),
-			H: o.H.WithGroup("ghdefaults"),
-		},
+		host:          c.Host,
+		o:             o.Sub("ghdefaults"),
 		webhookSecret: strings.TrimSpace(c.WebhookSecret),
 		privateKey:    c.PrivateKey + "\n",
 		appID:         c.AppID,

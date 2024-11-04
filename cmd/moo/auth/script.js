@@ -60,7 +60,12 @@ async function login() {
   //   window.location.href = loginStatus.redirect;
   //   return;
   // }
-  window.location.reload();
+  let redirect = document.querySelector("#return").value;
+  if (redirect) {
+    window.location.href = redirect;
+  } else {
+    window.location.reload();
+  }
 }
 // register
 async function register() {
