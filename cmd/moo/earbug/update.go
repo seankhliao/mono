@@ -2,10 +2,12 @@ package earbug
 
 import (
 	"context"
+	"encoding/json"
 	"log/slog"
 	"time"
 
 	"github.com/zmb3/spotify/v2"
+	"golang.org/x/oauth2"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
@@ -13,45 +15,61 @@ func (a *App) update(ctx context.Context) {
 	ctx, span := a.o.T.Start(ctx, "UpdateRecentlyPlayed")
 	defer span.End()
 
-	items, err := a.spot.PlayerRecentlyPlayedOpt(ctx, &spotify.RecentlyPlayedOptions{Limit: 50})
-	if err != nil {
-		a.Err(ctx, "get recently played", err)
-		return
-	}
+	ctx = context.WithValue(ctx, oauth2.HTTPClient, a.http)
 
-	var added int
-	a.store.Do(func(s *Store) {
-		for _, item := range items {
-			ts := item.PlayedAt.Format(time.RFC3339Nano)
-			if _, ok := s.Playbacks[ts]; !ok {
-				added++
-				s.Playbacks[ts] = &Playback{
-					TrackId:     ptr(item.Track.ID.String()),
-					TrackUri:    ptr(string(item.Track.URI)),
-					ContextType: ptr(item.PlaybackContext.Type),
-					ContextUri:  ptr(string(item.PlaybackContext.URI)),
-				}
+	clients := make(map[int64]spotify.Client)
+	a.store.RDo(func(s *Store) {
+		for userID, userData := range s.Users {
+			var token oauth2.Token
+			err := json.Unmarshal(userData.Token, &token)
+			if err != nil {
+				continue
 			}
-
-			if _, ok := s.Tracks[item.Track.ID.String()]; !ok {
-				t := &Track{
-					Id:       ptr(item.Track.ID.String()),
-					Uri:      ptr(string(item.Track.URI)),
-					Type:     ptr(item.Track.Type),
-					Name:     ptr(item.Track.Name),
-					Duration: durationpb.New(item.Track.TimeDuration()),
-				}
-				for _, artist := range item.Track.Artists {
-					t.Artists = append(t.Artists, &Artist{
-						Id:   ptr(artist.ID.String()),
-						Uri:  ptr(string(artist.URI)),
-						Name: ptr(artist.Name),
-					})
-				}
-				s.Tracks[item.Track.ID.String()] = t
-			}
+			clients[userID] = *spotify.New(a.oauth2.Client(ctx, &token))
 		}
 	})
+
+	var added int
+	for userID, spot := range clients {
+		items, err := spot.PlayerRecentlyPlayedOpt(ctx, &spotify.RecentlyPlayedOptions{Limit: 50})
+		if err != nil {
+			a.Err(ctx, "get recently played", err)
+			return
+		}
+
+		a.store.Do(func(s *Store) {
+			for _, item := range items {
+				ts := item.PlayedAt.Format(time.RFC3339Nano)
+				if _, ok := s.Users[userID].Playbacks[ts]; !ok {
+					added++
+					s.Users[userID].Playbacks[ts] = &Playback{
+						TrackId:     ptr(item.Track.ID.String()),
+						TrackUri:    ptr(string(item.Track.URI)),
+						ContextType: ptr(item.PlaybackContext.Type),
+						ContextUri:  ptr(string(item.PlaybackContext.URI)),
+					}
+				}
+
+				if _, ok := s.Tracks[item.Track.ID.String()]; !ok {
+					t := &Track{
+						Id:       ptr(item.Track.ID.String()),
+						Uri:      ptr(string(item.Track.URI)),
+						Type:     ptr(item.Track.Type),
+						Name:     ptr(item.Track.Name),
+						Duration: durationpb.New(item.Track.TimeDuration()),
+					}
+					for _, artist := range item.Track.Artists {
+						t.Artists = append(t.Artists, &Artist{
+							Id:   ptr(artist.ID.String()),
+							Uri:  ptr(string(artist.URI)),
+							Name: ptr(artist.Name),
+						})
+					}
+					s.Tracks[item.Track.ID.String()] = t
+				}
+			}
+		})
+	}
 
 	if added > 0 {
 		a.o.L.LogAttrs(ctx, slog.LevelInfo, "updated record", slog.Int("added", added))

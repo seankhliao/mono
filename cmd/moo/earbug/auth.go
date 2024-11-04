@@ -1,15 +1,12 @@
 package earbug
 
 import (
-	"context"
 	"crypto/rand"
 	"encoding/base32"
 	"encoding/json"
 	"net/http"
 
-	"github.com/zmb3/spotify/v2"
-	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
-	"golang.org/x/oauth2"
+	"go.seankhliao.com/mono/cmd/moo/auth"
 )
 
 func (a *App) authBegin(rw http.ResponseWriter, r *http.Request) {
@@ -27,14 +24,13 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "authCallback")
 	defer span.End()
 
+	userInfo := ctx.Value(auth.TokenInfoContextKey).(*auth.TokenInfo)
+
 	token, err := a.oauth2.Exchange(ctx, r.FormValue("code"))
 	if err != nil {
 		a.HTTPErr(ctx, "get token from request", err, rw, http.StatusBadRequest)
 		return
 	}
-
-	httpClient := &http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
-	a.spot = spotify.New(a.oauth2.Client(context.WithValue(context.Background(), oauth2.HTTPClient, httpClient), token))
 
 	tokenMarshaled, err := json.Marshal(token)
 	if err != nil {
@@ -43,7 +39,12 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	a.store.Do(func(s *Store) {
-		s.Auth.Token = tokenMarshaled
+		data, ok := s.Users[userInfo.GetUserID()]
+		if !ok {
+			data = &UserData{}
+		}
+		data.Token = tokenMarshaled
+		s.Users[userInfo.GetUserID()] = data
 	})
 
 	rw.Write([]byte("success"))

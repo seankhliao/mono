@@ -1,0 +1,13 @@
+edition = "2023";
+
+package earbug;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+message QueryFilterContext {
+  string track = 1;
+  repeated string artists = 2;
+  google.protobuf.Timestamp play_time = 3;
+  google.protobuf.Duration track_duration = 4;
+}
