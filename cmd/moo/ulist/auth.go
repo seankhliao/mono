@@ -1,13 +1,12 @@
 package ulist
 
 import (
-	"context"
 	"crypto/rand"
 	"encoding/base32"
 	"encoding/json"
 	"net/http"
 
-	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.seankhliao.com/mono/cmd/moo/auth"
 	"golang.org/x/oauth2"
 )
 
@@ -19,22 +18,21 @@ func (a *App) authBegin(rw http.ResponseWriter, r *http.Request) {
 	rand.Read(rawState)
 	state := base32.StdEncoding.EncodeToString(rawState)
 
-	http.Redirect(rw, r, a.oauth2.AuthCodeURL(state), http.StatusTemporaryRedirect)
+	u := a.oauth2.AuthCodeURL(state, oauth2.AccessTypeOffline, oauth2.ApprovalForce)
+	http.Redirect(rw, r, u, http.StatusTemporaryRedirect)
 }
 
 func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "authCallback")
 	defer span.End()
 
+	info := ctx.Value(auth.TokenInfoContextKey).(*auth.TokenInfo)
+
 	token, err := a.oauth2.Exchange(ctx, r.FormValue("code"))
 	if err != nil {
 		a.HTTPErr(ctx, "get token from request", err, rw, http.StatusBadRequest)
 		return
 	}
-
-	httpClient := &http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
-	ctx = context.WithValue(ctx, oauth2.HTTPClient, httpClient)
-	// a.spo = spotify.New(a.oauth2.Client(ctx, token))
 
 	tokenMarshaled, err := json.Marshal(token)
 	if err != nil {
@@ -43,7 +41,12 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	a.store.Do(func(s *Store) {
-		s.Auth.Token = tokenMarshaled
+		data := s.Users[info.GetUserID()]
+		if data == nil {
+			data = &UserData{}
+		}
+		data.Token = tokenMarshaled
+		s.Users[info.GetUserID()] = data
 	})
 
 	rw.Write([]byte("success"))

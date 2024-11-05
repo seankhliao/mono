@@ -28,4 +28,7 @@ App: {
 	ReqLog: {
 		Host: "reqlog.\(BaseDomain)"
 	}
+	Ulist: {
+		Host: "ulist.\(BaseDomain)"
+	}
 }
