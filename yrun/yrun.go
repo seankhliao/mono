@@ -110,12 +110,21 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 	// HTTP app
 	if runConfig.HTTP != nil {
 		mux := http.NewServeMux()
-		runConfig.HTTP(app, &muxRegister{mux, make(map[string]struct{})})
+		mx := &muxRegister{mux, make(map[string]struct{})}
+		runConfig.HTTP(app, mx)
 
 		// add http server
 		group.Go(func() error {
 			httplh := o11y.H.WithGroup("external-http")
 			httplg := slog.New(httplh)
+
+			if config.HTTP.K8s.Enable {
+				httplg.LogAttrs(ctx, slog.LevelDebug, "managing k8s service/httproute")
+				err := ManageK8s(ctx, httplg, config.HTTP, mx)
+				if err != nil {
+					return fmt.Errorf("manage k8s httproute: %w", err)
+				}
+			}
 
 			server := &http.Server{
 				Addr:              config.HTTP.Address,
