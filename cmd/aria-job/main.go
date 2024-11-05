@@ -1,9 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
-	"log/slog"
+	"io"
 	"os"
 	"strings"
 
@@ -15,21 +18,33 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 3 {
-		slog.Error("missing required args")
-		os.Exit(1)
-	}
-
-	for idx, url := range os.Args[2:] {
-		err := run(fmt.Sprintf("%s-%d", os.Args[1], idx), url)
+	var input io.Reader
+	switch len(os.Args) {
+	case 1:
+		input = os.Stdin
+	case 2:
+		f, err := os.Open(os.Args[1])
 		if err != nil {
-			slog.Error("run", "err", err)
+			fmt.Fprintln(os.Stderr, "open file", os.Args[1], err)
 			os.Exit(1)
 		}
+		input = f
+	case 3:
+		fmt.Fprintln(os.Stderr, "unexpected args", os.Args[2:])
+		os.Exit(1)
+	default:
+		fmt.Fprintln(os.Stderr, "no args??")
+		os.Exit(2)
+	}
+
+	err := run(input)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }
 
-func run(jobName, magnetURL string) error {
+func run(r io.Reader) error {
 	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
 	configOverrides := &clientcmd.ConfigOverrides{}
 	kubeConfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loadingRules, configOverrides)
@@ -46,14 +61,34 @@ func run(jobName, magnetURL string) error {
 
 	ctx := context.Background()
 
-	created, err := jobsClient.Create(ctx, &apibatchv1.Job{
+	sc := bufio.NewScanner(r)
+	for i := 0; sc.Scan(); i++ {
+		link := sc.Text()
+		if !strings.HasPrefix(link, "magnet") {
+			return fmt.Errorf("[%d] expected magnet link, got %q", i, link)
+		}
+
+		name, err := createJob(ctx, jobsClient, link)
+		if err != nil {
+			return fmt.Errorf("[%d] create job: %w", i, err)
+		}
+		fmt.Println("created job -n default", name)
+	}
+	return nil
+}
+
+func createJob(ctx context.Context, client clientbatchv1.JobInterface, link string) (string, error) {
+	linkHash := sha256.Sum256([]byte(link))
+	name := hex.EncodeToString(linkHash[:])
+	name = "aria-dl-" + name[:8]
+	created, err := client.Create(ctx, &apibatchv1.Job{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Job",
 			APIVersion: "batch/v1",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace: "default",
-			Name:      fmt.Sprintf("aria-%s", strings.ReplaceAll(jobName, " ", "-")),
+			Name:      name,
 		},
 		Spec: apibatchv1.JobSpec{
 			BackoffLimit:            ptr[int32](3),
@@ -66,10 +101,7 @@ func run(jobName, magnetURL string) error {
 							Name:  "aria",
 							Image: "docker.io/library/alpine:latest",
 							Command: []string{
-								"sh", "-c", fmt.Sprintf(`apk add aria2
-cd /data
-aria2c '%s'
-                                                                `, magnetURL),
+								"sh", "-c", fmt.Sprintf(`apk add aria2 && cd /data && aria2c '%s'`, link),
 							},
 							VolumeMounts: []corev1.VolumeMount{
 								{
@@ -94,11 +126,9 @@ aria2c '%s'
 		},
 	}, metav1.CreateOptions{})
 	if err != nil {
-		return fmt.Errorf("create job: %w", err)
+		return "", fmt.Errorf("create job: %w", err)
 	}
-
-	slog.Info("created job", "name", created.Name)
-	return nil
+	return created.Name, nil
 }
 
 func ptr[T any](v T) *T {
