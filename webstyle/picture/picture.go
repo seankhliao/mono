@@ -51,7 +51,7 @@ func (r *Renderer) renderParagraph(w util.BufWriter, source []byte, n ast.Node, 
 			_ = w.WriteByte('\n')
 		}
 	} else {
-		if n.ChildCount() == 1 && n.FirstChild().Kind() == ast.KindImage {
+		if pic {
 			_, _ = w.WriteString("</picture>\n")
 		} else {
 			_, _ = w.WriteString("</p>\n")
@@ -78,7 +78,7 @@ func (r *Renderer) renderImage(w util.BufWriter, source []byte, node ast.Node, e
 	}
 	fmt.Fprintf(w, `<img src=%q alt=%q %s loading="lazy" fetchpriority="low">`+"\n",
 		strings.TrimSuffix(dst, ext)+".avif",
-		util.EscapeHTML(n.Text(source)),
+		util.EscapeHTML(n.Title),
 		extraAttrs,
 	)
 	return ast.WalkSkipChildren, nil

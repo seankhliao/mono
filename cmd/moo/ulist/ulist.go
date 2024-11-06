@@ -16,6 +16,7 @@ import (
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"
 	"golang.org/x/oauth2"
+	"google.golang.org/api/option"
 	"google.golang.org/api/youtube/v3"
 )
 
@@ -81,9 +82,11 @@ func (a *App) test(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx = context.WithValue(ctx, oauth2.HTTPClient, a.http)
-	oclient := a.oauth2.Client(ctx, &token)
-	client, err := youtube.New(oclient)
+	client, err := youtube.NewService(
+		ctx,
+		option.WithHTTPClient(a.http),
+		option.WithTokenSource(a.oauth2.TokenSource(ctx, &token)),
+	)
 	if err != nil {
 		a.HTTPErr(ctx, "create client", err, rw, http.StatusInternalServerError)
 		return
