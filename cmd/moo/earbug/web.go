@@ -293,14 +293,6 @@ func form(o queryOptions) gomponents.Node {
 	)
 }
 
-type getPlaybacksOptions struct {
-	From time.Time
-	To   time.Time
-
-	Artist string
-	Track  string
-}
-
 type DisplayPlayback struct {
 	StartTime    time.Time
 	PlaybackTime time.Duration

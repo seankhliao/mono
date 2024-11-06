@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"context"
 	"crypto/rand"
 	_ "embed"
 	"encoding/base32"
@@ -15,18 +14,6 @@ import (
 	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
-
-func (a *App) requestUser(ctx context.Context, r *http.Request) (info *authv1.TokenInfo, ok bool) {
-	c, err := r.Cookie(a.cookieName)
-	if err != nil {
-		return nil, false
-	}
-
-	a.store.RDo(func(s *authv1.Store) {
-		info, ok = s.Sessions[c.Value]
-	})
-	return
-}
 
 func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "loginStart")

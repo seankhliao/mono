@@ -86,6 +86,9 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		info.SessionData, err = json.Marshal(sess)
+		if err != nil {
+			return nil, err
+		}
 		info.Credname = &credname
 		a.store.Do(func(s *authv1.Store) {
 			s.Sessions[info.GetSessionId()] = info
