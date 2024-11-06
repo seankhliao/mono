@@ -21,7 +21,20 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12024-11-29_ renforshort
 - _12024-11-27_ WACK in the UK Vol 4 <!-- MONSTER IDOL , ASP , ExWHYZ -->
 - _12024-11-15_ UPSAHL
-- _12024-11-02_ Kamelot with Blackbriar
+
+###### _12024-11-02_ Kamelot
+
+With [_Ad Infinitum_], [_Blackbriar_], and [_Frozen Crown_]
+
+[_Frozen Crown_] was alright,
+I could see why some people would like them,
+even though I personally wasn't hooked.
+[_Blackbriar_] was who I was here for,
+the mix of spooky elegance came across quite well.
+It was almost ethereal.
+[_Ad Infinitum_] I'm sure I heard them when youtube recommended videos,
+but it felt like a different genre?
+[_KAMELOT_] was fine, very flashy too with lots of smoke and flames.
 
 ###### _12024-10-26_ Hatsune Miku
 
@@ -1051,6 +1064,7 @@ the energy levels are high.
 for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Chrissy Costanza_] is a bundle of energy bouncing around the front of the stage.
 
+[_Ad Infinitum_]: https://www.youtube.com/@AdInfinitumOfficial
 [_Against the Current_]: https://www.youtube.com/@againstthecurrent
 [_Air Drawn Dagger_]: https://www.youtube.com/@AirDrawnDagger
 [_Aisling McGlynn_]: https://www.anuna.ie/aisling-mcglynn
@@ -1073,6 +1087,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Beth McCarthy_]: https://www.youtube.com/@BethMcCarthy
 [_Billie Eilish_]: https://www.youtube.com/@BillieEilish
 [_BiS_]: https://www.youtube.com/@BiS_official
+[_Blackbriar_]: https://www.youtube.com/@blackbriarmusic
 [_Blackpink_]: https://www.youtube.com/@BLACKPINK
 [_Black Veil Brides_]: https://www.youtube.com/@blackveilbrides
 [_briskin_]: https://www.youtube.com/@briskin01
@@ -1097,8 +1112,8 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Delain_]: https://www.youtube.com/@delainofficial
 [_Detweiler_]: https://www.youtube.com/@detweiler5838
 [_Echosmith_]: https://www.youtube.com/@echosmith
-[_Ed Sheeran_]: https://www.youtube.com/@EdSheeran
 [_Eden Hunter_]: https://www.youtube.com/@edenhunter_
+[_Ed Sheeran_]: https://www.youtube.com/@EdSheeran
 [_Elena Flury_]: https://www.youtube.com/@elenaflury
 [_Emi Jeen_]: https://www.youtube.com/@emijeenofficial
 [_Emilia Clarke_]: https://www.instagram.com/emilia_clarke
@@ -1109,6 +1124,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Fall Out Boy_]: https://www.youtube.com/@falloutboy
 [_FEMM_]: https://www.youtube.com/@FEMM____
 [_Fletcher_]: https://www.youtube.com/@fletcher
+[_Frozen Crown_]: https://www.youtube.com/@FrozenCrown
 [_galacticbpd_]: https://www.instagram.com/galacticbpd_
 [_girli_]: https://www.youtube.com/@girlimusic
 [_girl in red_]: https://www.youtube.com/@girlinred
@@ -1130,6 +1146,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Jayd Marie_]: https://www.youtube.com/@Jayd_Marie
 [_July Jones_]: https://www.youtube.com/@JulyJones
 [_Kaeto_]: https://www.youtube.com/@KaetoEYO
+[_KAMELOT_]: https://www.youtube.com/@KAMELOT
 [_Kanna Hashimoto_]: https://www.instagram.com/kannahashimoto.mg
 [_Katelyn Tarver_]: https://www.youtube.com/@katelyntarver
 [_Kimbra_]: https://www.youtube.com/@kimbramusic
