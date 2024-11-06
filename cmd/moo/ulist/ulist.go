@@ -7,10 +7,12 @@ import (
 	"log/slog"
 	"net/http"
 
+	"github.com/google/cel-go/cel"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/cmd/moo/auth"
+	"go.seankhliao.com/mono/cmd/moo/ulist/ulistv1"
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"
 	"golang.org/x/oauth2"
@@ -18,9 +20,9 @@ import (
 )
 
 func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Pattern("GET", a.host, "/test", a.Auth(http.HandlerFunc(a.test)))
-	r.Pattern("GET", a.host, "/auth/begin", a.Auth(http.HandlerFunc(a.authBegin)))
-	r.Pattern("GET", a.host, "/auth/callback", a.Auth(http.HandlerFunc(a.authCallback)))
+	r.Pattern("GET", a.host, "/test", a.AuthN(a.AuthZ(http.HandlerFunc(a.test), auth.AllowRegistered)))
+	r.Pattern("GET", a.host, "/auth/begin", a.AuthN(a.AuthZ(http.HandlerFunc(a.authBegin), auth.AllowRegistered)))
+	r.Pattern("GET", a.host, "/auth/callback", a.AuthN(a.AuthZ(http.HandlerFunc(a.authCallback), auth.AllowRegistered)))
 }
 
 type Config struct {
@@ -32,9 +34,10 @@ type App struct {
 	host string
 	o    yrun.O11y
 
-	Auth func(http.Handler) http.Handler
+	AuthN func(http.Handler) http.Handler
+	AuthZ func(http.Handler, cel.Program) http.Handler
 
-	store  *yrun.Store[*Store]
+	store  *yrun.Store[*ulistv1.Store]
 	oauth2 oauth2.Config
 	http   *http.Client
 }
@@ -42,9 +45,9 @@ type App struct {
 func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	ctx := context.Background()
 
-	store, err := yrun.NewStore(ctx, bkt, "ulist.pb.zstd", func() *Store {
-		return &Store{
-			Users: make(map[int64]*UserData),
+	store, err := yrun.NewStore(ctx, bkt, "ulist.pb.zstd", func() *ulistv1.Store {
+		return &ulistv1.Store{
+			Users: make(map[int64]*ulistv1.UserData),
 		}
 	})
 	if err != nil {
@@ -64,11 +67,11 @@ func (a *App) test(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "test")
 	defer span.End()
 
-	info := ctx.Value(auth.TokenInfoContextKey).(*auth.TokenInfo)
+	info := auth.FromContext(ctx)
 
 	var rawToken []byte
-	a.store.RDo(func(s *Store) {
-		data := s.Users[info.GetUserID()]
+	a.store.RDo(func(s *ulistv1.Store) {
+		data := s.Users[info.GetUserId()]
 		rawToken = data.GetToken()
 	})
 	var token oauth2.Token

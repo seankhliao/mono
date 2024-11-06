@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"go.seankhliao.com/mono/cmd/moo/auth"
+	"go.seankhliao.com/mono/cmd/moo/ulist/ulistv1"
 	"golang.org/x/oauth2"
 )
 
@@ -26,7 +27,7 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "authCallback")
 	defer span.End()
 
-	info := ctx.Value(auth.TokenInfoContextKey).(*auth.TokenInfo)
+	info := auth.FromContext(ctx)
 
 	token, err := a.oauth2.Exchange(ctx, r.FormValue("code"))
 	if err != nil {
@@ -40,13 +41,13 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a.store.Do(func(s *Store) {
-		data := s.Users[info.GetUserID()]
-		if data == nil {
-			data = &UserData{}
+	a.store.Do(func(s *ulistv1.Store) {
+		data, ok := s.Users[info.GetUserId()]
+		if !ok {
+			data = &ulistv1.UserData{}
 		}
 		data.Token = tokenMarshaled
-		s.Users[info.GetUserID()] = data
+		s.Users[info.GetUserId()] = data
 	})
 
 	rw.Write([]byte("success"))

@@ -12,16 +12,17 @@ import (
 
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
+	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (a *App) requestUser(ctx context.Context, r *http.Request) (info *TokenInfo, ok bool) {
+func (a *App) requestUser(ctx context.Context, r *http.Request) (info *authv1.TokenInfo, ok bool) {
 	c, err := r.Cookie(a.cookieName)
 	if err != nil {
 		return nil, false
 	}
 
-	a.store.RDo(func(s *Store) {
+	a.store.RDo(func(s *authv1.Store) {
 		info, ok = s.Sessions[c.Value]
 	})
 	return
@@ -31,7 +32,7 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "loginStart")
 	defer span.End()
 	cred, err := func() (*protocol.CredentialAssertion, error) {
-		info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
+		info := FromContext(ctx)
 
 		cred, sess, err := a.webauthn.BeginDiscoverableLogin()
 		if err != nil {
@@ -40,8 +41,8 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 
 		// store session data for finish
 		info.SessionData, _ = json.Marshal(sess)
-		a.store.Do(func(s *Store) {
-			s.Sessions[*info.SessionID] = info
+		a.store.Do(func(s *authv1.Store) {
+			s.Sessions[*info.SessionId] = info
 		})
 		return cred, nil
 	}()
@@ -61,7 +62,7 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "loginFinish")
 	defer span.End()
 	err := func() error {
-		info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
+		info := FromContext(ctx)
 
 		if info.SessionData == nil {
 			return errors.New("no session started")
@@ -89,22 +90,22 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 		rand.Read(rawToken)
 		token := []byte("moou_")
 		token = base32.StdEncoding.AppendEncode(token, rawToken)
-		tokenInfo := TokenInfo{
-			SessionID: ptr(string(token)),
+		tokenInfo := &authv1.TokenInfo{
+			SessionId: ptr(string(token)),
 			Created:   timestamppb.Now(),
-			UserID:    user.u.UserID,
+			UserId:    user.u.UserId,
 		}
 
 		// swap tokens
-		a.store.Do(func(s *Store) {
-			delete(s.Sessions, *info.SessionID)
-			s.Sessions[tokenInfo.GetSessionID()] = &tokenInfo
+		a.store.Do(func(s *authv1.Store) {
+			delete(s.Sessions, *info.SessionId)
+			s.Sessions[tokenInfo.GetSessionId()] = tokenInfo
 		})
 
 		// send it to the client
 		http.SetCookie(rw, &http.Cookie{
 			Name:        a.cookieName,
-			Value:       *tokenInfo.SessionID,
+			Value:       *tokenInfo.SessionId,
 			Path:        "/",
 			Domain:      a.cookieDomain,
 			MaxAge:      int(30 * 24 * time.Hour.Seconds()),

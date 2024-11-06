@@ -7,24 +7,24 @@ import (
 	"encoding/base32"
 	"fmt"
 	"net/http"
-	"net/url"
 
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
+	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Pattern("GET", a.host, "/{$}", http.HandlerFunc(a.homepage))
-	r.Pattern("POST", a.host, "/login/start", a.requireAuth(http.HandlerFunc(a.loginStart), true))
-	r.Pattern("POST", a.host, "/login/finish", a.requireAuth(http.HandlerFunc(a.loginFinish), true))
-	r.Pattern("POST", a.host, "/register/start", a.requireAuth(http.HandlerFunc(a.registerStart), true))
-	r.Pattern("POST", a.host, "/register/finish", a.requireAuth(http.HandlerFunc(a.registerFinish), true))
-	r.Pattern("POST", a.host, "/update", a.RequireAuth(http.HandlerFunc(a.update)))
-	r.Pattern("GET", a.host, "/logout", a.RequireAuth(http.HandlerFunc(a.logoutPage)))
-	r.Pattern("POST", a.host, "/logout", a.RequireAuth(http.HandlerFunc(a.logoutAction)))
+	r.Pattern("GET", a.host, "/{$}", a.AuthN(http.HandlerFunc(a.homepage)))
+	r.Pattern("POST", a.host, "/login/start", a.AuthN(http.HandlerFunc(a.loginStart)))
+	r.Pattern("POST", a.host, "/login/finish", a.AuthN(http.HandlerFunc(a.loginFinish)))
+	r.Pattern("POST", a.host, "/register/start", a.AuthN(http.HandlerFunc(a.registerStart)))
+	r.Pattern("POST", a.host, "/register/finish", a.AuthN(http.HandlerFunc(a.registerFinish)))
+	r.Pattern("POST", a.host, "/update", a.AuthN(a.AuthZ(http.HandlerFunc(a.update), AllowRegistered)))
+	r.Pattern("GET", a.host, "/logout", a.AuthN(a.AuthZ(http.HandlerFunc(a.logoutPage), AllowRegistered)))
+	r.Pattern("POST", a.host, "/logout", a.AuthN(a.AuthZ(http.HandlerFunc(a.logoutAction), AllowRegistered)))
 }
 
 func Admin(a *App, r yrun.HTTPRegistrar) {
@@ -46,7 +46,7 @@ type App struct {
 	webauthn *webauthn.WebAuthn
 
 	o     yrun.O11y
-	store *yrun.Store[*Store]
+	store *yrun.Store[*authv1.Store]
 }
 
 func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
@@ -75,10 +75,10 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	}
 
 	ctx := context.Background()
-	a.store, err = yrun.NewStore(ctx, bkt, "auth.pb.zstd", func() *Store {
-		return &Store{
-			Users:    make(map[int64]*UserInfo),
-			Sessions: make(map[string]*TokenInfo),
+	a.store, err = yrun.NewStore(ctx, bkt, "auth.pb.zstd", func() *authv1.Store {
+		return &authv1.Store{
+			Users:    make(map[int64]*authv1.UserInfo),
+			Sessions: make(map[string]*authv1.TokenInfo),
 		}
 	})
 	if err != nil {
@@ -91,7 +91,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	return a, nil
 }
 
-// func (a *App) migrate(s *Store) {
+// func (a *App) migrate(s *authv1.Store) {
 // 	for id, user := range s.Users {
 // 		if len(user.Credentials) == 0 {
 // 			continue
@@ -106,49 +106,6 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 // 	}
 // }
 
-func (a *App) RequireAuth(next http.Handler) http.Handler {
-	return a.requireAuth(next, false)
-}
-
-func (a *App) requireAuth(next http.Handler, allowAnonymous bool) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		ctx, span := a.o.T.Start(r.Context(), "require auth")
-		defer span.End()
-
-		q := make(url.Values)
-		if r.Host != a.host {
-			q.Set("return", (&url.URL{
-				Scheme:   "https",
-				Host:     r.Host,
-				Path:     r.URL.Path,
-				RawQuery: r.URL.RawQuery,
-			}).String())
-		}
-
-		u := (&url.URL{
-			Scheme:   "https",
-			Host:     a.host,
-			Path:     "/",
-			RawQuery: q.Encode(),
-		}).String()
-
-		info, ok := a.requestUser(ctx, r)
-		if !ok {
-			http.Redirect(rw, r, u, http.StatusFound)
-			return
-		}
-		if info.GetUserID() <= 0 && !allowAnonymous {
-			http.Redirect(rw, r, u, http.StatusFound)
-			return
-		}
-
-		ctx = context.WithValue(ctx, TokenInfoContextKey, info)
-		r = r.WithContext(ctx)
-
-		next.ServeHTTP(rw, r)
-	})
-}
-
 // Debug handlers
 
 func (a *App) adminToken(rw http.ResponseWriter, r *http.Request) {
@@ -157,14 +114,14 @@ func (a *App) adminToken(rw http.ResponseWriter, r *http.Request) {
 	token := []byte("mooa_")
 	token = base32.StdEncoding.AppendEncode(token, rawToken)
 
-	tokenInfo := &TokenInfo{
-		SessionID: ptr(string(token)),
+	tokenInfo := &authv1.TokenInfo{
+		SessionId: ptr(string(token)),
 		Created:   timestamppb.Now(),
-		UserID:    ptr[int64](-1),
+		UserId:    ptr[int64](-1),
 	}
 
-	a.store.Do(func(s *Store) {
-		s.Sessions[tokenInfo.GetSessionID()] = tokenInfo
+	a.store.Do(func(s *authv1.Store) {
+		s.Sessions[tokenInfo.GetSessionId()] = tokenInfo
 	})
 
 	rw.Write(token)

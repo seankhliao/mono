@@ -1,16 +1,13 @@
 package auth
 
 import (
-	"crypto/rand"
 	_ "embed"
-	"encoding/base32"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 
+	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
 	"go.seankhliao.com/mono/webstyle"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
@@ -22,23 +19,8 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "homepage")
 	defer span.End()
 
-	info, ok := a.requestUser(ctx, r)
-	if !ok || info.GetUserID() <= 0 {
-		// generate a new anonymous token
-		rawToken := make([]byte, 16)
-		rand.Read(rawToken)
-		token := []byte("moox_")
-		token = base32.StdEncoding.AppendEncode(token, rawToken)
-		tokenInfo := TokenInfo{
-			SessionID: ptr(string(token)),
-			Created:   timestamppb.Now(),
-		}
-
-		// store it
-		a.store.Do(func(s *Store) {
-			s.Sessions[tokenInfo.GetSessionID()] = &tokenInfo
-		})
-
+	info := FromContext(ctx)
+	if info.GetUserId() <= 0 {
 		returnTo := r.FormValue("return")
 		if returnTo != "" {
 			u, err := url.Parse(returnTo)
@@ -50,19 +32,6 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 				returnTo = u.String()
 			}
 		}
-
-		// send it to the client
-		http.SetCookie(rw, &http.Cookie{
-			Name:        a.cookieName,
-			Value:       tokenInfo.GetSessionID(),
-			Path:        "/",
-			Domain:      a.cookieDomain,
-			MaxAge:      int(time.Hour.Seconds()),
-			Secure:      true,
-			HttpOnly:    true,
-			SameSite:    http.SameSiteStrictMode,
-			Partitioned: true,
-		})
 
 		webstyle.Structured(rw, webstyle.NewOptions("log in?", "auth", []gomponents.Node{
 			html.Script(gomponents.Raw(scriptJS)),
@@ -94,9 +63,9 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user *UserInfo
-	a.store.RDo(func(s *Store) {
-		user = s.Users[info.GetUserID()]
+	var user *authv1.UserInfo
+	a.store.RDo(func(s *authv1.Store) {
+		user = s.Users[info.GetUserId()]
 	})
 
 	var credIDs []gomponents.Node
@@ -108,7 +77,7 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 		html.Script(gomponents.Raw(scriptJS)),
 		html.H3(html.Em(gomponents.Text("hello ")), gomponents.Text(user.GetUsername())),
 		html.Ul(
-			html.Li(html.Em(gomponents.Text("User ID:")), gomponents.Textf("%v", user.GetUserID())),
+			html.Li(html.Em(gomponents.Text("User ID:")), gomponents.Textf("%v", user.GetUserId())),
 		),
 
 		html.H4(gomponents.Text("account details")),
@@ -145,7 +114,7 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 func (a *App) update(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "update")
 	defer span.End()
-	info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
+	info := FromContext(ctx)
 
 	err := r.ParseForm()
 	if err != nil {
@@ -153,10 +122,10 @@ func (a *App) update(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a.store.Do(func(s *Store) {
-		user := s.Users[*info.UserID]
+	a.store.Do(func(s *authv1.Store) {
+		user := s.Users[*info.UserId]
 		user.Username = ptr(r.FormValue("username"))
-		s.Users[*info.UserID] = user
+		s.Users[*info.UserId] = user
 	})
 
 	http.Redirect(rw, r, "/", http.StatusFound)
@@ -165,11 +134,11 @@ func (a *App) update(rw http.ResponseWriter, r *http.Request) {
 func (a *App) logoutPage(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "logoutPage")
 	defer span.End()
-	info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
+	info := FromContext(ctx)
 
-	var user *UserInfo
-	a.store.RDo(func(s *Store) {
-		user = s.Users[*info.UserID]
+	var user *authv1.UserInfo
+	a.store.RDo(func(s *authv1.Store) {
+		user = s.Users[*info.UserId]
 	})
 
 	webstyle.Structured(rw, webstyle.NewOptions("end this session", "logout", []gomponents.Node{
@@ -185,10 +154,10 @@ func (a *App) logoutPage(rw http.ResponseWriter, r *http.Request) {
 func (a *App) logoutAction(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "logoutAction")
 	defer span.End()
-	info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
+	info := FromContext(ctx)
 
-	a.store.Do(func(s *Store) {
-		delete(s.Sessions, info.GetSessionID())
+	a.store.Do(func(s *authv1.Store) {
+		delete(s.Sessions, info.GetSessionId())
 	})
 
 	http.SetCookie(rw, &http.Cookie{

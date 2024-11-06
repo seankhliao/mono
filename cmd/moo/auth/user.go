@@ -6,28 +6,14 @@ import (
 	"strconv"
 
 	"github.com/go-webauthn/webauthn/webauthn"
+	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
 )
 
-// SessionID is also the cookie Value
-// has a prefix of:
-//   - moou_ for user tokens
-//   - moox_ for anonymous tokens
-//   - mooa_ for admin tokens
-
-// UserID is identifies the user
-//   - > 0 for valid users
-//   - = 0 for anonymous users
-//   - < 0 for admin tokens
-
-type tokenInfoContextKey struct{}
-
-var TokenInfoContextKey = tokenInfoContextKey{}
-
 type User struct {
-	u *UserInfo
+	u *authv1.UserInfo
 }
 
-func (u User) WebAuthnID() []byte          { return []byte(strconv.FormatInt(u.u.GetUserID(), 10)) }
+func (u User) WebAuthnID() []byte          { return []byte(strconv.FormatInt(u.u.GetUserId(), 10)) }
 func (u User) WebAuthnName() string        { return u.u.GetUsername() }
 func (u User) WebAuthnDisplayName() string { return u.u.GetUsername() }
 func (u User) WebAuthnCredentials() []webauthn.Credential {
@@ -39,10 +25,10 @@ func (u User) WebAuthnCredentials() []webauthn.Credential {
 }
 
 func (a *App) discoverableUserHandler(rawID, userHandle []byte) (user webauthn.User, err error) {
-	var u *UserInfo
+	var u *authv1.UserInfo
 	var found bool
 
-	a.store.RDo(func(s *Store) {
+	a.store.RDo(func(s *authv1.Store) {
 	loop:
 		for _, user := range s.Users {
 			creds := User{user}.WebAuthnCredentials()

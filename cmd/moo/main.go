@@ -60,7 +60,8 @@ func New(ctx context.Context, c Config, bkt *blob.Bucket, o yrun.O11y) (a *App, 
 	if err != nil {
 		return nil, err
 	}
-	a.Earbug.Auth = a.Auth.RequireAuth
+	a.Earbug.AuthN = a.Auth.AuthN
+	a.Earbug.AuthZ = a.Auth.AuthZ
 
 	a.GHDefaults, err = ghdefaults.New(c.GHDefaults, o)
 	if err != nil {
@@ -81,7 +82,8 @@ func New(ctx context.Context, c Config, bkt *blob.Bucket, o yrun.O11y) (a *App, 
 	if err != nil {
 		return nil, err
 	}
-	a.Ulist.Auth = a.Auth.RequireAuth
+	a.Ulist.AuthN = a.Auth.AuthN
+	a.Ulist.AuthZ = a.Auth.AuthZ
 
 	return a, nil
 }

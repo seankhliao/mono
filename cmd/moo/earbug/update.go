@@ -8,6 +8,7 @@ import (
 
 	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/otel/attribute"
+	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 	"golang.org/x/oauth2"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
@@ -19,7 +20,7 @@ func (a *App) update(ctx context.Context) {
 	ctx = context.WithValue(ctx, oauth2.HTTPClient, a.http)
 
 	clients := make(map[int64]spotify.Client)
-	a.store.RDo(func(s *Store) {
+	a.store.RDo(func(s *earbugv5.Store) {
 		for userID, userData := range s.Users {
 			var token oauth2.Token
 			err := json.Unmarshal(userData.Token, &token)
@@ -43,12 +44,12 @@ func (a *App) update(ctx context.Context) {
 				return
 			}
 
-			a.store.Do(func(s *Store) {
+			a.store.Do(func(s *earbugv5.Store) {
 				for _, item := range items {
 					ts := item.PlayedAt.Format(time.RFC3339Nano)
 					if _, ok := s.Users[userID].Playbacks[ts]; !ok {
 						added++
-						s.Users[userID].Playbacks[ts] = &Playback{
+						s.Users[userID].Playbacks[ts] = &earbugv5.Playback{
 							TrackId:     ptr(item.Track.ID.String()),
 							TrackUri:    ptr(string(item.Track.URI)),
 							ContextType: ptr(item.PlaybackContext.Type),
@@ -57,7 +58,7 @@ func (a *App) update(ctx context.Context) {
 					}
 
 					if _, ok := s.Tracks[item.Track.ID.String()]; !ok {
-						t := &Track{
+						t := &earbugv5.Track{
 							Id:       ptr(item.Track.ID.String()),
 							Uri:      ptr(string(item.Track.URI)),
 							Type:     ptr(item.Track.Type),
@@ -65,7 +66,7 @@ func (a *App) update(ctx context.Context) {
 							Duration: durationpb.New(item.Track.TimeDuration()),
 						}
 						for _, artist := range item.Track.Artists {
-							t.Artists = append(t.Artists, &Artist{
+							t.Artists = append(t.Artists, &earbugv5.Artist{
 								Id:   ptr(artist.ID.String()),
 								Uri:  ptr(string(artist.URI)),
 								Name: ptr(artist.Name),

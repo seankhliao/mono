@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"go.seankhliao.com/mono/cmd/moo/auth"
+	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 )
 
 func (a *App) authBegin(rw http.ResponseWriter, r *http.Request) {
@@ -24,7 +25,7 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "authCallback")
 	defer span.End()
 
-	userInfo := ctx.Value(auth.TokenInfoContextKey).(*auth.TokenInfo)
+	info := auth.FromContext(ctx)
 
 	token, err := a.oauth2.Exchange(ctx, r.FormValue("code"))
 	if err != nil {
@@ -38,13 +39,13 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a.store.Do(func(s *Store) {
-		data, ok := s.Users[userInfo.GetUserID()]
+	a.store.Do(func(s *earbugv5.Store) {
+		data, ok := s.Users[info.GetUserId()]
 		if !ok {
-			data = &UserData{}
+			data = &earbugv5.UserData{}
 		}
 		data.Token = tokenMarshaled
-		s.Users[userInfo.GetUserID()] = data
+		s.Users[info.GetUserId()] = data
 	})
 
 	rw.Write([]byte("success"))

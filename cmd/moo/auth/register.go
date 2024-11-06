@@ -9,21 +9,22 @@ import (
 
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
+	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
 )
 
 func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "registerStart")
 	defer span.End()
 	create, err := func() (*protocol.CredentialCreation, error) {
-		info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
+		info := FromContext(ctx)
 
-		if info.GetUserID() == 0 {
+		if info.GetUserId() == 0 {
 			adminToken := r.FormValue("adminToken")
 			if adminToken == "" {
 				return nil, fmt.Errorf("no admin token")
 			}
 			var ok bool
-			a.store.RDo(func(s *Store) {
+			a.store.RDo(func(s *authv1.Store) {
 				_, ok = s.Sessions[adminToken]
 			})
 			if !ok {
@@ -36,7 +37,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			}
 
 			var err error
-			a.store.Do(func(s *Store) {
+			a.store.Do(func(s *authv1.Store) {
 				userID := mathrand.Int64()
 				for {
 					_, ok := s.Users[userID]
@@ -51,12 +52,12 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 						return
 					}
 				}
-				s.Users[userID] = &UserInfo{
-					UserID:   ptr(userID),
+				s.Users[userID] = &authv1.UserInfo{
+					UserId:   ptr(userID),
 					Username: ptr(username),
 				}
 
-				info.UserID = &userID
+				info.UserId = &userID
 
 				delete(s.Sessions, adminToken)
 			})
@@ -70,10 +71,10 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			return nil, errors.New("credential name not given")
 		}
 
-		var user *UserInfo
+		var user *authv1.UserInfo
 		var ok bool
-		a.store.RDo(func(s *Store) {
-			user, ok = s.Users[info.GetUserID()]
+		a.store.RDo(func(s *authv1.Store) {
+			user, ok = s.Users[info.GetUserId()]
 		})
 		if !ok {
 			return nil, errors.New("user not found")
@@ -86,8 +87,8 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 
 		info.SessionData, err = json.Marshal(sess)
 		info.Credname = &credname
-		a.store.Do(func(s *Store) {
-			s.Sessions[info.GetSessionID()] = info
+		a.store.Do(func(s *authv1.Store) {
+			s.Sessions[info.GetSessionId()] = info
 		})
 
 		return create, nil
@@ -109,12 +110,12 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "registerFinish")
 	defer span.End()
 	err := func() error {
-		info := ctx.Value(TokenInfoContextKey).(*TokenInfo)
+		info := FromContext(ctx)
 
-		var user *UserInfo
+		var user *authv1.UserInfo
 		var ok bool
-		a.store.RDo(func(s *Store) {
-			user, ok = s.Users[info.GetUserID()]
+		a.store.RDo(func(s *authv1.Store) {
+			user, ok = s.Users[info.GetUserId()]
 		})
 		if !ok {
 			return errors.New("user not found")
@@ -138,13 +139,13 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return err
 		}
-		user.Creds = append(user.Creds, &Credential{
+		user.Creds = append(user.Creds, &authv1.Credential{
 			Name: info.Credname,
 			Cred: credb,
 		})
 
-		a.store.Do(func(s *Store) {
-			s.Users[*user.UserID] = user
+		a.store.Do(func(s *authv1.Store) {
+			s.Users[*user.UserId] = user
 		})
 
 		return nil

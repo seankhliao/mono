@@ -1,6 +1,6 @@
 edition = "2023";
 
-package ulist;
+package seankhliao.mono.ulistv1;
 
 import "google/protobuf/duration.proto";
 

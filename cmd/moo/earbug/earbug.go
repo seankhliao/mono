@@ -7,9 +7,12 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/google/cel-go/cel"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
+	"go.seankhliao.com/mono/cmd/moo/auth"
+	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"
@@ -30,9 +33,9 @@ type Config struct {
 }
 
 func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Pattern("GET", a.host, "/", a.Auth(httpencoding.Handler(http.HandlerFunc(a.handleIndex))))
-	r.Pattern("GET", a.host, "/auth/begin", a.Auth(http.HandlerFunc(a.authBegin)))
-	r.Pattern("GET", a.host, "/auth/callback", a.Auth(http.HandlerFunc(a.authCallback)))
+	r.Pattern("GET", a.host, "/", a.AuthN(httpencoding.Handler(http.HandlerFunc(a.handleIndex))))
+	r.Pattern("GET", a.host, "/auth/begin", a.AuthN(a.AuthZ(http.HandlerFunc(a.authBegin), auth.AllowRegistered)))
+	r.Pattern("GET", a.host, "/auth/callback", a.AuthN(a.AuthZ(http.HandlerFunc(a.authCallback), auth.AllowRegistered)))
 }
 
 type App struct {
@@ -40,10 +43,11 @@ type App struct {
 
 	// New
 	http  *http.Client
-	store *yrun.Store[*Store]
+	store *yrun.Store[*earbugv5.Store]
 
 	// inserted
-	Auth func(http.Handler) http.Handler
+	AuthN func(http.Handler) http.Handler
+	AuthZ func(http.Handler, cel.Program) http.Handler
 
 	// config
 	host       string
@@ -73,10 +77,10 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	ctx, span := o.T.Start(ctx, "initData")
 	defer span.End()
 
-	store, err := yrun.NewStore(ctx, bkt, c.Key, func() *Store {
-		return &Store{
-			Tracks: make(map[string]*Track),
-			Users:  make(map[int64]*UserData),
+	store, err := yrun.NewStore(ctx, bkt, c.Key, func() *earbugv5.Store {
+		return &earbugv5.Store{
+			Tracks: make(map[string]*earbugv5.Track),
+			Users:  make(map[int64]*earbugv5.UserData),
 		}
 	})
 	if err != nil {
@@ -91,7 +95,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	return a, nil
 }
 
-// func (a *App) migrate(s *Store) {
+// func (a *App) migrate(s *earbugv5.Store) {
 // 	uid := int64(1167012155348904831)
 // 	token := s.GetAuth().GetToken()
 // 	playbacks := s.GetPlaybacks()
@@ -102,7 +106,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 //
 // 	s.Playbacks = nil
 // 	s.Auth = nil
-// 	s.Users = make(map[int64]*UserData)
+// 	s.Users = make(map[int64]*earbugv5.UserData)
 // 	s.Users[uid] = data
 // }
 

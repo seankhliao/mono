@@ -14,6 +14,7 @@ import (
 	"github.com/google/cel-go/common/types/ref"
 	"github.com/google/cel-go/interpreter"
 	"go.seankhliao.com/mono/cmd/moo/auth"
+	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 	"go.seankhliao.com/mono/webstyle"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"maragu.dev/gomponents"
@@ -68,7 +69,7 @@ func newQueryOptions(r *http.Request, userID int64) (queryOptions, error) {
 
 	if filter := r.FormValue("filter"); filter != "" {
 		opts.filterS = filter
-		var filterCtx *QueryFilterContext
+		var filterCtx *earbugv5.QueryFilterContext
 		celEnv, err := cel.NewEnv(
 			cel.DeclareContextProto(filterCtx.ProtoReflect().Descriptor()),
 		)
@@ -93,8 +94,8 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "handleIndex")
 	defer span.End()
 
-	userInfo := ctx.Value(auth.TokenInfoContextKey).(*auth.TokenInfo)
-	userID := userInfo.GetUserID()
+	info := auth.FromContext(ctx)
+	userID := info.GetUserId()
 	if userID <= 0 {
 		userID = a.publicID
 	}
@@ -303,7 +304,7 @@ type getPlaybacksOptions struct {
 type DisplayPlayback struct {
 	StartTime    time.Time
 	PlaybackTime time.Duration
-	Track        *Track
+	Track        *earbugv5.Track
 }
 
 func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayback, error) {
@@ -312,7 +313,7 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 
 	var plays []DisplayPlayback
 	var err error
-	a.store.RDo(func(s *Store) {
+	a.store.RDo(func(s *earbugv5.Store) {
 		userData, ok := s.Users[o.userID]
 		if !ok {
 			return
@@ -333,7 +334,7 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 
 			if o.filter != nil {
 				var activation interpreter.Activation
-				activation, err = cel.ContextProtoVars(&QueryFilterContext{
+				activation, err = cel.ContextProtoVars(&earbugv5.QueryFilterContext{
 					Track:         track.Name,
 					Artists:       artists,
 					PlayTime:      timestamppb.New(startTime),
@@ -384,7 +385,7 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 	return plays, nil
 }
 
-func artistsString(artists []*Artist) string {
+func artistsString(artists []*earbugv5.Artist) string {
 	var as []string
 	for _, a := range artists {
 		as = append(as, a.GetName())
