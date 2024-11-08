@@ -11,7 +11,6 @@ import (
 	"go.seankhliao.com/mono/cmd/moo/ghdefaults"
 	"go.seankhliao.com/mono/cmd/moo/homepage"
 	"go.seankhliao.com/mono/cmd/moo/reqlog"
-	"go.seankhliao.com/mono/cmd/moo/ulist"
 	"go.seankhliao.com/mono/webstyle/webstatic"
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"
@@ -36,7 +35,6 @@ type Config struct {
 	GHDefaults ghdefaults.Config
 	Homepage   homepage.Config
 	ReqLog     reqlog.Config
-	Ulist      ulist.Config
 }
 
 type App struct {
@@ -45,7 +43,6 @@ type App struct {
 	GHDefaults *ghdefaults.App
 	Homepage   *homepage.App
 	ReqLog     *reqlog.App
-	Ulist      *ulist.App
 }
 
 func New(ctx context.Context, c Config, bkt *blob.Bucket, o yrun.O11y) (a *App, err error) {
@@ -78,13 +75,6 @@ func New(ctx context.Context, c Config, bkt *blob.Bucket, o yrun.O11y) (a *App, 
 		return nil, err
 	}
 
-	a.Ulist, err = ulist.New(c.Ulist, bkt, o)
-	if err != nil {
-		return nil, err
-	}
-	a.Ulist.AuthN = a.Auth.AuthN
-	a.Ulist.AuthZ = a.Auth.AuthZ
-
 	return a, nil
 }
 
@@ -96,10 +86,9 @@ func Register(a *App, r yrun.HTTPRegistrar) {
 	ghdefaults.Register(a.GHDefaults, r)
 	homepage.Register(a.Homepage, r)
 	reqlog.Register(a.ReqLog, r)
-	ulist.Register(a.Ulist, r)
 
-	r.Pattern("GET", "", "/{$}", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "hello world")
+	r.Pattern("GET", "", "/{$}", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(rw, "hello world")
 	}))
 }
 

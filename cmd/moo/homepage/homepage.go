@@ -44,8 +44,8 @@ func New(c Config, o yrun.O11y) (*App, error) {
 	}, nil
 }
 
-func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	http.ServeContent(w, r, "index.html", a.t, bytes.NewReader(a.b))
+func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	http.ServeContent(rw, r, "index.html", a.t, bytes.NewReader(a.b))
 }
 
 func Register(a *App, r yrun.HTTPRegistrar) {

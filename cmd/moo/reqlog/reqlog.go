@@ -23,7 +23,7 @@ func New(c Config, o yrun.O11y) (*App, error) {
 	}, nil
 }
 
-func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	a.o.L.LogAttrs(r.Context(), slog.LevelInfo, "received request",
 		slog.String("http.method", r.Method),
 		slog.String("http.proto", r.Proto),
