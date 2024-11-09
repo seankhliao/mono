@@ -13,6 +13,10 @@ import (
 	"maragu.dev/gomponents/html"
 )
 
+func Register(a *App, r yrun.HTTPRegistrar) {
+	r.Pattern("GET", a.host, "/{$}", a.ServeHTTP, httpencoding.Handler)
+}
+
 type Config struct {
 	Host string
 }
@@ -46,8 +50,4 @@ func New(c Config, o yrun.O11y) (*App, error) {
 
 func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	http.ServeContent(rw, r, "index.html", a.t, bytes.NewReader(a.b))
-}
-
-func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Pattern("GET", a.host, "/{$}", httpencoding.Handler(a))
 }

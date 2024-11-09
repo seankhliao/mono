@@ -87,9 +87,9 @@ func Register(a *App, r yrun.HTTPRegistrar) {
 	homepage.Register(a.Homepage, r)
 	reqlog.Register(a.ReqLog, r)
 
-	r.Pattern("GET", "", "/{$}", http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+	r.Pattern("GET", "", "/{$}", func(rw http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(rw, "hello world")
-	}))
+	})
 }
 
 func Debug(a *App, r yrun.HTTPRegistrar) {

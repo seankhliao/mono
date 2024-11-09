@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -12,6 +13,22 @@ import (
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
+
+type HTTPInterceptor = func(next http.Handler) http.Handler
+
+func ChainF(base func(http.ResponseWriter, *http.Request), interceptors ...HTTPInterceptor) http.Handler {
+	return Chain(http.HandlerFunc(base), interceptors...)
+}
+
+// Chain chains together interceptors (middleware),
+// the first interceptor will be the outermost.
+func Chain(base http.Handler, interceptors ...HTTPInterceptor) http.Handler {
+	slices.Reverse(interceptors)
+	for _, in := range interceptors {
+		base = in(base)
+	}
+	return base
+}
 
 // HTTPConfig is the config for an http server
 type HTTPConfig struct {
@@ -77,7 +94,7 @@ func debugMux() (reg HTTPRegistrar, getMux func() *http.ServeMux) {
 
 type HTTPRegistrar interface {
 	Handle(string, http.Handler)
-	Pattern(method, host, pattern string, handler http.Handler)
+	Pattern(method, host, pattern string, handler func(http.ResponseWriter, *http.Request), interceptors ...HTTPInterceptor)
 }
 
 type muxRegister struct {
@@ -85,7 +102,7 @@ type muxRegister struct {
 	hosts map[string]struct{}
 }
 
-func (r *muxRegister) Pattern(method, host, pattern string, handler http.Handler) {
+func (r *muxRegister) Pattern(method, host, pattern string, handler func(http.ResponseWriter, *http.Request), interceptors ...HTTPInterceptor) {
 	var pat strings.Builder
 	if method != "" {
 		pat.WriteString(method)
@@ -97,7 +114,7 @@ func (r *muxRegister) Pattern(method, host, pattern string, handler http.Handler
 	}
 	r.hosts[host] = struct{}{}
 	pat.WriteString(pattern)
-	r.mux.Handle(pat.String(), handler)
+	r.mux.Handle(pat.String(), ChainF(handler, interceptors...))
 }
 
 func (r *muxRegister) Handle(s string, h http.Handler) {
@@ -109,8 +126,8 @@ type debugRegister struct {
 	links []string
 }
 
-func (r *debugRegister) Pattern(method, host, pattern string, handler http.Handler) {
-	r.mux.Pattern(method, host, pattern, handler)
+func (r *debugRegister) Pattern(method, host, pattern string, handler func(http.ResponseWriter, *http.Request), interceptors ...HTTPInterceptor) {
+	r.mux.Pattern(method, host, pattern, handler, interceptors...)
 	if !strings.Contains(pattern, "{") {
 		r.links = append(r.links, pattern)
 	}

@@ -33,9 +33,9 @@ type Config struct {
 }
 
 func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Pattern("GET", a.host, "/", a.AuthN(httpencoding.Handler(http.HandlerFunc(a.handleIndex))))
-	r.Pattern("GET", a.host, "/auth/begin", a.AuthN(a.AuthZ(http.HandlerFunc(a.authBegin), auth.AllowRegistered)))
-	r.Pattern("GET", a.host, "/auth/callback", a.AuthN(a.AuthZ(http.HandlerFunc(a.authCallback), auth.AllowRegistered)))
+	r.Pattern("GET", a.host, "/{$}", a.handleIndex, a.AuthN, a.AuthZ(auth.AllowAnonymous), httpencoding.Handler)
+	r.Pattern("GET", a.host, "/auth/begin", a.authBegin, a.AuthN, a.AuthZ(auth.AllowRegistered))
+	r.Pattern("GET", a.host, "/auth/callback", a.authCallback, a.AuthN, a.AuthZ(auth.AllowRegistered))
 }
 
 type App struct {
@@ -46,8 +46,8 @@ type App struct {
 	store *yrun.Store[*earbugv5.Store]
 
 	// inserted
-	AuthN func(http.Handler) http.Handler
-	AuthZ func(http.Handler, cel.Program) http.Handler
+	AuthN yrun.HTTPInterceptor
+	AuthZ func(cel.Program) yrun.HTTPInterceptor
 
 	// config
 	host       string

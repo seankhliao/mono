@@ -11,20 +11,23 @@ import (
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
+	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Pattern("GET", a.host, "/{$}", a.AuthN(http.HandlerFunc(a.homepage)))
-	r.Pattern("POST", a.host, "/login/start", a.AuthN(http.HandlerFunc(a.loginStart)))
-	r.Pattern("POST", a.host, "/login/finish", a.AuthN(http.HandlerFunc(a.loginFinish)))
-	r.Pattern("POST", a.host, "/register/start", a.AuthN(http.HandlerFunc(a.registerStart)))
-	r.Pattern("POST", a.host, "/register/finish", a.AuthN(http.HandlerFunc(a.registerFinish)))
-	r.Pattern("POST", a.host, "/update", a.AuthN(a.AuthZ(http.HandlerFunc(a.update), AllowRegistered)))
-	r.Pattern("GET", a.host, "/logout", a.AuthN(a.AuthZ(http.HandlerFunc(a.logoutPage), AllowRegistered)))
-	r.Pattern("POST", a.host, "/logout", a.AuthN(a.AuthZ(http.HandlerFunc(a.logoutAction), AllowRegistered)))
+	// web
+	r.Pattern("GET", a.host, "/{$}", a.homepage, a.AuthN, a.AuthZ(AllowAnonymous), httpencoding.Handler)
+	r.Pattern("GET", a.host, "/logout", a.logoutPage, a.AuthN, a.AuthZ(AllowRegistered), httpencoding.Handler)
+	// api
+	r.Pattern("POST", a.host, "/login/start", a.loginStart, a.AuthN, a.AuthZ(AllowAnonymous))
+	r.Pattern("POST", a.host, "/login/finish", a.loginFinish, a.AuthN, a.AuthZ(AllowAnonymous))
+	r.Pattern("POST", a.host, "/register/start", a.registerStart, a.AuthN, a.AuthZ(AllowAnonymous))
+	r.Pattern("POST", a.host, "/register/finish", a.registerFinish, a.AuthN, a.AuthZ(AllowAnonymous))
+	r.Pattern("POST", a.host, "/update", a.update, a.AuthN, a.AuthZ(AllowRegistered))
+	r.Pattern("POST", a.host, "/logout", a.logoutAction, a.AuthN, a.AuthZ(AllowRegistered))
 }
 
 func Admin(a *App, r yrun.HTTPRegistrar) {

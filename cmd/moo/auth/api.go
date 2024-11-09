@@ -12,6 +12,7 @@ import (
 
 	"github.com/google/cel-go/cel"
 	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
+	"go.seankhliao.com/mono/yrun"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -38,6 +39,11 @@ func FromContext(ctx context.Context) *authv1.TokenInfo {
 	}
 	return info
 }
+
+var (
+	_ yrun.HTTPInterceptor = (&App{}).AuthN
+	_ yrun.HTTPInterceptor = (&App{}).AuthZ(AllowAnonymous)
+)
 
 // AuthN ensures there's always a valid session.
 // The user may be anonymous (UserId == 0).
@@ -122,49 +128,51 @@ func AuthZPolicy(policy string) (cel.Program, error) {
 	return prog, nil
 }
 
-func (a *App) AuthZ(next http.Handler, policy cel.Program) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		ctx, span := a.o.T.Start(r.Context(), "authz")
-		defer span.End()
+func (a *App) AuthZ(policy cel.Program) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+			ctx, span := a.o.T.Start(r.Context(), "authz")
+			defer span.End()
 
-		info := FromContext(ctx)
-		act, err := cel.ContextProtoVars(info)
-		if err != nil {
-			http.Error(rw, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		res, _, err := policy.ContextEval(ctx, act)
-		if err != nil {
-			http.Error(rw, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		allow, ok := res.Value().(bool)
-		if !ok {
-			err = errors.New("policy didn't eval to bool")
-			http.Error(rw, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		if !allow {
-			q := make(url.Values)
-			if r.Host != a.host {
-				q.Set("return", (&url.URL{
+			info := FromContext(ctx)
+			act, err := cel.ContextProtoVars(info)
+			if err != nil {
+				http.Error(rw, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			res, _, err := policy.ContextEval(ctx, act)
+			if err != nil {
+				http.Error(rw, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			allow, ok := res.Value().(bool)
+			if !ok {
+				err = errors.New("policy didn't eval to bool")
+				http.Error(rw, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			if !allow {
+				q := make(url.Values)
+				if r.Host != a.host {
+					q.Set("return", (&url.URL{
+						Scheme:   "https",
+						Host:     r.Host,
+						Path:     r.URL.Path,
+						RawQuery: r.URL.RawQuery,
+					}).String())
+				}
+
+				u := (&url.URL{
 					Scheme:   "https",
-					Host:     r.Host,
-					Path:     r.URL.Path,
-					RawQuery: r.URL.RawQuery,
-				}).String())
+					Host:     a.host,
+					Path:     "/",
+					RawQuery: q.Encode(),
+				}).String()
+				http.Redirect(rw, r, u, http.StatusTemporaryRedirect)
+				return
 			}
 
-			u := (&url.URL{
-				Scheme:   "https",
-				Host:     a.host,
-				Path:     "/",
-				RawQuery: q.Encode(),
-			}).String()
-			http.Redirect(rw, r, u, http.StatusTemporaryRedirect)
-			return
-		}
-
-		next.ServeHTTP(rw, r)
-	})
+			next.ServeHTTP(rw, r)
+		})
+	}
 }

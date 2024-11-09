@@ -44,7 +44,7 @@ func New(c Config, o yrun.O11y) (*App, error) {
 }
 
 func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Pattern("POST", a.host, "/webhook", a)
+	r.Pattern("POST", a.host, "/webhook", a.ServeHTTP)
 }
 
 var defaultConfig = map[string]github.Repository{

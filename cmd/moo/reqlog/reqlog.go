@@ -7,6 +7,10 @@ import (
 	"go.seankhliao.com/mono/yrun"
 )
 
+func Register(a *App, r yrun.HTTPRegistrar) {
+	r.Pattern("", a.config.Host, "/", a.ServeHTTP)
+}
+
 type Config struct {
 	Host string
 }
@@ -34,8 +38,4 @@ func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		slog.Any("http.headers", r.Header),
 		slog.Any("http.trailers", r.Trailer),
 	)
-}
-
-func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Pattern("", a.config.Host, "/", a)
 }
