@@ -12,7 +12,6 @@ import (
 	"github.com/google/go-github/v60/github"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/yrun"
 	"golang.org/x/oauth2"
@@ -92,7 +91,7 @@ func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	event, eventType, err := a.getPayload(ctx, r)
 	if err != nil {
-		a.HTTPErr(ctx, "invalid payload", err, rw, http.StatusBadRequest)
+		a.o.HTTPErr(ctx, "invalid payload", err, rw, http.StatusBadRequest)
 		return
 	}
 
@@ -106,7 +105,7 @@ func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 
 	lvl := slog.LevelInfo
 	if ig := errors.Is(err, ErrIgnore); err != nil && !ig {
-		a.HTTPErr(ctx, "process event", err, rw, http.StatusInternalServerError)
+		a.o.HTTPErr(ctx, "process event", err, rw, http.StatusInternalServerError)
 		return
 	} else if ig {
 		lvl = slog.LevelDebug
@@ -150,13 +149,13 @@ func (a *App) installEvent(ctx context.Context, event *github.InstallationEvent)
 	switch *event.Action {
 	case "created":
 		if _, ok := defaultConfig[owner]; !ok {
-			return a.Err(ctx, "ignoring owner", errors.New("unknown owner"))
+			return a.o.Err(ctx, "ignoring owner", errors.New("unknown owner"))
 		}
 
 		for _, repo := range event.Repositories {
 			err := a.setDefaults(ctx, installID, owner, *repo.Name, *repo.Fork)
 			if err != nil {
-				a.Err(ctx, "set defaults", err)
+				a.o.Err(ctx, "set defaults", err)
 				errs = ErrSetDefaults
 				continue
 			}
@@ -241,21 +240,4 @@ func (a *App) setDefaults(ctx context.Context, installID int64, owner, repo stri
 	}
 
 	return nil
-}
-
-func (a *App) Err(ctx context.Context, msg string, err error, attrs ...slog.Attr) error {
-	a.o.L.LogAttrs(ctx, slog.LevelError, msg,
-		append(attrs, slog.String("error", err.Error()))...,
-	)
-	if span := trace.SpanFromContext(ctx); span.SpanContext().IsValid() {
-		span.RecordError(err)
-		span.SetStatus(codes.Error, msg)
-	}
-
-	return fmt.Errorf("%s: %w", msg, err)
-}
-
-func (a *App) HTTPErr(ctx context.Context, msg string, err error, rw http.ResponseWriter, code int, attrs ...slog.Attr) {
-	err = a.Err(ctx, msg, err, attrs...)
-	http.Error(rw, err.Error(), code)
 }

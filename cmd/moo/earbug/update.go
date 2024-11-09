@@ -39,7 +39,7 @@ func (a *App) update(ctx context.Context) {
 
 			items, err := spot.PlayerRecentlyPlayedOpt(ctx, &spotify.RecentlyPlayedOptions{Limit: 50})
 			if err != nil {
-				return a.Err(ctx, "get recently played", err)
+				return a.o.Err(ctx, "get recently played", err)
 			}
 
 			a.store.Do(ctx, func(s *earbugv5.Store) {

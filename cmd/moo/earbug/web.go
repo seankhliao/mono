@@ -116,7 +116,7 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 		return nil
 	})
 	if err != nil {
-		a.HTTPErr(ctx, "bad query", err, rw, http.StatusBadRequest)
+		a.o.HTTPErr(ctx, "bad query", err, rw, http.StatusBadRequest)
 		return
 	}
 

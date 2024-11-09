@@ -2,6 +2,7 @@ package yrun
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
@@ -10,6 +11,7 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/contrib/bridges/otelslog"
 	"go.opentelemetry.io/contrib/instrumentation/runtime"
 	"go.opentelemetry.io/contrib/zpages"
@@ -70,6 +72,40 @@ func (o O11y) Region(ctx context.Context, name string, do func(ctx context.Conte
 		span.SetStatus(codes.Error, name)
 	}
 	return err
+}
+
+func (o O11y) Err(ctx context.Context, msg string, err error, attrs ...slog.Attr) error {
+	o.L.LogAttrs(ctx, slog.LevelError, msg,
+		append(attrs, slog.String("error", err.Error()))...,
+	)
+	if span := trace.SpanFromContext(ctx); span.SpanContext().IsValid() {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, msg)
+	}
+
+	return fmt.Errorf("%s: %w", msg, err)
+}
+
+func (o O11y) HTTPErr(ctx context.Context, msg string, err error, rw http.ResponseWriter, code int, attrs ...slog.Attr) {
+	err = o.Err(ctx, msg, err, attrs...)
+	header := propagation.HeaderCarrier(rw.Header())
+	propagation.TraceContext{}.Inject(ctx, header)
+	rw.Header().Set("content-type", "application/json")
+	json.MarshalWrite(rw, problemDetails{
+		Type:     "custom", // TODO: custom error types
+		Title:    msg,
+		Status:   code,
+		Detail:   err.Error(),
+		Instance: rw.Header().Get("traceparent"),
+	})
+}
+
+type problemDetails struct {
+	Type     string `json:"type"`
+	Title    string `json:"title"`
+	Status   int    `json:"status"`
+	Detail   string `json:"detail"`
+	Instance string `json:"instance"`
 }
 
 func NewO11y(c O11yConfig) (O11y, O11yReg) {

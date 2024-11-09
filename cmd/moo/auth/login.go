@@ -6,6 +6,8 @@ import (
 	_ "embed"
 	"encoding/base32"
 	"errors"
+	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -23,69 +25,69 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 	cred, err := func() (*protocol.CredentialAssertion, error) {
 		info := FromContext(ctx)
 
-		cred, sess, err := a.webauthn.BeginDiscoverableLogin(webauthn.WithAssertionPublicKeyCredentialHints(
-			[]protocol.PublicKeyCredentialHints{protocol.PublicKeyCredentialHintHybrid},
-		))
+		cred, sess, err := a.webauthn.BeginDiscoverableLogin(
+			webauthn.WithAssertionPublicKeyCredentialHints([]protocol.PublicKeyCredentialHints{
+				protocol.PublicKeyCredentialHintHybrid,
+			}),
+		)
 		if err != nil {
 			return nil, err
 		}
 
 		// store session data for finish
-		info.SessionData, _ = json.Marshal(sess)
+		info.SessionData, err = json.Marshal(
+			sess,
+			json.FormatNilSliceAsNull(true), // https://github.com/go-webauthn/webauthn/pull/327
+		)
+		if err != nil {
+			return nil, err
+		}
 		a.store.Do(ctx, func(s *authv1.Store) {
-			s.Sessions[*info.SessionId] = info
+			s.Sessions[info.GetSessionId()] = info
 		})
 		return cred, nil
 	}()
-	rw.Header().Set("content-type", "application/json")
-	var body any = cred
 	if err != nil {
-		rw.WriteHeader(http.StatusUnauthorized)
-		body = map[string]any{
-			"status": "error",
-			"error":  err.Error(),
-		}
+		a.o.HTTPErr(ctx, "failed to start login", err, rw, http.StatusInternalServerError)
+		return
 	}
-	json.MarshalWrite(rw, body)
+	rw.Header().Set("content-type", "application/json")
+	json.MarshalWrite(rw, cred)
 }
 
 func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "loginFinish")
 	defer span.End()
 
-	rw.Header().Set("content-type", "application/json")
 	body := map[string]any{"status": "ok"}
 
 	info := FromContext(ctx)
 	var user User
 	err := a.o.Region(ctx, "validate credentials", func(ctx context.Context, span trace.Span) error {
-		if info.SessionData == nil {
+		if len(info.SessionData) == 0 {
 			return errors.New("no session started")
 		}
 		var sess webauthn.SessionData
 		err := json.Unmarshal(info.SessionData, &sess)
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshal stored session data: %w", err)
 		}
 		parsedResponse, err := protocol.ParseCredentialRequestResponse(r)
 		if err != nil {
-			return err
+			return fmt.Errorf("parse credential response: %w", err)
 		}
 		webauthnUser, _, err := a.webauthn.ValidatePasskeyLogin(a.discoverableUserHandler(ctx), sess, parsedResponse)
 		if err != nil {
-			return err
+			return fmt.Errorf("validate passkey login: %w", err)
 		}
 
 		user = webauthnUser.(User)
 		return nil
 	})
 	if err != nil {
-		rw.WriteHeader(http.StatusUnauthorized)
-		body = map[string]any{
-			"status": "error",
-			"error":  err.Error(),
-		}
-		json.MarshalWrite(rw, body)
+		a.o.HTTPErr(ctx, "failed to validate credentials", err, rw, http.StatusUnauthorized,
+			slog.String("session.session_data", string(info.SessionData)),
+		)
 		return
 	}
 
@@ -105,14 +107,14 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 
 		// swap tokens
 		a.store.Do(ctx, func(s *authv1.Store) {
-			delete(s.Sessions, *info.SessionId)
+			delete(s.Sessions, info.GetSessionId())
 			s.Sessions[tokenInfo.GetSessionId()] = tokenInfo
 		})
 
 		// send it to the client
 		http.SetCookie(rw, &http.Cookie{
 			Name:        a.cookieName,
-			Value:       *tokenInfo.SessionId,
+			Value:       tokenInfo.GetSessionId(),
 			Path:        "/",
 			Domain:      a.cookieDomain,
 			MaxAge:      int(30 * 24 * time.Hour.Seconds()),
@@ -124,12 +126,10 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 		return nil
 	})
 	if err != nil {
-		rw.WriteHeader(http.StatusUnauthorized)
-		body = map[string]any{
-			"status": "error",
-			"error":  err.Error(),
-		}
+		a.o.HTTPErr(ctx, "failed to prepare new session", err, rw, http.StatusInternalServerError)
+		return
 	}
 
+	rw.Header().Set("content-type", "application/json")
 	json.MarshalWrite(rw, body)
 }

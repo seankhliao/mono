@@ -43,7 +43,7 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 		return nil
 	})
 	if err != nil {
-		a.HTTPErr(ctx, "exchange code for token", err, rw, http.StatusBadRequest)
+		a.o.HTTPErr(ctx, "exchange code for token", err, rw, http.StatusBadRequest)
 		return
 	}
 

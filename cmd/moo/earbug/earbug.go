@@ -3,14 +3,11 @@ package earbug
 import (
 	"context"
 	"fmt"
-	"log/slog"
 	"net/http"
 	"time"
 
 	"github.com/google/cel-go/cel"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
-	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/cmd/moo/auth"
 	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 	"go.seankhliao.com/mono/httpencoding"
@@ -109,23 +106,6 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 // 	s.Users = make(map[int64]*earbugv5.UserData)
 // 	s.Users[uid] = data
 // }
-
-func (a *App) Err(ctx context.Context, msg string, err error, attrs ...slog.Attr) error {
-	a.o.L.LogAttrs(ctx, slog.LevelError, msg,
-		append(attrs, slog.String("error", err.Error()))...,
-	)
-	if span := trace.SpanFromContext(ctx); span.SpanContext().IsValid() {
-		span.RecordError(err)
-		span.SetStatus(codes.Error, msg)
-	}
-
-	return fmt.Errorf("%s: %w", msg, err)
-}
-
-func (a *App) HTTPErr(ctx context.Context, msg string, err error, rw http.ResponseWriter, code int, attrs ...slog.Attr) {
-	err = a.Err(ctx, msg, err, attrs...)
-	http.Error(rw, err.Error(), code)
-}
 
 func (a *App) Update() error {
 	for {

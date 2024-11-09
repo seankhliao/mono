@@ -118,7 +118,7 @@ func (a *App) update(rw http.ResponseWriter, r *http.Request) {
 
 	err := r.ParseForm()
 	if err != nil {
-		http.Error(rw, err.Error(), http.StatusBadRequest)
+		a.o.HTTPErr(ctx, "failed update", err, rw, http.StatusInternalServerError)
 		return
 	}
 

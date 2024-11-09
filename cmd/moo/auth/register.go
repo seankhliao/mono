@@ -85,7 +85,10 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			return nil, err
 		}
 
-		info.SessionData, err = json.Marshal(sess)
+		info.SessionData, err = json.Marshal(
+			sess,
+			json.FormatNilSliceAsNull(true), // https://github.com/go-webauthn/webauthn/pull/327
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -96,17 +99,13 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 
 		return create, nil
 	}()
-	rw.Header().Set("content-type", "application/json")
-	var body any = create
 	if err != nil {
-		rw.WriteHeader(http.StatusUnauthorized)
-		body = map[string]any{
-			"status": "error",
-			"error":  err.Error(),
-		}
+		a.o.HTTPErr(ctx, "failed to being registration", err, rw, http.StatusInternalServerError)
+		return
 	}
 
-	json.MarshalWrite(rw, body)
+	rw.Header().Set("content-type", "application/json")
+	json.MarshalWrite(rw, create)
 }
 
 func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
@@ -153,15 +152,11 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 
 		return nil
 	}()
-	rw.Header().Set("content-type", "application/json")
-	body := map[string]any{"status": "ok"}
 	if err != nil {
-		rw.WriteHeader(http.StatusUnauthorized)
-		body = map[string]any{
-			"status": "error",
-			"error":  err.Error(),
-		}
+		a.o.HTTPErr(ctx, "failed to complete registration", err, rw, http.StatusInternalServerError)
+		return
 	}
 
-	json.MarshalWrite(rw, body)
+	rw.Header().Set("content-type", "application/json")
+	json.MarshalWrite(rw, map[string]any{"status": "ok"})
 }
