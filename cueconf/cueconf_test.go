@@ -1,11 +1,12 @@
 package cueconf
 
 import (
-	"encoding/json"
 	"os"
 	"path/filepath"
 	"reflect"
 	"testing"
+
+	"github.com/go-json-experiment/json"
 )
 
 type TestConfig struct {

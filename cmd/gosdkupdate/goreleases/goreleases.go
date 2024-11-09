@@ -4,10 +4,11 @@ package goreleases
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/go-json-experiment/json"
 )
 
 const (

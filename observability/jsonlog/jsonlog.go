@@ -3,7 +3,6 @@ package jsonlog
 import (
 	"context"
 	"encoding"
-	"encoding/json"
 	"fmt"
 	"io"
 	"log/slog"
@@ -13,6 +12,7 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -340,7 +340,7 @@ func (h *state) attr(attr slog.Attr) {
 	switch val.Kind() {
 	case slog.KindAny:
 		switch v := val.Any().(type) {
-		case json.Marshaler:
+		case json.MarshalerV1:
 			b, _ := v.MarshalJSON()
 			h.buf = appendString(h.buf, b)
 		case encoding.TextMarshaler:

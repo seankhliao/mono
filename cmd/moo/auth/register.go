@@ -1,12 +1,12 @@
 package auth
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	mathrand "math/rand/v2"
 	"net/http"
 
+	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
@@ -106,7 +106,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	json.NewEncoder(rw).Encode(body)
+	json.MarshalWrite(rw, body)
 }
 
 func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
@@ -163,5 +163,5 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	json.NewEncoder(rw).Encode(body)
+	json.MarshalWrite(rw, body)
 }

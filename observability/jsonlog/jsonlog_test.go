@@ -1,9 +1,9 @@
 package jsonlog
 
 import (
+	"bufio"
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -18,6 +18,7 @@ import (
 	"testing/slogtest"
 	"time"
 
+	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -27,14 +28,13 @@ func TestHandlerSlogtest(t *testing.T) {
 	buf := new(bytes.Buffer)
 	handler := New(slog.LevelInfo, buf)
 	err := slogtest.TestHandler(handler, func() []map[string]any {
-		all := buf.String()
-		dec := json.NewDecoder(buf)
 		var results []map[string]any
-		for dec.More() {
+		sc := bufio.NewScanner(buf)
+		for sc.Scan() {
 			var result map[string]any
-			err := dec.Decode(&result)
+			err := json.Unmarshal(sc.Bytes(), &result)
 			if err != nil {
-				t.Errorf("unmarshal log: %v\n%v", err, all)
+				t.Errorf("unmarshal log: %v\n%v", err, sc.Text())
 				break
 			}
 			results = append(results, result)
@@ -314,14 +314,12 @@ func FuzzHandler(f *testing.F) {
 			nlg.Log(context.Background(), slog.Level(level2), msg, args...)
 		}
 
-		all := buf.String()
-		fmt.Fprintln(os.Stderr, all)
-		dec := json.NewDecoder(buf)
-		for dec.More() {
+		sc := bufio.NewScanner(buf)
+		for sc.Scan() {
 			var out any
-			err := dec.Decode(&out)
+			err := json.Unmarshal(sc.Bytes(), &out)
 			if err != nil {
-				t.Error(err, all)
+				t.Error(err, sc.Text())
 			}
 		}
 	})

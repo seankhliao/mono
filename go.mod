@@ -8,6 +8,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.11.0
 	github.com/briandowns/spinner v1.23.1
 	github.com/bufbuild/buf v1.46.0
+	github.com/go-json-experiment/json v0.0.0-20240815175050-ebd3a8989ca1
 	github.com/go-webauthn/webauthn v0.11.2
 	github.com/google/cel-go v0.21.0
 	github.com/google/go-github/v60 v60.0.0
@@ -31,8 +32,6 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.31.0
 	go.opentelemetry.io/otel/trace v1.31.0
 	gocloud.dev v0.40.0
-	golang.org/x/crypto/x509roots/fallback v0.0.0-20241022195102-750a45fe5e47
-	golang.org/x/net v0.30.0
 	golang.org/x/oauth2 v0.23.0
 	golang.org/x/sync v0.8.0
 	google.golang.org/api v0.205.0
@@ -188,6 +187,7 @@ require (
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c // indirect
 	golang.org/x/exp/typeparams v0.0.0-20241009180824-f66d83c29e7c // indirect
 	golang.org/x/mod v0.21.0 // indirect
+	golang.org/x/net v0.30.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
 	golang.org/x/term v0.25.0 // indirect
 	golang.org/x/text v0.19.0 // indirect

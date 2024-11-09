@@ -82,7 +82,7 @@ func TestZPageServeHTTP(t *testing.T) {
 			defer s.Close()
 
 			for _, line := range tc.write {
-				io.WriteString(z, line)
+				io.WriteString(z, line+"\n")
 			}
 
 			res, err := http.Get(s.URL)

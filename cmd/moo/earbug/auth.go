@@ -3,9 +3,9 @@ package earbug
 import (
 	"crypto/rand"
 	"encoding/base32"
-	"encoding/json"
 	"net/http"
 
+	"github.com/go-json-experiment/json"
 	"go.seankhliao.com/mono/cmd/moo/auth"
 	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 )

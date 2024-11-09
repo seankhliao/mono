@@ -4,11 +4,11 @@ import (
 	"crypto/rand"
 	_ "embed"
 	"encoding/base32"
-	"encoding/json"
 	"errors"
 	"net/http"
 	"time"
 
+	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
@@ -42,7 +42,7 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 			"error":  err.Error(),
 		}
 	}
-	json.NewEncoder(rw).Encode(body)
+	json.MarshalWrite(rw, body)
 }
 
 func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
@@ -113,5 +113,5 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	json.NewEncoder(rw).Encode(body)
+	json.MarshalWrite(rw, body)
 }

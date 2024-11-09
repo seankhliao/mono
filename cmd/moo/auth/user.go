@@ -1,10 +1,10 @@
 package auth
 
 import (
-	"encoding/json"
 	"errors"
 	"strconv"
 
+	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
 )
