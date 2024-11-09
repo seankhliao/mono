@@ -10,6 +10,7 @@ import (
 	"net/http/pprof"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"syscall"
 	"time"
 
@@ -163,6 +164,14 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 			cuectx := cuecontext.New()
 			val := cuectx.Encode(config)
 			fmt.Fprintln(rw, val)
+		})
+		mx.Pattern("GET", "", "/debug/buildinfo", func(rw http.ResponseWriter, r *http.Request) {
+			bi, ok := debug.ReadBuildInfo()
+			if !ok {
+				fmt.Fprintln(rw, "no embedded build info")
+				return
+			}
+			fmt.Fprintln(rw, bi)
 		})
 		// pprof
 		mx.Pattern("GET", "", "/debug/pprof/", http.HandlerFunc(pprof.Index).ServeHTTP)
