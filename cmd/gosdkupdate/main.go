@@ -87,7 +87,7 @@ func (a *App) run(stdout, stderr io.Writer) error {
 			// sub repos
 			continue
 		}
-		if !slices.Contains(keepLang, version.Lang(de.Name())) {
+		if !slices.Contains(keepVer, de.Name()) {
 			os.RemoveAll(filepath.Join(sdkPath, de.Name()))
 		}
 	}
@@ -112,7 +112,7 @@ func (a *App) run(stdout, stderr io.Writer) error {
 			// sub repos
 			continue
 		}
-		if !slices.Contains(keepLang, version.Lang(de.Name())) {
+		if !slices.Contains(keepVer, de.Name()) {
 			os.RemoveAll(filepath.Join(gobin, de.Name()))
 		}
 	}
