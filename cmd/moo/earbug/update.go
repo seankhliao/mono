@@ -8,6 +8,7 @@ import (
 	"github.com/go-json-experiment/json"
 	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 	"golang.org/x/oauth2"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -20,7 +21,7 @@ func (a *App) update(ctx context.Context) {
 	ctx = context.WithValue(ctx, oauth2.HTTPClient, a.http)
 
 	clients := make(map[int64]spotify.Client)
-	a.store.RDo(func(s *earbugv5.Store) {
+	a.store.RDo(ctx, func(s *earbugv5.Store) {
 		for userID, userData := range s.Users {
 			var token oauth2.Token
 			err := json.Unmarshal(userData.Token, &token)
@@ -33,18 +34,15 @@ func (a *App) update(ctx context.Context) {
 
 	var added int
 	for userID, spot := range clients {
-		func() {
-			ctx, span := a.o.T.Start(ctx, "update user recently played")
-			defer span.End()
+		a.o.Region(ctx, "update user recently played", func(ctx context.Context, span trace.Span) error {
 			span.SetAttributes(attribute.Int64("user.id", userID))
 
 			items, err := spot.PlayerRecentlyPlayedOpt(ctx, &spotify.RecentlyPlayedOptions{Limit: 50})
 			if err != nil {
-				a.Err(ctx, "get recently played", err)
-				return
+				return a.Err(ctx, "get recently played", err)
 			}
 
-			a.store.Do(func(s *earbugv5.Store) {
+			a.store.Do(ctx, func(s *earbugv5.Store) {
 				for _, item := range items {
 					ts := item.PlayedAt.Format(time.RFC3339Nano)
 					if _, ok := s.Users[userID].Playbacks[ts]; !ok {
@@ -76,7 +74,9 @@ func (a *App) update(ctx context.Context) {
 					}
 				}
 			})
-		}()
+
+			return nil
+		})
 	}
 
 	if added > 0 {

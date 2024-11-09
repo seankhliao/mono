@@ -24,7 +24,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 				return nil, fmt.Errorf("no admin token")
 			}
 			var ok bool
-			a.store.RDo(func(s *authv1.Store) {
+			a.store.RDo(ctx, func(s *authv1.Store) {
 				_, ok = s.Sessions[adminToken]
 			})
 			if !ok {
@@ -37,7 +37,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			}
 
 			var err error
-			a.store.Do(func(s *authv1.Store) {
+			a.store.Do(ctx, func(s *authv1.Store) {
 				userID := mathrand.Int64()
 				for {
 					_, ok := s.Users[userID]
@@ -73,7 +73,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 
 		var user *authv1.UserInfo
 		var ok bool
-		a.store.RDo(func(s *authv1.Store) {
+		a.store.RDo(ctx, func(s *authv1.Store) {
 			user, ok = s.Users[info.GetUserId()]
 		})
 		if !ok {
@@ -90,7 +90,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			return nil, err
 		}
 		info.Credname = &credname
-		a.store.Do(func(s *authv1.Store) {
+		a.store.Do(ctx, func(s *authv1.Store) {
 			s.Sessions[info.GetSessionId()] = info
 		})
 
@@ -117,7 +117,7 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 
 		var user *authv1.UserInfo
 		var ok bool
-		a.store.RDo(func(s *authv1.Store) {
+		a.store.RDo(ctx, func(s *authv1.Store) {
 			user, ok = s.Users[info.GetUserId()]
 		})
 		if !ok {
@@ -147,7 +147,7 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 			Cred: credb,
 		})
 
-		a.store.Do(func(s *authv1.Store) {
+		a.store.Do(ctx, func(s *authv1.Store) {
 			s.Users[*user.UserId] = user
 		})
 

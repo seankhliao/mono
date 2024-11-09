@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"errors"
 	"strconv"
 
@@ -24,32 +25,34 @@ func (u User) WebAuthnCredentials() []webauthn.Credential {
 	return creds
 }
 
-func (a *App) discoverableUserHandler(rawID, userHandle []byte) (user webauthn.User, err error) {
-	var u *authv1.UserInfo
-	var found bool
+func (a *App) discoverableUserHandler(ctx context.Context) func(rawID, userHandle []byte) (user webauthn.User, err error) {
+	return func(rawID, userHandle []byte) (user webauthn.User, err error) {
+		var u *authv1.UserInfo
+		var found bool
 
-	a.store.RDo(func(s *authv1.Store) {
-	loop:
-		for _, user := range s.Users {
-			creds := User{user}.WebAuthnCredentials()
-			for _, cred := range creds {
-				if string(cred.ID) == string(userHandle) {
-					u = user
-					found = true
-					break loop
-				}
-				if string(cred.ID) == string(rawID) {
-					u = user
-					found = true
-					break loop
-				}
+		a.store.RDo(ctx, func(s *authv1.Store) {
+		loop:
+			for _, user := range s.Users {
+				creds := User{user}.WebAuthnCredentials()
+				for _, cred := range creds {
+					if string(cred.ID) == string(userHandle) {
+						u = user
+						found = true
+						break loop
+					}
+					if string(cred.ID) == string(rawID) {
+						u = user
+						found = true
+						break loop
+					}
 
+				}
 			}
-		}
-	})
+		})
 
-	if !found {
-		return nil, errors.New("handle not found")
+		if !found {
+			return nil, errors.New("handle not found")
+		}
+		return User{u}, nil
 	}
-	return User{u}, nil
 }

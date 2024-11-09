@@ -13,6 +13,7 @@ import (
 	"github.com/google/cel-go/cel"
 	"github.com/google/cel-go/common/types/ref"
 	"github.com/google/cel-go/interpreter"
+	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/cmd/moo/auth"
 	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 	"go.seankhliao.com/mono/webstyle"
@@ -100,12 +101,20 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 		userID = a.publicID
 	}
 
-	opts, err := newQueryOptions(r, userID)
-	if err != nil {
-		a.HTTPErr(ctx, "bad query", err, rw, http.StatusBadRequest)
-		return
-	}
-	playbacks, err := a.getPlaybacks(ctx, opts)
+	var opts queryOptions
+	var playbacks []DisplayPlayback
+	var err error
+	err = a.o.Region(ctx, "get playbacks", func(ctx context.Context, span trace.Span) error {
+		opts, err = newQueryOptions(r, userID)
+		if err != nil {
+			return fmt.Errorf("get query options: %w", err)
+		}
+		playbacks, err = a.getPlaybacks(ctx, opts)
+		if err != nil {
+			return fmt.Errorf("get playbacks: %w", err)
+		}
+		return nil
+	})
 	if err != nil {
 		a.HTTPErr(ctx, "bad query", err, rw, http.StatusBadRequest)
 		return
@@ -305,7 +314,7 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 
 	var plays []DisplayPlayback
 	var err error
-	a.store.RDo(func(s *earbugv5.Store) {
+	a.store.RDo(ctx, func(s *earbugv5.Store) {
 		userData, ok := s.Users[o.userID]
 		if !ok {
 			return

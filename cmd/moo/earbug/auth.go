@@ -1,11 +1,14 @@
 package earbug
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/base32"
+	"fmt"
 	"net/http"
 
 	"github.com/go-json-experiment/json"
+	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/cmd/moo/auth"
 	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 )
@@ -24,22 +27,27 @@ func (a *App) authBegin(rw http.ResponseWriter, r *http.Request) {
 func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "authCallback")
 	defer span.End()
-
 	info := auth.FromContext(ctx)
 
-	token, err := a.oauth2.Exchange(ctx, r.FormValue("code"))
+	var tokenMarshaled []byte
+	err := a.o.Region(ctx, "exchange", func(ctx context.Context, span trace.Span) error {
+		token, err := a.oauth2.Exchange(ctx, r.FormValue("code"))
+		if err != nil {
+			return fmt.Errorf("token exchange: %w", err)
+		}
+
+		tokenMarshaled, err = json.Marshal(token)
+		if err != nil {
+			return fmt.Errorf("marshal token :%w", err)
+		}
+		return nil
+	})
 	if err != nil {
-		a.HTTPErr(ctx, "get token from request", err, rw, http.StatusBadRequest)
+		a.HTTPErr(ctx, "exchange code for token", err, rw, http.StatusBadRequest)
 		return
 	}
 
-	tokenMarshaled, err := json.Marshal(token)
-	if err != nil {
-		a.HTTPErr(ctx, "marshal token", err, rw, http.StatusBadRequest)
-		return
-	}
-
-	a.store.Do(func(s *earbugv5.Store) {
+	a.store.Do(ctx, func(s *earbugv5.Store) {
 		data, ok := s.Users[info.GetUserId()]
 		if !ok {
 			data = &earbugv5.UserData{}

@@ -13,12 +13,6 @@ _buildopts: &buildopts
     - -w
 
 builds:
-  - id: fin
-    main: ./cmd/fin
-    <<: *buildopts
   - id: moo
     main: ./cmd/moo
-    <<: *buildopts
-  - id: ytfeed
-    main: ./cmd/ytfeed
     <<: *buildopts

@@ -88,7 +88,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	}
 	a.store = store
 
-	// a.store.Do(a.migrate)
+	// a.store.Do(ctx, a.migrate)
 	// a.store.Sync(ctx)
 
 	a.http = &http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}

@@ -11,6 +11,8 @@ import (
 	"time"
 
 	"github.com/google/cel-go/cel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
 	"go.seankhliao.com/mono/yrun"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -49,48 +51,57 @@ var (
 // The user may be anonymous (UserId == 0).
 func (a *App) AuthN(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		ctx, span := a.o.T.Start(r.Context(), "authn")
-		defer span.End()
-
-		// get current session token
 		var info *authv1.TokenInfo
-		cookie, err := r.Cookie(a.cookieName)
-		if err == nil {
-			a.store.RDo(func(s *authv1.Store) {
-				info = s.Sessions[cookie.Value]
-			})
-			// TODO: check for session expiry?
-		}
-		if info == nil {
-			// start a new anonymous session
-			rawToken := make([]byte, 16)
-			rand.Read(rawToken)
-			token := []byte("moox_")
-			token = base32.StdEncoding.AppendEncode(token, rawToken)
-			info = &authv1.TokenInfo{
-				SessionId: ptr(string(token)),
-				Created:   timestamppb.Now(),
+		a.o.Region(r.Context(), "authentication", func(ctx context.Context, span trace.Span) error {
+			// get current session token
+			cookie, err := r.Cookie(a.cookieName)
+			if err == nil {
+				a.store.RDo(ctx, func(s *authv1.Store) {
+					info = s.Sessions[cookie.Value]
+				})
+				// TODO: check for session expiry?
+			}
+			if info == nil {
+				span.SetAttributes(
+					attribute.Bool("session.new", true),
+				)
+				// start a new anonymous session
+				rawToken := make([]byte, 16)
+				rand.Read(rawToken)
+				token := []byte("moox_")
+				token = base32.StdEncoding.AppendEncode(token, rawToken)
+				info = &authv1.TokenInfo{
+					SessionId: ptr(string(token)),
+					Created:   timestamppb.Now(),
+				}
+
+				a.store.Do(ctx, func(s *authv1.Store) {
+					s.Sessions[info.GetSessionId()] = info
+				})
+
+				// send it to the client
+				http.SetCookie(rw, &http.Cookie{
+					Name:        a.cookieName,
+					Value:       info.GetSessionId(),
+					Path:        "/",
+					Domain:      a.cookieDomain,
+					MaxAge:      int(time.Hour.Seconds()),
+					Secure:      true,
+					HttpOnly:    true,
+					SameSite:    http.SameSiteStrictMode,
+					Partitioned: true,
+				})
 			}
 
-			a.store.Do(func(s *authv1.Store) {
-				s.Sessions[info.GetSessionId()] = info
-			})
+			span.SetAttributes(
+				attribute.Int64("user.id", info.GetUserId()),
+				attribute.String("session.id", info.GetSessionId()),
+				attribute.Float64("session.age.seconds", time.Since(info.GetCreated().AsTime()).Seconds()),
+			)
+			return nil
+		})
 
-			// send it to the client
-			http.SetCookie(rw, &http.Cookie{
-				Name:        a.cookieName,
-				Value:       info.GetSessionId(),
-				Path:        "/",
-				Domain:      a.cookieDomain,
-				MaxAge:      int(time.Hour.Seconds()),
-				Secure:      true,
-				HttpOnly:    true,
-				SameSite:    http.SameSiteStrictMode,
-				Partitioned: true,
-			})
-		}
-
-		ctx = context.WithValue(ctx, TokenInfoContextKey, info)
+		ctx := context.WithValue(r.Context(), TokenInfoContextKey, info)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(rw, r)
 	})
@@ -128,30 +139,34 @@ func AuthZPolicy(policy string) (cel.Program, error) {
 	return prog, nil
 }
 
+var errUnauthorized = errors.New("unauthorized")
+
 func (a *App) AuthZ(policy cel.Program) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-			ctx, span := a.o.T.Start(r.Context(), "authz")
-			defer span.End()
-
-			info := FromContext(ctx)
-			act, err := cel.ContextProtoVars(info)
-			if err != nil {
-				http.Error(rw, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			res, _, err := policy.ContextEval(ctx, act)
-			if err != nil {
-				http.Error(rw, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			allow, ok := res.Value().(bool)
-			if !ok {
-				err = errors.New("policy didn't eval to bool")
-				http.Error(rw, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			if !allow {
+			err := a.o.Region(r.Context(), "authorization", func(ctx context.Context, span trace.Span) error {
+				info := FromContext(ctx)
+				act, err := cel.ContextProtoVars(info)
+				if err != nil {
+					return fmt.Errorf("prepare authz eval context: %w", err)
+				}
+				res, _, err := policy.ContextEval(ctx, act)
+				if err != nil {
+					return fmt.Errorf("evaluate policy: %w", err)
+				}
+				allow, ok := res.Value().(bool)
+				if !ok {
+					return fmt.Errorf("policy eval result type %T", res.Value())
+				}
+				span.SetAttributes(
+					attribute.Bool("auth.allow", allow),
+				)
+				if !allow {
+					return errUnauthorized
+				}
+				return nil
+			})
+			if errors.Is(err, errUnauthorized) {
 				q := make(url.Values)
 				if r.Host != a.host {
 					q.Set("return", (&url.URL{
@@ -168,7 +183,11 @@ func (a *App) AuthZ(policy cel.Program) func(http.Handler) http.Handler {
 					Path:     "/",
 					RawQuery: q.Encode(),
 				}).String()
+
 				http.Redirect(rw, r, u, http.StatusTemporaryRedirect)
+				return
+			} else if err != nil {
+				http.Error(rw, err.Error(), http.StatusInternalServerError)
 				return
 			}
 

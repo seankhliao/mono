@@ -88,7 +88,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 		return nil, fmt.Errorf("init store: %w", err)
 	}
 
-	// a.store.Do(a.migrate)
+	// a.store.Do(ctx, a.migrate)
 	// a.store.Sync(ctx)
 
 	return a, nil
@@ -112,6 +112,9 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 // Debug handlers
 
 func (a *App) adminToken(rw http.ResponseWriter, r *http.Request) {
+	ctx, span := a.o.T.Start(r.Context(), "generate admin token")
+	defer span.End()
+
 	rawToken := make([]byte, 16)
 	rand.Read(rawToken)
 	token := []byte("mooa_")
@@ -123,7 +126,7 @@ func (a *App) adminToken(rw http.ResponseWriter, r *http.Request) {
 		UserId:    ptr[int64](-1),
 	}
 
-	a.store.Do(func(s *authv1.Store) {
+	a.store.Do(ctx, func(s *authv1.Store) {
 		s.Sessions[tokenInfo.GetSessionId()] = tokenInfo
 	})
 

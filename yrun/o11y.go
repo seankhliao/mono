@@ -14,6 +14,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/runtime"
 	"go.opentelemetry.io/contrib/zpages"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
@@ -57,6 +58,18 @@ func (o O11y) Sub(name string) O11y {
 		L: o.L.WithGroup(name),
 		H: o.H.WithGroup(name),
 	}
+}
+
+func (o O11y) Region(ctx context.Context, name string, do func(ctx context.Context, span trace.Span) error) error {
+	ctx, span := o.T.Start(ctx, name)
+	defer span.End()
+
+	err := do(ctx, span)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, name)
+	}
+	return err
 }
 
 func NewO11y(c O11yConfig) (O11y, O11yReg) {

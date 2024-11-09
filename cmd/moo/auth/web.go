@@ -64,7 +64,7 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	var user *authv1.UserInfo
-	a.store.RDo(func(s *authv1.Store) {
+	a.store.RDo(ctx, func(s *authv1.Store) {
 		user = s.Users[info.GetUserId()]
 	})
 
@@ -122,7 +122,7 @@ func (a *App) update(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a.store.Do(func(s *authv1.Store) {
+	a.store.Do(ctx, func(s *authv1.Store) {
 		user := s.Users[*info.UserId]
 		user.Username = ptr(r.FormValue("username"))
 		s.Users[*info.UserId] = user
@@ -137,7 +137,7 @@ func (a *App) logoutPage(rw http.ResponseWriter, r *http.Request) {
 	info := FromContext(ctx)
 
 	var user *authv1.UserInfo
-	a.store.RDo(func(s *authv1.Store) {
+	a.store.RDo(ctx, func(s *authv1.Store) {
 		user = s.Users[*info.UserId]
 	})
 
@@ -156,7 +156,7 @@ func (a *App) logoutAction(rw http.ResponseWriter, r *http.Request) {
 	defer span.End()
 	info := FromContext(ctx)
 
-	a.store.Do(func(s *authv1.Store) {
+	a.store.Do(ctx, func(s *authv1.Store) {
 		delete(s.Sessions, info.GetSessionId())
 	})
 

@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"crypto/rand"
 	_ "embed"
 	"encoding/base32"
@@ -11,6 +12,7 @@ import (
 	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
+	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -21,14 +23,16 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 	cred, err := func() (*protocol.CredentialAssertion, error) {
 		info := FromContext(ctx)
 
-		cred, sess, err := a.webauthn.BeginDiscoverableLogin()
+		cred, sess, err := a.webauthn.BeginDiscoverableLogin(webauthn.WithAssertionPublicKeyCredentialHints(
+			[]protocol.PublicKeyCredentialHints{protocol.PublicKeyCredentialHintHybrid},
+		))
 		if err != nil {
 			return nil, err
 		}
 
 		// store session data for finish
 		info.SessionData, _ = json.Marshal(sess)
-		a.store.Do(func(s *authv1.Store) {
+		a.store.Do(ctx, func(s *authv1.Store) {
 			s.Sessions[*info.SessionId] = info
 		})
 		return cred, nil
@@ -48,9 +52,13 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "loginFinish")
 	defer span.End()
-	err := func() error {
-		info := FromContext(ctx)
 
+	rw.Header().Set("content-type", "application/json")
+	body := map[string]any{"status": "ok"}
+
+	info := FromContext(ctx)
+	var user User
+	err := a.o.Region(ctx, "validate credentials", func(ctx context.Context, span trace.Span) error {
 		if info.SessionData == nil {
 			return errors.New("no session started")
 		}
@@ -63,15 +71,27 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return err
 		}
-		webauthnUser, _, err := a.webauthn.ValidatePasskeyLogin(a.discoverableUserHandler, sess, parsedResponse)
+		webauthnUser, _, err := a.webauthn.ValidatePasskeyLogin(a.discoverableUserHandler(ctx), sess, parsedResponse)
 		if err != nil {
 			return err
 		}
 
-		// ok
+		user = webauthnUser.(User)
+		return nil
+	})
+	if err != nil {
+		rw.WriteHeader(http.StatusUnauthorized)
+		body = map[string]any{
+			"status": "error",
+			"error":  err.Error(),
+		}
+		json.MarshalWrite(rw, body)
+		return
+	}
 
-		user := webauthnUser.(User)
+	// ok
 
+	err = a.o.Region(ctx, "prepare new session", func(ctx context.Context, span trace.Span) error {
 		// generate a new named token
 		rawToken := make([]byte, 16)
 		rand.Read(rawToken)
@@ -84,7 +104,7 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		// swap tokens
-		a.store.Do(func(s *authv1.Store) {
+		a.store.Do(ctx, func(s *authv1.Store) {
 			delete(s.Sessions, *info.SessionId)
 			s.Sessions[tokenInfo.GetSessionId()] = tokenInfo
 		})
@@ -102,9 +122,7 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 			Partitioned: true,
 		})
 		return nil
-	}()
-	rw.Header().Set("content-type", "application/json")
-	body := map[string]any{"status": "ok"}
+	})
 	if err != nil {
 		rw.WriteHeader(http.StatusUnauthorized)
 		body = map[string]any{

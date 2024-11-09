@@ -21,7 +21,7 @@ type Store[T proto.Message] struct {
 	mu   sync.RWMutex
 	data T
 
-	tracer   trace.Tracer
+	t        trace.Tracer
 	muLinks  sync.Mutex
 	links    []trace.Link
 	dataType string
@@ -37,10 +37,10 @@ type storer[T any] interface {
 
 func NewStore[T any, P storer[T]](ctx context.Context, bkt *blob.Bucket, key string, init func() P) (*Store[P], error) {
 	s := &Store[P]{
-		bkt:    bkt,
-		key:    key,
-		data:   new(T),
-		tracer: otel.Tracer("yrun/store"),
+		bkt:  bkt,
+		key:  key,
+		data: new(T),
+		t:    otel.Tracer("yrun/store"),
 	}
 	s.nextUpdate = time.AfterFunc(24*time.Hour, s.sync)
 	s.dataType = fmt.Sprintf("%T", s.data)
@@ -72,14 +72,21 @@ func NewStore[T any, P storer[T]](ctx context.Context, bkt *blob.Bucket, key str
 	return s, nil
 }
 
-func (s *Store[T]) RDo(f func(T)) {
+func (s *Store[T]) RDo(ctx context.Context, f func(T)) {
+	_, span := s.t.Start(ctx, "store read")
+	defer span.End()
+
 	s.mu.RLock()
 	defer s.mu.RUnlock()
+
 	f(s.data)
 }
 
-func (s *Store[T]) Do(f func(T)) {
-	defer s.Sync(context.Background())
+func (s *Store[T]) Do(ctx context.Context, f func(T)) {
+	ctx, span := s.t.Start(ctx, "store write")
+	defer span.End()
+
+	defer s.Sync(ctx)
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -112,14 +119,14 @@ func (s *Store[T]) sync() {
 	s.links = s.links[:0]
 	s.muLinks.Unlock()
 
-	ctx, span := s.tracer.Start(ctx, "sync "+s.dataType, linkOpt)
+	ctx, span := s.t.Start(ctx, "sync "+s.dataType, linkOpt)
 	defer span.End()
 
 	// TODO: handle error
 	_ = func(ctx context.Context) error {
 		var b []byte
 		var err error
-		s.RDo(func(t T) {
+		s.RDo(ctx, func(t T) {
 			b, err = proto.Marshal(t)
 		})
 		if err != nil {
