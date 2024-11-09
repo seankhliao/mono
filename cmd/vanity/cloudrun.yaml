@@ -17,6 +17,8 @@ spec:
       containerConcurrency: 80
       containers:
         - image: us-central1-docker.pkg.dev/com-seankhliao/run/vanity
+          args:
+            - -config-path=
           ports:
             - containerPort: 8080
               name: http1

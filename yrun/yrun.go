@@ -18,6 +18,7 @@ import (
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/fileblob"
 	_ "gocloud.dev/blob/gcsblob"
+	_ "gocloud.dev/blob/memblob"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -79,9 +80,12 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 	defer bkt.Close()
 
 	// config file
-	configBytes, err := bkt.ReadAll(ctx, configPath)
-	if err != nil {
-		return fmt.Errorf("read config file bucket = %q path = %q: %w", configBucket, configPath, err)
+	var configBytes []byte
+	if configPath != "" {
+		configBytes, err = bkt.ReadAll(ctx, configPath)
+		if err != nil {
+			return fmt.Errorf("read config file bucket = %q path = %q: %w", configBucket, configPath, err)
+		}
 	}
 	config, err := FromBytes[Config[AppConfig]](baseSchema, runConfig.AppConfigSchema, configBytes)
 	if err != nil {

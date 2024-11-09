@@ -3,63 +3,71 @@ package main
 import (
 	"bytes"
 	"context"
-	"flag"
 	"fmt"
 	"io"
-	"log/slog"
 	"net/http"
+	"os"
 	"time"
 
-	"maragu.dev/gomponents"
-	"maragu.dev/gomponents/html"
-	"go.seankhliao.com/mono/framework"
-	"go.seankhliao.com/mono/observability"
 	"go.seankhliao.com/mono/webstyle"
 	"go.seankhliao.com/mono/webstyle/webstatic"
+	"go.seankhliao.com/mono/yrun"
+	"gocloud.dev/blob"
+	"maragu.dev/gomponents"
+	"maragu.dev/gomponents/html"
 )
 
+func Register(a *App, r yrun.HTTPRegistrar) {
+	webstatic.Register(r)
+	r.Pattern("GET", "", "/{$}", a.index)
+	r.Pattern("GET", "", "/{repo}/", a.repo)
+}
+
+type Config struct {
+	Host   string
+	Source string
+}
+type App struct {
+	c Config
+	o yrun.O11y
+
+	t0           time.Time
+	indexContent []byte
+}
+
+func New(ctx context.Context, c Config, _ *blob.Bucket, o yrun.O11y) (*App, error) {
+	index, err := indexPage(c.Host)
+	if err != nil {
+		return nil, fmt.Errorf("render index template: %w", err)
+	}
+	return &App{
+		c:            c,
+		o:            o.Sub("vanity"),
+		t0:           time.Now(),
+		indexContent: index,
+	}, nil
+}
+
+func (a *App) index(rw http.ResponseWriter, r *http.Request) {
+	http.ServeContent(rw, r, "index.html", a.t0, bytes.NewReader(a.indexContent))
+}
+
+func (a *App) repo(rw http.ResponseWriter, r *http.Request) {
+	repo := r.PathValue("repo")
+	importPage(rw, a.c.Host, a.c.Source, repo)
+}
+
 func main() {
-	var host, source string
-	framework.Run(framework.Config{
-		RegisterFlags: func(fset *flag.FlagSet) {
-			fset.StringVar(&host, "vanity.host", "go.seankhliao.com", "host this server runs on")
-			fset.StringVar(&source, "vanity.source", "github.com/seankhliao", "where the code is hosted")
-		},
-		Start: func(ctx context.Context, o *observability.O, m *http.ServeMux) (func(), error) {
-			o = o.Component("vanity")
-
-			index, err := indexPage(host)
-			if err != nil {
-				return nil, fmt.Errorf("render index template: %w", err)
-			}
-			t0 := time.Now()
-
-			webstatic.Register(m)
-			m.HandleFunc("GET /{$}", func(rw http.ResponseWriter, r *http.Request) {
-				ctx, span := o.T.Start(r.Context(), "serve index page")
-				defer span.End()
-
-				http.ServeContent(rw, r, "index.html", t0, bytes.NewReader(index))
-				o.L.LogAttrs(ctx, slog.LevelInfo, "served index page",
-					requestAttrs(r))
-			})
-			m.HandleFunc("GET /{repo}/", func(rw http.ResponseWriter, r *http.Request) {
-				ctx, span := o.T.Start(r.Context(), "serve vanity")
-				defer span.End()
-
-				repo := r.PathValue("repo")
-				importPage(rw, host, source, repo)
-				if err != nil {
-					o.HTTPErr(ctx, "write response", err, rw, http.StatusInternalServerError)
-					return
-				}
-
-				o.L.LogAttrs(ctx, slog.LevelInfo, "served module page",
-					slog.String("repo", repo), requestAttrs(r))
-			})
-			return nil, nil
-		},
-	})
+	os.Exit(yrun.Run(yrun.RunConfig[Config, App]{
+		AppConfigSchema: `
+App: {
+  Host: string | *"go.seankhliao.com"
+  Source: string | *"github.com/seankhliao"
+}
+                `,
+		New:  New,
+		HTTP: Register,
+	}))
 }
 
 func indexPage(host string) ([]byte, error) {
@@ -96,7 +104,6 @@ func importPage(w io.Writer, host, gitHost, repo string) error {
 		CompactStyle: true,
 		Minify:       true,
 		Title:        repo,
-		Subtitle:     "module " + importPath,
 		Head: []gomponents.Node{
 			html.Meta(
 				html.Name("go-import"),
@@ -133,17 +140,4 @@ func importPage(w io.Writer, host, gitHost, repo string) error {
 			),
 		},
 	})
-}
-
-func requestAttrs(r *http.Request) slog.Attr {
-	return slog.Group("http_request",
-		slog.String("method", r.Method),
-		slog.String("url", r.URL.String()),
-		slog.String("proto", r.Proto),
-		slog.String("user_agent", r.UserAgent()),
-		slog.String("remote_address", r.RemoteAddr),
-		slog.String("referrer", r.Referer()),
-		slog.String("x-forwarded-for", r.Header.Get("x-forwarded-for")),
-		slog.String("forwarded", r.Header.Get("forwarded")),
-	)
 }
