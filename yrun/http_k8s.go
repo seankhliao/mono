@@ -25,7 +25,7 @@ import (
 	gwclientv1 "sigs.k8s.io/gateway-api/pkg/client/clientset/versioned/typed/apis/v1"
 )
 
-func ManageK8s(ctx context.Context, lg *slog.Logger, c HTTPConfig, mx *muxRegister) error {
+func ManageK8s(ctx context.Context, lg *slog.Logger, c HTTPConfig, cd HTTPConfig, mx *muxRegister) error {
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -50,14 +50,14 @@ func ManageK8s(ctx context.Context, lg *slog.Logger, c HTTPConfig, mx *muxRegist
 		return fmt.Errorf("create k8s client")
 	}
 
-	labelSelector, httpPort, err := getPodPorts(ctx, lg, k8sClient, namespace, c.Address)
+	labelSelector, httpPort, debugPort, err := getPodPorts(ctx, lg, k8sClient, namespace, c.Address, cd.Address)
 	if err != nil {
 		return err
 	}
 
 	manager := "yrun-" + name
 
-	err = createService(ctx, lg, k8sClient, manager, namespace, name, httpPort, labelSelector)
+	err = createService(ctx, lg, k8sClient, manager, namespace, name, httpPort, debugPort, labelSelector)
 	if err != nil {
 		return err
 	}
@@ -73,16 +73,16 @@ func ManageK8s(ctx context.Context, lg *slog.Logger, c HTTPConfig, mx *muxRegist
 	return nil
 }
 
-func getPodPorts(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Clientset, namespace, httpAddr string) (labels map[string]string, portName string, err error) {
+func getPodPorts(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Clientset, namespace, httpAddr, debugAddr string) (labels map[string]string, httpPort, debugPort string, err error) {
 	podName, err := os.Hostname()
 	if err != nil {
-		return nil, "", fmt.Errorf("read hostname: %w", err)
+		return nil, "", "", fmt.Errorf("read hostname: %w", err)
 	}
 	lg.LogAttrs(ctx, slog.LevelDebug, "identified pod name from hostname", slog.String("pod.name", podName))
 
 	pod, err := k8sClient.CoreV1().Pods(namespace).Get(ctx, podName, apimetav1.GetOptions{})
 	if err != nil {
-		return nil, "", fmt.Errorf("get pod: %w", err)
+		return nil, "", "", fmt.Errorf("get pod: %w", err)
 	}
 
 	labelSelector := make(map[string]string)
@@ -93,20 +93,32 @@ func getPodPorts(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Cli
 		}
 	}
 	if len(labelSelector) == 0 {
-		return nil, "", fmt.Errorf("no known labels: %w", err)
+		return nil, "", "", fmt.Errorf("no known labels: %w", err)
 	}
 	lg.LogAttrs(ctx, slog.LevelDebug, "got selector labels", slog.Any("labels", labelSelector))
 
-	_, portNumS, err := net.SplitHostPort(httpAddr)
+	httpPort, err = findPort(httpAddr, pod)
 	if err != nil {
-		return nil, "", fmt.Errorf("bad host:port for http: %w", err)
+		return nil, "", "", fmt.Errorf("find http port: %w", err)
+	}
+	debugPort, err = findPort(debugAddr, pod)
+	if err != nil {
+		return nil, "", "", fmt.Errorf("find debug port: %w", err)
+	}
+
+	return labelSelector, httpPort, debugPort, nil
+}
+
+func findPort(addr string, pod *apicorev1.Pod) (portName string, err error) {
+	_, portNumS, err := net.SplitHostPort(addr)
+	if err != nil {
+		return "", fmt.Errorf("bad host:port for http: %w", err)
 	}
 	portNumI, err := strconv.Atoi(portNumS)
 	if err != nil {
-		return nil, "", fmt.Errorf("parse port number: %w", err)
+		return "", fmt.Errorf("parse port number: %w", err)
 	}
 	portNum := int32(portNumI)
-	lg.LogAttrs(ctx, slog.LevelDebug, "got port number", slog.Int("port.number", portNumI))
 
 	for _, container := range pod.Spec.Containers {
 		for _, port := range container.Ports {
@@ -115,12 +127,11 @@ func getPodPorts(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Cli
 			}
 		}
 	}
-	lg.LogAttrs(ctx, slog.LevelDebug, "got port name", slog.String("port.name", portName))
 
-	return labelSelector, portName, nil
+	return portName, nil
 }
 
-func createService(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Clientset, manager, namespace, name, httpPort string, labelSelector map[string]string) error {
+func createService(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Clientset, manager, namespace, name, httpPort, debugPort string, labelSelector map[string]string) error {
 	labels := maps.Clone(labelSelector)
 	labels["kubernetes.io/managed-by"] = manager
 
@@ -135,13 +146,21 @@ func createService(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.C
 			Labels:    labels,
 		},
 		Spec: &applycorev1.ServiceSpecApplyConfiguration{
-			Ports: []applycorev1.ServicePortApplyConfiguration{{
-				Name:        ptr("http"),
-				Port:        ptr[int32](80),
-				Protocol:    ptr(apicorev1.Protocol("TCP")),
-				AppProtocol: ptr("http"),
-				TargetPort:  ptr(intstr.FromString(httpPort)),
-			}},
+			Ports: []applycorev1.ServicePortApplyConfiguration{
+				{
+					Name:        ptr("http"),
+					Port:        ptr[int32](80),
+					Protocol:    ptr(apicorev1.ProtocolTCP),
+					AppProtocol: ptr("http"),
+					TargetPort:  ptr(intstr.FromString(httpPort)),
+				}, {
+					Name:        ptr("debug"),
+					Port:        ptr[int32](8081),
+					Protocol:    ptr(apicorev1.ProtocolTCP),
+					AppProtocol: ptr("http"),
+					TargetPort:  ptr(intstr.FromString(debugPort)),
+				},
+			},
 			Selector: labelSelector,
 		},
 	}

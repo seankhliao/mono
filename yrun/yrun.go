@@ -125,7 +125,7 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 
 			if config.HTTP.K8s.Enable {
 				httplg.LogAttrs(ctx, slog.LevelDebug, "managing k8s service/httproute")
-				err := ManageK8s(ctx, httplg, config.HTTP, mx)
+				err := ManageK8s(ctx, httplg, config.HTTP, config.Debug, mx)
 				if err != nil {
 					return fmt.Errorf("manage k8s httproute: %w", err)
 				}
