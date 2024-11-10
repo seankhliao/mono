@@ -15,7 +15,7 @@ import (
 	"github.com/google/cel-go/interpreter"
 	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/auth"
-	"go.seankhliao.com/mono/earbug/earbugv5"
+	earbugv5 "go.seankhliao.com/mono/earbug/v5"
 	"go.seankhliao.com/mono/webstyle"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"

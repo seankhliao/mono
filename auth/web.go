@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strings"
 
-	"go.seankhliao.com/mono/auth/authv1"
+	authv1 "go.seankhliao.com/mono/auth/v1"
 	"go.seankhliao.com/mono/webstyle"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"

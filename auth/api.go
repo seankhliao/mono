@@ -13,7 +13,7 @@ import (
 	"github.com/google/cel-go/cel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/auth/authv1"
+	authv1 "go.seankhliao.com/mono/auth/v1"
 	"go.seankhliao.com/mono/yrun"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )

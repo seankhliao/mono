@@ -1,6 +1,6 @@
 edition = "2023";
 
-package seankhliao.mono.authv1;
+package auth.v1;
 
 import "google/protobuf/timestamp.proto";
 
@@ -13,8 +13,8 @@ message TokenInfo {
   string session_id = 1;
   google.protobuf.Timestamp created = 2;
   int64 user_id = 3;
-  bytes sessionData = 4;
-  string credname =5;
+  bytes session_data = 4;
+  string cred_name = 5;
 }
 
 message UserInfo {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
-	"go.seankhliao.com/mono/auth/authv1"
+	authv1 "go.seankhliao.com/mono/auth/v1"
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"

@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"cuelang.org/go/cue/cuecontext"
+	"go.seankhliao.com/mono/webstyle"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
-	"go.seankhliao.com/mono/webstyle"
 )
 
 //go:embed table.cue

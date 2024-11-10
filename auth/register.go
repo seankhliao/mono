@@ -9,7 +9,7 @@ import (
 	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
-	"go.seankhliao.com/mono/auth/authv1"
+	authv1 "go.seankhliao.com/mono/auth/v1"
 )
 
 func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
@@ -92,7 +92,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return nil, err
 		}
-		info.Credname = &credname
+		info.CredName = &credname
 		a.store.Do(ctx, func(s *authv1.Store) {
 			s.Sessions[info.GetSessionId()] = info
 		})
@@ -142,7 +142,7 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 			return err
 		}
 		user.Creds = append(user.Creds, &authv1.Credential{
-			Name: info.Credname,
+			Name: info.CredName,
 			Cred: credb,
 		})
 

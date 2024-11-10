@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
+	"go.seankhliao.com/mono/webstyle"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
-	"go.seankhliao.com/mono/webstyle"
 )
 
 const (

@@ -9,7 +9,7 @@ import (
 	"github.com/google/cel-go/cel"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.seankhliao.com/mono/auth"
-	"go.seankhliao.com/mono/earbug/earbugv5"
+	earbugv5 "go.seankhliao.com/mono/earbug/v5"
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"

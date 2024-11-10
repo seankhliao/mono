@@ -1,6 +1,6 @@
 edition = "2023";
 
-package seankhliao.mono.earbugv5;
+package earbug.v5;
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";

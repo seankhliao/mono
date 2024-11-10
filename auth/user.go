@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/webauthn"
-	"go.seankhliao.com/mono/auth/authv1"
+	authv1 "go.seankhliao.com/mono/auth/v1"
 )
 
 var _ webauthn.User = wanUser{}

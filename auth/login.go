@@ -15,7 +15,7 @@ import (
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/auth/authv1"
+	authv1 "go.seankhliao.com/mono/auth/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
