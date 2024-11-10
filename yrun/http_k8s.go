@@ -166,14 +166,13 @@ func createService(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.C
 	}
 
 	lg.LogAttrs(ctx, slog.LevelDebug, "applying service")
-	res, err := k8sClient.CoreV1().Services(namespace).Apply(ctx, applySvc, apimetav1.ApplyOptions{
+	_, err := k8sClient.CoreV1().Services(namespace).Apply(ctx, applySvc, apimetav1.ApplyOptions{
 		FieldManager: manager,
 	})
 	if err != nil {
 		lg.LogAttrs(ctx, slog.LevelError, "failed apply", slog.String("err", err.Error()))
 		return fmt.Errorf("apply service %s/%s: %w", namespace, name, err)
 	}
-	lg.LogAttrs(ctx, slog.LevelDebug, "applied service", slog.Any("service.config", res))
 	return nil
 }
 
@@ -225,13 +224,13 @@ func createHTTPRoute(ctx context.Context, lg *slog.Logger, k8sConfig *rest.Confi
 		return fmt.Errorf("get gateway client: %w", err)
 	}
 	lg.LogAttrs(ctx, slog.LevelDebug, "applying httproute")
-	res, err := gatewayClient.HTTPRoutes(namespace).Apply(ctx, applyConfig, apimetav1.ApplyOptions{
+	_, err = gatewayClient.HTTPRoutes(namespace).Apply(ctx, applyConfig, apimetav1.ApplyOptions{
 		FieldManager: manager,
 	})
 	if err != nil {
 		lg.LogAttrs(ctx, slog.LevelError, "failed apply", slog.String("err", err.Error()))
 		return fmt.Errorf("apply httproute %s/%s: %w", namespace, name, err)
 	}
-	lg.LogAttrs(ctx, slog.LevelDebug, "applied httproute", slog.Any("httproute.config", res))
+	// lg.LogAttrs(ctx, slog.LevelDebug, "applied httproute", slog.Any("httproute.config", res))
 	return nil
 }
