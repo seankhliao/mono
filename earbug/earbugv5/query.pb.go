@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.35.1
 // 	protoc        (unknown)
-// source: cmd/moo/earbug/earbugv5/query.proto
+// source: earbug/earbugv5/query.proto
 
 package earbugv5
 

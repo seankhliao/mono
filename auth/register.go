@@ -9,7 +9,7 @@ import (
 	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
-	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
+	"go.seankhliao.com/mono/auth/authv1"
 )
 
 func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
@@ -80,7 +80,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			return nil, errors.New("user not found")
 		}
 
-		create, sess, err := a.webauthn.BeginRegistration(User{user})
+		create, sess, err := a.webauthn.BeginRegistration(wanUser{u: user})
 		if err != nil {
 			return nil, err
 		}
@@ -132,7 +132,7 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 			return err
 		}
 
-		cred, err := a.webauthn.FinishRegistration(User{user}, sess, r)
+		cred, err := a.webauthn.FinishRegistration(wanUser{u: user}, sess, r)
 		if err != nil {
 			return err
 		}

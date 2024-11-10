@@ -9,7 +9,7 @@ import (
 	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
+	"go.seankhliao.com/mono/earbug/earbugv5"
 	"golang.org/x/oauth2"
 	"google.golang.org/protobuf/types/known/durationpb"
 )

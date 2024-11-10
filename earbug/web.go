@@ -14,8 +14,8 @@ import (
 	"github.com/google/cel-go/common/types/ref"
 	"github.com/google/cel-go/interpreter"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/cmd/moo/auth"
-	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
+	"go.seankhliao.com/mono/auth"
+	"go.seankhliao.com/mono/earbug/earbugv5"
 	"go.seankhliao.com/mono/webstyle"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -414,11 +414,6 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 			}
 
 			track := s.Tracks[play.GetTrackId()]
-			var artists []string
-			for _, a := range track.GetArtists() {
-				artists = append(artists, a.GetName())
-			}
-
 			plays = append(plays, DisplayPlayback{
 				StartTime: startTime,
 				Track:     track,

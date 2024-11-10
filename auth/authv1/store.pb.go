@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.35.1
 // 	protoc        (unknown)
-// source: cmd/moo/auth/authv1/store.proto
+// source: auth/authv1/store.proto
 
 package authv1
 

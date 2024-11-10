@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
+	"go.seankhliao.com/mono/auth/authv1"
 )
 
 func (a *App) CleanSessions() error {

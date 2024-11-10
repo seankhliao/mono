@@ -15,7 +15,7 @@ import (
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/cmd/moo/auth/authv1"
+	"go.seankhliao.com/mono/auth/authv1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -62,7 +62,7 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 	body := map[string]any{"status": "ok"}
 
 	info := FromContext(ctx)
-	var user User
+	var user wanUser
 	err := a.o.Region(ctx, "validate credentials", func(ctx context.Context, span trace.Span) error {
 		if len(info.SessionData) == 0 {
 			return errors.New("no session started")
@@ -81,7 +81,7 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 			return fmt.Errorf("validate passkey login: %w", err)
 		}
 
-		user = webauthnUser.(User)
+		user = webauthnUser.(wanUser)
 		return nil
 	})
 	if err != nil {

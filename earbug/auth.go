@@ -9,8 +9,8 @@ import (
 
 	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/cmd/moo/auth"
-	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
+	"go.seankhliao.com/mono/auth"
+	"go.seankhliao.com/mono/earbug/earbugv5"
 )
 
 func (a *App) authBegin(rw http.ResponseWriter, r *http.Request) {
