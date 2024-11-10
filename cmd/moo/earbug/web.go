@@ -17,6 +17,7 @@ import (
 	"go.seankhliao.com/mono/cmd/moo/auth"
 	"go.seankhliao.com/mono/cmd/moo/earbug/earbugv5"
 	"go.seankhliao.com/mono/webstyle"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -128,12 +129,39 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 		// only one sort order
 		slices.SortFunc(playbacks, func(a, b DisplayPlayback) int { return b.StartTime.Compare(a.StartTime) }) // oldest first
 
-		for _, row := range playbacks {
+		for _, play := range playbacks {
+			if opts.filter != nil {
+				var artists []string
+				for _, a := range play.Track.GetArtists() {
+					artists = append(artists, a.GetName())
+				}
+				var activation interpreter.Activation
+				activation, err = cel.ContextProtoVars(&earbugv5.QueryFilterContext{
+					Track:         play.Track.Name,
+					Artists:       artists,
+					PlayTime:      timestamppb.New(play.StartTime),
+					TrackDuration: durationpb.New(play.PlaybackTime),
+				})
+				if err != nil {
+					continue
+				}
+				var res ref.Val
+				res, _, err = opts.filter.ContextEval(ctx, activation)
+				if err != nil {
+					continue
+				}
+				if keep, ok := res.Value().(bool); !ok {
+					continue
+				} else if !keep {
+					continue
+				}
+			}
+
 			tbody = append(tbody, html.Tr(
-				html.Td(gomponents.Text(row.StartTime.Format(time.DateTime))),
-				html.Td(gomponents.Text(row.PlaybackTime.String())),
-				html.Td(gomponents.Text(row.Track.GetName())),
-				html.Td(gomponents.Text(artistsString(row.Track.GetArtists()))),
+				html.Td(gomponents.Text(play.StartTime.Format(time.DateTime))),
+				html.Td(gomponents.Text(play.PlaybackTime.String())),
+				html.Td(gomponents.Text(play.Track.GetName())),
+				html.Td(gomponents.Text(artistsString(play.Track.GetArtists()))),
 			))
 		}
 		thead = []gomponents.Node{
@@ -148,6 +176,7 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 			artist string
 			plays  int
 			time   time.Duration
+			tracks map[string]struct{}
 		}
 		artists := make(map[string]artistRow)
 		for _, play := range playbacks {
@@ -156,6 +185,10 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 				row.artist = artist.GetName()
 				row.plays += 1
 				row.time += play.PlaybackTime
+				if row.tracks == nil {
+					row.tracks = make(map[string]struct{})
+				}
+				row.tracks[play.Track.GetId()] = struct{}{}
 				artists[artist.GetName()] = row
 			}
 		}
@@ -170,14 +203,37 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		for _, row := range artistRows {
+			if opts.filter != nil {
+				var activation interpreter.Activation
+				activation, err = cel.ContextProtoVars(&earbugv5.QueryFilterContext{
+					Artist: &row.artist,
+					Plays:  ptr(int64(row.plays)),
+					Tracks: ptr(int64(len(row.tracks))),
+				})
+				if err != nil {
+					continue
+				}
+				var res ref.Val
+				res, _, err = opts.filter.ContextEval(ctx, activation)
+				if err != nil {
+					continue
+				}
+				if keep, ok := res.Value().(bool); !ok {
+					continue
+				} else if !keep {
+					continue
+				}
+			}
 			tbody = append(tbody, html.Tr(
 				html.Td(gomponents.Text(row.artist)),
+				html.Td(gomponents.Textf("%d", len(row.tracks))),
 				html.Td(gomponents.Textf("%d", row.plays)),
 				html.Td(gomponents.Text(row.time.String())),
 			))
 		}
 		thead = []gomponents.Node{
 			html.Th(gomponents.Text("artist")),
+			html.Th(gomponents.Text("unique tracks")),
 			html.Th(gomponents.Text("total plays")),
 			html.Th(gomponents.Text("total time")),
 		}
@@ -185,7 +241,8 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 	case "tracks":
 		type trackRow struct {
 			track   string
-			artists string
+			length  time.Duration
+			artists []string
 			plays   int
 			time    time.Duration
 		}
@@ -193,8 +250,13 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 		for _, play := range playbacks {
 			row := tracks[play.Track.GetId()]
 			row.track = play.Track.GetName()
-			if row.artists == "" {
-				row.artists = artistsString(play.Track.GetArtists())
+			row.length = play.Track.Duration.AsDuration()
+			if len(row.artists) == 0 {
+				var as []string
+				for _, a := range play.Track.GetArtists() {
+					as = append(as, a.GetName())
+				}
+				row.artists = as
 			}
 			row.plays += 1
 			row.time += play.PlaybackTime
@@ -211,9 +273,32 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		for _, row := range trackRows {
+			if opts.filter != nil {
+				var activation interpreter.Activation
+				activation, err = cel.ContextProtoVars(&earbugv5.QueryFilterContext{
+					Track:         &row.track,
+					Artists:       row.artists,
+					Plays:         ptr(int64(row.plays)),
+					TrackDuration: durationpb.New(row.length),
+				})
+				if err != nil {
+					continue
+				}
+				var res ref.Val
+				res, _, err = opts.filter.ContextEval(ctx, activation)
+				if err != nil {
+					continue
+				}
+				if keep, ok := res.Value().(bool); !ok {
+					continue
+				} else if !keep {
+					continue
+				}
+			}
 			tbody = append(tbody, html.Tr(
 				html.Td(gomponents.Text(row.track)),
-				html.Td(gomponents.Text(row.artists)),
+				html.Td(gomponents.Text(row.length.String())),
+				html.Td(gomponents.Text(strings.Join(row.artists, ", "))),
 				html.Td(gomponents.Textf("%d", row.plays)),
 				html.Td(gomponents.Text(row.time.String())),
 			))
@@ -221,6 +306,7 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 
 		thead = []gomponents.Node{
 			html.Th(gomponents.Text("track")),
+			html.Th(gomponents.Text("track length")),
 			html.Th(gomponents.Text("artists")),
 			html.Th(gomponents.Text("total plays")),
 			html.Th(gomponents.Text("total time")),
@@ -290,11 +376,12 @@ func form(o queryOptions) gomponents.Node {
 
 		html.FieldSet(
 			html.Legend(gomponents.Text("Filter with cel (optional)")),
-
-			html.Label(html.For("filter"),
-				gomponents.Text(
-					"cel query, context( track: string, artists: []string, play_time: Timestamp, track_duration: Duration )\n"+
-						`example: track.contains("0") && artists.exists(a, a.contains("Ado"))`)),
+			html.Ul(
+				html.Li(html.Em(gomponents.Text("playbacks context ")), gomponents.Text(`track: string, artists []string, play_time: timestamp, track_duration: duration`)),
+				html.Li(html.Em(gomponents.Text("artists context ")), gomponents.Text(`artist: string, tracks: int, plays: int`)),
+				html.Li(html.Em(gomponents.Text("tracks context ")), gomponents.Text(`track: string, artists []string, plays int, track_duration: duration`)),
+			),
+			html.Label(html.For("filter"), gomponents.Text(`cel query, example: track.contains("0") && artists.exists(a, a.contains("Ado"))`)),
 			html.Input(html.Type("text"), html.ID("filter"), html.Name("filter"), html.Value(o.filterS)),
 		),
 
@@ -313,7 +400,6 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 	defer span.End()
 
 	var plays []DisplayPlayback
-	var err error
 	a.store.RDo(ctx, func(s *earbugv5.Store) {
 		userData, ok := s.Users[o.userID]
 		if !ok {
@@ -333,40 +419,12 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 				artists = append(artists, a.GetName())
 			}
 
-			if o.filter != nil {
-				var activation interpreter.Activation
-				activation, err = cel.ContextProtoVars(&earbugv5.QueryFilterContext{
-					Track:         track.Name,
-					Artists:       artists,
-					PlayTime:      timestamppb.New(startTime),
-					TrackDuration: track.Duration,
-				})
-				if err != nil {
-					err = fmt.Errorf("prepare activation: %w", err)
-					return
-				}
-				var res ref.Val
-				res, _, err = o.filter.ContextEval(ctx, activation)
-				if err != nil {
-					err = fmt.Errorf("eval filter: %w", err)
-					return
-				}
-				if keep, ok := res.Value().(bool); !ok {
-					err = fmt.Errorf("filter didn't eval to bool: %T", res.Value())
-				} else if !keep {
-					continue
-				}
-			}
-
 			plays = append(plays, DisplayPlayback{
 				StartTime: startTime,
 				Track:     track,
 			})
 		}
 	})
-	if err != nil {
-		return nil, err
-	}
 
 	slices.SortFunc(plays, func(a, b DisplayPlayback) int {
 		return b.StartTime.Compare(a.StartTime)

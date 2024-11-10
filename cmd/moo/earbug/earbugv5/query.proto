@@ -6,8 +6,20 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
 message QueryFilterContext {
+  // by playback or track
   string track = 1;
   repeated string artists = 2;
+
+  // by playback
   google.protobuf.Timestamp play_time = 3;
+
+  // by playback or track
   google.protobuf.Duration track_duration = 4;
+
+  // by track or artist
+  int64 plays = 5;
+
+  // by artist
+  string artist = 6;
+  int64 tracks = 7;
 }
