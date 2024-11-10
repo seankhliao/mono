@@ -29,8 +29,8 @@ import (
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
 	tracenoop "go.opentelemetry.io/otel/trace/noop"
-	"go.seankhliao.com/mono/observability/jsonlog"
-	"go.seankhliao.com/mono/observability/multilog"
+	"go.seankhliao.com/mono/jsonlog"
+	"go.seankhliao.com/mono/multilog"
 )
 
 const defaultServiceConfig = `{"loadBalancingConfig":[{"round_robin":{}}]}`
