@@ -69,7 +69,12 @@ func (a *App) backfillAudioFeatures() time.Duration {
 		}
 		a.store.Do(ctx, func(s *earbugv5.Store) {
 			for _, feat := range trackFeatures {
-				track := s.Tracks[feat.ID.String()]
+				trackID := feat.ID.String()
+				track, ok := s.Tracks[trackID]
+				if !ok {
+					a.o.L.LogAttrs(ctx, slog.LevelWarn, "got audio features for unknown track", slog.Any("features", feat))
+					continue
+				}
 				track.Features = &earbugv5.AudioFeatures{
 					Acousticness:     ptr(feat.Acousticness),
 					Danceability:     ptr(feat.Danceability),
