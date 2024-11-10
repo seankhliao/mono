@@ -39,7 +39,11 @@ _Western Rise Evolution Chino_
 slightly stiff,seams came apart after a few months.
 
 _Ministry of Supply Men's Velocity Dress Pant_
-once again very comfy.
+once again very comfy, 
+has a soft cotton(?) feel that makes it feel a bit more delicate.
+
+_lululemon ABC Slim-Fit Trouser 30"L Warpstreme_
+decently comfy, feels stiffer than the MoS Velocity.
 
 #### Socks
 
@@ -85,3 +89,10 @@ go to.
 _Uniqlo Airism Mesh Ultra Seamless Boxer Briefs_
 they feel really smooth...
 but less comfortable around the crotch.
+
+#### Pillows
+
+_NightComfort Rebounce_
+said to be from the same manufacturer as the ones Premier Inn uses?
+Switching to this eliminated most of my back pain on my current bed
+(my old pillows were fine on my old bed...).
