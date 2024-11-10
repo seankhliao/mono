@@ -98,5 +98,6 @@ func Debug(a *App, r yrun.HTTPRegistrar) {
 
 func StartTasks(a *App, ctx context.Context, start func(func() error)) {
 	start(a.Earbug.Update)
+	start(a.Earbug.FillAudioFeatures)
 	start(a.Auth.CleanSessions)
 }

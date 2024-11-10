@@ -31,6 +31,25 @@ message Track {
   string name = 4;
   google.protobuf.Duration duration = 5;
   repeated Artist artists = 6;
+
+  // audio features backfill
+  AudioFeatures features = 7;
+}
+
+// https://developer.spotify.com/documentation/web-api/reference/get-several-audio-features
+message AudioFeatures {
+  float acousticness = 1;
+  float danceability = 2;
+  float energy = 3;
+  float instrumentalness = 4;
+  int32 key = 5;
+  float liveness =6;
+  float loudness = 7;
+  int32 mode = 8;
+  float speechiness = 9;
+  float tempo = 10;
+  int32 time_signature = 11;
+  float valence = 12;
 }
 
 message Artist {
