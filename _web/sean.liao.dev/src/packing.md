@@ -49,8 +49,6 @@
   - [ ] Lip Balm
   - [ ] Hair Band
   - [ ] Hair Clip
-  - [ ] Purple Shampoo
-  - [ ] Hair Conditioner
 
 <script>
 document.querySelectorAll("input[type=checkbox]").forEach(e => e.disabled = false)

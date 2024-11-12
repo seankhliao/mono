@@ -7,12 +7,10 @@
 I might not recall when I started listening to each,
 but these are artists that have left a lasting impression on me.
 
+- Ado
 - Against the Current
 - Ari Abdul
-- Ashnikko
 - Au/Ra
-- Bea Miller
-- Bella Poarch
 - Billie Eilish
 - Blackbriar
 - bludnymph
@@ -20,7 +18,6 @@ but these are artists that have left a lasting impression on me.
 - Cannons
 - Chandler Leighton
 - Chloe Adams
-- Cyan Kicks
 - Daya
 - DeathByRomy
 - Dua Lipa
@@ -30,16 +27,16 @@ but these are artists that have left a lasting impression on me.
 - Halflives
 - Icon For Hire
 - Isabel LaRosa
-- kenzie
 - Maggie Lindemann
 - Maisie Peters
 - MOTHICA
-- Neoni
 - Nessa Barrett
 - Poppy
 - PVRIS
-- Sasha Alex Sloan
+- renforshort
 - Tate McRae
-- tiLLie
 - UPSAHL
 - YOASOBI
+
+See also my the artists I've listened to the most on
+[earbug.liao.dev](https://earbug.liao.dev/?get=artists&sort=plays&from=2020-01-01&to=2029-12-31)
