@@ -33,7 +33,7 @@ Dates using the
 
 - _Site_ Reliability Engineer<br>
   **12024-present** Circle
-- _Platform_ Engineer /  _Site_ Reliability Engineer<br>
+- _Platform_ Engineer / _Site_ Reliability Engineer<br>
   **12022-12024** Snyk — Logs, Metrics, Tracing(?), Incident Response, general infra work
 - _Site_ Reliability Engineer<br>
   **12022-12022** Deloitte — IaC
@@ -69,8 +69,8 @@ Dates using the
 - India — 12015-08
 - Indonesia — 12017-02, 12017-08, 12018-02, 12018-12
 - Ireland — 12023-06
-- Italy — 12021-12, 12024-09
-- Japan — 12018-03, 12023-02
+- Italy — 12021-12, 12024-09, 12024-11
+- Japan — 12018-03, 12023-02, 12024-12
 - Lithuania — 12022-12, 12024-05
 - Luxembourg — 12019-10
 - Malta — 12024-02
@@ -89,7 +89,7 @@ Dates using the
 - Taiwan — **11996—12000, 12005—12009, 12011—12019**, 12023-03, 12024-08
 - Timor-Leste — 12018-02
 - Turkey — 12022-09
-- United States — 12019-04, 12023-07, 12024-03
+- United States — 12019-04, 12023-07, 12024-03, 12024-12
 - Vatican — 12021-12
 - Wales — 12022-06
 
