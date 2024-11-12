@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"sync"
 	"time"
-	"unicode/utf8"
 
 	"github.com/go-json-experiment/json"
+	"github.com/go-json-experiment/json/jsontext"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -20,9 +20,6 @@ const (
 	// magic numbers to reduce number of slice resizes
 	// slog holds 5 attrs
 	stateBufferSize = 1024
-
-	// used by appendString
-	hex = "0123456789abcdef"
 )
 
 var (
@@ -39,106 +36,6 @@ var (
 			s := make([]byte, 0, stateBufferSize)
 			return &s
 		},
-	}
-
-	// used by appendString
-	safeSet = [utf8.RuneSelf]bool{
-		' ':      true,
-		'!':      true,
-		'"':      false,
-		'#':      true,
-		'$':      true,
-		'%':      true,
-		'&':      true,
-		'\'':     true,
-		'(':      true,
-		')':      true,
-		'*':      true,
-		'+':      true,
-		',':      true,
-		'-':      true,
-		'.':      true,
-		'/':      true,
-		'0':      true,
-		'1':      true,
-		'2':      true,
-		'3':      true,
-		'4':      true,
-		'5':      true,
-		'6':      true,
-		'7':      true,
-		'8':      true,
-		'9':      true,
-		':':      true,
-		';':      true,
-		'<':      true,
-		'=':      true,
-		'>':      true,
-		'?':      true,
-		'@':      true,
-		'A':      true,
-		'B':      true,
-		'C':      true,
-		'D':      true,
-		'E':      true,
-		'F':      true,
-		'G':      true,
-		'H':      true,
-		'I':      true,
-		'J':      true,
-		'K':      true,
-		'L':      true,
-		'M':      true,
-		'N':      true,
-		'O':      true,
-		'P':      true,
-		'Q':      true,
-		'R':      true,
-		'S':      true,
-		'T':      true,
-		'U':      true,
-		'V':      true,
-		'W':      true,
-		'X':      true,
-		'Y':      true,
-		'Z':      true,
-		'[':      true,
-		'\\':     false,
-		']':      true,
-		'^':      true,
-		'_':      true,
-		'`':      true,
-		'a':      true,
-		'b':      true,
-		'c':      true,
-		'd':      true,
-		'e':      true,
-		'f':      true,
-		'g':      true,
-		'h':      true,
-		'i':      true,
-		'j':      true,
-		'k':      true,
-		'l':      true,
-		'm':      true,
-		'n':      true,
-		'o':      true,
-		'p':      true,
-		'q':      true,
-		'r':      true,
-		's':      true,
-		't':      true,
-		'u':      true,
-		'v':      true,
-		'w':      true,
-		'x':      true,
-		'y':      true,
-		'z':      true,
-		'{':      true,
-		'|':      true,
-		'}':      true,
-		'~':      true,
-		'\u007f': true,
 	}
 )
 
@@ -244,7 +141,7 @@ func (h *handler) Handle(ctx context.Context, r slog.Record) error {
 
 	// message
 	buf = append(buf, `,"message":`...)
-	buf = appendString(buf, r.Message)
+	buf, _ = jsontext.AppendQuote(buf, r.Message)
 
 	// attrs
 	if len(state.buf) > 0 {
@@ -287,7 +184,7 @@ func (h *state) clone(buf []byte) *state {
 func (h *state) openGroup(n string) {
 	h.groupOpenIdx = append(h.groupOpenIdx, len(h.buf)) // record rollback point
 	h.buf = append(h.buf, h.separator...)               // maybe need a separator
-	h.buf = appendString(h.buf, n)                      // key name
+	h.buf, _ = jsontext.AppendQuote(h.buf, n)           // key name
 	h.buf = append(h.buf, []byte(":{")...)              // open group
 	h.separator = nil                                   // no separator for first attr
 }
@@ -335,23 +232,23 @@ func (h *state) attr(attr slog.Attr) {
 
 	h.buf = append(h.buf, h.separator...)
 	h.separator = globalSep
-	h.buf = appendString(h.buf, attr.Key)
+	h.buf, _ = jsontext.AppendQuote(h.buf, attr.Key)
 	h.buf = append(h.buf, []byte(":")...)
 	switch val.Kind() {
 	case slog.KindAny:
 		switch v := val.Any().(type) {
 		case json.MarshalerV1:
 			b, _ := v.MarshalJSON()
-			h.buf = appendString(h.buf, b)
+			h.buf, _ = jsontext.AppendQuote(h.buf, b)
 		case encoding.TextMarshaler:
 			b, _ := v.MarshalText()
-			h.buf = appendString(h.buf, b)
+			h.buf, _ = jsontext.AppendQuote(h.buf, b)
 		case fmt.Stringer:
 			s := v.String()
-			h.buf = appendString(h.buf, s)
+			h.buf, _ = jsontext.AppendQuote(h.buf, s)
 		case error:
 			s := v.Error()
-			h.buf = appendString(h.buf, s)
+			h.buf, _ = jsontext.AppendQuote(h.buf, s)
 		default:
 			b, _ := json.Marshal(val.Any())
 			h.buf = append(h.buf, b...)
@@ -367,7 +264,7 @@ func (h *state) attr(attr slog.Attr) {
 	case slog.KindInt64:
 		h.buf = strconv.AppendInt(h.buf, val.Int64(), 10)
 	case slog.KindString:
-		h.buf = appendString(h.buf, val.String())
+		h.buf, _ = jsontext.AppendQuote(h.buf, val.String())
 	case slog.KindTime:
 		h.buf = append(h.buf, `"`...)
 		h.buf = val.Time().AppendFormat(h.buf, time.RFC3339Nano)
@@ -378,78 +275,4 @@ func (h *state) attr(attr slog.Attr) {
 		panic("unhandled kind" + val.Kind().String())
 	}
 	h.confirmedLast = len(h.buf)
-}
-
-// json string encoder copied from encoding/json
-
-func appendString[Bytes []byte | string](dst []byte, src Bytes) []byte {
-	dst = append(dst, '"')
-	start := 0
-	for i := 0; i < len(src); {
-		if b := src[i]; b < utf8.RuneSelf {
-			if safeSet[b] {
-				i++
-				continue
-			}
-			dst = append(dst, src[start:i]...)
-			switch b {
-			case '\\', '"':
-				dst = append(dst, '\\', b)
-			case '\b':
-				dst = append(dst, '\\', 'b')
-			case '\f':
-				dst = append(dst, '\\', 'f')
-			case '\n':
-				dst = append(dst, '\\', 'n')
-			case '\r':
-				dst = append(dst, '\\', 'r')
-			case '\t':
-				dst = append(dst, '\\', 't')
-			default:
-				// This encodes bytes < 0x20 except for \b, \f, \n, \r and \t.
-				// If escapeHTML is set, it also escapes <, >, and &
-				// because they can lead to security holes when
-				// user-controlled strings are rendered into JSON
-				// and served to some browsers.
-				dst = append(dst, '\\', 'u', '0', '0', hex[b>>4], hex[b&0xF])
-			}
-			i++
-			start = i
-			continue
-		}
-		// TODO(https://go.dev/issue/56948): Use generic utf8 functionality.
-		// For now, cast only a small portion of byte slices to a string
-		// so that it can be stack allocated. This slows down []byte slightly
-		// due to the extra copy, but keeps string performance roughly the same.
-		n := len(src) - i
-		if n > utf8.UTFMax {
-			n = utf8.UTFMax
-		}
-		c, size := utf8.DecodeRuneInString(string(src[i : i+n]))
-		if c == utf8.RuneError && size == 1 {
-			dst = append(dst, src[start:i]...)
-			dst = append(dst, `\ufffd`...)
-			i += size
-			start = i
-			continue
-		}
-		// U+2028 is LINE SEPARATOR.
-		// U+2029 is PARAGRAPH SEPARATOR.
-		// They are both technically valid characters in JSON strings,
-		// but don't work in JSONP, which has to be evaluated as JavaScript,
-		// and can lead to security holes there. It is valid JSON to
-		// escape them, so we do so unconditionally.
-		// See https://en.wikipedia.org/wiki/JSON#Safety.
-		if c == '\u2028' || c == '\u2029' {
-			dst = append(dst, src[start:i]...)
-			dst = append(dst, '\\', 'u', '2', '0', '2', hex[c&0xF])
-			i += size
-			start = i
-			continue
-		}
-		i += size
-	}
-	dst = append(dst, src[start:]...)
-	dst = append(dst, '"')
-	return dst
 }
