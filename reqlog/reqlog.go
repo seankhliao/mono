@@ -1,6 +1,7 @@
 package reqlog
 
 import (
+	"fmt"
 	"log/slog"
 	"net/http"
 
@@ -8,6 +9,7 @@ import (
 )
 
 func Register(a *App, r yrun.HTTPRegistrar) {
+	r.Pattern("GET", a.config.Host, "/robots.txt", a.robots)
 	r.Pattern("", a.config.Host, "/", a.ServeHTTP)
 }
 
@@ -28,6 +30,10 @@ func New(c Config, o yrun.O11y) (*App, error) {
 }
 
 func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Set("x-robots-tag", "none")
+	rw.Header().Set("content-type", "text/plain")
+	fmt.Fprintln(rw, "ok")
+
 	a.o.L.LogAttrs(r.Context(), slog.LevelInfo, "received request",
 		slog.String("http.method", r.Method),
 		slog.String("http.proto", r.Proto),
@@ -38,4 +44,13 @@ func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		slog.Any("http.headers", r.Header),
 		slog.Any("http.trailers", r.Trailer),
 	)
+}
+
+const robotsTxt = `
+User-agent: *
+Disallow: /
+`
+
+func (a *App) robots(rw http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(rw, robotsTxt)
 }

@@ -17,6 +17,11 @@ import (
 	"golang.org/x/oauth2"
 )
 
+func Register(a *App, r yrun.HTTPRegistrar) {
+	r.Pattern("GET", a.host, "/robots.txt", a.robots)
+	r.Pattern("POST", a.host, "/webhook", a.ServeHTTP)
+}
+
 type Config struct {
 	Host          string
 	AppID         int64
@@ -40,10 +45,6 @@ func New(c Config, o yrun.O11y) (*App, error) {
 		privateKey:    c.PrivateKey + "\n",
 		appID:         c.AppID,
 	}, nil
-}
-
-func Register(a *App, r yrun.HTTPRegistrar) {
-	r.Pattern("POST", a.host, "/webhook", a.ServeHTTP)
 }
 
 var defaultConfig = map[string]github.Repository{
@@ -240,4 +241,13 @@ func (a *App) setDefaults(ctx context.Context, installID int64, owner, repo stri
 	}
 
 	return nil
+}
+
+const robotsTxt = `
+User-agent: *
+Disallow: /
+`
+
+func (a *App) robots(rw http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(rw, robotsTxt)
 }
