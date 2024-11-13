@@ -236,12 +236,20 @@ func (h *state) attr(attr slog.Attr) {
 	h.buf = append(h.buf, []byte(":")...)
 	switch val.Kind() {
 	case slog.KindAny:
+		var err error
+		var b []byte
 		switch v := val.Any().(type) {
 		case json.MarshalerV1:
-			b, _ := v.MarshalJSON()
-			h.buf, _ = jsontext.AppendQuote(h.buf, b)
+			b, err = v.MarshalJSON()
+			h.buf = append(h.buf, b...)
+		case json.MarshalerV2:
+			// no jsontext.Encoder available
+			b, err = json.Marshal(v)
+			h.buf = append(h.buf, b...)
+		case encoding.TextAppender:
+			h.buf, err = v.AppendText(h.buf)
 		case encoding.TextMarshaler:
-			b, _ := v.MarshalText()
+			b, err = v.MarshalText()
 			h.buf, _ = jsontext.AppendQuote(h.buf, b)
 		case fmt.Stringer:
 			s := v.String()
@@ -250,8 +258,12 @@ func (h *state) attr(attr slog.Attr) {
 			s := v.Error()
 			h.buf, _ = jsontext.AppendQuote(h.buf, s)
 		default:
-			b, _ := json.Marshal(val.Any())
+			b, err = json.Marshal(v)
 			h.buf = append(h.buf, b...)
+		}
+		if err != nil {
+			// best effort representation
+			h.buf = fmt.Appendf(h.buf, "%+v", val.Any())
 		}
 	case slog.KindBool:
 		h.buf = strconv.AppendBool(h.buf, val.Bool())
