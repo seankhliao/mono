@@ -2,8 +2,6 @@ package auth
 
 import (
 	"context"
-	"crypto/rand"
-	"encoding/base32"
 	"errors"
 	"fmt"
 	"net/http"
@@ -66,12 +64,9 @@ func (a *App) AuthN(next http.Handler) http.Handler {
 					attribute.Bool("session.new", true),
 				)
 				// start a new anonymous session
-				rawToken := make([]byte, 16)
-				rand.Read(rawToken)
-				token := []byte("moox_")
-				token = base32.StdEncoding.AppendEncode(token, rawToken)
+				token := genToken("moox_")
 				info = &authv1.TokenInfo{
-					SessionId: ptr(string(token)),
+					SessionId: &token,
 					Created:   timestamppb.Now(),
 				}
 

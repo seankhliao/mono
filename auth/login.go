@@ -2,9 +2,7 @@ package auth
 
 import (
 	"context"
-	"crypto/rand"
 	_ "embed"
-	"encoding/base32"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -94,13 +92,9 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 	// ok
 
 	err = a.o.Region(ctx, "prepare new session", func(ctx context.Context, span trace.Span) error {
-		// generate a new named token
-		rawToken := make([]byte, 16)
-		rand.Read(rawToken)
-		token := []byte("moou_")
-		token = base32.StdEncoding.AppendEncode(token, rawToken)
+		token := genToken("moou_")
 		tokenInfo := &authv1.TokenInfo{
-			SessionId: ptr(string(token)),
+			SessionId: &token,
 			Created:   timestamppb.Now(),
 			UserId:    user.u.UserId,
 		}

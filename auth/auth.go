@@ -115,13 +115,9 @@ func (a *App) adminToken(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "generate admin token")
 	defer span.End()
 
-	rawToken := make([]byte, 16)
-	rand.Read(rawToken)
-	token := []byte("mooa_")
-	token = base32.StdEncoding.AppendEncode(token, rawToken)
-
+	token := genToken("mooa_")
 	tokenInfo := &authv1.TokenInfo{
-		SessionId: ptr(string(token)),
+		SessionId: &token,
 		Created:   timestamppb.Now(),
 		UserId:    ptr[int64](-1),
 	}
@@ -130,7 +126,13 @@ func (a *App) adminToken(rw http.ResponseWriter, r *http.Request) {
 		s.Sessions[tokenInfo.GetSessionId()] = tokenInfo
 	})
 
-	rw.Write(token)
+	rw.Write([]byte(token))
+}
+
+func genToken(prefix string) string {
+	raw := make([]byte, 32)
+	rand.Read(raw)
+	return prefix + base32.StdEncoding.WithPadding(base32.NoPadding).EncodeToString(raw)
 }
 
 func ptr[T any](v T) *T {
