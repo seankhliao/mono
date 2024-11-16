@@ -1,7 +1,9 @@
 package deploy
 
 k8s: "gateway.networking.k8s.io": "v1": "HTTPRoute": "gerrit": "gerrit": "spec": {
-	hostnames: ["gerrit.liao.dev"]
+	hostnames: [
+		"gerrit.liao.dev",
+	]
 	parentRefs: [{
 		name:      "http-gateway"
 		namespace: "envoy-gateway-system"
