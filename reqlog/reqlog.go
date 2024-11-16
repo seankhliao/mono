@@ -52,5 +52,5 @@ Disallow: /
 `
 
 func (a *App) robots(rw http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(rw, robotsTxt)
+	fmt.Fprint(rw, robotsTxt)
 }

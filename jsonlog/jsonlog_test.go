@@ -37,12 +37,14 @@ func TestHandlerSlogtest(t *testing.T) {
 				t.Errorf("unmarshal log: %v\n%v", err, sc.Text())
 				break
 			}
+			result["msg"] = result["message"]
+			delete(result, "message")
 			results = append(results, result)
 		}
 		return results
 	})
 	if err != nil {
-		t.Errorf("testhandler: %v", err)
+		t.Errorf("testhandler: \n%v", err)
 	}
 }
 
