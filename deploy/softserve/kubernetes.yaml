@@ -23,6 +23,28 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/softserve/*.cue"
 apiVersion: v1
 ---
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      appProtocol: http
+      targetPort: git-http
+  selector:
+    app.kubernetes.io/name: softserve
+kind: Service
+apiVersion: v1
+metadata:
+  name: softserve
+  namespace: softserve
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/softserve/*.cue"
+  labels:
+    app.kubernetes.io/part-of: softserve
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: softserve
+---
 kind: Deployment
 metadata:
   name: softserve
@@ -67,3 +89,25 @@ spec:
     type: Recreate
   revisionHistoryLimit: 1
 apiVersion: apps/v1
+---
+kind: HTTPRoute
+spec:
+  hostnames:
+    - softserve.liao.dev
+  parentRefs:
+    - name: http-gateway
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - name: softserve
+          port: 80
+metadata:
+  name: softserve
+  namespace: softserve
+  labels:
+    app.kubernetes.io/part-of: softserve
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: softserve
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/softserve/*.cue"
+apiVersion: gateway.networking.k8s.io/v1
