@@ -79,7 +79,8 @@ k8s: {
 		ClusterIssuer: [kns=""]: [kn=string]: certmanagerv1.#ClusterIssuer
 	}
 	"gateway.envoyproxy.io": v1alpha1: {
-		SecurityPolicy: [kns=string]: [kn=string]: envoygatewayv1alpha1.#SecurityPolicy
+		ClientTrafficPolicy: [kns=string]: [kn=string]: envoygatewayv1alpha1.#ClientTrafficPolicy
+		SecurityPolicy: [kns=string]: [kn=string]:      envoygatewayv1alpha1.#SecurityPolicy
 	}
 	"gateway.networking.k8s.io": {
 		v1alpha2: {

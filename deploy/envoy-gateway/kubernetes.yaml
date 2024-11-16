@@ -33879,6 +33879,76 @@ metadata:
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
 apiVersion: cert-manager.io/v1
 ---
+kind: ClientTrafficPolicy
+spec:
+  http3: {}
+  path:
+    escapedSlashesAction: KeepUnchanged
+    disableMergeSlashes: true
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: http-gateway
+metadata:
+  name: http-gateway
+  namespace: envoy-gateway-system
+  labels:
+    app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: envoy-gateway
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
+apiVersion: gateway.envoyproxy.io/v1alpha1
+---
+kind: EnvoyProxy
+apiVersion: gateway.envoyproxy.io/v1alpha1
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: ClusterIP
+      envoyDeployment:
+        strategy:
+          type: Recreate
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              template:
+                spec:
+                  containers:
+                    - name: envoy
+                      ports:
+                        - containerPort: 10080
+                          hostPort: 80
+                        - containerPort: 10443
+                          protocol: TCP
+                          hostPort: 443
+  telemetry:
+    tracing:
+      samplingRate: 100
+      provider:
+        type: OpenTelemetry
+        host: otelcol.opentelemetry.svc
+        port: 4317
+    metrics:
+      enableVirtualHostStats: true
+      sinks:
+        - type: OpenTelemetry
+          openTelemetry:
+            host: otelcol.opentelemetry.svc
+            port: 4317
+metadata:
+  name: http-gateway
+  namespace: envoy-gateway-system
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
+  labels:
+    app.kubernetes.io/part-of: envoy-gateway
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: envoy-gateway
+---
 kind: Gateway
 spec:
   gatewayClassName: http-gateway
@@ -34174,71 +34244,3 @@ rules:
     verbs:
       - update
 apiVersion: rbac.authorization.k8s.io/v1
----
-spec:
-  http3: {}
-  targetRef:
-    group: gateway.networking.k8s.io
-    kind: Gateway
-    name: http-gateway
-    namespace: envoy-gateway-system
-kind: ClientTrafficPolicy
-apiVersion: gateway.envoyproxy.io/v1alpha1
-metadata:
-  name: http-gateway
-  namespace: envoy-gateway-system
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
-  labels:
-    app.kubernetes.io/part-of: envoy-gateway
-    app.kubernetes.io/managed-by: kpt
-    app.kubernetes.io/name: envoy-gateway
----
-kind: EnvoyProxy
-apiVersion: gateway.envoyproxy.io/v1alpha1
-spec:
-  provider:
-    type: Kubernetes
-    kubernetes:
-      envoyService:
-        type: ClusterIP
-      envoyDeployment:
-        strategy:
-          type: Recreate
-        patch:
-          type: StrategicMerge
-          value:
-            spec:
-              template:
-                spec:
-                  containers:
-                    - name: envoy
-                      ports:
-                        - containerPort: 10080
-                          hostPort: 80
-                        - containerPort: 10443
-                          protocol: TCP
-                          hostPort: 443
-  telemetry:
-    tracing:
-      samplingRate: 100
-      provider:
-        type: OpenTelemetry
-        host: otelcol.opentelemetry.svc
-        port: 4317
-    metrics:
-      enableVirtualHostStats: true
-      sinks:
-        - type: OpenTelemetry
-          openTelemetry:
-            host: otelcol.opentelemetry.svc
-            port: 4317
-metadata:
-  name: http-gateway
-  namespace: envoy-gateway-system
-  annotations:
-    config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
-  labels:
-    app.kubernetes.io/part-of: envoy-gateway
-    app.kubernetes.io/managed-by: kpt
-    app.kubernetes.io/name: envoy-gateway

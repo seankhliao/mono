@@ -65,7 +65,7 @@ spec:
         app.kubernetes.io/name: gerrit
     spec:
       initContainers:
-        - image: index.docker.io/gerritcodereview/gerrit:3.11.0-rc3-ubuntu24
+        - image: index.docker.io/gerritcodereview/gerrit:3.10.2-ubuntu22
           name: gerrit-init
           command:
             - sh
@@ -140,6 +140,9 @@ spec:
               name: data
             - mountPath: /var/gerrit/logs
               subPath: logs
+              name: data
+            - mountPath: /var/gerrit/plugins
+              subPath: plugins
               name: data
       volumes:
         - hostPath:
