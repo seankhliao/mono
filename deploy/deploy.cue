@@ -20,6 +20,7 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	schedulingv1 "k8s.io/api/scheduling/v1"
 	storagev1 "k8s.io/api/storage/v1"
+	envoygatewayv1alpha1 "github.com/envoyproxy/gateway/api/v1alpha1"
 )
 
 k8s: [kgroup=string]: [kversion=string]: [kkind=string]: [kns=string]: [kn=string]: {
@@ -76,6 +77,9 @@ k8s: {
 		Issuer: [kns=string]: [kn=string]:      certmanagerv1.#Issuer
 
 		ClusterIssuer: [kns=""]: [kn=string]: certmanagerv1.#ClusterIssuer
+	}
+	"gateway.envoyproxy.io": v1alpha1: {
+		SecurityPolicy: [kns=string]: [kn=string]: envoygatewayv1alpha1.#SecurityPolicy
 	}
 	"gateway.networking.k8s.io": {
 		v1alpha2: {

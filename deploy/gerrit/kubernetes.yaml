@@ -1,0 +1,144 @@
+kind: ConfigMap
+data:
+  creds.json: '{"universe_domain":"googleapis.com","type":"external_account","audience":"//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami","subject_token_type":"urn:ietf:params:oauth:token-type:jwt","token_url":"https://sts.googleapis.com/v1/token","credential_source":{"file":"/var/run/service-account/token","format":{"type":"text"}},"token_info_url":"https://sts.googleapis.com/v1/introspect"}'
+metadata:
+  name: gcp
+  namespace: gerrit
+  labels:
+    app.kubernetes.io/part-of: gerrit
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: gerrit
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/gerrit/*.cue"
+apiVersion: v1
+---
+kind: Namespace
+metadata:
+  name: gerrit
+  labels:
+    app.kubernetes.io/part-of: gerrit
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: gerrit
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/gerrit/*.cue"
+apiVersion: v1
+---
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      appProtocol: http
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: gerrit
+kind: Service
+apiVersion: v1
+metadata:
+  name: gerrit
+  namespace: gerrit
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/gerrit/*.cue"
+  labels:
+    app.kubernetes.io/part-of: gerrit
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: gerrit
+---
+kind: Deployment
+metadata:
+  name: gerrit
+  namespace: gerrit
+  labels:
+    app.kubernetes.io/part-of: gerrit
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: gerrit
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/gerrit/*.cue"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gerrit
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: gerrit
+    spec:
+      containers:
+        - image: index.docker.io/gerritcodereview/gerrit:3.11.0-rc3-ubuntu24
+          name: gerrit
+          env:
+            - name: CANONICAL_WEB_URL
+              value: https://gerrit.liao.dev/
+          ports:
+            - containerPort: 29418
+              name: git-ssh
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - mountPath: /var/gerrit/cache
+              subPath: cache
+              name: data
+            - mountPath: /var/gerrit/db
+              subPath: db
+              name: data
+            - mountPath: /var/gerrit/etc
+              subPath: etc
+              name: data
+            - mountPath: /var/gerrit/git
+              subPath: git
+              name: data
+            - mountPath: /var/gerrit/index
+              subPath: index
+              name: data
+      volumes:
+        - hostPath:
+            path: /opt/volumes/gerrit
+          name: data
+      enableServiceLinks: false
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 1
+apiVersion: apps/v1
+---
+kind: SecurityPolicy
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: gerrit
+  basicAuth:
+    users:
+      name: basic-auth
+metadata:
+  name: gerrit
+  namespace: gerrit
+  labels:
+    app.kubernetes.io/part-of: gerrit
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: gerrit
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/gerrit/*.cue"
+apiVersion: gateway.envoyproxy.io/v1alpha1
+---
+kind: HTTPRoute
+spec:
+  hostnames:
+    - gerrit.liao.dev
+  parentRefs:
+    - name: http-gateway
+      namespace: envoy-gateway-system
+  rules:
+    - backendRefs:
+        - name: gerrit
+          port: 80
+metadata:
+  name: gerrit
+  namespace: gerrit
+  labels:
+    app.kubernetes.io/part-of: gerrit
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: gerrit
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/gerrit/*.cue"
+apiVersion: gateway.networking.k8s.io/v1

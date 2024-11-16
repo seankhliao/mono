@@ -31,8 +31,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // GatewaySpec defines the desired state of Gateway.
 //
 // Not all possible combinations of options specified in the Spec are
-// valid. Some invalid configurations can be caught synchronously via a
-// webhook, but there are many cases that will require asynchronous
+// valid. Some invalid configurations can be caught synchronously via CRD
+// validation, but there are many cases that will require asynchronous
 // signaling via the GatewayStatus block.
 #GatewaySpec: {
 	// GatewayClassName used for this Gateway. This is the name of a
@@ -161,8 +161,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +listMapKey=name
 	// +kubebuilder:validation:MinItems=1
 	// +kubebuilder:validation:MaxItems=64
-	// +kubebuilder:validation:XValidation:message="tls must be specified for protocols ['HTTPS', 'TLS']",rule="self.all(l, l.protocol in ['HTTPS', 'TLS'] ? has(l.tls) : true)"
 	// +kubebuilder:validation:XValidation:message="tls must not be specified for protocols ['HTTP', 'TCP', 'UDP']",rule="self.all(l, l.protocol in ['HTTP', 'TCP', 'UDP'] ? !has(l.tls) : true)"
+	// +kubebuilder:validation:XValidation:message="tls mode must be Terminate for protocol HTTPS",rule="self.all(l, (l.protocol == 'HTTPS' && has(l.tls)) ? (l.tls.mode == '' || l.tls.mode == 'Terminate') : true)"
 	// +kubebuilder:validation:XValidation:message="hostname must not be specified for protocols ['TCP', 'UDP']",rule="self.all(l, l.protocol in ['TCP', 'UDP']  ? (!has(l.hostname) || l.hostname == '') : true)"
 	// +kubebuilder:validation:XValidation:message="Listener name must be unique within the Gateway",rule="self.all(l1, self.exists_one(l2, l1.name == l2.name))"
 	// +kubebuilder:validation:XValidation:message="Combination of port, protocol and hostname must be unique for each listener",rule="self.all(l1, self.exists_one(l2, l1.port == l2.port && l1.protocol == l2.protocol && (has(l1.hostname) && has(l2.hostname) ? l1.hostname == l2.hostname : !has(l1.hostname) && !has(l2.hostname))))"
@@ -198,11 +198,19 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// Infrastructure defines infrastructure level attributes about this Gateway instance.
 	//
-	// Support: Core
+	// Support: Extended
 	//
-	// <gateway:experimental>
 	// +optional
 	infrastructure?: null | #GatewayInfrastructure @go(Infrastructure,*GatewayInfrastructure)
+
+	// BackendTLS configures TLS settings for when this Gateway is connecting to
+	// backends with TLS.
+	//
+	// Support: Core
+	//
+	// +optional
+	// <gateway:experimental>
+	backendTLS?: null | #GatewayBackendTLS @go(BackendTLS,*GatewayBackendTLS)
 }
 
 // Listener embodies the concept of a logical endpoint where a Gateway accepts
@@ -325,7 +333,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 // +kubebuilder:validation:MinLength=1
 // +kubebuilder:validation:MaxLength=255
-// +kubebuilder:validation:Pattern=`^[a-zA-Z0-9]([-a-zSA-Z0-9]*[a-zA-Z0-9])?$|[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\/[A-Za-z0-9]+$`
+// +kubebuilder:validation:Pattern=`^[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?$|[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\/[A-Za-z0-9]+$`
 #ProtocolType: string // #enumProtocolType
 
 #enumProtocolType:
@@ -353,20 +361,44 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Accepts UDP packets.
 #UDPProtocolType: #ProtocolType & "UDP"
 
+// GatewayBackendTLS describes backend TLS configuration for gateway.
+#GatewayBackendTLS: {
+	// ClientCertificateRef is a reference to an object that contains a Client
+	// Certificate and the associated private key.
+	//
+	// References to a resource in different namespace are invalid UNLESS there
+	// is a ReferenceGrant in the target namespace that allows the certificate
+	// to be attached. If a ReferenceGrant does not allow this reference, the
+	// "ResolvedRefs" condition MUST be set to False for this listener with the
+	// "RefNotPermitted" reason.
+	//
+	// ClientCertificateRef can reference to standard Kubernetes resources, i.e.
+	// Secret, or implementation-specific custom resources.
+	//
+	// This setting can be overridden on the service level by use of BackendTLSPolicy.
+	//
+	// Support: Core
+	//
+	// +optional
+	// <gateway:experimental>
+	clientCertificateRef?: null | #SecretObjectReference @go(ClientCertificateRef,*SecretObjectReference)
+}
+
 // GatewayTLSConfig describes a TLS configuration.
 //
-// +kubebuilder:validation:XValidation:message="certificateRefs must be specified when TLSModeType is Terminate",rule="self.mode == 'Terminate' ? size(self.certificateRefs) > 0 : true"
+// +kubebuilder:validation:XValidation:message="certificateRefs or options must be specified when mode is Terminate",rule="self.mode == 'Terminate' ? size(self.certificateRefs) > 0 || size(self.options) > 0 : true"
 #GatewayTLSConfig: {
 	// Mode defines the TLS behavior for the TLS session initiated by the client.
 	// There are two possible modes:
 	//
-	// - Terminate: The TLS session between the downstream client
-	//   and the Gateway is terminated at the Gateway. This mode requires
-	//   certificateRefs to be set and contain at least one element.
+	// - Terminate: The TLS session between the downstream client and the
+	//   Gateway is terminated at the Gateway. This mode requires certificates
+	//   to be specified in some way, such as populating the certificateRefs
+	//   field.
 	// - Passthrough: The TLS session is NOT terminated by the Gateway. This
 	//   implies that the Gateway can't decipher the TLS stream except for
-	//   the ClientHello message of the TLS protocol.
-	//   CertificateRefs field is ignored in this mode.
+	//   the ClientHello message of the TLS protocol. The certificateRefs field
+	//   is ignored in this mode.
 	//
 	// Support: Core
 	//
@@ -403,6 +435,18 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// +kubebuilder:validation:MaxItems=64
 	certificateRefs?: [...#SecretObjectReference] @go(CertificateRefs,[]SecretObjectReference)
 
+	// FrontendValidation holds configuration information for validating the frontend (client).
+	// Setting this field will require clients to send a client certificate
+	// required for validation during the TLS handshake. In browsers this may result in a dialog appearing
+	// that requests a user to specify the client certificate.
+	// The maximum depth of a certificate chain accepted in verification is Implementation specific.
+	//
+	// Support: Extended
+	//
+	// +optional
+	// <gateway:experimental>
+	frontendValidation?: null | #FrontendTLSValidation @go(FrontendValidation,*FrontendTLSValidation)
+
 	// Options are a list of key/value pairs to enable extended TLS
 	// configuration for each implementation. For example, configuring the
 	// minimum TLS version or supported cipher suites.
@@ -438,6 +482,36 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 // Note that SSL passthrough is only supported by TLSRoute.
 #TLSModePassthrough: #TLSModeType & "Passthrough"
+
+// FrontendTLSValidation holds configuration information that can be used to validate
+// the frontend initiating the TLS connection
+#FrontendTLSValidation: {
+	// CACertificateRefs contains one or more references to
+	// Kubernetes objects that contain TLS certificates of
+	// the Certificate Authorities that can be used
+	// as a trust anchor to validate the certificates presented by the client.
+	//
+	// A single CA certificate reference to a Kubernetes ConfigMap
+	// has "Core" support.
+	// Implementations MAY choose to support attaching multiple CA certificates to
+	// a Listener, but this behavior is implementation-specific.
+	//
+	// Support: Core - A single reference to a Kubernetes ConfigMap
+	// with the CA certificate in a key named `ca.crt`.
+	//
+	// Support: Implementation-specific (More than one reference, or other kinds
+	// of resources).
+	//
+	// References to a resource in a different namespace are invalid UNLESS there
+	// is a ReferenceGrant in the target namespace that allows the certificate
+	// to be attached. If a ReferenceGrant does not allow this reference, the
+	// "ResolvedRefs" condition MUST be set to False for this listener with the
+	// "RefNotPermitted" reason.
+	//
+	// +kubebuilder:validation:MaxItems=8
+	// +kubebuilder:validation:MinItems=1
+	caCertificateRefs?: [...#ObjectReference] @go(CACertificateRefs,[]ObjectReference)
+}
 
 // AllowedRoutes defines which Routes may be attached to this Listener.
 #AllowedRoutes: {
@@ -622,11 +696,16 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// An implementation may chose to add additional implementation-specific labels as they see fit.
 	//
+	// If an implementation maps these labels to Pods, or any other resource that would need to be recreated when labels
+	// change, it SHOULD clearly warn about this behavior in documentation.
+	//
 	// Support: Extended
 	//
 	// +optional
 	// +kubebuilder:validation:MaxProperties=8
-	labels?: {[string]: #AnnotationValue} @go(Labels,map[AnnotationKey]AnnotationValue)
+	// +kubebuilder:validation:XValidation:message="Label keys must be in the form of an optional DNS subdomain prefix followed by a required name segment of up to 63 characters.",rule="self.all(key, key.matches(r\"\"\"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9]$\"\"\"))"
+	// +kubebuilder:validation:XValidation:message="If specified, the label key's prefix must be a DNS subdomain not longer than 253 characters in total.",rule="self.all(key, key.split(\"/\")[0].size() < 253)"
+	labels?: {[string]: #LabelValue} @go(Labels,map[LabelKey]LabelValue)
 
 	// Annotations that SHOULD be applied to any resources created in response to this Gateway.
 	//
@@ -639,7 +718,40 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// +optional
 	// +kubebuilder:validation:MaxProperties=8
+	// +kubebuilder:validation:XValidation:message="Annotation keys must be in the form of an optional DNS subdomain prefix followed by a required name segment of up to 63 characters.",rule="self.all(key, key.matches(r\"\"\"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9]$\"\"\"))"
+	// +kubebuilder:validation:XValidation:message="If specified, the annotation key's prefix must be a DNS subdomain not longer than 253 characters in total.",rule="self.all(key, key.split(\"/\")[0].size() < 253)"
 	annotations?: {[string]: #AnnotationValue} @go(Annotations,map[AnnotationKey]AnnotationValue)
+
+	// ParametersRef is a reference to a resource that contains the configuration
+	// parameters corresponding to the Gateway. This is optional if the
+	// controller does not require any additional configuration.
+	//
+	// This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
+	//
+	// The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
+	// the merging behavior is implementation specific.
+	// It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
+	//
+	// Support: Implementation-specific
+	//
+	// +optional
+	parametersRef?: null | #LocalParametersReference @go(ParametersRef,*LocalParametersReference)
+}
+
+// LocalParametersReference identifies an API object containing controller-specific
+// configuration resource within the namespace.
+#LocalParametersReference: {
+	// Group is the group of the referent.
+	group: #Group @go(Group)
+
+	// Kind is kind of the referent.
+	kind: #Kind @go(Kind)
+
+	// Name is the name of the referent.
+	//
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=253
+	name: string @go(Name)
 }
 
 // GatewayConditionType is a type of condition associated with a
@@ -667,6 +779,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	#GatewayReasonListenersNotValid |
 	#GatewayReasonPending |
 	#GatewayReasonUnsupportedAddress |
+	#GatewayReasonInvalidParameters |
 	#GatewayReasonScheduled |
 	#GatewayReasonNotReconciled |
 	#GatewayReasonReady |
@@ -707,8 +820,10 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // true.
 #GatewayReasonProgrammed: #GatewayConditionReason & "Programmed"
 
-// This reason is used with the "Programmed" and "Accepted" conditions when the Gateway is
-// syntactically or semantically invalid.
+// This reason is used with the "Programmed" and "Accepted" conditions when
+// the Gateway is syntactically or semantically invalid. For example, this
+// could include unspecified TLS configuration, or some unrecognized or
+// invalid values in the TLS configuration.
 #GatewayReasonInvalid: #GatewayConditionReason & "Invalid"
 
 // This reason is used with the "Programmed" condition when the
@@ -758,6 +873,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Possible reasons for this condition to be False are:
 //
 // * "Invalid"
+// * "InvalidParameters"
 // * "NotReconciled"
 // * "UnsupportedAddress"
 // * "ListenersNotValid"
@@ -791,6 +907,11 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // Gateway could not be accepted because an address that was provided is a
 // type which is not supported by the implementation.
 #GatewayReasonUnsupportedAddress: #GatewayConditionReason & "UnsupportedAddress"
+
+// This reason is used with the "Accepted" condition when the
+// Gateway was not accepted because the parametersRef field
+// was invalid, with more detail in the message.
+#GatewayReasonInvalidParameters: #GatewayConditionReason & "InvalidParameters"
 
 // Deprecated: use "Accepted" instead.
 #GatewayConditionScheduled: #GatewayConditionType & "Scheduled"

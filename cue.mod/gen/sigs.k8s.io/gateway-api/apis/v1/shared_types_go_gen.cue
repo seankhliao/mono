@@ -11,7 +11,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // with "Core" support:
 //
 // * Gateway (Gateway conformance profile)
-// * Service (Mesh conformance profile, experimental, ClusterIP Services only)
+// * Service (Mesh conformance profile, ClusterIP Services only)
 //
 // This API may be extended in the future to support additional kinds of parent
 // resources.
@@ -35,7 +35,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// There are two kinds of parent resources with "Core" support:
 	//
 	// * Gateway (Gateway conformance profile)
-	// * Service (Mesh conformance profile, experimental, ClusterIP Services only)
+	// * Service (Mesh conformance profile, ClusterIP Services only)
 	//
 	// Support for other resources is Implementation-Specific.
 	//
@@ -77,14 +77,12 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// SectionName is the name of a section within the target resource. In the
 	// following resources, SectionName is interpreted as the following:
 	//
-	// * Gateway: Listener Name. When both Port (experimental) and SectionName
+	// * Gateway: Listener name. When both Port (experimental) and SectionName
 	// are specified, the name and port of the selected listener must match
 	// both specified values.
-	// * Service: Port Name. When both Port (experimental) and SectionName
+	// * Service: Port name. When both Port (experimental) and SectionName
 	// are specified, the name and port of the selected listener must match
-	// both specified values. Note that attaching Routes to Services as Parents
-	// is part of experimental Mesh support and is not supported for any other
-	// purpose.
+	// both specified values.
 	//
 	// Implementations MAY choose to support attaching Routes to other resources.
 	// If that is the case, they MUST clearly document how SectionName is
@@ -136,7 +134,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Support: Extended
 	//
 	// +optional
-	// <gateway:experimental>
 	port?: null | #PortNumber @go(Port,*PortNumber)
 }
 
@@ -157,9 +154,8 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// There are two kinds of parent resources with "Core" support:
 	//
 	// * Gateway (Gateway conformance profile)
-	// <gateway:experimental:description>
-	// * Service (Mesh conformance profile, experimental, ClusterIP Services only)
-	// </gateway:experimental:description>
+	// * Service (Mesh conformance profile, ClusterIP Services only)
+	//
 	// This API may be extended in the future to support additional kinds of parent
 	// resources.
 	//
@@ -537,6 +533,11 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$`
 #PreciseHostname: string
 
+// +kubebuilder:validation:MinLength=1
+// +kubebuilder:validation:MaxLength=253
+// +kubebuilder:validation:Pattern=`^(([^:/?#]+):)(//([^/?#]*))([^?#]*)(\?([^#]*))?(#(.*))?`
+#AbsoluteURI: string
+
 // Group refers to a Kubernetes Group. It must either be an empty string or a
 // RFC 1123 subdomain.
 //
@@ -574,7 +575,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 #Kind: string
 
 // ObjectName refers to the name of a Kubernetes object.
-// Object names can have a variety of forms, including RFC1123 subdomains,
+// Object names can have a variety of forms, including RFC 1123 subdomains,
 // RFC 1123 labels, or RFC 1035 labels.
 //
 // +kubebuilder:validation:MinLength=1
@@ -604,11 +605,22 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 // SectionName is the name of a section in a Kubernetes resource.
 //
+// In the following resources, SectionName is interpreted as the following:
+//
+// * Gateway: Listener name
+// * HTTPRoute: HTTPRouteRule name
+// * Service: Port name
+//
+// Section names can have a variety of forms, including RFC 1123 subdomains,
+// RFC 1123 labels, or RFC 1035 labels.
+//
 // This validation is based off of the corresponding Kubernetes validation:
 // https://github.com/kubernetes/apimachinery/blob/02cfb53916346d085a6c6c7c66f882e3c6b0eca6/pkg/util/validation/validation.go#L208
 //
 // Valid values include:
 //
+// * "example"
+// * "foo-example"
 // * "example.com"
 // * "foo.example.com"
 //
@@ -657,7 +669,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 // +kubebuilder:validation:MinLength=1
 // +kubebuilder:validation:MaxLength=253
-// +kubebuilder:validation:Pattern=`^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]/?)*$`
+// +kubebuilder:validation:Pattern=`^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9]$`
 #AnnotationKey: string
 
 // AnnotationValue is the value of an annotation in Gateway API. This is used
@@ -668,6 +680,45 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // +kubebuilder:validation:MinLength=0
 // +kubebuilder:validation:MaxLength=4096
 #AnnotationValue: string
+
+// LabelKey is the key of a label in the Gateway API. This is used for validation
+// of maps such as Gateway infrastructure labels. This matches the Kubernetes
+// "qualified name" validation that is used for labels.
+//
+// Valid values include:
+//
+// * example
+// * example.com
+// * example.com/path
+// * example.com/path.html
+//
+// Invalid values include:
+//
+// * example~ - "~" is an invalid character
+// * example.com. - can not start or end with "."
+//
+// +kubebuilder:validation:MinLength=1
+// +kubebuilder:validation:MaxLength=253
+// +kubebuilder:validation:Pattern=`^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9]$`
+#LabelKey: string
+
+// LabelValue is the value of a label in the Gateway API. This is used for validation
+// of maps such as Gateway infrastructure labels. This matches the Kubernetes
+// label validation rules:
+// * must be 63 characters or less (can be empty),
+// * unless empty, must begin and end with an alphanumeric character ([a-z0-9A-Z]),
+// * could contain dashes (-), underscores (_), dots (.), and alphanumerics between.
+//
+// Valid values include:
+//
+// * MyValue
+// * my.name
+// * 123-my-value
+//
+// +kubebuilder:validation:MinLength=0
+// +kubebuilder:validation:MaxLength=63
+// +kubebuilder:validation:Pattern=`^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$`
+#LabelValue: string
 
 // AddressType defines how a network address is represented as a text string.
 // This may take two possible forms:
@@ -737,3 +788,130 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 //
 // Support: Implementation-specific
 #NamedAddressType: #AddressType & "NamedAddress"
+
+// SessionPersistence defines the desired state of SessionPersistence.
+// +kubebuilder:validation:XValidation:message="AbsoluteTimeout must be specified when cookie lifetimeType is Permanent",rule="!has(self.cookieConfig) || !has(self.cookieConfig.lifetimeType) || self.cookieConfig.lifetimeType != 'Permanent' || has(self.absoluteTimeout)"
+#SessionPersistence: {
+	// SessionName defines the name of the persistent session token
+	// which may be reflected in the cookie or the header. Users
+	// should avoid reusing session names to prevent unintended
+	// consequences, such as rejection or unpredictable behavior.
+	//
+	// Support: Implementation-specific
+	//
+	// +optional
+	// +kubebuilder:validation:MaxLength=128
+	sessionName?: null | string @go(SessionName,*string)
+
+	// AbsoluteTimeout defines the absolute timeout of the persistent
+	// session. Once the AbsoluteTimeout duration has elapsed, the
+	// session becomes invalid.
+	//
+	// Support: Extended
+	//
+	// +optional
+	absoluteTimeout?: null | #Duration @go(AbsoluteTimeout,*Duration)
+
+	// IdleTimeout defines the idle timeout of the persistent session.
+	// Once the session has been idle for more than the specified
+	// IdleTimeout duration, the session becomes invalid.
+	//
+	// Support: Extended
+	//
+	// +optional
+	idleTimeout?: null | #Duration @go(IdleTimeout,*Duration)
+
+	// Type defines the type of session persistence such as through
+	// the use a header or cookie. Defaults to cookie based session
+	// persistence.
+	//
+	// Support: Core for "Cookie" type
+	//
+	// Support: Extended for "Header" type
+	//
+	// +optional
+	// +kubebuilder:default=Cookie
+	type?: null | #SessionPersistenceType @go(Type,*SessionPersistenceType)
+
+	// CookieConfig provides configuration settings that are specific
+	// to cookie-based session persistence.
+	//
+	// Support: Core
+	//
+	// +optional
+	cookieConfig?: null | #CookieConfig @go(CookieConfig,*CookieConfig)
+}
+
+// +kubebuilder:validation:Enum=Cookie;Header
+#SessionPersistenceType: string // #enumSessionPersistenceType
+
+#enumSessionPersistenceType:
+	#CookieBasedSessionPersistence |
+	#HeaderBasedSessionPersistence
+
+// CookieBasedSessionPersistence specifies cookie-based session
+// persistence.
+//
+// Support: Core
+#CookieBasedSessionPersistence: #SessionPersistenceType & "Cookie"
+
+// HeaderBasedSessionPersistence specifies header-based session
+// persistence.
+//
+// Support: Extended
+#HeaderBasedSessionPersistence: #SessionPersistenceType & "Header"
+
+// CookieConfig defines the configuration for cookie-based session persistence.
+#CookieConfig: {
+	// LifetimeType specifies whether the cookie has a permanent or
+	// session-based lifetime. A permanent cookie persists until its
+	// specified expiry time, defined by the Expires or Max-Age cookie
+	// attributes, while a session cookie is deleted when the current
+	// session ends.
+	//
+	// When set to "Permanent", AbsoluteTimeout indicates the
+	// cookie's lifetime via the Expires or Max-Age cookie attributes
+	// and is required.
+	//
+	// When set to "Session", AbsoluteTimeout indicates the
+	// absolute lifetime of the cookie tracked by the gateway and
+	// is optional.
+	//
+	// Support: Core for "Session" type
+	//
+	// Support: Extended for "Permanent" type
+	//
+	// +optional
+	// +kubebuilder:default=Session
+	lifetimeType?: null | #CookieLifetimeType @go(LifetimeType,*CookieLifetimeType)
+}
+
+// +kubebuilder:validation:Enum=Permanent;Session
+#CookieLifetimeType: string // #enumCookieLifetimeType
+
+#enumCookieLifetimeType:
+	#SessionCookieLifetimeType |
+	#PermanentCookieLifetimeType
+
+// SessionCookieLifetimeType specifies the type for a session
+// cookie.
+//
+// Support: Core
+#SessionCookieLifetimeType: #CookieLifetimeType & "Session"
+
+// PermanentCookieLifetimeType specifies the type for a permanent
+// cookie.
+//
+// Support: Extended
+#PermanentCookieLifetimeType: #CookieLifetimeType & "Permanent"
+
+// +kubebuilder:validation:XValidation:message="numerator must be less than or equal to denominator",rule="self.numerator <= self.denominator"
+#Fraction: {
+	// +kubebuilder:validation:Minimum=0
+	numerator: int32 @go(Numerator)
+
+	// +optional
+	// +kubebuilder:default=100
+	// +kubebuilder:validation:Minimum=1
+	denominator?: null | int32 @go(Denominator,*int32)
+}

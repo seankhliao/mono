@@ -1,0 +1,7 @@
+apiVersion: kpt.dev/v1alpha1
+kind: ResourceGroup
+metadata:
+  name: inventory-77151018
+  namespace: gerrit
+  labels:
+    cli-utils.sigs.k8s.io/inventory-id: b7a0a18e57a6ec7a0daa65e2045f9fc563cc408c-1731787389943438749
