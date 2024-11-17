@@ -7,7 +7,7 @@
 [pkgsitebadge]: https://pkg.go.dev/badge/go.seankhliao.com/mono.svg
 [pkgsite]: https://pkg.go.dev/go.seankhliao.com/mono
 
-This is a monorepo full of.... stuff.
+This is a monorepo full of.... experimental stuff.
 Mostly in [go] and [cue].
 
 ## structure
