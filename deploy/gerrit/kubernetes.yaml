@@ -65,7 +65,7 @@ spec:
         app.kubernetes.io/name: gerrit
     spec:
       initContainers:
-        - image: index.docker.io/gerritcodereview/gerrit:3.10.2-ubuntu22
+        - image: index.docker.io/gerritcodereview/gerrit:3.11.0-rc3-ubuntu24
           name: gerrit-init
           command:
             - sh

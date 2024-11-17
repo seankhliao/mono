@@ -11,7 +11,7 @@ k8s: apps: v1: Deployment: "gerrit": {
 		spec: strategy: type: "Recreate"
 		spec: template: spec: {
 			initContainers: [{
-				image: "index.docker.io/gerritcodereview/gerrit:3.10.2-ubuntu22"
+				image: "index.docker.io/gerritcodereview/gerrit:3.11.0-rc3-ubuntu24"
 				name:  "gerrit-init"
 				command: [
 					"sh",
