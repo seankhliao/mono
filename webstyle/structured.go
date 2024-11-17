@@ -110,7 +110,7 @@ func Structured(w io.Writer, o Options) error {
 			hgroup = append(hgroup, html.Span(gomponents.Text(string(c))))
 		}
 	}
-	body = append(body, html.HGroup(html.A(html.Href("https://seankhliao.com/"), gomponents.Group(hgroup))))
+	body = append(body, html.HGroup(html.A(html.Href("/"), gomponents.Group(hgroup))))
 	body = append(body, html.H1(gomponents.Text(o.Title)))
 	body = append(body, html.H2(html.A(html.Href("/"), gomponents.Text(o.Subtitle))))
 
