@@ -2,9 +2,12 @@ package reqlog
 
 import (
 	"fmt"
+	"io"
 	"log/slog"
 	"net/http"
+	"strings"
 
+	"github.com/go-json-experiment/json/jsontext"
 	"go.seankhliao.com/mono/yrun"
 )
 
@@ -34,6 +37,12 @@ func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	rw.Header().Set("content-type", "text/plain")
 	fmt.Fprintln(rw, "ok")
 
+	b, _ := io.ReadAll(r.Body)
+	body := slog.String("http.body", string(b))
+	if strings.HasPrefix(r.Header.Get("content-type"), "application/json") {
+		body = slog.Any("http.body", jsontext.Value(b))
+	}
+
 	a.o.L.LogAttrs(r.Context(), slog.LevelInfo, "received request",
 		slog.String("http.method", r.Method),
 		slog.String("http.proto", r.Proto),
@@ -43,6 +52,7 @@ func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		slog.String("http.remote_addr", r.RemoteAddr),
 		slog.Any("http.headers", r.Header),
 		slog.Any("http.trailers", r.Trailer),
+		body,
 	)
 }
 
