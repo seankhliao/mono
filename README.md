@@ -10,7 +10,7 @@
 This is a monorepo full of.... experimental stuff.
 Mostly in [go] and [cue].
 
-## structure
+## directory layout
 
 - [_data](./_data/): placeholder directories with sensitive data stored in google cloud storage buckets.
 - [_web](./_web/): website content in markdown source, rendered by [blogengine](./cmd//blogengine)
