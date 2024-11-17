@@ -139,11 +139,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // request being reviewed has the dry-run attribute, the side effects will be suppressed.
 #SideEffectClassNoneOnDryRun: #SideEffectClass & "NoneOnDryRun"
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +genclient
-// +genclient:nonNamespaced
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +k8s:prerelease-lifecycle-gen:introduced=1.30
 // ValidatingAdmissionPolicy describes the definition of an admission validation policy that accepts or rejects an object without changing it.
 #ValidatingAdmissionPolicy: {
 	metav1.#TypeMeta
@@ -206,8 +201,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	warning: string @go(Warning) @protobuf(3,bytes,opt)
 }
 
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +k8s:prerelease-lifecycle-gen:introduced=1.30
 // ValidatingAdmissionPolicyList is a list of ValidatingAdmissionPolicy.
 #ValidatingAdmissionPolicyList: {
 	metav1.#TypeMeta
@@ -218,7 +211,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	metadata?: metav1.#ListMeta @go(ListMeta) @protobuf(1,bytes,opt)
 
 	// List of ValidatingAdmissionPolicy.
-	items?: [...#ValidatingAdmissionPolicy] @go(Items,[]ValidatingAdmissionPolicy) @protobuf(2,bytes,rep)
+	items: [...#ValidatingAdmissionPolicy] @go(Items,[]ValidatingAdmissionPolicy) @protobuf(2,bytes,rep)
 }
 
 // ValidatingAdmissionPolicySpec is the specification of the desired behavior of the AdmissionPolicy.
@@ -478,7 +471,7 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	metadata?: metav1.#ListMeta @go(ListMeta) @protobuf(1,bytes,opt)
 
 	// List of PolicyBinding.
-	items?: [...#ValidatingAdmissionPolicyBinding] @go(Items,[]ValidatingAdmissionPolicyBinding) @protobuf(2,bytes,rep)
+	items: [...#ValidatingAdmissionPolicyBinding] @go(Items,[]ValidatingAdmissionPolicyBinding) @protobuf(2,bytes,rep)
 }
 
 // ValidatingAdmissionPolicyBindingSpec is the specification of the ValidatingAdmissionPolicyBinding.

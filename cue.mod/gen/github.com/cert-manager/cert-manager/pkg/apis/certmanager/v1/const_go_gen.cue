@@ -4,19 +4,17 @@
 
 package v1
 
-import "time"
-
 // minimum permitted certificate duration by cert-manager
-#MinimumCertificateDuration: time.#Duration & 3600000000000
+#MinimumCertificateDuration: int & 3600000000000
 
 // default certificate duration if Issuer.spec.duration is not set
-#DefaultCertificateDuration: time.#Duration & 7776000000000000
+#DefaultCertificateDuration: int & 7776000000000000
 
 // minimum certificate duration before certificate expiration
-#MinimumRenewBefore: time.#Duration & 300000000000
+#MinimumRenewBefore: int & 300000000000
 
 // Deprecated: the default is now 2/3 of Certificate's duration
-#DefaultRenewBefore: time.#Duration & 2592000000000000
+#DefaultRenewBefore: int & 2592000000000000
 
 // Default index key for the Secret reference for Token authentication
 #DefaultVaultTokenAuthSecretKey: "token"
@@ -25,3 +23,8 @@ import "time"
 // (/v1/auth/kubernetes). The endpoint will then be called at `/login`, so
 // left as the default, `/v1/auth/kubernetes/login` will be called.
 #DefaultVaultKubernetesAuthMountPath: "/v1/auth/kubernetes"
+
+// Default mount path location for client certificate authentication
+// (/v1/auth/cert). The endpoint will then be called at `/login`, so
+// left as the default, `/v1/auth/cert/login` will be called.
+#DefaultVaultClientCertificateAuthMountPath: "/v1/auth/cert"
