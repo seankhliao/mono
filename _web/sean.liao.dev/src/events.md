@@ -11,6 +11,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12025-07-17_ Billie Eilish
+- _12025-06-19_ Ado
 - _12025-05-30_ Babymetal
 - _12025-03-13_ Clairo
 - _12024-02-19_ Phantom Siita
