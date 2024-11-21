@@ -2,8 +2,6 @@ module go.seankhliao.com/mono
 
 go 1.24
 
-replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.16
-
 require (
 	cuelang.org/go v0.10.1
 	github.com/alecthomas/chroma/v2 v2.14.0
@@ -130,7 +128,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect
 	github.com/googleapis/gax-go/v2 v2.13.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.23.0 // indirect
-	github.com/imdario/mergo v1.0.0 // indirect
+	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jdx/go-netrc v1.0.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.1-0.20220621161143-b0104c826a24 // indirect
