@@ -72,6 +72,7 @@ _data: [
 	["2024-06-28", 7, 51179, ["Mushoku Tensei II: Isekai Ittara Honki Dasu", "Mushoku Tensei: Jobless Reincarnation Season 2"]],
 	["2024-07-05", 7, 55888, ["Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2", "Mushoku Tensei: Jobless Reincarnation Season 2 Part 2"]],
 	["2024-05-03", 8, 51105, ["NieR:Automata Ver1.1a", "NieR:Automata Ver1.1a"]],
+	["2024-11-21", 8, 56063, ["NieR:Automata Ver1.1a (Cour 2)", "NieR:Automata Ver1.1a Part 2"]],
 	["2024-06-03", 8, 19815, ["No Game No Life", "No Game, No Life"]],
 	["2024-06-03", 8, 24991, ["No Game No Life Specials", "No Game, No Life Specials"]],
 	["2024-06-03", 8, 33674, ["No Game No Life: Zero", "No Game, No Life: Zero"]],
