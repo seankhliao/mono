@@ -8,7 +8,7 @@ managed:
     - file_option: go_package_prefix
       value: go.seankhliao.com/mono
 plugins:
-  - local: ["go", "run", "google.golang.org/protobuf/cmd/protoc-gen-go"]
+  - local: ["go", "tool", "protoc-gen-go"]
     out: .
     opt:
       - paths=source_relative
