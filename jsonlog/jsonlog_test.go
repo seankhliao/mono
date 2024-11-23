@@ -243,22 +243,22 @@ func BenchmarkHandler(b *testing.B) {
 	}
 	for name, lg := range handlers {
 		b.Run(name+"/ints", func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
+			for b.Loop() {
 				lg.LogAttrs(ctx, slog.LevelInfo, "benchmark msg", slog.Int("a", 1), slog.Int("b", 2), slog.Int("c", 3), slog.Int("d", 4), slog.Int("e", 5))
 			}
 		})
 		b.Run(name+"/floats", func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
+			for b.Loop() {
 				lg.LogAttrs(ctx, slog.LevelInfo, "benchmark msg", slog.Float64("a", 1), slog.Float64("b", 2), slog.Float64("c", 3), slog.Float64("d", 4), slog.Float64("e", 5))
 			}
 		})
 		b.Run(name+"/bools", func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
+			for b.Loop() {
 				lg.LogAttrs(ctx, slog.LevelInfo, "benchmark msg", slog.Bool("a", true), slog.Bool("b", true), slog.Bool("c", false), slog.Bool("d", true), slog.Bool("e", true))
 			}
 		})
 		b.Run(name+"/strings", func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
+			for b.Loop() {
 				lg.LogAttrs(ctx, slog.LevelInfo, "benchmark msg", slog.String("a", "zzzzzz"), slog.String("b", "yyy yyy"), slog.String("c", "x x x x x x"), slog.String("d", "w w ww w w"), slog.String("e", "vvv v vvv"))
 			}
 		})
@@ -272,12 +272,12 @@ func BenchmarkHandler(b *testing.B) {
 			}{
 				"aaa", 4567,
 			}
-			for i := 0; i < b.N; i++ {
+			for b.Loop() {
 				lg.LogAttrs(ctx, slog.LevelInfo, "benchmark msg", slog.Any("a", err), slog.Any("b", ip), slog.Any("c", bi), slog.Any("d", fs.ModeDir), slog.Any("e", zz))
 			}
 		})
 		b.Run(name+"/mixed", func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
+			for b.Loop() {
 				lg.LogAttrs(ctx, slog.LevelInfo, "benchmark msg", slog.Int("a", 1), slog.Float64("b", 2), slog.Bool("c", true), slog.String("d", "benchy"), slog.Duration("e", 12345678*time.Millisecond))
 			}
 		})
