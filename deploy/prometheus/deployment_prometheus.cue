@@ -4,16 +4,14 @@ import (
 	"encoding/yaml"
 )
 
-k8s: "": v1: Service: "prometheus": "prometheus": {
-	spec: {
-		ports: [{
-			name:       "http"
-			port:       80
-			targetPort: k8s.apps.v1.Deployment.prometheus.prometheus.spec.template.spec.containers[0].ports[0].name
-		}]
+k8s: "": v1: Service: "prometheus": "prometheus": spec: {
+	ports: [{
+		name:       "http"
+		port:       80
+		targetPort: k8s.apps.v1.Deployment.prometheus.prometheus.spec.template.spec.containers[0].ports[0].name
+	}]
 
-		selector: k8s.apps.v1.Deployment.prometheus.prometheus.spec.selector.matchLabels
-	}
+	selector: k8s.apps.v1.Deployment.prometheus.prometheus.spec.selector.matchLabels
 }
 
 k8s: apps: v1: Deployment: "prometheus": {

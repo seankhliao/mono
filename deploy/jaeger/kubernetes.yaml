@@ -1,0 +1,167 @@
+kind: ConfigMap
+data:
+  ui.json: '{"dependencies":{"menuEnabled":true},"monitor":{"menuEnabled":true}}'
+  jaeger.yaml: |
+    service:
+      extensions:
+        - jaeger_storage
+        - jaeger_query
+        - healthcheckv2
+      pipelines:
+        traces:
+          receivers:
+            - otlp
+          processors:
+            - batch
+          exporters:
+            - jaeger_storage_exporter
+      telemetry:
+        resource:
+          service.name: jaeger
+        metrics:
+          level: detailed
+          address: "0.0.0.0:8888"
+        logs:
+          level: info
+    extensions:
+      healthcheckv2:
+        use_v2: true
+        http: {}
+      jaeger_query:
+        storage:
+          traces: localstore
+          metrics: promstore
+        ui:
+          config_file: /etc/jaeger/ui.json
+        http:
+          endpoint: "0.0.0.0:16686"
+      jaeger_storage:
+        backends:
+          localstore:
+            badger:
+              directories:
+                keys: /var/lib/jaeger/keys
+                values: /var/lib/jaeger/values
+              ephemeral: false
+              ttl:
+                spans: 168h
+        metric_backends:
+          promstore:
+            prometheus:
+              endpoint: http://prometheus.prometheus.svc
+              normalize_calls: true
+              normalize_duration: true
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: "0.0.0.0:4317"
+    processors:
+      batch: {}
+    exporters:
+      jaeger_storage_exporter:
+        trace_storage: localstore
+metadata:
+  name: jaeger
+  namespace: jaeger
+  labels:
+    app.kubernetes.io/part-of: jaeger
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: jaeger
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/jaeger/*.cue"
+apiVersion: v1
+---
+kind: ConfigMap
+data:
+  creds.json: '{"universe_domain":"googleapis.com","type":"external_account","audience":"//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami","subject_token_type":"urn:ietf:params:oauth:token-type:jwt","token_url":"https://sts.googleapis.com/v1/token","credential_source":{"file":"/var/run/service-account/token","format":{"type":"text"}},"token_info_url":"https://sts.googleapis.com/v1/introspect"}'
+metadata:
+  name: gcp
+  namespace: jaeger
+  labels:
+    app.kubernetes.io/part-of: jaeger
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: jaeger
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/jaeger/*.cue"
+apiVersion: v1
+---
+kind: Namespace
+metadata:
+  name: jaeger
+  labels:
+    app.kubernetes.io/part-of: jaeger
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: jaeger
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/jaeger/*.cue"
+apiVersion: v1
+---
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+    - name: otlp
+      port: 4317
+      targetPort: otlp
+  selector:
+    app.kubernetes.io/name: jaeger
+kind: Service
+apiVersion: v1
+metadata:
+  name: jaeger
+  namespace: jaeger
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/jaeger/*.cue"
+  labels:
+    app.kubernetes.io/part-of: jaeger
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: jaeger
+---
+kind: Deployment
+metadata:
+  name: jaeger
+  namespace: jaeger
+  labels:
+    app.kubernetes.io/part-of: jaeger
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: jaeger
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/jaeger/*.cue"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: jaeger
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: jaeger
+    spec:
+      containers:
+        - image: quay.io/jaegertracing/jaeger:2.0.0
+          name: jaeger
+          args:
+            - --config=file:/etc/jaeger/jaeger.yaml
+          ports:
+            - containerPort: 4317
+              name: otlp
+            - containerPort: 16686
+              name: http
+          volumeMounts:
+            - mountPath: /var/lib/jaeger
+              name: data
+            - mountPath: /etc/jaeger
+              name: config
+      volumes:
+        - hostPath:
+            path: /opt/volumes/jaeger
+          name: data
+        - name: config
+          configMap:
+            name: jaeger
+      enableServiceLinks: false
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 1
+apiVersion: apps/v1

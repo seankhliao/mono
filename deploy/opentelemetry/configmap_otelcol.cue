@@ -33,8 +33,19 @@ k8s: "": "v1": "ConfigMap": "opentelemetry": "otelcol": "data": {
 				endpoint: "api.honeycomb.io:443"
 				headers: "x-honeycomb-team": "${env:X_HONEYCOMB_TEAM}"
 			}
+			"otlp/jaeger": {
+				endpoint: "jaeger.jaeger.svc:4317"
+				tls: insecure: true
+				compression: "zstd"
+			}
 			"otlphttp/prometheus": endpoint: "http://prometheus.prometheus.svc/api/v1/otlp"
 			nop: {}
+		}
+
+		connectors: {
+			spanmetrics: {
+				histogram: exponential: max_size: 160
+			}
 		}
 
 		extensions: {
@@ -56,14 +67,14 @@ k8s: "": "v1": "ConfigMap": "opentelemetry": "otelcol": "data": {
 			exporters: ["nop", "otlp/honeycomb"]
 		}
 		service: pipelines: metrics: {
-			receivers: ["otlp"]
+			receivers: ["otlp", "spanmetrics"]
 			processors: ["transform", "batch"]
 			exporters: ["nop", "otlphttp/prometheus"]
 		}
 		service: pipelines: traces: {
 			receivers: ["otlp"]
 			processors: ["transform", "batch"]
-			exporters: ["googlecloud", "otlp/honeycomb"]
+			exporters: ["googlecloud", "otlp/honeycomb", "spanmetrics", "otlp/jaeger"]
 		}
 	})
 }

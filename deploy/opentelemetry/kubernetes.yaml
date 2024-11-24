@@ -34,9 +34,19 @@ data:
         endpoint: api.honeycomb.io:443
         headers:
           x-honeycomb-team: ${env:X_HONEYCOMB_TEAM}
+      otlp/jaeger:
+        endpoint: jaeger.jaeger.svc:4317
+        tls:
+          insecure: true
+        compression: zstd
       otlphttp/prometheus:
         endpoint: http://prometheus.prometheus.svc/api/v1/otlp
       nop: {}
+    connectors:
+      spanmetrics:
+        histogram:
+          exponential:
+            max_size: 160
     extensions:
       health_check:
         endpoint: "0.0.0.0:13133"
@@ -62,6 +72,7 @@ data:
         metrics:
           receivers:
             - otlp
+            - spanmetrics
           processors:
             - transform
             - batch
@@ -77,6 +88,8 @@ data:
           exporters:
             - googlecloud
             - otlp/honeycomb
+            - spanmetrics
+            - otlp/jaeger
 metadata:
   name: otelcol
   namespace: opentelemetry

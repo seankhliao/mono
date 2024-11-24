@@ -1,0 +1,7 @@
+apiVersion: kpt.dev/v1alpha1
+kind: ResourceGroup
+metadata:
+  name: inventory-83241745
+  namespace: jaeger
+  labels:
+    cli-utils.sigs.k8s.io/inventory-id: 3524eed9cbed3c1348126c0daf6e42f217eca208-1732490308966300190
