@@ -232,7 +232,7 @@ k8slist: list.FlattenN([for _group, versions in k8s {
 				"\(ns)": "\(#args.name)": {
 					metadata: annotations: "config.kubernetes.io/depends-on": strings.Join([
 						"/namespaces/\(#args.namespace)/ServiceAccount/\(#args.name)",
-						"rbac.authorization.k8s.io/namespaces/\(#args.namespaces)/Role/\(#args.name)",
+						"rbac.authorization.k8s.io/namespaces/\(ns)/Role/\(#args.name)",
 					], ",")
 					roleRef: {
 						apiGroup: "rbac.authorization.k8s.io"

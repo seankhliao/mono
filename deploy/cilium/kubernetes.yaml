@@ -718,7 +718,7 @@ metadata:
     app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
-    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent
+    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent,rbac.authorization.k8s.io/namespaces/kube-system/Role/cilium-agent
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -739,7 +739,7 @@ metadata:
     app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
-    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent
+    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-agent,rbac.authorization.k8s.io/namespaces/cilium-secrets/Role/cilium-agent
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -760,7 +760,7 @@ metadata:
     app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cilium
   annotations:
-    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-operator
+    config.kubernetes.io/depends-on: /namespaces/kube-system/ServiceAccount/cilium-operator,rbac.authorization.k8s.io/namespaces/cilium-secrets/Role/cilium-operator
     config.kubernetes.io/origin: "\tmono/deploy/cilium/*.cue"
 roleRef:
   apiGroup: rbac.authorization.k8s.io

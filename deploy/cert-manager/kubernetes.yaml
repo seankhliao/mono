@@ -4898,7 +4898,7 @@ metadata:
     app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
-    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-cainjector
+    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-cainjector,rbac.authorization.k8s.io/namespaces/cert-manager/Role/cert-manager-cainjector
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -4919,7 +4919,7 @@ metadata:
     app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
-    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-controller
+    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-controller,rbac.authorization.k8s.io/namespaces/cert-manager/Role/cert-manager-controller
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -4940,7 +4940,7 @@ metadata:
     app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: cert-manager
   annotations:
-    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-webhook
+    config.kubernetes.io/depends-on: /namespaces/cert-manager/ServiceAccount/cert-manager-webhook,rbac.authorization.k8s.io/namespaces/cert-manager/Role/cert-manager-webhook
     config.kubernetes.io/origin: "\tmono/deploy/cert-manager/*.cue"
 roleRef:
   apiGroup: rbac.authorization.k8s.io

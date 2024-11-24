@@ -34008,7 +34008,7 @@ metadata:
     app.kubernetes.io/managed-by: kpt
     app.kubernetes.io/name: envoy-gateway
   annotations:
-    config.kubernetes.io/depends-on: /namespaces/envoy-gateway-system/ServiceAccount/envoy-gateway
+    config.kubernetes.io/depends-on: /namespaces/envoy-gateway-system/ServiceAccount/envoy-gateway,rbac.authorization.k8s.io/namespaces/envoy-gateway-system/Role/envoy-gateway
     config.kubernetes.io/origin: "\tmono/deploy/envoy-gateway/*.cue"
 roleRef:
   apiGroup: rbac.authorization.k8s.io

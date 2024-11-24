@@ -17,5 +17,42 @@ Mostly in [go] and [cue].
 - [cmd/](./cmd/): various commands
 - [deploy](./deploy/): k8s manifests in cue source
 
+## tooling
+
+commands for mainting the codebase
+
+### code generation
+
+```sh
+go tool buf generate
+
+# in a deploy/*/ directory
+go tool cue cmd k8smanifests
+```
+
+### formatting
+
+```sh
+go tool gofumpt -w .
+go tool buf format -w .
+go tool cue fmt ./...
+```
+
+### linting
+
+```sh
+go vet ./...
+go tool staticcheck ./...
+go tool buf lint .
+go tool cue vet -c=false ./...
+```
+
+### deploy
+
+```sh
+# in a deploy/*/ directory
+kpt live apply --server-side --output table
+```
+
 [go]: https://go.dev/
 [cue]: https://cuelang.org/
