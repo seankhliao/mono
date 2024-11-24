@@ -34,6 +34,8 @@ data:
         endpoint: api.honeycomb.io:443
         headers:
           x-honeycomb-team: ${env:X_HONEYCOMB_TEAM}
+      otlphttp/prometheus:
+        endpoint: http://prometheus.prometheus.svc/api/v1/otlp
       nop: {}
     extensions:
       health_check:
@@ -65,6 +67,7 @@ data:
             - batch
           exporters:
             - nop
+            - otlphttp/prometheus
         traces:
           receivers:
             - otlp

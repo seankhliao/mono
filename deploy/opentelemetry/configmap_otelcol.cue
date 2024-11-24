@@ -33,6 +33,7 @@ k8s: "": "v1": "ConfigMap": "opentelemetry": "otelcol": "data": {
 				endpoint: "api.honeycomb.io:443"
 				headers: "x-honeycomb-team": "${env:X_HONEYCOMB_TEAM}"
 			}
+			"otlphttp/prometheus": endpoint: "http://prometheus.prometheus.svc/api/v1/otlp"
 			nop: {}
 		}
 
@@ -57,7 +58,7 @@ k8s: "": "v1": "ConfigMap": "opentelemetry": "otelcol": "data": {
 		service: pipelines: metrics: {
 			receivers: ["otlp"]
 			processors: ["transform", "batch"]
-			exporters: ["nop"]
+			exporters: ["nop", "otlphttp/prometheus"]
 		}
 		service: pipelines: traces: {
 			receivers: ["otlp"]

@@ -11,6 +11,26 @@ import (
 	baserepo: "ghcr.io/seankhliao"
 }
 
+#DefaultsCue: #"""
+	package deploy
+
+	k8s: [kgroup=string]: [kversion=string]: [kkind=string]: [knamespace=string]: [kname=string]: {
+		metadata: annotations: {
+			"config.kubernetes.io/origin": """
+					mono/deploy/\#(#args.name)/*.cue
+				"""
+		}
+		metadata: labels: {
+			"app.kubernetes.io/part-of": "\#(#args.name)"
+			"app.kubernetes.io/name":    string | *"\#(#args.name)"
+		}
+	}
+
+	namespace: (#Namespace & {#args: name: "\#(#args.name)"})
+
+	k8s: namespace.out
+	"""#
+
 #Kptfile: {
 	apiVersion: "kpt.dev/v1"
 	kind:       "Kptfile"
@@ -52,6 +72,12 @@ command: skaffold: {
 	kptfile: file.Create & {
 		filename: path.Join([dir.path, "Kptfile"], "unix")
 		contents: yaml.Marshal(#Kptfile)
+		$after: [dir]
+	}
+
+	defaultscue: file.Create & {
+		filename: path.Join([dir.path, "defaults.cue"], "unix")
+		contents: #DefaultsCue
 		$after: [dir]
 	}
 

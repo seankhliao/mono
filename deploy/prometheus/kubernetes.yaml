@@ -1,0 +1,110 @@
+kind: ConfigMap
+data:
+  prometheus.yaml: |
+    storage:
+      tsdb:
+        out_of_order_time_window: 30m
+metadata:
+  name: prometheus
+  namespace: prometheus
+  labels:
+    app.kubernetes.io/part-of: prometheus
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: prometheus
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/prometheus/*.cue"
+apiVersion: v1
+---
+kind: ConfigMap
+data:
+  creds.json: '{"universe_domain":"googleapis.com","type":"external_account","audience":"//iam.googleapis.com/projects/330311169810/locations/global/workloadIdentityPools/kubernetes/providers/justia-asami","subject_token_type":"urn:ietf:params:oauth:token-type:jwt","token_url":"https://sts.googleapis.com/v1/token","credential_source":{"file":"/var/run/service-account/token","format":{"type":"text"}},"token_info_url":"https://sts.googleapis.com/v1/introspect"}'
+metadata:
+  name: gcp
+  namespace: prometheus
+  labels:
+    app.kubernetes.io/part-of: prometheus
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: prometheus
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/prometheus/*.cue"
+apiVersion: v1
+---
+kind: Namespace
+metadata:
+  name: prometheus
+  labels:
+    app.kubernetes.io/part-of: prometheus
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: prometheus
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/prometheus/*.cue"
+apiVersion: v1
+---
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: prometheus
+kind: Service
+apiVersion: v1
+metadata:
+  name: prometheus
+  namespace: prometheus
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/prometheus/*.cue"
+  labels:
+    app.kubernetes.io/part-of: prometheus
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: prometheus
+---
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: prometheus
+  labels:
+    app.kubernetes.io/part-of: prometheus
+    app.kubernetes.io/managed-by: kpt
+    app.kubernetes.io/name: prometheus
+  annotations:
+    config.kubernetes.io/origin: "\tmono/deploy/prometheus/*.cue"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: prometheus
+    spec:
+      containers:
+        - image: quay.io/prometheus/prometheus:v3.0.0
+          name: prometheus
+          args:
+            - --config.file=/etc/prometheus/prometheus.yaml
+            - --web.listen-address=0.0.0.0:9090
+            - --web.enable-otlp-receiver
+            - --storage.tsdb.path=/var/lib/prometheus
+            - --storage.tsdb.retention.time=30d
+            - --enable-feature=exemplar-storage,native-histograms
+          ports:
+            - containerPort: 9090
+              name: http
+          volumeMounts:
+            - mountPath: /var/lib/prometheus
+              name: data
+            - mountPath: /etc/prometheus
+              name: config
+      volumes:
+        - hostPath:
+            path: /opt/volumes/prometheus
+          name: data
+        - name: config
+          configMap:
+            name: prometheus
+      enableServiceLinks: false
+  strategy:
+    type: Recreate
+  revisionHistoryLimit: 1
+apiVersion: apps/v1
