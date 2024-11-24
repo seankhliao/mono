@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log/slog"
+	"net"
 	"net/http"
 	"net/http/pprof"
 	"os"
@@ -15,12 +16,14 @@ import (
 	"time"
 
 	"cuelang.org/go/cue/cuecontext"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/fileblob"
 	_ "gocloud.dev/blob/gcsblob"
 	_ "gocloud.dev/blob/memblob"
 	"golang.org/x/sync/errgroup"
+	"google.golang.org/grpc"
 )
 
 // RunConfig are the args passed to [Run].
@@ -35,6 +38,8 @@ type RunConfig[C, A any] struct {
 	AppConfigSchema string
 	// New creates an application struct from the application config struct.
 	New func(context.Context, C, *blob.Bucket, O11y) (*A, error)
+	// GRPC is for registering grpc services
+	GRPC func(*A, context.Context, *grpc.Server)
 	// HTTP is for registering http handlers to the main listener
 	HTTP func(*A, HTTPRegistrar)
 	// Debug is for registering http handlers to the debug handler
@@ -46,8 +51,6 @@ type RunConfig[C, A any] struct {
 	// that should run on shutdown.
 	// shutdown tasks are given a context with a 5 second timeout.
 	RegisterShutdown func(*A, context.Context, func(func(context.Context) error))
-
-	// GRPC     func(*A, context.Context, *grpc.Server)
 }
 
 // Run is intended to be called as the sole function in main.
@@ -112,6 +115,27 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 
 	group, groupCtx := errgroup.WithContext(ctx)
 
+	// gRPC app
+	if runConfig.GRPC != nil {
+		statsHandler := otelgrpc.NewServerHandler()
+		server := grpc.NewServer(grpc.StatsHandler(statsHandler))
+
+		runConfig.GRPC(app, ctx, server)
+
+		group.Go(func() error {
+			lis, err := net.Listen("tcp", config.GRPC.Address)
+			if err != nil {
+				return fmt.Errorf("grpc: listen on %s: %w", config.GRPC.Address, err)
+			}
+
+			o11y.L.WithGroup("grpc").LogAttrs(ctx, slog.LevelInfo, "starting grpc server",
+				slog.String("addr", config.GRPC.Address),
+			)
+			return server.Serve(lis)
+		})
+
+	}
+
 	// HTTP app
 	if runConfig.HTTP != nil {
 		mux := http.NewServeMux()
@@ -125,7 +149,7 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 
 			if config.HTTP.K8s.Enable {
 				httplg.LogAttrs(ctx, slog.LevelDebug, "managing k8s service/httproute")
-				err := ManageK8s(ctx, httplg, config.HTTP, config.Debug, mx)
+				err := ManageK8s(ctx, httplg, config.GRPC, config.HTTP, config.Debug, mx)
 				if err != nil {
 					return fmt.Errorf("manage k8s httproute: %w", err)
 				}

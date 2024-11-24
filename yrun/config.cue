@@ -1,3 +1,6 @@
+GRPC: {
+	Address: string | *":8000"
+}
 HTTP: {
 	Address: string | *":8080"
 	K8s: {
@@ -10,6 +13,3 @@ HTTP: {
 Debug: {
 	Address: string | *":8081"
 }
-// GRPC: {
-// 	Address: string | *":8000"
-// }

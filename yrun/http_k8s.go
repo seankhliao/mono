@@ -25,7 +25,7 @@ import (
 	gwclientv1 "sigs.k8s.io/gateway-api/pkg/client/clientset/versioned/typed/apis/v1"
 )
 
-func ManageK8s(ctx context.Context, lg *slog.Logger, c HTTPConfig, cd HTTPConfig, mx *muxRegister) error {
+func ManageK8s(ctx context.Context, lg *slog.Logger, g gRPCConfig, c HTTPConfig, cd HTTPConfig, mx *muxRegister) error {
 	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -50,14 +50,14 @@ func ManageK8s(ctx context.Context, lg *slog.Logger, c HTTPConfig, cd HTTPConfig
 		return fmt.Errorf("create k8s client")
 	}
 
-	labelSelector, httpPort, debugPort, err := getPodPorts(ctx, lg, k8sClient, namespace, c.Address, cd.Address)
+	labelSelector, grpcAddr, httpPort, debugPort, err := getPodPorts(ctx, lg, k8sClient, namespace, g.Address, c.Address, cd.Address)
 	if err != nil {
 		return err
 	}
 
 	manager := "yrun-" + name
 
-	err = createService(ctx, lg, k8sClient, manager, namespace, name, httpPort, debugPort, labelSelector)
+	err = createService(ctx, lg, k8sClient, manager, namespace, name, grpcAddr, httpPort, debugPort, labelSelector)
 	if err != nil {
 		return err
 	}
@@ -73,16 +73,16 @@ func ManageK8s(ctx context.Context, lg *slog.Logger, c HTTPConfig, cd HTTPConfig
 	return nil
 }
 
-func getPodPorts(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Clientset, namespace, httpAddr, debugAddr string) (labels map[string]string, httpPort, debugPort string, err error) {
+func getPodPorts(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Clientset, namespace, grpcAddr, httpAddr, debugAddr string) (labels map[string]string, grpcPort, httpPort, debugPort string, err error) {
 	podName, err := os.Hostname()
 	if err != nil {
-		return nil, "", "", fmt.Errorf("read hostname: %w", err)
+		return nil, "", "", "", fmt.Errorf("read hostname: %w", err)
 	}
 	lg.LogAttrs(ctx, slog.LevelDebug, "identified pod name from hostname", slog.String("pod.name", podName))
 
 	pod, err := k8sClient.CoreV1().Pods(namespace).Get(ctx, podName, apimetav1.GetOptions{})
 	if err != nil {
-		return nil, "", "", fmt.Errorf("get pod: %w", err)
+		return nil, "", "", "", fmt.Errorf("get pod: %w", err)
 	}
 
 	labelSelector := make(map[string]string)
@@ -93,20 +93,24 @@ func getPodPorts(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Cli
 		}
 	}
 	if len(labelSelector) == 0 {
-		return nil, "", "", fmt.Errorf("no known labels: %w", err)
+		return nil, "", "", "", fmt.Errorf("no known labels: %w", err)
 	}
 	lg.LogAttrs(ctx, slog.LevelDebug, "got selector labels", slog.Any("labels", labelSelector))
 
+	grpcPort, err = findPort(grpcAddr, pod)
+	if err != nil {
+		return nil, "", "", "", fmt.Errorf("find grpc port: %w", err)
+	}
 	httpPort, err = findPort(httpAddr, pod)
 	if err != nil {
-		return nil, "", "", fmt.Errorf("find http port: %w", err)
+		return nil, "", "", "", fmt.Errorf("find http port: %w", err)
 	}
 	debugPort, err = findPort(debugAddr, pod)
 	if err != nil {
-		return nil, "", "", fmt.Errorf("find debug port: %w", err)
+		return nil, "", "", "", fmt.Errorf("find debug port: %w", err)
 	}
 
-	return labelSelector, httpPort, debugPort, nil
+	return labelSelector, grpcPort, httpPort, debugPort, nil
 }
 
 func findPort(addr string, pod *apicorev1.Pod) (portName string, err error) {
@@ -131,7 +135,7 @@ func findPort(addr string, pod *apicorev1.Pod) (portName string, err error) {
 	return portName, nil
 }
 
-func createService(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Clientset, manager, namespace, name, httpPort, debugPort string, labelSelector map[string]string) error {
+func createService(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.Clientset, manager, namespace, name, grpcPort, httpPort, debugPort string, labelSelector map[string]string) error {
 	labels := maps.Clone(labelSelector)
 	labels["kubernetes.io/managed-by"] = manager
 
@@ -153,6 +157,12 @@ func createService(ctx context.Context, lg *slog.Logger, k8sClient *kubernetes.C
 					Protocol:    ptr(apicorev1.ProtocolTCP),
 					AppProtocol: ptr("http"),
 					TargetPort:  ptr(intstr.FromString(httpPort)),
+				}, {
+					Name:        ptr("grpc"),
+					Port:        ptr[int32](8000),
+					Protocol:    ptr(apicorev1.ProtocolTCP),
+					AppProtocol: ptr("grpc"),
+					TargetPort:  ptr(intstr.FromString(grpcPort)),
 				}, {
 					Name:        ptr("debug"),
 					Port:        ptr[int32](8081),
