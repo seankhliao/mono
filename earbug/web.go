@@ -434,6 +434,7 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 				plays[i].PlaybackTime = gap
 			}
 		}
+		plays[i].PlaybackTime = plays[i].PlaybackTime.Round(time.Second)
 	}
 
 	return plays, nil
