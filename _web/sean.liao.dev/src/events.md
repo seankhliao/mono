@@ -16,7 +16,22 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-03-13_ Clairo
 - _12024-02-19_ Phantom Siita
 - _12024-11-29_ renforshort
-- _12024-11-27_ WACK in the UK Vol 4 <!-- MONSTER IDOL , ASP , ExWHYZ -->
+
+
+###### _12024-11-27_ WACK in the UK Vol 4
+
+With [_MONSTERIDOL_], [_ASP_], and [_ExWHYZ_]
+
+Once again we start with MAMESHiBA NO TAiGUN TONAi BOUSHO a.k.a. [_MONSTERIDOL_],
+which was pretty good.
+[_ASP_] has certainly grown on me,
+both the music, and _Mog Ryan_.
+The stage was still quite croowded though,
+with attention constantly switching between people.
+[_ExWHYZ_] was new this time,
+more... mainstream street beauty style?
+The music was decent though I caught myself drifting off
+despite how loud and energetic it was.
 
 ###### _12024-11-15_ UPSAHL
 
@@ -1135,6 +1150,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Emlyn_]: https://www.youtube.com/@emlynmusicofficial
 [_eundohee_]: https://www.youtube.com/@eundohee
 [_Eva Under Fire_]: https://www.youtube.com/@EvaUnderFire
+[_ExWHYZ_]: https://www.youtube.com/@ExWHYZ
 [_Eyelar_]: https://www.youtube.com/@eyelar1201
 [_Fall Out Boy_]: https://www.youtube.com/@falloutboy
 [_FEMM_]: https://www.youtube.com/@FEMM____
