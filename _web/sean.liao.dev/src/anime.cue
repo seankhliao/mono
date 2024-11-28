@@ -93,6 +93,7 @@ _data: [
 	["2024-05-18", 8, 56885, ["Sousou no Frieren: ●● no Mahou", "Frieren: Beyond Journey's End Mini Anime"]],
 	["2024-07-02", 8, 50265, ["Spy x Family", "SPY×FAMILY"]],
 	["2024-08-08", 8, 50602, ["Spy x Family Part 2", "SPY×FAMILY"]],
+	["2024-11-28", 8, 52736, ["Tensei Oujo to Tensai Reijou no Mahou Kakumei", "The Magical Revolution of the Reincarnated Princess and the Genius Young Lady"]],
 	["2024-06-23", 7, 52305, ["Tomo-chan wa Onnanoko!", "Tomo-chan Is a Girl!"]],
 	["2024-06-28", 6, 38573, ["Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?", "Do You Love Your Mom and Her Two-Hit Multi-Target Attacks?"]],
 	["2024-06-28", 6, 40102, ["Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka? Namiuchigiwa no Okaasan wa Suki desu ka?", "Do You Love Your Mom and Her Two-Hit Multi-Target Attacks? Do You Love Your Mom on the Shore?"]],
