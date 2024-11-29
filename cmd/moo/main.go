@@ -98,6 +98,6 @@ func Debug(a *App, r yrun.HTTPRegistrar) {
 
 func StartTasks(a *App, ctx context.Context, start func(func() error)) {
 	start(a.Earbug.Update)
-	start(a.Earbug.FillAudioFeatures)
+	// start(a.Earbug.FillAudioFeatures) // https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api
 	start(a.Auth.CleanSessions)
 }
