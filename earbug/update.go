@@ -81,7 +81,7 @@ func (a *App) update(ctx context.Context) {
 				totalTracks = int64(len(s.Tracks))
 			})
 
-			a.mAdded.Add(ctx, added, metric.WithAttributes(attribute.Int64("user.id", userID)))
+			a.mAdded.Add(ctx, userAdded, metric.WithAttributes(attribute.Int64("user.id", userID)))
 			a.mPlaybacks.Record(ctx, userPlaybacks, metric.WithAttributes(attribute.Int64("user.id", userID)))
 			added += userAdded
 			return nil
