@@ -20,6 +20,8 @@ const (
 	// magic numbers to reduce number of slice resizes
 	// slog holds 5 attrs
 	stateBufferSize = 1024
+
+	rfc3339Milli = "2006-01-02T15:04:05.999Z07:00"
 )
 
 var (
@@ -118,7 +120,7 @@ func (h *handler) Handle(ctx context.Context, r slog.Record) error {
 	// time
 	if !r.Time.IsZero() {
 		buf = append(buf, `"time":"`...)
-		buf = r.Time.AppendFormat(buf, time.RFC3339Nano)
+		buf = r.Time.AppendFormat(buf, rfc3339Milli)
 		buf = append(buf, `",`...)
 	}
 	// level
