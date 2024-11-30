@@ -15,8 +15,18 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-05-30_ Babymetal
 - _12025-03-13_ Clairo
 - _12024-02-19_ Phantom Siita
-- _12024-11-29_ renforshort
 
+###### _12024-11-29_ renforshort
+
+With [_Karin Ann_]
+
+[_Karin Ann_] gave a laid back...
+I wanted to say foresty, or manybe mindul vibe.
+[_renforshort_] on the other hand was true sad girl bedroom pop,
+but also the life of the party kind?
+I still knew all the songs,
+and the positivity I felt was quite energizing.
+I think it was a wonderful show to end this year with for me.
 
 ###### _12024-11-27_ WACK in the UK Vol 4
 
@@ -1179,6 +1189,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Kaeto_]: https://www.youtube.com/@KaetoEYO
 [_KAMELOT_]: https://www.youtube.com/@KAMELOT
 [_Kanna Hashimoto_]: https://www.instagram.com/kannahashimoto.mg
+[_Karin Ann_]: https://www.youtube.com/karinann
 [_Katelyn Tarver_]: https://www.youtube.com/@katelyntarver
 [_Kimbra_]: https://www.youtube.com/@kimbramusic
 [_King Mala_]: https://www.youtube.com/@KiNGMALA
