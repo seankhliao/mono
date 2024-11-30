@@ -125,7 +125,7 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 	var r O11yReg
 
 	bi, _ := debug.ReadBuildInfo()
-	fullname := bi.Main.Path
+	fullname := bi.Path
 	d, shortName := path.Split(fullname)
 	if strings.HasPrefix(shortName, "v") && !strings.ContainsAny(shortName[1:], "abcdefghijklmnopqrstuvwxyz-") {
 		shortName = path.Base(d)
@@ -133,7 +133,7 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 	res, _ := resource.Merge(
 		resource.Default(),
 		resource.NewSchemaless(
-			semconv.ServiceName(bi.Main.Path),
+			semconv.ServiceName(bi.Path),
 			semconv.ServiceVersion(bi.Main.Version),
 		),
 	)
