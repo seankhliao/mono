@@ -10,6 +10,7 @@ import (
 
 	"github.com/google/cel-go/cel"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	authv1 "go.seankhliao.com/mono/auth/v1"
 	"go.seankhliao.com/mono/yrun"
@@ -139,7 +140,8 @@ var errUnauthorized = errors.New("unauthorized")
 func (a *App) AuthZ(policy cel.Program) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-			err := a.o.Region(r.Context(), "authorization", func(ctx context.Context, span trace.Span) error {
+			ctx := r.Context()
+			err := a.o.Region(ctx, "authorization", func(ctx context.Context, span trace.Span) error {
 				info := FromContext(ctx)
 				act, err := cel.ContextProtoVars(info)
 				if err != nil {
@@ -180,12 +182,15 @@ func (a *App) AuthZ(policy cel.Program) func(http.Handler) http.Handler {
 				}).String()
 
 				http.Redirect(rw, r, u, http.StatusTemporaryRedirect)
+				a.mAuthz.Add(ctx, 1, metric.WithAttributes(attribute.String("result", "deny")))
 				return
 			} else if err != nil {
-				http.Error(rw, err.Error(), http.StatusInternalServerError)
+				a.o.HTTPErr(ctx, "authorization error", err, rw, http.StatusInternalServerError)
+				a.mAuthz.Add(ctx, 1, metric.WithAttributes(attribute.String("result", "error")))
 				return
 			}
 
+			a.mAuthz.Add(ctx, 1, metric.WithAttributes(attribute.String("result", "allow")))
 			next.ServeHTTP(rw, r)
 		})
 	}

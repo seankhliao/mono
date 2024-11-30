@@ -12,6 +12,8 @@ import (
 	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	authv1 "go.seankhliao.com/mono/auth/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -51,6 +53,8 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 	}
 	rw.Header().Set("content-type", "application/json")
 	json.MarshalWrite(rw, cred)
+
+	a.mLogins.Add(ctx, 1, metric.WithAttributes(attribute.String("phase", "start")))
 }
 
 func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
@@ -126,4 +130,6 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 
 	rw.Header().Set("content-type", "application/json")
 	json.MarshalWrite(rw, body)
+
+	a.mLogins.Add(ctx, 1, metric.WithAttributes(attribute.String("phase", "finish")))
 }

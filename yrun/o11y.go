@@ -16,6 +16,7 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/runtime"
 	"go.opentelemetry.io/contrib/zpages"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
@@ -51,15 +52,24 @@ type O11y struct {
 	M metric.Meter
 	L *slog.Logger
 	H slog.Handler
+
+	component string
+	errCount  metric.Int64Counter
 }
 
 func (o O11y) Sub(name string) O11y {
-	return O11y{
-		T: otel.Tracer(name),
-		M: otel.Meter(name),
-		L: o.L.WithGroup(name),
-		H: o.H.WithGroup(name),
+	o2 := O11y{
+		T:         otel.Tracer(name),
+		M:         otel.Meter(name),
+		L:         o.L.WithGroup(name),
+		H:         o.H.WithGroup(name),
+		component: name,
+		errCount:  o.errCount,
 	}
+	if o.component != "" {
+		o2.component = o.component + "." + o2.component
+	}
+	return o2
 }
 
 func (o O11y) Region(ctx context.Context, name string, do func(ctx context.Context, span trace.Span) error) error {
@@ -78,6 +88,7 @@ func (o O11y) Err(ctx context.Context, msg string, err error, attrs ...slog.Attr
 	o.L.LogAttrs(ctx, slog.LevelError, msg,
 		append(attrs, slog.String("error", err.Error()))...,
 	)
+	o.errCount.Add(ctx, 1, metric.WithAttributes(attribute.String("component", o.component)))
 	if span := trace.SpanFromContext(ctx); span.SpanContext().IsValid() {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, msg)
@@ -150,6 +161,8 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 		otel.SetMeterProvider(noop.NewMeterProvider())
 	}
 	o.M = otel.Meter(shortName)
+
+	o.errCount, _ = o.M.Int64Counter("mono.error", metric.WithUnit("error"))
 
 	runtime.Start()
 

@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
+	"go.opentelemetry.io/otel/metric"
 	authv1 "go.seankhliao.com/mono/auth/v1"
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/yrun"
@@ -48,7 +49,11 @@ type App struct {
 
 	webauthn *webauthn.WebAuthn
 
-	o     yrun.O11y
+	o         yrun.O11y
+	mLogins   metric.Int64Counter
+	mSessions metric.Int64Gauge
+	mAuthz    metric.Int64Counter
+
 	store *yrun.Store[*authv1.Store]
 }
 
@@ -59,6 +64,10 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 		cookieDomain: c.CookieDomain,
 		o:            o.Sub("auth"),
 	}
+
+	a.mLogins, _ = a.o.M.Int64Counter("mono.auth.logins", metric.WithUnit("login"))
+	a.mSessions, _ = a.o.M.Int64Gauge("mono.auth.sessions", metric.WithUnit("session"))
+	a.mAuthz, _ = a.o.M.Int64Counter("mono.auth.authz.checks", metric.WithUnit("check"))
 
 	var err error
 	t := true

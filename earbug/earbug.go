@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/cel-go/cel"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel/metric"
 	"go.seankhliao.com/mono/auth"
 	earbugv5 "go.seankhliao.com/mono/earbug/v5"
 	"go.seankhliao.com/mono/httpencoding"
@@ -36,7 +37,10 @@ func Register(a *App, r yrun.HTTPRegistrar) {
 }
 
 type App struct {
-	o yrun.O11y
+	o          yrun.O11y
+	mAdded     metric.Int64Counter
+	mTracks    metric.Int64Gauge
+	mPlaybacks metric.Int64Gauge
 
 	// New
 	http  *http.Client
@@ -70,6 +74,10 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 		publicID:   c.PublicID,
 		updateFreq: c.UpdateFreq,
 	}
+
+	a.mAdded, _ = a.o.M.Int64Counter("mono.earbug.playbacks.added", metric.WithUnit("track"))
+	a.mPlaybacks, _ = a.o.M.Int64Gauge("mono.earbug.user.playbacks", metric.WithUnit("track"))
+	a.mTracks, _ = a.o.M.Int64Gauge("mono.earbug.tracks", metric.WithUnit("track"))
 
 	ctx, span := o.T.Start(ctx, "initData")
 	defer span.End()

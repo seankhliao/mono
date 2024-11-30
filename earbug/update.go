@@ -8,6 +8,7 @@ import (
 	"github.com/go-json-experiment/json"
 	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	earbugv5 "go.seankhliao.com/mono/earbug/v5"
 	"golang.org/x/oauth2"
@@ -32,10 +33,11 @@ func (a *App) update(ctx context.Context) {
 		}
 	})
 
-	var added int
+	var added, totalTracks int64
 	for userID, spot := range clients {
 		a.o.Region(ctx, "update user recently played", func(ctx context.Context, span trace.Span) error {
 			span.SetAttributes(attribute.Int64("user.id", userID))
+			var userAdded, userPlaybacks int64
 
 			items, err := spot.PlayerRecentlyPlayedOpt(ctx, &spotify.RecentlyPlayedOptions{Limit: 50})
 			if err != nil {
@@ -46,7 +48,7 @@ func (a *App) update(ctx context.Context) {
 				for _, item := range items {
 					ts := item.PlayedAt.Format(time.RFC3339Nano)
 					if _, ok := s.Users[userID].Playbacks[ts]; !ok {
-						added++
+						userAdded++
 						s.Users[userID].Playbacks[ts] = &earbugv5.Playback{
 							TrackId:     ptr(item.Track.ID.String()),
 							TrackUri:    ptr(string(item.Track.URI)),
@@ -72,15 +74,23 @@ func (a *App) update(ctx context.Context) {
 						}
 						s.Tracks[item.Track.ID.String()] = t
 					}
+
 				}
+
+				userPlaybacks = int64(len(s.Users[userID].Playbacks))
+				totalTracks = int64(len(s.Tracks))
 			})
 
+			a.mAdded.Add(ctx, added, metric.WithAttributes(attribute.Int64("user.id", userID)))
+			a.mPlaybacks.Record(ctx, userPlaybacks, metric.WithAttributes(attribute.Int64("user.id", userID)))
+			added += userAdded
 			return nil
 		})
 	}
 
+	a.mTracks.Record(ctx, totalTracks)
 	if added > 0 {
-		a.o.L.LogAttrs(ctx, slog.LevelInfo, "updated record", slog.Int("added", added))
+		a.o.L.LogAttrs(ctx, slog.LevelInfo, "updated record", slog.Int64("added", added))
 		a.store.Sync(ctx)
 	}
 }

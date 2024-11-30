@@ -12,6 +12,7 @@ import (
 	"github.com/google/go-github/v60/github"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/yrun"
 	"golang.org/x/oauth2"
@@ -31,20 +32,27 @@ type Config struct {
 
 type App struct {
 	host          string
-	o             yrun.O11y
 	webhookSecret string
 	privateKey    string
 	appID         int64
+
+	o      yrun.O11y
+	mOwner metric.Int64Counter
 }
 
 func New(c Config, o yrun.O11y) (*App, error) {
-	return &App{
+	a := &App{
 		host:          c.Host,
-		o:             o.Sub("ghdefaults"),
 		webhookSecret: strings.TrimSpace(c.WebhookSecret),
 		privateKey:    c.PrivateKey + "\n",
 		appID:         c.AppID,
-	}, nil
+
+		o: o.Sub("ghdefaults"),
+	}
+
+	a.mOwner, _ = a.o.M.Int64Counter("mono.ghdefaults.repo_updated", metric.WithUnit("repository"))
+
+	return a, nil
 }
 
 var defaultConfig = map[string]github.Repository{
@@ -240,6 +248,7 @@ func (a *App) setDefaults(ctx context.Context, installID int64, owner, repo stri
 		}
 	}
 
+	a.mOwner.Add(ctx, 1, metric.WithAttributes(attribute.String("owner", owner)))
 	return nil
 }
 
