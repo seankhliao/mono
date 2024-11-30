@@ -27,7 +27,9 @@ import (
 	"go.opentelemetry.io/otel/propagation"
 	sdklog "go.opentelemetry.io/otel/sdk/log"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
+	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.27.0"
 	"go.opentelemetry.io/otel/trace"
 	tracenoop "go.opentelemetry.io/otel/trace/noop"
 	"go.seankhliao.com/mono/jsonlog"
@@ -128,14 +130,19 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 	if strings.HasPrefix(shortName, "v") && !strings.ContainsAny(shortName[1:], "abcdefghijklmnopqrstuvwxyz-") {
 		shortName = path.Base(d)
 	}
-
-	_ = shortName
+	res, _ := resource.Merge(
+		resource.Default(),
+		resource.NewSchemaless(
+			semconv.ServiceName(bi.Main.Path),
+			semconv.ServiceVersion(bi.Main.Version),
+		),
+	)
 
 	ctx := context.Background()
 
 	var o O11y
 	var err error
-	o.L, o.H, r.LogZpage, err = NewLog(ctx, c.Log)
+	o.L, o.H, r.LogZpage, err = NewLog(ctx, res, c.Log)
 	if err != nil {
 		panic(err)
 	}
@@ -148,14 +155,14 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 		)
 	}))
 
-	r.TraceZpage, err = NewTrace(ctx, c.Trace)
+	r.TraceZpage, err = NewTrace(ctx, res, c.Trace)
 	if err != nil {
 		otelLog.LogAttrs(ctx, slog.LevelWarn, "failed to create trace exporter", slog.String("error", err.Error()))
 		otel.SetTracerProvider(tracenoop.NewTracerProvider())
 	}
 	o.T = otel.Tracer(shortName)
 
-	err = NewMetric(ctx, c.Metric)
+	err = NewMetric(ctx, res, c.Metric)
 	if err != nil {
 		otelLog.LogAttrs(ctx, slog.LevelWarn, "failed to create metric exporter", slog.String("error", err.Error()))
 		otel.SetMeterProvider(noop.NewMeterProvider())
@@ -174,7 +181,7 @@ type LogConfig struct {
 	Level  slog.Level
 }
 
-func NewLog(ctx context.Context, c LogConfig) (*slog.Logger, slog.Handler, http.Handler, error) {
+func NewLog(ctx context.Context, res *resource.Resource, c LogConfig) (*slog.Logger, slog.Handler, http.Handler, error) {
 	zpage := jsonlog.NewZPage(256)
 	writer := io.MultiWriter(os.Stderr, zpage)
 	var handler slog.Handler
@@ -195,6 +202,7 @@ func NewLog(ctx context.Context, c LogConfig) (*slog.Logger, slog.Handler, http.
 	}
 
 	lp := sdklog.NewLoggerProvider(
+		sdklog.WithResource(res),
 		sdklog.WithProcessor(
 			sdklog.NewBatchProcessor(le),
 		),
@@ -210,7 +218,7 @@ func NewLog(ctx context.Context, c LogConfig) (*slog.Logger, slog.Handler, http.
 
 type MetricConfig struct{}
 
-func NewMetric(ctx context.Context, c MetricConfig) error {
+func NewMetric(ctx context.Context, res *resource.Resource, c MetricConfig) error {
 	me, err := otlpmetricgrpc.New(ctx,
 		otlpmetricgrpc.WithServiceConfig(defaultServiceConfig),
 	)
@@ -218,6 +226,7 @@ func NewMetric(ctx context.Context, c MetricConfig) error {
 		return err
 	}
 	mp := sdkmetric.NewMeterProvider(
+		sdkmetric.WithResource(res),
 		sdkmetric.WithReader(
 			sdkmetric.NewPeriodicReader(me),
 		),
@@ -238,7 +247,7 @@ func NewMetric(ctx context.Context, c MetricConfig) error {
 
 type TraceConfig struct{}
 
-func NewTrace(ctx context.Context, c TraceConfig) (http.Handler, error) {
+func NewTrace(ctx context.Context, res *resource.Resource, c TraceConfig) (http.Handler, error) {
 	ztrace := zpages.NewSpanProcessor()
 	traceZpage := zpages.NewTracezHandler(ztrace)
 
@@ -249,6 +258,7 @@ func NewTrace(ctx context.Context, c TraceConfig) (http.Handler, error) {
 		return nil, err
 	}
 	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithResource(res),
 		sdktrace.WithBatcher(te),
 		sdktrace.WithSpanProcessor(ztrace),
 	)
