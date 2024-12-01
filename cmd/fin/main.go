@@ -54,6 +54,11 @@ func ConvertCommand() ycli.Command {
 			nil,
 			c.hsbc,
 		),
+		ycli.New("trading",
+			"convert trading212 statements",
+			nil,
+			c.trading,
+		),
 	)
 }
 
