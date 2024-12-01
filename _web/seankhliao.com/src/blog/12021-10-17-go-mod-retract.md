@@ -101,5 +101,5 @@ go 1.17
 
 // retract all versions, including the versions individual commits would have,
 // and also the version that contains this retraction
-retract [v0.0.0-00000000000000-000000000000, v0.15.2]
+retract [v0.0.0-0, v0.15.2]
 ```
