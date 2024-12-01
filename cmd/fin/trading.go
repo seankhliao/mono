@@ -2,28 +2,18 @@ package main
 
 import (
 	"bytes"
-	"encoding/csv"
 	"fmt"
 	"io"
 	"maps"
-	"os"
 	"slices"
 	"strconv"
 	"strings"
 )
 
 func (c *Convert) trading(stdout, stderr io.Writer) error {
-	if c.filepath == "" {
-		return fmt.Errorf("no file given")
-	}
-	b, err := os.ReadFile(c.filepath)
+	records, err := c.reader()
 	if err != nil {
-		return fmt.Errorf("read file: %w", err)
-	}
-	cr := csv.NewReader(bytes.NewReader(b))
-	records, err := cr.ReadAll()
-	if err != nil {
-		return fmt.Errorf("read all records: %w", err)
+		return fmt.Errorf("read input: %w", err)
 	}
 
 	interest := make(map[string]map[string]int)
@@ -81,13 +71,13 @@ func (c *Convert) trading(stdout, stderr io.Writer) error {
 			merchant := rec[idxs["Merchant name"]]
 			category := rec[idxs["Merchant category"]]
 			desc := strings.Join([]string{rec[idxs["Time"]], category, merchant}, " ")
-			fmt.Fprintf(buf, "[TOC, %s, %d, %q],\n", categorize(merchant+" "+category), value, desc)
+			fmt.Fprintf(buf, "[TOC, %s, %d, %q],\n", categorize(merchant, category), value, desc)
 
 		case "Card credit":
 			merchant := rec[idxs["Merchant name"]]
 			category := rec[idxs["Merchant category"]]
 			desc := strings.Join([]string{rec[idxs["Time"]], category, merchant}, " ")
-			fmt.Fprintf(buf, "[%s, TOC, %d, %q],\n", categorize(merchant+" "+category), value, desc)
+			fmt.Fprintf(buf, "[%s, TOC, %d, %q],\n", categorize(merchant, category), value, desc)
 
 		case "Currency conversion":
 			desc := strings.Join([]string{rec[idxs["Time"]], rec[idxs["Notes"]]}, " ")
