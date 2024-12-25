@@ -10,7 +10,6 @@ that I could use to name things.
 | name     | source                                                  | use              |
 | -------- | ------------------------------------------------------- | ---------------- |
 | Asami    | [Leave Me Alone, I Don't Want a Romantic Comedy][asami] | k8s cluster      |
-| Binari   | [The Dark Lord's Confession][lapis]                     |                  |
 | Dani     | [That Which Flows By][dani]                             | ... retired ...  |
 | Hwaryun  | [Tower of God][hwaryun]                                 | framework laptop |
 | Ihwa     | [Hero Killer][ihwa]                                     | ... retired ...  |
@@ -21,6 +20,7 @@ that I could use to name things.
 | Makima   | [Chainsaw Man][makima]                                  | pixel tablet     |
 | Medea    | [Your Throne][medea]                                    | ... retired ...  |
 | Millenyn | [Wished You Were Dead][millenyn]                        | ... retired ...  |
+| Miryeong | [The Advanced Player of the Tutorial Tower][miryeong] | |
 | Nerys    | [The Price Is Your Everything][nerys]                   |                  |
 | Nyarla   | [Crawling Dreams][nyarla]                               | ... retired ...  |
 
@@ -35,5 +35,6 @@ that I could use to name things.
 [makima]: https://myanimelist.net/anime/44511/Chainsaw_Man
 [medea]: https://www.webtoons.com/en/fantasy/your-throne/list?title_no=2009
 [millenyn]: https://www.webtoons.com/en/drama/wished-you-were-dead/list?title_no=3591
+[miryeong]: https://www.webtoons.com/en/action/the-advanced-player-of-the-tutorial-tower/list?title_no=2409
 [nerys]: https://www.webtoons.com/en/drama/the-price-is-your-everything/list?title_no=6054
 [nyarla]: https://www.webtoons.com/en/canvas/crawling-dreams/list?title_no=141539

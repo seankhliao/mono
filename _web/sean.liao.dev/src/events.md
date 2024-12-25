@@ -12,11 +12,19 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 - _12025-07-17_ Billie Eilish
 - _12025-06-19_ Ado
+- _12025-06-06_ Paris Paloma
+- _12025-06-04_ Nessa Barrett
 - _12025-05-30_ Babymetal
+- _12025-05-03_ Aurora
+<!-- - _12025-03-26_ ASP -->
 - _12025-03-25_ tiLLie
+- _12025-03-14_ south arcade
 - _12025-03-13_ Clairo
+- _12025-03-01_ Natalie Jane
 - _12025-02-26_ Emei
-- _12024-02-19_ Phantom Siita
+- _12025-02-19_ Phantom Siita
+- _12025-02-14_ ANKOR
+- _12025-02-05_ Pretty Guardian Sailor Moon
 
 ###### _12024-11-29_ renforshort
 
