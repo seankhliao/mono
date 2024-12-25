@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// TODO: merge with secrets?
 App: {
 	BaseDomain: string | *"liao.dev"
 	Auth: {

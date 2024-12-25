@@ -1,2 +1,3 @@
 /_data/**/*.cue
+/_data/**/*.yaml
 /_web/*/dst

@@ -57,6 +57,7 @@ rules:
       - httproutes
     verbs: *writeverbs
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.31.1-standalone/deployment-apps-v1.json
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -102,7 +103,7 @@ spec:
               value: /etc/workload-identity/creds.json
           image: ko://go.seankhliao.com/mono/cmd/moo
           args:
-            - -config-bucket=gs://moo-liao-dev
+            - -config-bucket=file:///etc/moo
           name: moo
           ports:
             - containerPort: 8080
@@ -116,6 +117,8 @@ spec:
             - name: gcp-creds
               mountPath: /etc/workload-identity
               readOnly: true
+            - name: config
+              mountPath: /etc/moo
       enableServiceLinks: false
       serviceAccountName: moo
       volumes:
@@ -129,7 +132,11 @@ spec:
         - name: gcp-creds
           configMap:
             name: gcp
+        - name: config
+          secret:
+            secretName: moo
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.31.1-standalone/configmap-v1.json
 apiVersion: v1
 kind: ConfigMap
 metadata:
