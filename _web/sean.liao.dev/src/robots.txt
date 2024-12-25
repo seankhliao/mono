@@ -42,4 +42,4 @@ Disallow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://seankhliao.com/sitemap.txt
+Sitemap: https://sean.liao.dev/sitemap.txt
