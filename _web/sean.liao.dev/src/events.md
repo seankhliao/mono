@@ -26,7 +26,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-02-14_ ANKOR
 - _12025-02-05_ Pretty Guardian Sailor Moon
 
-###### _12024-11-29_ renforshort
+##### _12024-11-29_ renforshort
 
 With [_Karin Ann_]
 
@@ -38,7 +38,7 @@ I still knew all the songs,
 and the positivity I felt was quite energizing.
 I think it was a wonderful show to end this year with for me.
 
-###### _12024-11-27_ WACK in the UK Vol 4
+##### _12024-11-27_ WACK in the UK Vol 4
 
 With [_MONSTERIDOL_], [_ASP_], and [_ExWHYZ_]
 
@@ -53,7 +53,7 @@ more... mainstream street beauty style?
 The music was decent though I caught myself drifting off
 despite how loud and energetic it was.
 
-###### _12024-11-15_ UPSAHL
+##### _12024-11-15_ UPSAHL
 
 With [_Ellie Dixon_]
 
@@ -71,7 +71,7 @@ where it's ice for the first half, melted down for the second.
 Ok, she got me, the second half was a lot warmer,
 a lot more like what I remembered.
 
-###### _12024-11-02_ Kamelot
+##### _12024-11-02_ Kamelot
 
 With [_Ad Infinitum_], [_Blackbriar_], and [_Frozen Crown_]
 
@@ -85,7 +85,7 @@ It was almost ethereal.
 but it felt like a different genre?
 [_KAMELOT_] was fine, very flashy too with lots of smoke and flames.
 
-###### _12024-10-26_ Hatsune Miku
+##### _12024-10-26_ Hatsune Miku
 
 So there's a real band,
 but for this concert,
@@ -97,7 +97,7 @@ but I was more hoping that they would have taken advantage of the fact that Miku
 and wouldn't be limited by real world physics.
 As it stands, it's like a real concert, but the lead vocals is... virtual.
 
-###### _12024-10-26_ MCM London Comic Con
+##### _12024-10-26_ MCM London Comic Con
 
 Second day,
 I was only here for a short while to see the cosplays.
@@ -114,7 +114,7 @@ About the cosplays:
 - Ciri was also quite recognizable
 - Makima seemed difficult for a lot people to pull of properly
 
-###### _12024-10-25_ MCM London Comic Con
+##### _12024-10-25_ MCM London Comic Con
 
 Lots of cosplays to see,
 though I'm not sure if I can accurately judge the quality of them...
