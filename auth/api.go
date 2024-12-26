@@ -56,7 +56,7 @@ func (a *App) AuthN(next http.Handler) http.Handler {
 			cookie, err := r.Cookie(a.cookieName)
 			if err == nil {
 				a.store.RDo(ctx, func(s *authv1.Store) {
-					info = s.Sessions[cookie.Value]
+					info = s.GetSessions()[cookie.Value]
 				})
 				// TODO: check for session expiry?
 			}
@@ -66,13 +66,13 @@ func (a *App) AuthN(next http.Handler) http.Handler {
 				)
 				// start a new anonymous session
 				token := genToken("moox_")
-				info = &authv1.TokenInfo{
+				info := authv1.TokenInfo_builder{
 					SessionId: &token,
 					Created:   timestamppb.Now(),
-				}
+				}.Build()
 
 				a.store.Do(ctx, func(s *authv1.Store) {
-					s.Sessions[info.GetSessionId()] = info
+					s.GetSessions()[info.GetSessionId()] = info
 				})
 
 				// send it to the client

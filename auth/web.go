@@ -65,11 +65,11 @@ func (a *App) homepage(rw http.ResponseWriter, r *http.Request) {
 
 	var user *authv1.UserInfo
 	a.store.RDo(ctx, func(s *authv1.Store) {
-		user = s.Users[info.GetUserId()]
+		user = s.GetUsers()[info.GetUserId()]
 	})
 
 	var credIDs []gomponents.Node
-	for _, cred := range user.Creds {
+	for _, cred := range user.GetCreds() {
 		credIDs = append(credIDs, html.Li(gomponents.Text(cred.GetName())))
 	}
 
@@ -123,9 +123,10 @@ func (a *App) update(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	a.store.Do(ctx, func(s *authv1.Store) {
-		user := s.Users[*info.UserId]
-		user.Username = ptr(r.FormValue("username"))
-		s.Users[*info.UserId] = user
+		user := s.GetUsers()[info.GetUserId()]
+
+		user.SetUsername(r.FormValue("username"))
+		s.GetUsers()[info.GetUserId()] = user
 	})
 
 	http.Redirect(rw, r, "/", http.StatusFound)
@@ -138,7 +139,7 @@ func (a *App) logoutPage(rw http.ResponseWriter, r *http.Request) {
 
 	var user *authv1.UserInfo
 	a.store.RDo(ctx, func(s *authv1.Store) {
-		user = s.Users[*info.UserId]
+		user = s.GetUsers()[info.GetUserId()]
 	})
 
 	webstyle.Structured(rw, webstyle.NewOptions("end this session", "logout", []gomponents.Node{
@@ -157,7 +158,7 @@ func (a *App) logoutAction(rw http.ResponseWriter, r *http.Request) {
 	info := FromContext(ctx)
 
 	a.store.Do(ctx, func(s *authv1.Store) {
-		delete(s.Sessions, info.GetSessionId())
+		delete(s.GetSessions(), info.GetSessionId())
 	})
 
 	http.SetCookie(rw, &http.Cookie{

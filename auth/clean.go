@@ -14,7 +14,7 @@ func (a *App) CleanSessions() error {
 		ctx := context.Background()
 		var anon, admin, user int64
 		a.store.Do(ctx, func(s *authv1.Store) {
-			for k, v := range s.Sessions {
+			for k, v := range s.GetSessions() {
 				expiry := 24 * time.Hour
 				switch {
 				case v.GetUserId() < 0:
@@ -26,7 +26,7 @@ func (a *App) CleanSessions() error {
 					expiry = 7 * 24 * time.Hour
 				}
 				if time.Since(v.GetCreated().AsTime()) >= expiry {
-					delete(s.Sessions, k)
+					delete(s.GetSessions(), k)
 				}
 			}
 		})

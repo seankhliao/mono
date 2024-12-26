@@ -12,7 +12,6 @@ import (
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -23,21 +22,18 @@ const (
 )
 
 type QueryFilterContext struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// by playback or track
-	Track   *string  `protobuf:"bytes,1,opt,name=track" json:"track,omitempty"`
-	Artists []string `protobuf:"bytes,2,rep,name=artists" json:"artists,omitempty"`
-	// by playback
-	PlayTime *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=play_time,json=playTime" json:"play_time,omitempty"`
-	// by playback or track
-	TrackDuration *durationpb.Duration `protobuf:"bytes,4,opt,name=track_duration,json=trackDuration" json:"track_duration,omitempty"`
-	// by track or artist
-	Plays *int64 `protobuf:"varint,5,opt,name=plays" json:"plays,omitempty"`
-	// by artist
-	Artist        *string `protobuf:"bytes,6,opt,name=artist" json:"artist,omitempty"`
-	Tracks        *int64  `protobuf:"varint,7,opt,name=tracks" json:"tracks,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                    protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Track         *string                `protobuf:"bytes,1,opt,name=track" json:"track,omitempty"`
+	xxx_hidden_Artists       []string               `protobuf:"bytes,2,rep,name=artists" json:"artists,omitempty"`
+	xxx_hidden_PlayTime      *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=play_time,json=playTime" json:"play_time,omitempty"`
+	xxx_hidden_TrackDuration *durationpb.Duration   `protobuf:"bytes,4,opt,name=track_duration,json=trackDuration" json:"track_duration,omitempty"`
+	xxx_hidden_Plays         int64                  `protobuf:"varint,5,opt,name=plays" json:"plays,omitempty"`
+	xxx_hidden_Artist        *string                `protobuf:"bytes,6,opt,name=artist" json:"artist,omitempty"`
+	xxx_hidden_Tracks        int64                  `protobuf:"varint,7,opt,name=tracks" json:"tracks,omitempty"`
+	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
+	XXX_presence             [1]uint32
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *QueryFilterContext) Reset() {
@@ -65,58 +61,204 @@ func (x *QueryFilterContext) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use QueryFilterContext.ProtoReflect.Descriptor instead.
-func (*QueryFilterContext) Descriptor() ([]byte, []int) {
-	return file_earbug_v5_query_proto_rawDescGZIP(), []int{0}
-}
-
 func (x *QueryFilterContext) GetTrack() string {
-	if x != nil && x.Track != nil {
-		return *x.Track
+	if x != nil {
+		if x.xxx_hidden_Track != nil {
+			return *x.xxx_hidden_Track
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *QueryFilterContext) GetArtists() []string {
 	if x != nil {
-		return x.Artists
+		return x.xxx_hidden_Artists
 	}
 	return nil
 }
 
 func (x *QueryFilterContext) GetPlayTime() *timestamppb.Timestamp {
 	if x != nil {
-		return x.PlayTime
+		return x.xxx_hidden_PlayTime
 	}
 	return nil
 }
 
 func (x *QueryFilterContext) GetTrackDuration() *durationpb.Duration {
 	if x != nil {
-		return x.TrackDuration
+		return x.xxx_hidden_TrackDuration
 	}
 	return nil
 }
 
 func (x *QueryFilterContext) GetPlays() int64 {
-	if x != nil && x.Plays != nil {
-		return *x.Plays
+	if x != nil {
+		return x.xxx_hidden_Plays
 	}
 	return 0
 }
 
 func (x *QueryFilterContext) GetArtist() string {
-	if x != nil && x.Artist != nil {
-		return *x.Artist
+	if x != nil {
+		if x.xxx_hidden_Artist != nil {
+			return *x.xxx_hidden_Artist
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *QueryFilterContext) GetTracks() int64 {
-	if x != nil && x.Tracks != nil {
-		return *x.Tracks
+	if x != nil {
+		return x.xxx_hidden_Tracks
 	}
 	return 0
+}
+
+func (x *QueryFilterContext) SetTrack(v string) {
+	x.xxx_hidden_Track = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
+}
+
+func (x *QueryFilterContext) SetArtists(v []string) {
+	x.xxx_hidden_Artists = v
+}
+
+func (x *QueryFilterContext) SetPlayTime(v *timestamppb.Timestamp) {
+	x.xxx_hidden_PlayTime = v
+}
+
+func (x *QueryFilterContext) SetTrackDuration(v *durationpb.Duration) {
+	x.xxx_hidden_TrackDuration = v
+}
+
+func (x *QueryFilterContext) SetPlays(v int64) {
+	x.xxx_hidden_Plays = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 7)
+}
+
+func (x *QueryFilterContext) SetArtist(v string) {
+	x.xxx_hidden_Artist = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 7)
+}
+
+func (x *QueryFilterContext) SetTracks(v int64) {
+	x.xxx_hidden_Tracks = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
+}
+
+func (x *QueryFilterContext) HasTrack() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *QueryFilterContext) HasPlayTime() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_PlayTime != nil
+}
+
+func (x *QueryFilterContext) HasTrackDuration() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_TrackDuration != nil
+}
+
+func (x *QueryFilterContext) HasPlays() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
+func (x *QueryFilterContext) HasArtist() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
+func (x *QueryFilterContext) HasTracks() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+}
+
+func (x *QueryFilterContext) ClearTrack() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Track = nil
+}
+
+func (x *QueryFilterContext) ClearPlayTime() {
+	x.xxx_hidden_PlayTime = nil
+}
+
+func (x *QueryFilterContext) ClearTrackDuration() {
+	x.xxx_hidden_TrackDuration = nil
+}
+
+func (x *QueryFilterContext) ClearPlays() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_Plays = 0
+}
+
+func (x *QueryFilterContext) ClearArtist() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_Artist = nil
+}
+
+func (x *QueryFilterContext) ClearTracks() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	x.xxx_hidden_Tracks = 0
+}
+
+type QueryFilterContext_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// by playback or track
+	Track   *string
+	Artists []string
+	// by playback
+	PlayTime *timestamppb.Timestamp
+	// by playback or track
+	TrackDuration *durationpb.Duration
+	// by track or artist
+	Plays *int64
+	// by artist
+	Artist *string
+	Tracks *int64
+}
+
+func (b0 QueryFilterContext_builder) Build() *QueryFilterContext {
+	m0 := &QueryFilterContext{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Track != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
+		x.xxx_hidden_Track = b.Track
+	}
+	x.xxx_hidden_Artists = b.Artists
+	x.xxx_hidden_PlayTime = b.PlayTime
+	x.xxx_hidden_TrackDuration = b.TrackDuration
+	if b.Plays != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 7)
+		x.xxx_hidden_Plays = *b.Plays
+	}
+	if b.Artist != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 7)
+		x.xxx_hidden_Artist = b.Artist
+	}
+	if b.Tracks != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
+		x.xxx_hidden_Tracks = *b.Tracks
+	}
+	return m0
 }
 
 var File_earbug_v5_query_proto protoreflect.FileDescriptor
@@ -155,18 +297,6 @@ var file_earbug_v5_query_proto_rawDesc = []byte{
 	0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0a, 0x45,
 	0x61, 0x72, 0x62, 0x75, 0x67, 0x3a, 0x3a, 0x56, 0x35, 0x62, 0x08, 0x65, 0x64, 0x69, 0x74, 0x69,
 	0x6f, 0x6e, 0x73, 0x70, 0xe8, 0x07,
-}
-
-var (
-	file_earbug_v5_query_proto_rawDescOnce sync.Once
-	file_earbug_v5_query_proto_rawDescData = file_earbug_v5_query_proto_rawDesc
-)
-
-func file_earbug_v5_query_proto_rawDescGZIP() []byte {
-	file_earbug_v5_query_proto_rawDescOnce.Do(func() {
-		file_earbug_v5_query_proto_rawDescData = protoimpl.X.CompressGZIP(file_earbug_v5_query_proto_rawDescData)
-	})
-	return file_earbug_v5_query_proto_rawDescData
 }
 
 var file_earbug_v5_query_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

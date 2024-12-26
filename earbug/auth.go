@@ -48,12 +48,12 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	a.store.Do(ctx, func(s *earbugv5.Store) {
-		data, ok := s.Users[info.GetUserId()]
+		data, ok := s.GetUsers()[info.GetUserId()]
 		if !ok {
 			data = &earbugv5.UserData{}
 		}
-		data.Token = tokenMarshaled
-		s.Users[info.GetUserId()] = data
+		data.SetToken(tokenMarshaled)
+		s.GetUsers()[info.GetUserId()] = data
 	})
 
 	rw.Write([]byte("success"))

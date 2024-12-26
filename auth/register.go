@@ -25,7 +25,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			}
 			var ok bool
 			a.store.RDo(ctx, func(s *authv1.Store) {
-				_, ok = s.Sessions[adminToken]
+				_, ok = s.GetSessions()[adminToken]
 			})
 			if !ok {
 				return nil, fmt.Errorf("invalid admin token")
@@ -40,26 +40,26 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			a.store.Do(ctx, func(s *authv1.Store) {
 				userID := mathrand.Int64()
 				for {
-					_, ok := s.Users[userID]
+					_, ok := s.GetUsers()[userID]
 					if !ok {
 						break
 					}
 					userID = mathrand.Int64()
 				}
-				for _, user := range s.Users {
+				for _, user := range s.GetUsers() {
 					if user.GetUsername() == username {
 						err = fmt.Errorf("username in use")
 						return
 					}
 				}
-				s.Users[userID] = &authv1.UserInfo{
+				s.GetUsers()[userID] = authv1.UserInfo_builder{
 					UserId:   ptr(userID),
 					Username: ptr(username),
-				}
+				}.Build()
 
-				info.UserId = &userID
+				info.SetUserId(userID)
 
-				delete(s.Sessions, adminToken)
+				delete(s.GetSessions(), adminToken)
 			})
 			if err != nil {
 				return nil, err
@@ -74,7 +74,7 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 		var user *authv1.UserInfo
 		var ok bool
 		a.store.RDo(ctx, func(s *authv1.Store) {
-			user, ok = s.Users[info.GetUserId()]
+			user, ok = s.GetUsers()[info.GetUserId()]
 		})
 		if !ok {
 			return nil, errors.New("user not found")
@@ -85,16 +85,17 @@ func (a *App) registerStart(rw http.ResponseWriter, r *http.Request) {
 			return nil, err
 		}
 
-		info.SessionData, err = json.Marshal(
+		b, err := json.Marshal(
 			sess,
 			json.FormatNilSliceAsNull(true), // https://github.com/go-webauthn/webauthn/pull/327
 		)
 		if err != nil {
 			return nil, err
 		}
-		info.CredName = &credname
+		info.SetSessionData(b)
+		info.SetCredName(credname)
 		a.store.Do(ctx, func(s *authv1.Store) {
-			s.Sessions[info.GetSessionId()] = info
+			s.GetSessions()[info.GetSessionId()] = info
 		})
 
 		return create, nil
@@ -117,17 +118,17 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 		var user *authv1.UserInfo
 		var ok bool
 		a.store.RDo(ctx, func(s *authv1.Store) {
-			user, ok = s.Users[info.GetUserId()]
+			user, ok = s.GetUsers()[info.GetUserId()]
 		})
 		if !ok {
 			return errors.New("user not found")
 		}
 
-		if info.SessionData == nil {
+		if !info.HasSessionData() {
 			return errors.New("no session started")
 		}
 		var sess webauthn.SessionData
-		err := json.Unmarshal(info.SessionData, &sess)
+		err := json.Unmarshal(info.GetSessionData(), &sess)
 		if err != nil {
 			return err
 		}
@@ -141,13 +142,13 @@ func (a *App) registerFinish(rw http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return err
 		}
-		user.Creds = append(user.Creds, &authv1.Credential{
-			Name: info.CredName,
+		user.SetCreds(append(user.GetCreds(), authv1.Credential_builder{
+			Name: ptr(info.GetCredName()),
 			Cred: credb,
-		})
+		}.Build()))
 
 		a.store.Do(ctx, func(s *authv1.Store) {
-			s.Users[*user.UserId] = user
+			s.GetUsers()[user.GetUserId()] = user
 		})
 
 		return nil

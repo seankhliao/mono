@@ -35,15 +35,16 @@ func (a *App) loginStart(rw http.ResponseWriter, r *http.Request) {
 		}
 
 		// store session data for finish
-		info.SessionData, err = json.Marshal(
+		b, err := json.Marshal(
 			sess,
 			json.FormatNilSliceAsNull(true), // https://github.com/go-webauthn/webauthn/pull/327
 		)
 		if err != nil {
 			return nil, err
 		}
+		info.SetSessionData(b)
 		a.store.Do(ctx, func(s *authv1.Store) {
-			s.Sessions[info.GetSessionId()] = info
+			s.GetSessions()[info.GetSessionId()] = info
 		})
 		return cred, nil
 	}()
@@ -66,11 +67,11 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 	info := FromContext(ctx)
 	var user wanUser
 	err := a.o.Region(ctx, "validate credentials", func(ctx context.Context, span trace.Span) error {
-		if len(info.SessionData) == 0 {
+		if len(info.GetSessionData()) == 0 {
 			return errors.New("no session started")
 		}
 		var sess webauthn.SessionData
-		err := json.Unmarshal(info.SessionData, &sess)
+		err := json.Unmarshal(info.GetSessionData(), &sess)
 		if err != nil {
 			return fmt.Errorf("unmarshal stored session data: %w", err)
 		}
@@ -88,7 +89,7 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		a.o.HTTPErr(ctx, "failed to validate credentials", err, rw, http.StatusUnauthorized,
-			slog.String("session.session_data", string(info.SessionData)),
+			slog.String("session.session_data", string(info.GetSessionData())),
 		)
 		return
 	}
@@ -97,16 +98,16 @@ func (a *App) loginFinish(rw http.ResponseWriter, r *http.Request) {
 
 	err = a.o.Region(ctx, "prepare new session", func(ctx context.Context, span trace.Span) error {
 		token := genToken("moou_")
-		tokenInfo := &authv1.TokenInfo{
+		tokenInfo := authv1.TokenInfo_builder{
 			SessionId: &token,
 			Created:   timestamppb.Now(),
-			UserId:    user.u.UserId,
-		}
+			UserId:    ptr(user.u.GetUserId()),
+		}.Build()
 
 		// swap tokens
 		a.store.Do(ctx, func(s *authv1.Store) {
-			delete(s.Sessions, info.GetSessionId())
-			s.Sessions[tokenInfo.GetSessionId()] = tokenInfo
+			delete(s.GetSessions(), info.GetSessionId())
+			s.GetSessions()[tokenInfo.GetSessionId()] = tokenInfo
 		})
 
 		// send it to the client

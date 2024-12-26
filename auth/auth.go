@@ -88,10 +88,10 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 
 	ctx := context.Background()
 	a.store, err = yrun.NewStore(ctx, bkt, "auth.pb.zstd", func() *authv1.Store {
-		return &authv1.Store{
+		return authv1.Store_builder{
 			Users:    make(map[int64]*authv1.UserInfo),
 			Sessions: make(map[string]*authv1.TokenInfo),
-		}
+		}.Build()
 	})
 	if err != nil {
 		return nil, fmt.Errorf("init store: %w", err)
@@ -125,14 +125,14 @@ func (a *App) adminToken(rw http.ResponseWriter, r *http.Request) {
 	defer span.End()
 
 	token := genToken("mooa_")
-	tokenInfo := &authv1.TokenInfo{
+	tokenInfo := authv1.TokenInfo_builder{
 		SessionId: &token,
 		Created:   timestamppb.Now(),
 		UserId:    ptr[int64](-1),
-	}
+	}.Build()
 
 	a.store.Do(ctx, func(s *authv1.Store) {
-		s.Sessions[tokenInfo.GetSessionId()] = tokenInfo
+		s.GetSessions()[tokenInfo.GetSessionId()] = tokenInfo
 	})
 
 	rw.Write([]byte(token))

@@ -136,12 +136,12 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 					artists = append(artists, a.GetName())
 				}
 				var activation interpreter.Activation
-				activation, err = cel.ContextProtoVars(&earbugv5.QueryFilterContext{
-					Track:         play.Track.Name,
+				activation, err = cel.ContextProtoVars(earbugv5.QueryFilterContext_builder{
+					Track:         ptr(play.Track.GetName()),
 					Artists:       artists,
 					PlayTime:      timestamppb.New(play.StartTime),
 					TrackDuration: durationpb.New(play.PlaybackTime),
-				})
+				}.Build())
 				if err != nil {
 					continue
 				}
@@ -205,11 +205,11 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 		for _, row := range artistRows {
 			if opts.filter != nil {
 				var activation interpreter.Activation
-				activation, err = cel.ContextProtoVars(&earbugv5.QueryFilterContext{
+				activation, err = cel.ContextProtoVars(earbugv5.QueryFilterContext_builder{
 					Artist: &row.artist,
 					Plays:  ptr(int64(row.plays)),
 					Tracks: ptr(int64(len(row.tracks))),
-				})
+				}.Build())
 				if err != nil {
 					continue
 				}
@@ -250,7 +250,7 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 		for _, play := range playbacks {
 			row := tracks[play.Track.GetId()]
 			row.track = play.Track.GetName()
-			row.length = play.Track.Duration.AsDuration()
+			row.length = play.Track.GetDuration().AsDuration()
 			if len(row.artists) == 0 {
 				var as []string
 				for _, a := range play.Track.GetArtists() {
@@ -275,12 +275,12 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 		for _, row := range trackRows {
 			if opts.filter != nil {
 				var activation interpreter.Activation
-				activation, err = cel.ContextProtoVars(&earbugv5.QueryFilterContext{
+				activation, err = cel.ContextProtoVars(earbugv5.QueryFilterContext_builder{
 					Track:         &row.track,
 					Artists:       row.artists,
 					Plays:         ptr(int64(row.plays)),
 					TrackDuration: durationpb.New(row.length),
-				})
+				}.Build())
 				if err != nil {
 					continue
 				}
@@ -401,7 +401,7 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 
 	var plays []DisplayPlayback
 	a.store.RDo(ctx, func(s *earbugv5.Store) {
-		userData, ok := s.Users[o.userID]
+		userData, ok := s.GetUsers()[o.userID]
 		if !ok {
 			return
 		}
@@ -413,7 +413,7 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 				continue
 			}
 
-			track := s.Tracks[play.GetTrackId()]
+			track := s.GetTracks()[play.GetTrackId()]
 			plays = append(plays, DisplayPlayback{
 				StartTime: startTime,
 				Track:     track,
@@ -427,7 +427,7 @@ func (a *App) getPlaybacks(ctx context.Context, o queryOptions) ([]DisplayPlayba
 
 	// estimate PlaybackTime
 	for i := range plays {
-		plays[i].PlaybackTime = plays[i].Track.Duration.AsDuration()
+		plays[i].PlaybackTime = plays[i].Track.GetDuration().AsDuration()
 		if i > 0 {
 			gap := plays[i-1].StartTime.Sub(plays[i].StartTime)
 			if gap < plays[i].PlaybackTime {

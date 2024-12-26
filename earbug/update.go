@@ -23,9 +23,9 @@ func (a *App) update(ctx context.Context) {
 
 	clients := make(map[int64]spotify.Client)
 	a.store.RDo(ctx, func(s *earbugv5.Store) {
-		for userID, userData := range s.Users {
+		for userID, userData := range s.GetUsers() {
 			var token oauth2.Token
-			err := json.Unmarshal(userData.Token, &token)
+			err := json.Unmarshal(userData.GetToken(), &token)
 			if err != nil {
 				continue
 			}
@@ -47,38 +47,38 @@ func (a *App) update(ctx context.Context) {
 			a.store.Do(ctx, func(s *earbugv5.Store) {
 				for _, item := range items {
 					ts := item.PlayedAt.Format(time.RFC3339Nano)
-					if _, ok := s.Users[userID].Playbacks[ts]; !ok {
+					if _, ok := s.GetUsers()[userID].GetPlaybacks()[ts]; !ok {
 						userAdded++
-						s.Users[userID].Playbacks[ts] = &earbugv5.Playback{
+						s.GetUsers()[userID].GetPlaybacks()[ts] = earbugv5.Playback_builder{
 							TrackId:     ptr(item.Track.ID.String()),
 							TrackUri:    ptr(string(item.Track.URI)),
 							ContextType: ptr(item.PlaybackContext.Type),
 							ContextUri:  ptr(string(item.PlaybackContext.URI)),
-						}
+						}.Build()
 					}
 
-					if _, ok := s.Tracks[item.Track.ID.String()]; !ok {
-						t := &earbugv5.Track{
+					if _, ok := s.GetTracks()[item.Track.ID.String()]; !ok {
+						t := earbugv5.Track_builder{
 							Id:       ptr(item.Track.ID.String()),
 							Uri:      ptr(string(item.Track.URI)),
 							Type:     ptr(item.Track.Type),
 							Name:     ptr(item.Track.Name),
 							Duration: durationpb.New(item.Track.TimeDuration()),
-						}
+						}.Build()
 						for _, artist := range item.Track.Artists {
-							t.Artists = append(t.Artists, &earbugv5.Artist{
+							t.SetArtists(append(t.GetArtists(), earbugv5.Artist_builder{
 								Id:   ptr(artist.ID.String()),
 								Uri:  ptr(string(artist.URI)),
 								Name: ptr(artist.Name),
-							})
+							}.Build()))
 						}
-						s.Tracks[item.Track.ID.String()] = t
+						s.GetTracks()[item.Track.ID.String()] = t
 					}
 
 				}
 
-				userPlaybacks = int64(len(s.Users[userID].Playbacks))
-				totalTracks = int64(len(s.Tracks))
+				userPlaybacks = int64(len(s.GetUsers()[userID].GetPlaybacks()))
+				totalTracks = int64(len(s.GetTracks()))
 			})
 
 			a.mAdded.Add(ctx, userAdded, metric.WithAttributes(attribute.Int64("user.id", userID)))

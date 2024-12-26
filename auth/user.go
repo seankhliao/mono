@@ -26,9 +26,9 @@ func (u wanUser) WebAuthnName() string        { return u.u.GetUsername() }
 func (u wanUser) WebAuthnDisplayName() string { return u.u.GetUsername() }
 func (u wanUser) WebAuthnCredentials() []webauthn.Credential {
 	if len(u.cachedCreds) == 0 {
-		u.cachedCreds = make([]webauthn.Credential, len(u.u.Creds))
-		for i, b := range u.u.Creds {
-			json.Unmarshal(b.Cred, &u.cachedCreds[i])
+		u.cachedCreds = make([]webauthn.Credential, len(u.u.GetCreds()))
+		for i, b := range u.u.GetCreds() {
+			json.Unmarshal(b.GetCred(), &u.cachedCreds[i])
 		}
 	}
 
@@ -41,7 +41,7 @@ func (a *App) discoverableUserHandler(ctx context.Context) func(rawID, userHandl
 
 		a.store.RDo(ctx, func(s *authv1.Store) {
 		loop:
-			for _, u := range s.Users {
+			for _, u := range s.GetUsers() {
 				user = wanUser{u: u}
 				for _, cred := range user.WebAuthnCredentials() {
 					if bytes.Equal(cred.ID, userHandle) || bytes.Equal(cred.ID, rawID) {

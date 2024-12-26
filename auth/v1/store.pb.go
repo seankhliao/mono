@@ -11,7 +11,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -22,11 +21,11 @@ const (
 )
 
 type Store struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Sessions      map[string]*TokenInfo  `protobuf:"bytes,1,rep,name=sessions" json:"sessions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Users         map[int64]*UserInfo    `protobuf:"bytes,2,rep,name=users" json:"users,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Sessions map[string]*TokenInfo  `protobuf:"bytes,1,rep,name=sessions" json:"sessions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	xxx_hidden_Users    map[int64]*UserInfo    `protobuf:"bytes,2,rep,name=users" json:"users,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Store) Reset() {
@@ -54,34 +53,55 @@ func (x *Store) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Store.ProtoReflect.Descriptor instead.
-func (*Store) Descriptor() ([]byte, []int) {
-	return file_auth_v1_store_proto_rawDescGZIP(), []int{0}
-}
-
 func (x *Store) GetSessions() map[string]*TokenInfo {
 	if x != nil {
-		return x.Sessions
+		return x.xxx_hidden_Sessions
 	}
 	return nil
 }
 
 func (x *Store) GetUsers() map[int64]*UserInfo {
 	if x != nil {
-		return x.Users
+		return x.xxx_hidden_Users
 	}
 	return nil
 }
 
+func (x *Store) SetSessions(v map[string]*TokenInfo) {
+	x.xxx_hidden_Sessions = v
+}
+
+func (x *Store) SetUsers(v map[int64]*UserInfo) {
+	x.xxx_hidden_Users = v
+}
+
+type Store_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Sessions map[string]*TokenInfo
+	Users    map[int64]*UserInfo
+}
+
+func (b0 Store_builder) Build() *Store {
+	m0 := &Store{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Sessions = b.Sessions
+	x.xxx_hidden_Users = b.Users
+	return m0
+}
+
 type TokenInfo struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     *string                `protobuf:"bytes,1,opt,name=session_id,json=sessionId" json:"session_id,omitempty"`
-	Created       *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created" json:"created,omitempty"`
-	UserId        *int64                 `protobuf:"varint,3,opt,name=user_id,json=userId" json:"user_id,omitempty"`
-	SessionData   []byte                 `protobuf:"bytes,4,opt,name=session_data,json=sessionData" json:"session_data,omitempty"`
-	CredName      *string                `protobuf:"bytes,5,opt,name=cred_name,json=credName" json:"cred_name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_SessionId   *string                `protobuf:"bytes,1,opt,name=session_id,json=sessionId" json:"session_id,omitempty"`
+	xxx_hidden_Created     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created" json:"created,omitempty"`
+	xxx_hidden_UserId      int64                  `protobuf:"varint,3,opt,name=user_id,json=userId" json:"user_id,omitempty"`
+	xxx_hidden_SessionData []byte                 `protobuf:"bytes,4,opt,name=session_data,json=sessionData" json:"session_data,omitempty"`
+	xxx_hidden_CredName    *string                `protobuf:"bytes,5,opt,name=cred_name,json=credName" json:"cred_name,omitempty"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *TokenInfo) Reset() {
@@ -109,53 +129,176 @@ func (x *TokenInfo) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use TokenInfo.ProtoReflect.Descriptor instead.
-func (*TokenInfo) Descriptor() ([]byte, []int) {
-	return file_auth_v1_store_proto_rawDescGZIP(), []int{1}
-}
-
 func (x *TokenInfo) GetSessionId() string {
-	if x != nil && x.SessionId != nil {
-		return *x.SessionId
+	if x != nil {
+		if x.xxx_hidden_SessionId != nil {
+			return *x.xxx_hidden_SessionId
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *TokenInfo) GetCreated() *timestamppb.Timestamp {
 	if x != nil {
-		return x.Created
+		return x.xxx_hidden_Created
 	}
 	return nil
 }
 
 func (x *TokenInfo) GetUserId() int64 {
-	if x != nil && x.UserId != nil {
-		return *x.UserId
+	if x != nil {
+		return x.xxx_hidden_UserId
 	}
 	return 0
 }
 
 func (x *TokenInfo) GetSessionData() []byte {
 	if x != nil {
-		return x.SessionData
+		return x.xxx_hidden_SessionData
 	}
 	return nil
 }
 
 func (x *TokenInfo) GetCredName() string {
-	if x != nil && x.CredName != nil {
-		return *x.CredName
+	if x != nil {
+		if x.xxx_hidden_CredName != nil {
+			return *x.xxx_hidden_CredName
+		}
+		return ""
 	}
 	return ""
 }
 
+func (x *TokenInfo) SetSessionId(v string) {
+	x.xxx_hidden_SessionId = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+}
+
+func (x *TokenInfo) SetCreated(v *timestamppb.Timestamp) {
+	x.xxx_hidden_Created = v
+}
+
+func (x *TokenInfo) SetUserId(v int64) {
+	x.xxx_hidden_UserId = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+}
+
+func (x *TokenInfo) SetSessionData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_SessionData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+}
+
+func (x *TokenInfo) SetCredName(v string) {
+	x.xxx_hidden_CredName = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+}
+
+func (x *TokenInfo) HasSessionId() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *TokenInfo) HasCreated() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Created != nil
+}
+
+func (x *TokenInfo) HasUserId() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *TokenInfo) HasSessionData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *TokenInfo) HasCredName() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
+func (x *TokenInfo) ClearSessionId() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_SessionId = nil
+}
+
+func (x *TokenInfo) ClearCreated() {
+	x.xxx_hidden_Created = nil
+}
+
+func (x *TokenInfo) ClearUserId() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_UserId = 0
+}
+
+func (x *TokenInfo) ClearSessionData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_SessionData = nil
+}
+
+func (x *TokenInfo) ClearCredName() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_CredName = nil
+}
+
+type TokenInfo_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	SessionId   *string
+	Created     *timestamppb.Timestamp
+	UserId      *int64
+	SessionData []byte
+	CredName    *string
+}
+
+func (b0 TokenInfo_builder) Build() *TokenInfo {
+	m0 := &TokenInfo{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.SessionId != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
+		x.xxx_hidden_SessionId = b.SessionId
+	}
+	x.xxx_hidden_Created = b.Created
+	if b.UserId != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		x.xxx_hidden_UserId = *b.UserId
+	}
+	if b.SessionData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
+		x.xxx_hidden_SessionData = b.SessionData
+	}
+	if b.CredName != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_CredName = b.CredName
+	}
+	return m0
+}
+
 type UserInfo struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        *int64                 `protobuf:"varint,1,opt,name=user_id,json=userId" json:"user_id,omitempty"`
-	Username      *string                `protobuf:"bytes,2,opt,name=username" json:"username,omitempty"`
-	Creds         []*Credential          `protobuf:"bytes,4,rep,name=creds" json:"creds,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_UserId      int64                  `protobuf:"varint,1,opt,name=user_id,json=userId" json:"user_id,omitempty"`
+	xxx_hidden_Username    *string                `protobuf:"bytes,2,opt,name=username" json:"username,omitempty"`
+	xxx_hidden_Creds       *[]*Credential         `protobuf:"bytes,4,rep,name=creds" json:"creds,omitempty"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *UserInfo) Reset() {
@@ -183,38 +326,102 @@ func (x *UserInfo) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UserInfo.ProtoReflect.Descriptor instead.
-func (*UserInfo) Descriptor() ([]byte, []int) {
-	return file_auth_v1_store_proto_rawDescGZIP(), []int{2}
-}
-
 func (x *UserInfo) GetUserId() int64 {
-	if x != nil && x.UserId != nil {
-		return *x.UserId
+	if x != nil {
+		return x.xxx_hidden_UserId
 	}
 	return 0
 }
 
 func (x *UserInfo) GetUsername() string {
-	if x != nil && x.Username != nil {
-		return *x.Username
+	if x != nil {
+		if x.xxx_hidden_Username != nil {
+			return *x.xxx_hidden_Username
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *UserInfo) GetCreds() []*Credential {
 	if x != nil {
-		return x.Creds
+		if x.xxx_hidden_Creds != nil {
+			return *x.xxx_hidden_Creds
+		}
 	}
 	return nil
 }
 
+func (x *UserInfo) SetUserId(v int64) {
+	x.xxx_hidden_UserId = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+}
+
+func (x *UserInfo) SetUsername(v string) {
+	x.xxx_hidden_Username = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *UserInfo) SetCreds(v []*Credential) {
+	x.xxx_hidden_Creds = &v
+}
+
+func (x *UserInfo) HasUserId() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *UserInfo) HasUsername() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *UserInfo) ClearUserId() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_UserId = 0
+}
+
+func (x *UserInfo) ClearUsername() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Username = nil
+}
+
+type UserInfo_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	UserId   *int64
+	Username *string
+	Creds    []*Credential
+}
+
+func (b0 UserInfo_builder) Build() *UserInfo {
+	m0 := &UserInfo{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.UserId != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		x.xxx_hidden_UserId = *b.UserId
+	}
+	if b.Username != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_Username = b.Username
+	}
+	x.xxx_hidden_Creds = &b.Creds
+	return m0
+}
+
 type Credential struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          *string                `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
-	Cred          []byte                 `protobuf:"bytes,2,opt,name=cred" json:"cred,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Name        *string                `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	xxx_hidden_Cred        []byte                 `protobuf:"bytes,2,opt,name=cred" json:"cred,omitempty"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *Credential) Reset() {
@@ -242,23 +449,80 @@ func (x *Credential) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Credential.ProtoReflect.Descriptor instead.
-func (*Credential) Descriptor() ([]byte, []int) {
-	return file_auth_v1_store_proto_rawDescGZIP(), []int{3}
-}
-
 func (x *Credential) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
+	if x != nil {
+		if x.xxx_hidden_Name != nil {
+			return *x.xxx_hidden_Name
+		}
+		return ""
 	}
 	return ""
 }
 
 func (x *Credential) GetCred() []byte {
 	if x != nil {
-		return x.Cred
+		return x.xxx_hidden_Cred
 	}
 	return nil
+}
+
+func (x *Credential) SetName(v string) {
+	x.xxx_hidden_Name = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+}
+
+func (x *Credential) SetCred(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Cred = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+}
+
+func (x *Credential) HasName() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *Credential) HasCred() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *Credential) ClearName() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Name = nil
+}
+
+func (x *Credential) ClearCred() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Cred = nil
+}
+
+type Credential_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	Name *string
+	Cred []byte
+}
+
+func (b0 Credential_builder) Build() *Credential {
+	m0 := &Credential{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.Name != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		x.xxx_hidden_Name = b.Name
+	}
+	if b.Cred != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_Cred = b.Cred
+	}
+	return m0
 }
 
 var File_auth_v1_store_proto protoreflect.FileDescriptor
@@ -317,18 +581,6 @@ var file_auth_v1_store_proto_rawDesc = []byte{
 	0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x08, 0x41, 0x75, 0x74,
 	0x68, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x08, 0x65, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x70,
 	0xe8, 0x07,
-}
-
-var (
-	file_auth_v1_store_proto_rawDescOnce sync.Once
-	file_auth_v1_store_proto_rawDescData = file_auth_v1_store_proto_rawDesc
-)
-
-func file_auth_v1_store_proto_rawDescGZIP() []byte {
-	file_auth_v1_store_proto_rawDescOnce.Do(func() {
-		file_auth_v1_store_proto_rawDescData = protoimpl.X.CompressGZIP(file_auth_v1_store_proto_rawDescData)
-	})
-	return file_auth_v1_store_proto_rawDescData
 }
 
 var file_auth_v1_store_proto_msgTypes = make([]protoimpl.MessageInfo, 6)

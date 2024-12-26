@@ -83,10 +83,10 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	defer span.End()
 
 	store, err := yrun.NewStore(ctx, bkt, c.Key, func() *earbugv5.Store {
-		return &earbugv5.Store{
+		return earbugv5.Store_builder{
 			Tracks: make(map[string]*earbugv5.Track),
 			Users:  make(map[int64]*earbugv5.UserData),
-		}
+		}.Build()
 	})
 	if err != nil {
 		return nil, fmt.Errorf("init store: %w", err)
