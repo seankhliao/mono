@@ -45,11 +45,18 @@ go vet ./...
 go tool staticcheck ./...
 go tool buf lint .
 go tool cue vet -c=false ./...
+go tool govulncheck ./...
 ```
 
 ### deploy
 
 ```sh
+# in a _web/*/ directory
+go tool blogengine
+
+# targeting a cmd/*/ directory
+go tool ko apply -f ./cmd/
+
 # in a deploy/*/ directory
 kpt live apply --server-side --output table
 ```

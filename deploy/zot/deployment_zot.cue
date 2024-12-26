@@ -11,7 +11,7 @@ k8s: apps: v1: Deployment: "zot": {
 		spec: strategy: type: "Recreate"
 		spec: template: spec: {
 			containers: [{
-				image: ""
+				image: "ghcr.io/project-zot/zot:v2.1.1"
 				name:  "zot"
 				ports: [{
 					containerPort: 5000
