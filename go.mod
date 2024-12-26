@@ -7,7 +7,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/bradleyfalzon/ghinstallation/v2 v2.12.0
 	github.com/briandowns/spinner v1.23.1
-	github.com/go-json-experiment/json v0.0.0-20241222003016-5815faae9dc0
+	github.com/go-json-experiment/json v0.0.0-20241224190944-b42dde110e6c
 	github.com/go-webauthn/webauthn v0.11.2
 	github.com/google/cel-go v0.22.1
 	github.com/google/go-github/v60 v60.0.0
@@ -228,6 +228,7 @@ tool (
 	cuelang.org/go/cmd/cue
 	github.com/bufbuild/buf/cmd/buf
 	go.seankhliao.com/mono/cmd/blogengine
+	go.seankhliao.com/mono/cmd/fin
 	golang.org/x/vuln/cmd/govulncheck
 	google.golang.org/protobuf/cmd/protoc-gen-go
 	honnef.co/go/tools/cmd/staticcheck

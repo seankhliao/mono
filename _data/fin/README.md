@@ -9,11 +9,11 @@ The data is private and held in a GCP storage bucket
 ## Pull data
 
 ```sh
-make pull
+go tool fin pull
 ```
 
 ## Push data
 
 ```sh
-make push
+go tool fin push
 ```
