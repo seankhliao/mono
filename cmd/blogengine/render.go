@@ -22,7 +22,8 @@ const (
 	singleKey = ":single"
 )
 
-func findTitles(src []byte) (title, subtitle string) {
+func stripTitles(src []byte) (page []byte, title, subtitle string) {
+	buf := new(bytes.Buffer)
 	sc := bufio.NewScanner(bytes.NewReader(src))
 	for sc.Scan() {
 		b := sc.Bytes()
@@ -31,9 +32,12 @@ func findTitles(src []byte) (title, subtitle string) {
 			title = string(b[2:])
 		case bytes.HasPrefix(b, []byte("## ")):
 			subtitle = string(b[3:])
-			return
+		default:
+			buf.Write(b)
+			buf.WriteRune('\n')
 		}
 	}
+	page = buf.Bytes()
 	return
 }
 
@@ -42,11 +46,11 @@ func renderSingle(in string, compact bool) (map[string]*bytes.Buffer, error) {
 	if err != nil {
 		return nil, fmt.Errorf("read file: %w", err)
 	}
+	b, title, subtitle := stripTitles(b)
 	rawHTML, rawCSS, err := webstyle.Markdown(b)
 	if err != nil {
 		return nil, fmt.Errorf("parse markdown: %w", err)
 	}
-	title, subtitle := findTitles(b)
 	buf := new(bytes.Buffer)
 	o := webstyle.NewOptions(
 		title,
@@ -103,12 +107,12 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 			if err != nil {
 				return fmt.Errorf("read file: %w", err)
 			}
+			b, title, subtitle := stripTitles(b)
 			rawHTML, rawCSS, err := webstyle.Markdown(b)
 			if err != nil {
 				return fmt.Errorf("render markdown: %w", err)
 			}
 
-			title, subtitle := findTitles(b)
 			o := webstyle.NewOptions(
 				title,
 				subtitle,
