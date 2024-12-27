@@ -1,13 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
-	"regexp"
 	"slices"
 	"strings"
 	"time"
@@ -22,10 +22,20 @@ const (
 	singleKey = ":single"
 )
 
-var (
-	titleRegex    = regexp.MustCompile(`^# .*$`)
-	subtitleRegex = regexp.MustCompile(`^## .*$`)
-)
+func findTitles(src []byte) (title, subtitle string) {
+	sc := bufio.NewScanner(bytes.NewReader(src))
+	for sc.Scan() {
+		b := sc.Bytes()
+		switch {
+		case bytes.HasPrefix(b, []byte("# ")):
+			title = string(b[2:])
+		case bytes.HasPrefix(b, []byte("## ")):
+			subtitle = string(b[3:])
+			return
+		}
+	}
+	return
+}
 
 func renderSingle(in string, compact bool) (map[string]*bytes.Buffer, error) {
 	b, err := os.ReadFile(in)
@@ -36,10 +46,11 @@ func renderSingle(in string, compact bool) (map[string]*bytes.Buffer, error) {
 	if err != nil {
 		return nil, fmt.Errorf("parse markdown: %w", err)
 	}
+	title, subtitle := findTitles(b)
 	buf := new(bytes.Buffer)
 	o := webstyle.NewOptions(
-		string(subtitleRegex.Find(b)),
-		string(titleRegex.Find(b)),
+		title,
+		subtitle,
 		[]gomponents.Node{gomponents.Raw(string(rawHTML))})
 	o.CustomCSS = string(rawCSS)
 	o.CompactStyle = compact
@@ -97,10 +108,12 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 				return fmt.Errorf("render markdown: %w", err)
 			}
 
+			title, subtitle := findTitles(b)
 			o := webstyle.NewOptions(
-				string(subtitleRegex.Find(b)),
-				string(titleRegex.Find(b)),
-				[]gomponents.Node{gomponents.Raw(string(rawHTML))})
+				title,
+				subtitle,
+				[]gomponents.Node{gomponents.Raw(string(rawHTML))},
+			)
 			o.CompactStyle = compact
 			o.CanonicalURL = u
 			o.CustomCSS = string(rawCSS)
