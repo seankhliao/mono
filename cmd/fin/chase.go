@@ -18,11 +18,13 @@ func (c *Convert) chase(stdout, stderr io.Writer) error {
 		date, time_ := rec[0], rec[1]
 		tx, desc := rec[2], rec[3]
 		val := rec[4]
-		if strings.Contains(val, ".") {
-			val = strings.ReplaceAll(val, ".", "")
-		} else {
-			val += "00"
+		pound, pence, ok := strings.Cut(val, ".")
+		if !ok {
+			pence = "00"
+		} else if len(pence) == 1 {
+			pence += "0"
 		}
+		val = pound + pence
 		value, err := strconv.Atoi(val)
 		if err != nil {
 			return fmt.Errorf("convert %s into int: %v", rec[4], err)
@@ -32,6 +34,8 @@ func (c *Convert) chase(stdout, stderr io.Writer) error {
 		src, dst := "CSE", categorize(desc, "")
 		desc = strings.Join([]string{date, time_, desc}, " ")
 		switch tx {
+		case "Cash withdrawal":
+			value *= -1
 		case "Purchase":
 			value *= -1
 		case "Payment":

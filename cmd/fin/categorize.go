@@ -42,7 +42,7 @@ var categories = []struct {
 		[]string{
 			"ticketmaster", "axslonvenuegbpecomm", "adyen n.v.", "dice.fm",
 			"www.wegottickets.com", "tcktweb", "tickets", "inflight services",
-			"fotografiska", "youtube",
+			"fotografiska", "youtube", "museum",
 		},
 		[]string{
 			"entertainment",
@@ -144,7 +144,7 @@ var categories = []struct {
 			"amex tls", "airlines", "airways", "radisson blu", "stansted express",
 			"autolinee", "editerraneo grand hot", "trenitalia", "fiumicino aeroporto",
 			"sorrento", "ferryhopper", "travel", "funicolare", "lbergo excelsior",
-			"eav",
+			"eav", "smartrip", "shinkansen", "seven bank",
 		},
 		[]string{
 			"hotels", "automobile",
