@@ -33,6 +33,15 @@ func TestLint(t *testing.T) {
 		}, {
 			"cue vet",
 			[]string{"go", "tool", "cue", "vet", "-c=false", "./..."},
+		}, {
+			"gofumpt",
+			[]string{"go", "tool", "gofumpt", "-d", "."},
+		}, {
+			"cue fmt",
+			[]string{"go", "tool", "cue", "fmt", "--check", "--diff", "./..."},
+		}, {
+			"buf fmt",
+			[]string{"go", "tool", "buf", "format", "--exit-code", "--diff", "."},
 		},
 	}
 

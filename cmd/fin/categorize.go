@@ -126,7 +126,7 @@ var categories = []struct {
 		"TEC",
 		[]string{
 			"my o2 bill payment", "o2 balanceweb", "amznmktplace", "aliexpress", "h3g dd",
-			"gsuite", "o2 online", "amazon", "hutchison 3g", "google",
+			"gsuite", "o2 online", "amazon", "hutchison 3g", "google", "bic camera",
 		},
 		nil,
 	},
@@ -144,7 +144,7 @@ var categories = []struct {
 			"amex tls", "airlines", "airways", "radisson blu", "stansted express",
 			"autolinee", "editerraneo grand hot", "trenitalia", "fiumicino aeroporto",
 			"sorrento", "ferryhopper", "travel", "funicolare", "lbergo excelsior",
-			"eav", "smartrip", "shinkansen", "seven bank",
+			"eav", "smartrip", "shinkansen", "seven bank", "jr west",
 		},
 		[]string{
 			"hotels", "automobile",
