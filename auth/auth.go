@@ -96,6 +96,14 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	if err != nil {
 		return nil, fmt.Errorf("init store: %w", err)
 	}
+	a.store.Do(ctx, func(s *authv1.Store) {
+		if s.GetSessions() == nil {
+			s.SetSessions(make(map[string]*authv1.TokenInfo))
+		}
+		if s.GetUsers() == nil {
+			s.SetUsers(make(map[int64]*authv1.UserInfo))
+		}
+	})
 
 	// a.store.Do(ctx, a.migrate)
 	// a.store.Sync(ctx)
