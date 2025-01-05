@@ -27,8 +27,7 @@ _No promises_ I'm actually good at anything
 
 #### _What_ I've Been Doing
 
-Dates using the
-[Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
+Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 — the [Human Era](https://www.youtube.com/watch?v=czgOWmtGVGs)
 
 - _Site_ Reliability Engineer<br>
