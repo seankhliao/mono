@@ -1,4 +1,4 @@
-package findata
+package main
 
 import (
 	"fmt"

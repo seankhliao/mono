@@ -13,7 +13,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go.seankhliao.com/mono/cmd/fin/findata"
 	"go.seankhliao.com/mono/ycli"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/gcsblob"
@@ -113,12 +112,12 @@ func (v *View) register(fs *flag.FlagSet) {
 }
 
 func (v *View) viewAll(stdout, stderr io.Writer) error {
-	cur, err := findata.DecodeFile(v.configPath)
+	cur, err := DecodeFile(v.configPath)
 	if err != nil {
 		return fmt.Errorf("decode data: %w", err)
 	}
 
-	findata.Print(stdout, findata.Summarize(cur))
+	Print(stdout, Summarize(cur))
 
 	return nil
 }
