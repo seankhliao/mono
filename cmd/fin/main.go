@@ -116,8 +116,8 @@ func (v *View) viewAll(stdout, stderr io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("decode data: %w", err)
 	}
-
-	Print(stdout, Summarize(cur))
+	Summarize(&cur)
+	Print(stdout, &cur)
 
 	return nil
 }

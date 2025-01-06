@@ -4,14 +4,19 @@ output: #Currency
 	// name of the current currency
 	currency: string
 
-	// classes of money
-	assets: [...string]
-	debts: [...string]
-	incomes: [...string]
-	expenses: [...string]
+	groupings: [...#Group]
 
 	// record of transactions
 	months: [...#Month]
+}
+
+#Group: {
+	// name of group
+	name: string
+	// names of accounts
+	names: [...string]
+	// flip for income
+	invert: bool | *false
 }
 
 #Month: {
