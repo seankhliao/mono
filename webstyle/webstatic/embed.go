@@ -1,4 +1,4 @@
-// webstatic is an filesystem for common static files needed across html pages.
+// webstatic embeds a filesystem for common static files needed across html pages.
 package webstatic
 
 import (

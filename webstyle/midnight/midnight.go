@@ -1,3 +1,4 @@
+// midnight is a customized chroma theme for syntax highlighting.
 package midnight
 
 import "github.com/alecthomas/chroma/v2"
