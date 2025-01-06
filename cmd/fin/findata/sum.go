@@ -29,7 +29,7 @@ type MonthlyResult struct {
 	Category map[string]*CategoryResult
 }
 type CategoryResult struct {
-	MonthlySum int
+	Add, Sub   int
 	RollingSum int
 }
 
@@ -75,7 +75,11 @@ func Summarize(c Currency) Results {
 			if _, ok := monthly[group].Category[transaction.Src]; !ok {
 				monthly[group].Category[transaction.Src] = &CategoryResult{}
 			}
-			monthly[group].Category[transaction.Src].MonthlySum -= transaction.Val
+			if transaction.Val >= 0 {
+				monthly[group].Category[transaction.Src].Add -= transaction.Val
+			} else {
+				monthly[group].Category[transaction.Src].Sub -= transaction.Val
+			}
 			monthly[group].Category[transaction.Src].RollingSum -= transaction.Val
 
 			for g, headings := range head {
@@ -87,7 +91,11 @@ func Summarize(c Currency) Results {
 			if _, ok := monthly[group].Category[transaction.Dst]; !ok {
 				monthly[group].Category[transaction.Dst] = &CategoryResult{}
 			}
-			monthly[group].Category[transaction.Dst].MonthlySum += transaction.Val
+			if transaction.Val >= 0 {
+				monthly[group].Category[transaction.Dst].Sub += transaction.Val
+			} else {
+				monthly[group].Category[transaction.Dst].Add += transaction.Val
+			}
 			monthly[group].Category[transaction.Dst].RollingSum += transaction.Val
 		}
 
@@ -109,17 +117,19 @@ func Print(w io.Writer, r Results) {
 
 func printGroup(w io.Writer, r MonthlyResults) {
 	fmt.Fprintln(w, r.GroupName)
-	fmt.Fprintf(w, "       ")
-	for _, cat := range r.Headings {
-		fmt.Fprintf(w, " %21s", cat)
-	}
-	fmt.Fprintln(w)
-	for _, m := range r.Months {
-		fmt.Fprintf(w, "%d-%02d", m.Year, m.Month)
-		for _, cat := range r.Headings {
-			fmt.Fprintf(w, " %9.2f | %9.2f", float64(m.Category[cat].MonthlySum)/100, float64(m.Category[cat].RollingSum)/100)
+	for start, end := 0, min(5, len(r.Headings)); start < len(r.Headings); start, end = start+5, min(end+5, len(r.Headings)) {
+		fmt.Fprintf(w, "       ")
+		for _, cat := range r.Headings[start:end] {
+			fmt.Fprintf(w, " | %29s", cat)
+		}
+		fmt.Fprintln(w)
+		for _, m := range r.Months {
+			fmt.Fprintf(w, "%d-%02d", m.Year, m.Month)
+			for _, cat := range r.Headings[start:end] {
+				fmt.Fprintf(w, " |%+9.2f /%+9.2f %9.2f", float64(m.Category[cat].Sub)/100, float64(m.Category[cat].Add)/100, float64(m.Category[cat].RollingSum)/100)
+			}
+			fmt.Fprintln(w)
 		}
 		fmt.Fprintln(w)
 	}
-	fmt.Fprintln(w)
 }
