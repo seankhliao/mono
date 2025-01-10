@@ -55,6 +55,7 @@ _data: [
 	["2024-06-05", 7, 30709, ["Kamisama Hajimemashita: Kako-hen", "Kamisama Hajimemashita: Kako-hen"]],
 	["2024-06-04", 7, 33323, ["Kamisama Hajimemashita: Kamisama, Shiawase ni Naru", "Kamisama Hajimemashita: Kamisama, Shiawase ni Naru"]],
 	["2024-09-28", 7, 51213, ["Kinsou no Vermeil: Gakeppuchi Majutsushi wa Saikyou no Yakusai to Mahou Sekai wo Tsukisusumu", "Vermeil in Gold"]],
+	["2025-01-10", 7, 50796, ["Kimi wa Houkago Insomnia", "Insomniacs After School"]],
 	["2024-12-23", 7, 55996, ["Koi wa Futago de Warikirenai", "Love Is Indivisible by Twins"]],
 	["2024-07-14", 8, 30831, ["Kono Subarashii Sekai ni Shukufuku wo!", "KonoSuba: God's Blessing on This Wonderful World!"]],
 	["2024-07-14", 8, 32380, ["Kono Subarashii Sekai ni Shukufuku wo!: Kono Subarashii Choker ni Shukufuku wo!", "KonoSuba: God's Blessing on This Wonderful World! - God's Blessing on This Wonderful Choker!"]],
