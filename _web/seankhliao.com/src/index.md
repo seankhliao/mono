@@ -1,3 +1,7 @@
+# seankhliao.com
+
+## payments accepted in headpats and food
+
 ### _Hey_, I'm Sean
 
 ##### _I_ am...

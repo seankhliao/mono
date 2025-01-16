@@ -41,6 +41,7 @@ type Options struct {
 	CanonicalURL string
 	Manifest     string
 	CompactStyle bool
+	HideTitles   bool
 	CustomCSS    string
 	Minify       bool
 
@@ -111,8 +112,10 @@ func Structured(w io.Writer, o Options) error {
 		}
 	}
 	body = append(body, html.HGroup(html.A(html.Href("/"), gomponents.Group(hgroup))))
-	body = append(body, html.H1(gomponents.Text(o.Title)))
-	body = append(body, html.H2(html.A(html.Href("/"), gomponents.Text(o.Subtitle))))
+	if !o.HideTitles {
+		body = append(body, html.H1(gomponents.Text(o.Title)))
+		body = append(body, html.H2(html.A(html.Href("/"), gomponents.Text(o.Subtitle))))
+	}
 
 	// content
 	body = append(body, o.Content...)

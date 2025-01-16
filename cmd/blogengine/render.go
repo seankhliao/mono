@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"net/url"
 	"os"
 	"path/filepath"
 	"slices"
@@ -114,24 +113,22 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 			}
 
 			u := baseUrl + canonicalPathFromRelPath(p)
-			ur, _ := url.Parse(u)
-			if title == "" {
-				title = ur.Hostname()
-			}
-			if subtitle == "" {
-				subtitle = ur.String()
-			}
-
 			o := webstyle.NewOptions(
-				title,
 				subtitle,
+				title,
 				[]gomponents.Node{gomponents.Raw(string(rawHTML))},
 			)
 			o.CompactStyle = compact
 			o.CanonicalURL = u
 			o.CustomCSS = string(rawCSS)
 
-			if strings.HasSuffix(p, "/index.md") { // exclude root index
+			if title == "" {
+				return fmt.Errorf("missing title")
+			}
+
+			if p == "index.md" { // root index
+				o.HideTitles = true
+			} else if strings.HasSuffix(p, "/index.md") { // all other directory indexes
 				list, err := directoryList(fsys, p)
 				if err != nil {
 					return err
