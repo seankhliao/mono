@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"net/url"
 	"os"
 	"path/filepath"
 	"slices"
@@ -101,7 +102,6 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 
 		buf := new(bytes.Buffer)
 		if strings.HasSuffix(p, ".md") {
-			u := baseUrl + canonicalPathFromRelPath(p)
 
 			b, err := io.ReadAll(inFile)
 			if err != nil {
@@ -111,6 +111,15 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 			rawHTML, rawCSS, err := webstyle.Markdown(b)
 			if err != nil {
 				return fmt.Errorf("render markdown: %w", err)
+			}
+
+			u := baseUrl + canonicalPathFromRelPath(p)
+			ur, _ := url.Parse(u)
+			if title == "" {
+				title = ur.Hostname()
+			}
+			if subtitle == "" {
+				subtitle = ur.String()
 			}
 
 			o := webstyle.NewOptions(
