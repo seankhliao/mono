@@ -7,7 +7,7 @@
     "48": "icon-48.png",
     "192": "icon-192.png"
   },
-  "author": "seankhliao",
+  "author": "sean@liao.dev",
   "offline_enabled": true,
   "chrome_url_overrides": {
     "newtab": "index.html"
