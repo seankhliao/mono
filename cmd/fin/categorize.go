@@ -31,7 +31,7 @@ var categories = []struct {
 	{
 		"CLT",
 		[]string{
-			"lululemon", "ryohin keikaku", "h&m", "dusk.com",
+			"lululemon", "ryohin keikaku", "h&m", "dusk.com", "etsy",
 		},
 		[]string{
 			"clothing_stores",
@@ -42,7 +42,7 @@ var categories = []struct {
 		[]string{
 			"ticketmaster", "axslonvenuegbpecomm", "adyen n.v.", "dice.fm",
 			"www.wegottickets.com", "tcktweb", "tickets", "inflight services",
-			"fotografiska", "youtube", "museum",
+			"fotografiska", "youtube", "museum", "megacon", "axslon", "breakingsounduk",
 		},
 		[]string{
 			"entertainment",
@@ -71,7 +71,8 @@ var categories = []struct {
 			"lower stable", "wh smith", "foyles", "seewoo", "loon fung",
 			"fresco trattoria pizze", "k food", "kfc", "shibuya soho",
 			"chinatown", "pasticceria", "uragano srl", "unico campania", "il gabbiano",
-			"la capannina", "bar tabacchi", "Molo",
+			"la capannina", "bar tabacchi", "molo", "happy lamb hotpot",
+			"m&s earls", "covent garden market",
 		},
 		[]string{
 			"restaurants", "retail_stores",
@@ -87,7 +88,7 @@ var categories = []struct {
 	{
 		"HLT",
 		[]string{
-			"boots", "baroque hair and nails", "pharmacie",
+			"boots", "baroque hair and nails", "pharmacie", "stylevana",
 		},
 		nil,
 	},
@@ -127,6 +128,7 @@ var categories = []struct {
 		[]string{
 			"my o2 bill payment", "o2 balanceweb", "amznmktplace", "aliexpress", "h3g dd",
 			"gsuite", "o2 online", "amazon", "hutchison 3g", "google", "bic camera",
+			"framework",
 		},
 		nil,
 	},
