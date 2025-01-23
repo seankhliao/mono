@@ -12,9 +12,10 @@ import (
 	"go.seankhliao.com/mono/auth"
 	earbugv5 "go.seankhliao.com/mono/earbug/v5"
 	"go.seankhliao.com/mono/httpencoding"
-	"go.seankhliao.com/mono/yrun"
+	"go.seankhliao.com/mono/yhttp"
+	"go.seankhliao.com/mono/yo11y"
+	"go.seankhliao.com/mono/ystore"
 	"gocloud.dev/blob"
-	_ "gocloud.dev/blob/gcsblob"
 	"golang.org/x/oauth2"
 )
 
@@ -30,25 +31,25 @@ type Config struct {
 	UpdateFreq time.Duration
 }
 
-func Register(a *App, r yrun.HTTPRegistrar) {
+func Register(a *App, r yhttp.Registrar) {
 	r.Pattern("GET", a.host, "/{$}", a.handleIndex, a.AuthN, a.AuthZ(auth.AllowAnonymous), httpencoding.Handler)
 	r.Pattern("GET", a.host, "/auth/begin", a.authBegin, a.AuthN, a.AuthZ(auth.AllowRegistered))
 	r.Pattern("GET", a.host, "/auth/callback", a.authCallback, a.AuthN, a.AuthZ(auth.AllowRegistered))
 }
 
 type App struct {
-	o          yrun.O11y
+	o          yo11y.O11y
 	mAdded     metric.Int64Counter
 	mTracks    metric.Int64Gauge
 	mPlaybacks metric.Int64Gauge
 
 	// New
 	http  *http.Client
-	store *yrun.Store[*earbugv5.Store]
+	store *ystore.Store[*earbugv5.Store]
 
 	// inserted
-	AuthN yrun.HTTPInterceptor
-	AuthZ func(cel.Program) yrun.HTTPInterceptor
+	AuthN yhttp.Interceptor
+	AuthZ func(cel.Program) yhttp.Interceptor
 
 	// config
 	host       string
@@ -59,7 +60,7 @@ type App struct {
 	updateFreq time.Duration
 }
 
-func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
+func New(c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
 	ctx := context.Background()
 
 	a := &App{
@@ -82,7 +83,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	ctx, span := o.T.Start(ctx, "initData")
 	defer span.End()
 
-	store, err := yrun.NewStore(ctx, bkt, c.Key, func() *earbugv5.Store {
+	store, err := ystore.New(ctx, bkt, c.Key, func() *earbugv5.Store {
 		return earbugv5.Store_builder{
 			Tracks: make(map[string]*earbugv5.Track),
 			Users:  make(map[int64]*earbugv5.UserData),

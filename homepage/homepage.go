@@ -8,12 +8,13 @@ import (
 
 	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/webstyle"
-	"go.seankhliao.com/mono/yrun"
+	"go.seankhliao.com/mono/yhttp"
+	"go.seankhliao.com/mono/yo11y"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
 
-func Register(a *App, r yrun.HTTPRegistrar) {
+func Register(a *App, r yhttp.Registrar) {
 	r.Pattern("GET", a.host, "/{$}", a.ServeHTTP, httpencoding.Handler)
 }
 
@@ -27,7 +28,7 @@ type App struct {
 	b    []byte
 }
 
-func New(c Config, o yrun.O11y) (*App, error) {
+func New(c Config, o yo11y.O11y) (*App, error) {
 	ro := webstyle.NewOptions(c.Host, c.Host, []gomponents.Node{
 		html.H3(html.Em(gomponents.Text("inter")), gomponents.Text("webs")),
 		html.P(

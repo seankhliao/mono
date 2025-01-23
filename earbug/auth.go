@@ -58,5 +58,5 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 
 	rw.Write([]byte("success"))
 
-	a.store.Sync(ctx)
+	a.store.Sync(ctx, false)
 }

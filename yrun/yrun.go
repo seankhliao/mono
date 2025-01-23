@@ -15,9 +15,11 @@ import (
 	"syscall"
 	"time"
 
-	"cuelang.org/go/cue/cuecontext"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.seankhliao.com/mono/yenv"
+	"go.seankhliao.com/mono/yhttp"
+	"go.seankhliao.com/mono/yo11y"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/fileblob"
 	_ "gocloud.dev/blob/gcsblob"
@@ -26,35 +28,34 @@ import (
 	"google.golang.org/grpc"
 )
 
-// RunConfig are the args passed to [Run].
+// Config are the args passed to [Run].
 // It takes 2 type parameters:
 // C is the application config type,
 // A is the application type.
-type RunConfig[C, A any] struct {
-	// Name is the application name
-	// Name             string
+type Config[C, A any] struct {
+	HTTPAddr  string `env:"HTTP_ADDR"`  // host:port
+	GRPCAddr  string `env:"GRPC_ADDR"`  // host:port
+	DebugAddr string `env:"DEBUG_ADDR"` // host:port
 
-	// A cue schema, all config should be under the "App" key.
-	AppConfigSchema string
+	Store string `env:"STORAGE_DIR"`
+
+	O11y   yo11y.Config
+	Config C
+
 	// New creates an application struct from the application config struct.
-	New func(context.Context, C, *blob.Bucket, O11y) (*A, error)
+	New func(context.Context, C, *blob.Bucket, yo11y.O11y) (*A, error)
+
 	// GRPC is for registering grpc services
-	GRPC func(*A, context.Context, *grpc.Server)
-	// HTTP is for registering http handlers to the main listener
-	HTTP func(*A, HTTPRegistrar)
-	// Debug is for registering http handlers to the debug handler
-	Debug func(*A, HTTPRegistrar)
-	// StartTasks should use the given function to start any background tasks.
-	// Tasks should exit when the given context is canceled.
-	StartTasks func(*A, context.Context, func(func() error))
-	// RegisterShutdown should use the given function to start any tasks
-	// that should run on shutdown.
-	// shutdown tasks are given a context with a 5 second timeout.
-	RegisterShutdown func(*A, context.Context, func(func(context.Context) error))
+	GRPC  func(*A, context.Context, *grpc.Server)
+	HTTP  func(*A, yhttp.Registrar)
+	Debug func(*A, yhttp.Registrar)
+
+	Background func(*A) []func(context.Context) error
+	Shutdown   func(*A) []func(context.Context) error
 }
 
 // Run is intended to be called as the sole function in main.
-func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
+func Run[C, A any](r Config[C, A]) (exitCode int) {
 	err := run(r)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -63,43 +64,33 @@ func Run[C, A any](r RunConfig[C, A]) (exitCode int) {
 	return
 }
 
-func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
-	ctx := context.Background()
+func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
+	// config from env
+	envs := yenv.Map(append([]string{
+		"HTTP_ADDR=:8080",
+		"GRPC_ADDR=:8081",
+		"DEBUG_ADDR=:8082",
+		"STORAGE_DIR=/data",
+		"LOG_FORMAT=text",
+		"LOG_LEVEL=info",
+	}, os.Environ()...))
+	err := yenv.FromEnv(envs, "", &runConfig)
+	if err != nil {
+		return fmt.Errorf("process config from env: %w", err)
+	}
 
 	// command line
-	var configBucket string
-	var configPath string
-	flag.StringVar(&configBucket, "config-bucket", "file://", "url reference to bucket (file:// or gs://)")
-	flag.StringVar(&configPath, "config-path", "config.cue", "path to config file in bucket")
 	flag.Parse()
 	if flag.NArg() > 0 {
 		return fmt.Errorf("unexpected args: %v", flag.Args())
 	}
 
-	// storage
-	bkt, err := blob.OpenBucket(ctx, configBucket)
-	if err != nil {
-		return fmt.Errorf("open config bucket %q: %w", configBucket, err)
-	}
-	defer bkt.Close()
-
-	// config file
-	var configBytes []byte
-	if configPath != "" {
-		configBytes, err = bkt.ReadAll(ctx, configPath)
-		if err != nil {
-			return fmt.Errorf("read config file bucket = %q path = %q: %w", configBucket, configPath, err)
-		}
-	}
-	config, err := FromBytes[Config[AppConfig]](baseSchema, runConfig.AppConfigSchema, configBytes)
-	if err != nil {
-		return fmt.Errorf("parse config file: %w", err)
-	}
-
 	// o11y
-	o11y, o11yRef := NewO11y(config.O11y)
+	o11y, o11yRef := yo11y.New(runConfig.O11y)
+	// TODO: trigger o11y shutdown
 
 	// signal handling, groyp runner
+	ctx := context.Background()
 	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		// only handle once
@@ -107,8 +98,13 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 		stop()
 	}()
 
+	// storage
+	bkt, err := blob.OpenBucket(ctx, "file://"+runConfig.Store)
+	if err != nil {
+	}
+
 	// app setup
-	app, err := runConfig.New(ctx, config.App, bkt, o11y)
+	app, err := runConfig.New(ctx, runConfig.Config, bkt, o11y)
 	if err != nil {
 		return fmt.Errorf("instantiate app: %w", err)
 	}
@@ -123,13 +119,13 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 		runConfig.GRPC(app, ctx, server)
 
 		group.Go(func() error {
-			lis, err := net.Listen("tcp", config.GRPC.Address)
+			lis, err := net.Listen("tcp", runConfig.GRPCAddr)
 			if err != nil {
-				return fmt.Errorf("grpc: listen on %s: %w", config.GRPC.Address, err)
+				return fmt.Errorf("grpc: listen on %s: %w", runConfig.GRPCAddr, err)
 			}
 
 			o11y.L.WithGroup("grpc").LogAttrs(ctx, slog.LevelInfo, "starting grpc server",
-				slog.String("addr", config.GRPC.Address),
+				slog.String("addr", runConfig.GRPCAddr),
 			)
 			return server.Serve(lis)
 		})
@@ -138,29 +134,28 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 
 	// HTTP app
 	if runConfig.HTTP != nil {
-		mux := http.NewServeMux()
-		mx := &muxRegister{mux, make(map[string]struct{})}
-		runConfig.HTTP(app, mx)
+		mux := yhttp.New()
+
+		runConfig.HTTP(app, mux)
 
 		// add http server
 		group.Go(func() error {
 			httplh := o11y.H.WithGroup("external-http")
 			httplg := slog.New(httplh)
 
-			if config.HTTP.K8s.Enable {
-				httplg.LogAttrs(ctx, slog.LevelDebug, "managing k8s service/httproute")
-				err := ManageK8s(ctx, httplg, config.GRPC, config.HTTP, config.Debug, mx)
-				if err != nil {
-					return fmt.Errorf("manage k8s httproute: %w", err)
-				}
-			}
-
 			server := &http.Server{
-				Addr:              config.HTTP.Address,
+				Addr:              runConfig.HTTPAddr,
 				Handler:           otelhttp.NewHandler(mux, "serve http"),
 				ReadHeaderTimeout: 10 * time.Second,
 				ErrorLog:          slog.NewLogLogger(httplh, slog.LevelWarn),
 			}
+
+			group.Go(func() error {
+				<-ctx.Done()
+				ctx := context.Background()
+				return server.Shutdown(ctx)
+			})
+
 			httplg.LogAttrs(ctx, slog.LevelInfo, "starting http server",
 				slog.String("addr", server.Addr),
 			)
@@ -173,23 +168,27 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 	}
 
 	// Background tasks
-	if runConfig.StartTasks != nil {
+	if runConfig.Background != nil {
 		o11y.L.WithGroup("background-tasks").LogAttrs(ctx, slog.LevelInfo, "starting background tasks")
-		runConfig.StartTasks(app, ctx, group.Go)
+		for _, task := range runConfig.Background(app) {
+			group.Go(func() error { return task(ctx) })
+		}
 	}
 
 	// Debug http server
 	{
-		mx, getMux := debugMux()
+		mux := yhttp.Debug()
 		// zpages
-		mx.Pattern("GET", "", "/debug/log/", o11yRef.LogZpage.ServeHTTP)
-		mx.Pattern("GET", "", "/debug/trace/", o11yRef.TraceZpage.ServeHTTP)
-		mx.Pattern("GET", "", "/debug/config", func(rw http.ResponseWriter, r *http.Request) {
-			cuectx := cuecontext.New()
-			val := cuectx.Encode(config)
-			fmt.Fprintln(rw, val)
+		mux.Pattern("GET", "", "/debug/log/", o11yRef.LogZpage.ServeHTTP)
+		mux.Pattern("GET", "", "/debug/trace/", o11yRef.TraceZpage.ServeHTTP)
+		mux.Pattern("GET", "", "/debug/config", func(rw http.ResponseWriter, r *http.Request) {
+			rw.Header().Set("content-type", "text/plain")
+			envs := yenv.Print("", runConfig)
+			for _, env := range envs {
+				fmt.Fprintln(rw, env)
+			}
 		})
-		mx.Pattern("GET", "", "/debug/buildinfo", func(rw http.ResponseWriter, r *http.Request) {
+		mux.Pattern("GET", "", "/debug/buildinfo", func(rw http.ResponseWriter, r *http.Request) {
 			bi, ok := debug.ReadBuildInfo()
 			if !ok {
 				fmt.Fprintln(rw, "no embedded build info")
@@ -198,14 +197,14 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 			fmt.Fprintln(rw, bi)
 		})
 		// pprof
-		mx.Pattern("GET", "", "/debug/pprof/", http.HandlerFunc(pprof.Index).ServeHTTP)
-		mx.Pattern("GET", "", "/debug/pprof/cmdline", http.HandlerFunc(pprof.Cmdline).ServeHTTP)
-		mx.Pattern("GET", "", "/debug/pprof/profile", http.HandlerFunc(pprof.Profile).ServeHTTP)
-		mx.Pattern("GET", "", "/debug/pprof/symbol", http.HandlerFunc(pprof.Symbol).ServeHTTP)
-		mx.Pattern("GET", "", "/debug/pprof/trace", http.HandlerFunc(pprof.Trace).ServeHTTP)
+		mux.Pattern("GET", "", "/debug/pprof/", http.HandlerFunc(pprof.Index).ServeHTTP)
+		mux.Pattern("GET", "", "/debug/pprof/cmdline", http.HandlerFunc(pprof.Cmdline).ServeHTTP)
+		mux.Pattern("GET", "", "/debug/pprof/profile", http.HandlerFunc(pprof.Profile).ServeHTTP)
+		mux.Pattern("GET", "", "/debug/pprof/symbol", http.HandlerFunc(pprof.Symbol).ServeHTTP)
+		mux.Pattern("GET", "", "/debug/pprof/trace", http.HandlerFunc(pprof.Trace).ServeHTTP)
 
 		if runConfig.Debug != nil {
-			runConfig.Debug(app, mx)
+			runConfig.Debug(app, mux)
 		}
 
 		// add debug server
@@ -213,11 +212,18 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 			httplh := o11y.H.WithGroup("internal-http")
 			httplg := slog.New(httplh)
 			server := &http.Server{
-				Addr:              config.Debug.Address,
-				Handler:           getMux(),
+				Addr:              runConfig.DebugAddr,
+				Handler:           mux,
 				ReadHeaderTimeout: 10 * time.Second,
 				ErrorLog:          slog.NewLogLogger(httplh, slog.LevelWarn),
 			}
+
+			group.Go(func() error {
+				<-ctx.Done()
+				ctx := context.Background()
+				return server.Shutdown(ctx)
+			})
+
 			httplg.LogAttrs(ctx, slog.LevelInfo, "starting http server",
 				slog.String("addr", server.Addr),
 			)
@@ -229,10 +235,10 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 		})
 	}
 
-	if runConfig.RegisterShutdown != nil {
+	if runConfig.Background != nil {
 		shutlg := o11y.L.WithGroup("register-shutdown")
 		shutlg.LogAttrs(ctx, slog.LevelInfo, "registering shutdown functions")
-		runConfig.RegisterShutdown(app, ctx, func(f func(context.Context) error) {
+		for _, task := range runConfig.Shutdown(app) {
 			group.Go(func() error {
 				<-groupCtx.Done()
 				timeOut := 5 * time.Second
@@ -240,9 +246,9 @@ func run[AppConfig, App any](runConfig RunConfig[AppConfig, App]) error {
 				shutCtx, cancel := context.WithTimeout(shutCtx, timeOut)
 				defer cancel()
 				shutlg.LogAttrs(ctx, slog.LevelInfo, "running shutdown function")
-				return f(shutCtx)
+				return task(shutCtx)
 			})
-		})
+		}
 	}
 
 	return group.Wait()

@@ -14,11 +14,12 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/yrun"
+	"go.seankhliao.com/mono/yhttp"
+	"go.seankhliao.com/mono/yo11y"
 	"golang.org/x/oauth2"
 )
 
-func Register(a *App, r yrun.HTTPRegistrar) {
+func Register(a *App, r yhttp.Registrar) {
 	r.Pattern("GET", a.host, "/robots.txt", a.robots)
 	r.Pattern("POST", a.host, "/webhook", a.ServeHTTP)
 }
@@ -36,11 +37,11 @@ type App struct {
 	privateKey    string
 	appID         int64
 
-	o      yrun.O11y
+	o      yo11y.O11y
 	mOwner metric.Int64Counter
 }
 
-func New(c Config, o yrun.O11y) (*App, error) {
+func New(c Config, o yo11y.O11y) (*App, error) {
 	a := &App{
 		host:          c.Host,
 		webhookSecret: strings.TrimSpace(c.WebhookSecret),

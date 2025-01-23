@@ -8,10 +8,11 @@ import (
 	"strings"
 
 	"github.com/go-json-experiment/json/jsontext"
-	"go.seankhliao.com/mono/yrun"
+	"go.seankhliao.com/mono/yhttp"
+	"go.seankhliao.com/mono/yo11y"
 )
 
-func Register(a *App, r yrun.HTTPRegistrar) {
+func Register(a *App, r yhttp.Registrar) {
 	r.Pattern("GET", a.config.Host, "/robots.txt", a.robots)
 	r.Pattern("", a.config.Host, "/", a.ServeHTTP)
 }
@@ -22,10 +23,10 @@ type Config struct {
 
 type App struct {
 	config Config
-	o      yrun.O11y
+	o      yo11y.O11y
 }
 
-func New(c Config, o yrun.O11y) (*App, error) {
+func New(c Config, o yo11y.O11y) (*App, error) {
 	return &App{
 		config: c,
 		o:      o.Sub("reqlog"),

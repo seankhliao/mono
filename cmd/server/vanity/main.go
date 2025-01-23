@@ -11,13 +11,15 @@ import (
 
 	"go.seankhliao.com/mono/webstyle"
 	"go.seankhliao.com/mono/webstyle/webstatic"
+	"go.seankhliao.com/mono/yhttp"
+	"go.seankhliao.com/mono/yo11y"
 	"go.seankhliao.com/mono/yrun"
 	"gocloud.dev/blob"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
 
-func Register(a *App, r yrun.HTTPRegistrar) {
+func Register(a *App, r yhttp.Registrar) {
 	webstatic.Register(r)
 	r.Pattern("GET", "", "/{$}", a.index)
 	r.Pattern("GET", "", "/{repo}/", a.repo)
@@ -29,13 +31,13 @@ type Config struct {
 }
 type App struct {
 	c Config
-	o yrun.O11y
+	o yo11y.O11y
 
 	t0           time.Time
 	indexContent []byte
 }
 
-func New(ctx context.Context, c Config, _ *blob.Bucket, o yrun.O11y) (*App, error) {
+func New(ctx context.Context, c Config, _ *blob.Bucket, o yo11y.O11y) (*App, error) {
 	index, err := indexPage(c.Host)
 	if err != nil {
 		return nil, fmt.Errorf("render index template: %w", err)
@@ -58,13 +60,11 @@ func (a *App) repo(rw http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	os.Exit(yrun.Run(yrun.RunConfig[Config, App]{
-		AppConfigSchema: `
-App: {
-  Host: string | *"go.seankhliao.com"
-  Source: string | *"github.com/seankhliao"
-}
-                `,
+	os.Exit(yrun.Run(yrun.Config[Config, App]{
+		Config: Config{
+			Host:   "go.seankhliao.com",
+			Source: "github.com/seankhliao",
+		},
 		New:  New,
 		HTTP: Register,
 	}))

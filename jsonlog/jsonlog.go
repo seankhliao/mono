@@ -241,10 +241,10 @@ func (h *state) attr(attr slog.Attr) {
 		var err error
 		var b []byte
 		switch v := val.Any().(type) {
-		case json.MarshalerV1:
+		case json.Marshaler:
 			b, err = v.MarshalJSON()
 			h.buf = append(h.buf, b...)
-		case json.MarshalerV2:
+		case json.MarshalerTo:
 			// no jsontext.Encoder available
 			b, err = json.Marshal(v)
 			h.buf = append(h.buf, b...)

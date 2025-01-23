@@ -91,6 +91,6 @@ func (a *App) update(ctx context.Context) {
 	a.mTracks.Record(ctx, totalTracks)
 	if added > 0 {
 		a.o.L.LogAttrs(ctx, slog.LevelInfo, "updated record", slog.Int64("added", added))
-		a.store.Sync(ctx)
+		a.store.Sync(ctx, false)
 	}
 }

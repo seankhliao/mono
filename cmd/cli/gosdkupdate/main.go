@@ -16,7 +16,7 @@ import (
 	"slices"
 	"strings"
 
-	"go.seankhliao.com/mono/cmd/gosdkupdate/goreleases"
+	"go.seankhliao.com/mono/goreleases"
 	"go.seankhliao.com/mono/ycli"
 )
 

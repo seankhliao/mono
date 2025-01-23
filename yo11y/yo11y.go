@@ -1,4 +1,6 @@
-package yrun
+// yo11y contains helpers for setting up the opentelemetry (otel) sdk.
+// The sdks primarily take configuration from the "OTEL_" environment variables.
+package yo11y
 
 import (
 	"context"
@@ -38,15 +40,9 @@ import (
 
 const defaultServiceConfig = `{"loadBalancingConfig":[{"round_robin":{}}]}`
 
-type O11yConfig struct {
-	Log    LogConfig
-	Metric MetricConfig
-	Trace  TraceConfig
-}
-
-type O11yReg struct {
-	LogZpage   http.Handler
-	TraceZpage http.Handler
+type Config struct {
+	LogLevel  slog.Level `env:"LOG_LEVEL"`
+	LogFormat string     `env:"LOG_FORMAT"`
 }
 
 type O11y struct {
@@ -57,6 +53,11 @@ type O11y struct {
 
 	component string
 	errCount  metric.Int64Counter
+}
+
+type O11yReg struct {
+	LogZpage   http.Handler
+	TraceZpage http.Handler
 }
 
 func (o O11y) Sub(name string) O11y {
@@ -121,7 +122,7 @@ type problemDetails struct {
 	Instance string `json:"instance"`
 }
 
-func NewO11y(c O11yConfig) (O11y, O11yReg) {
+func New(c Config) (O11y, O11yReg) {
 	var r O11yReg
 
 	bi, _ := debug.ReadBuildInfo()
@@ -142,7 +143,7 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 
 	var o O11y
 	var err error
-	o.L, o.H, r.LogZpage, err = NewLog(ctx, res, c.Log)
+	o.L, o.H, r.LogZpage, err = NewLog(ctx, res, c)
 	if err != nil {
 		panic(err)
 	}
@@ -155,14 +156,14 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 		)
 	}))
 
-	r.TraceZpage, err = NewTrace(ctx, res, c.Trace)
+	r.TraceZpage, err = NewTrace(ctx, res, c)
 	if err != nil {
 		otelLog.LogAttrs(ctx, slog.LevelWarn, "failed to create trace exporter", slog.String("error", err.Error()))
 		otel.SetTracerProvider(tracenoop.NewTracerProvider())
 	}
 	o.T = otel.Tracer(shortName)
 
-	err = NewMetric(ctx, res, c.Metric)
+	err = NewMetric(ctx, res, c)
 	if err != nil {
 		otelLog.LogAttrs(ctx, slog.LevelWarn, "failed to create metric exporter", slog.String("error", err.Error()))
 		otel.SetMeterProvider(noop.NewMeterProvider())
@@ -176,22 +177,17 @@ func NewO11y(c O11yConfig) (O11y, O11yReg) {
 	return o, r
 }
 
-type LogConfig struct {
-	Format string
-	Level  slog.Level
-}
-
-func NewLog(ctx context.Context, res *resource.Resource, c LogConfig) (*slog.Logger, slog.Handler, http.Handler, error) {
+func NewLog(ctx context.Context, res *resource.Resource, c Config) (*slog.Logger, slog.Handler, http.Handler, error) {
 	zpage := jsonlog.NewZPage(256)
 	writer := io.MultiWriter(os.Stderr, zpage)
 	var handler slog.Handler
-	switch c.Format {
+	switch c.LogFormat {
 	case "json":
-		handler = jsonlog.New(c.Level, writer)
+		handler = jsonlog.New(c.LogLevel, writer)
 	case "text":
 		fallthrough
 	default:
-		handler = slog.NewTextHandler(writer, &slog.HandlerOptions{Level: c.Level})
+		handler = slog.NewTextHandler(writer, &slog.HandlerOptions{Level: c.LogLevel})
 	}
 
 	le, err := otlploggrpc.New(ctx,
@@ -216,9 +212,7 @@ func NewLog(ctx context.Context, res *resource.Resource, c LogConfig) (*slog.Log
 	return logger, handler, zpage, nil
 }
 
-type MetricConfig struct{}
-
-func NewMetric(ctx context.Context, res *resource.Resource, c MetricConfig) error {
+func NewMetric(ctx context.Context, res *resource.Resource, c Config) error {
 	me, err := otlpmetricgrpc.New(ctx,
 		otlpmetricgrpc.WithServiceConfig(defaultServiceConfig),
 	)
@@ -245,9 +239,7 @@ func NewMetric(ctx context.Context, res *resource.Resource, c MetricConfig) erro
 	return nil
 }
 
-type TraceConfig struct{}
-
-func NewTrace(ctx context.Context, res *resource.Resource, c TraceConfig) (http.Handler, error) {
+func NewTrace(ctx context.Context, res *resource.Resource, c Config) (http.Handler, error) {
 	ztrace := zpages.NewSpanProcessor()
 	traceZpage := zpages.NewTracezHandler(ztrace)
 

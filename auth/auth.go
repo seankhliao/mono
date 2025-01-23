@@ -13,12 +13,14 @@ import (
 	"go.opentelemetry.io/otel/metric"
 	authv1 "go.seankhliao.com/mono/auth/v1"
 	"go.seankhliao.com/mono/httpencoding"
-	"go.seankhliao.com/mono/yrun"
+	"go.seankhliao.com/mono/yhttp"
+	"go.seankhliao.com/mono/yo11y"
+	"go.seankhliao.com/mono/ystore"
 	"gocloud.dev/blob"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func Register(a *App, r yrun.HTTPRegistrar) {
+func Register(a *App, r yhttp.Registrar) {
 	// web
 	r.Pattern("GET", a.host, "/{$}", a.homepage, a.AuthN, a.AuthZ(AllowAnonymous), httpencoding.Handler)
 	r.Pattern("GET", a.host, "/logout", a.logoutPage, a.AuthN, a.AuthZ(AllowRegistered), httpencoding.Handler)
@@ -31,7 +33,7 @@ func Register(a *App, r yrun.HTTPRegistrar) {
 	r.Pattern("POST", a.host, "/logout", a.logoutAction, a.AuthN, a.AuthZ(AllowRegistered))
 }
 
-func Admin(a *App, r yrun.HTTPRegistrar) {
+func Admin(a *App, r yhttp.Registrar) {
 	r.Pattern("GET", "", "/auth/admin-token", http.HandlerFunc(a.adminToken))
 }
 
@@ -49,15 +51,15 @@ type App struct {
 
 	webauthn *webauthn.WebAuthn
 
-	o         yrun.O11y
+	o         yo11y.O11y
 	mLogins   metric.Int64Counter
 	mSessions metric.Int64Gauge
 	mAuthz    metric.Int64Counter
 
-	store *yrun.Store[*authv1.Store]
+	store *ystore.Store[*authv1.Store]
 }
 
-func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
+func New(c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
 	a := &App{
 		host:         c.Host,
 		cookieName:   c.CookieName,
@@ -87,7 +89,7 @@ func New(c Config, bkt *blob.Bucket, o yrun.O11y) (*App, error) {
 	}
 
 	ctx := context.Background()
-	a.store, err = yrun.NewStore(ctx, bkt, "auth.pb.zstd", func() *authv1.Store {
+	a.store, err = ystore.New(ctx, bkt, "auth.pb.zstd", func() *authv1.Store {
 		return authv1.Store_builder{
 			Users:    make(map[int64]*authv1.UserInfo),
 			Sessions: make(map[string]*authv1.TokenInfo),

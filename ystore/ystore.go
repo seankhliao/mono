@@ -1,4 +1,5 @@
-package yrun
+// ystore wraps a [proto.Message] in a concurrency safe accessor.
+package ystore
 
 import (
 	"context"
@@ -35,12 +36,12 @@ type storer[T any] interface {
 	*T
 }
 
-func NewStore[T any, P storer[T]](ctx context.Context, bkt *blob.Bucket, key string, init func() P) (*Store[P], error) {
+func New[T any, P storer[T]](ctx context.Context, bkt *blob.Bucket, key string, init func() P) (*Store[P], error) {
 	s := &Store[P]{
 		bkt:  bkt,
 		key:  key,
 		data: new(T),
-		t:    otel.Tracer("yrun/store"),
+		t:    otel.Tracer("ystore"),
 	}
 	s.nextUpdate = time.AfterFunc(24*time.Hour, s.sync)
 	s.dataType = fmt.Sprintf("%T", s.data)
@@ -86,14 +87,14 @@ func (s *Store[T]) Do(ctx context.Context, f func(T)) {
 	ctx, span := s.t.Start(ctx, "store write")
 	defer span.End()
 
-	defer s.Sync(ctx)
+	defer s.Sync(ctx, false)
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	f(s.data)
 }
 
-func (s *Store[T]) Sync(ctx context.Context) {
+func (s *Store[T]) Sync(ctx context.Context, force bool) {
 	spanCtx := trace.SpanContextFromContext(ctx)
 	if spanCtx.IsValid() {
 		s.muLinks.Lock()
@@ -102,11 +103,11 @@ func (s *Store[T]) Sync(ctx context.Context) {
 	}
 
 	d := time.Since(s.lastUpdate)
-	if d < 3*time.Minute {
+	if !force && d < 3*time.Minute {
 		s.nextUpdate.Reset(3*time.Minute - d)
 		return
 	}
-	s.nextUpdate.Reset(5 * time.Second)
+	s.nextUpdate.Reset(1 * time.Millisecond)
 }
 
 func (s *Store[T]) sync() {

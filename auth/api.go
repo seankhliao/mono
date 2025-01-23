@@ -13,7 +13,7 @@ import (
 	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	authv1 "go.seankhliao.com/mono/auth/v1"
-	"go.seankhliao.com/mono/yrun"
+	"go.seankhliao.com/mono/yhttp"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -42,8 +42,8 @@ func FromContext(ctx context.Context) *authv1.TokenInfo {
 }
 
 var (
-	_ yrun.HTTPInterceptor = (&App{}).AuthN
-	_ yrun.HTTPInterceptor = (&App{}).AuthZ(AllowAnonymous)
+	_ yhttp.Interceptor = (&App{}).AuthN
+	_ yhttp.Interceptor = (&App{}).AuthZ(AllowAnonymous)
 )
 
 // AuthN ensures there's always a valid session.
