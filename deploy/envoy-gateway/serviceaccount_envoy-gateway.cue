@@ -27,7 +27,7 @@ k8s: (#Rbac & {
 			verbs: ["get", "list", "watch"]
 		}, {
 			apiGroups: ["apps"]
-			resources: ["deployments"]
+			resources: ["deployments", "daemonsets"]
 			verbs: ["get", "list", "watch"]
 		}, {
 			apiGroups: ["discovery.k8s.io"]
@@ -35,11 +35,11 @@ k8s: (#Rbac & {
 			verbs: ["get", "list", "watch"]
 		}, {
 			apiGroups: ["gateway.envoyproxy.io"]
-			resources: ["envoyproxies", "envoypatchpolicies", "clienttrafficpolicies", "backendtrafficpolicies", "securitypolicies", "envoyextensionpolicies", "backends"]
+			resources: ["envoyproxies", "envoypatchpolicies", "clienttrafficpolicies", "backendtrafficpolicies", "securitypolicies", "envoyextensionpolicies", "backends", "httproutefilters"]
 			verbs: ["get", "list", "watch"]
 		}, {
 			apiGroups: ["gateway.envoyproxy.io"]
-			resources: ["envoypatchpolicies/status", "clienttrafficpolicies/status", "backendtrafficpolicies/status", "securitypolicies/status", "envoyextensionpolicies/status", "backends/status"]
+			resources: ["envoypatchpolicies/status", "clienttrafficpolicies/status", "backendtrafficpolicies/status", "securitypolicies/status", "envoyextensionpolicies/status", "backends/status", "httproutefilters/status"]
 			verbs: ["update"]
 		}, {
 			apiGroups: ["gateway.networking.k8s.io"]

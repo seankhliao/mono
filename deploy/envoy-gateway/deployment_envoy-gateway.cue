@@ -11,7 +11,7 @@ k8s: "apps": "v1": "Deployment": "envoy-gateway-system": {
 		spec: template: spec: {
 			containers: [{
 				name:  "envoy-gateway"
-				image: "docker.io/envoyproxy/gateway:v1.1.2"
+				image: "docker.io/envoyproxy/gateway:v1.2.6"
 				args: [
 					"server",
 					"--config-path=/config/envoy-gateway.yaml",
@@ -37,7 +37,7 @@ k8s: "apps": "v1": "Deployment": "envoy-gateway-system": {
 					name:          "wasm"
 				}, {
 					containerPort: 19001
-					name:          "http-metrics"
+					name:          "metrics"
 				}]
 				livenessProbe: {
 					httpGet: {
@@ -61,7 +61,15 @@ k8s: "apps": "v1": "Deployment": "envoy-gateway-system": {
 						memory: "256Mi"
 					}
 				}
-				securityContext: allowPrivilegeEscalation: false
+				securityContext: {
+					allowPrivilegeEscalation: false
+					capabilities: drop: ["ALL"]
+					privileged:   false
+					runAsGroup:   65532
+					runAsNonRoot: true
+					runAsUser:    65532
+					seccompProfile: type: "RuntimeDefault"
+				}
 				volumeMounts: [{
 					mountPath: "/config"
 					name:      "envoy-gateway-config"

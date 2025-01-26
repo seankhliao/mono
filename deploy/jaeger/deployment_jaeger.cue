@@ -32,7 +32,7 @@ k8s: "apps": v1: "Deployment": "jaeger": {
 			let storage_dir = "/var/lib/jaeger"
 			let http_port = 16686
 			containers: [{
-				image: "quay.io/jaegertracing/jaeger:2.0.0"
+				image: "quay.io/jaegertracing/jaeger:2.2.0"
 				name:  "jaeger"
 				args: [
 					"--config=file:\(config_dir)/jaeger.yaml",

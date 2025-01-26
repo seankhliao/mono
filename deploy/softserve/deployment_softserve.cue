@@ -11,7 +11,7 @@ k8s: apps: v1: Deployment: "softserve": {
 		spec: strategy: type: "Recreate"
 		spec: template: spec: {
 			containers: [{
-				image: "ghcr.io/charmbracelet/soft-serve:v0.7.6"
+				image: "ghcr.io/charmbracelet/soft-serve:v0.8.2"
 				name:  "softserve"
 				ports: [{
 					containerPort: 9418

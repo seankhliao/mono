@@ -10,7 +10,7 @@ k8s: "apps": "v1": "Deployment": "opentelemetry": {
 		automountServiceAccountToken: true
 		containers: [{
 			name:  "otelcol"
-			image: "ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.112.0"
+			image: "ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.118.0"
 			args: ["--config=file:/etc/otelcol/config.yaml"]
 			env: [namespace.gcpEnv]
 			envFrom: [{

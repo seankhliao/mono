@@ -8,12 +8,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	kind:       "CustomResourceDefinition"
 	metadata: {
 		annotations: {
-			"api-approved.kubernetes.io":               "https://github.com/kubernetes-sigs/gateway-api/pull/2997"
-			"gateway.networking.k8s.io/bundle-version": "v1.1.0"
+			"api-approved.kubernetes.io":               "https://github.com/kubernetes-sigs/gateway-api/pull/3328"
+			"gateway.networking.k8s.io/bundle-version": "v1.2.1"
 			"gateway.networking.k8s.io/channel":        "experimental"
 		}
-		creationTimestamp: null
-		name:              "gateways.gateway.networking.k8s.io"
+		name: "gateways.gateway.networking.k8s.io"
 	}
 	spec: {
 		group: "gateway.networking.k8s.io"
@@ -81,26 +80,21 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	requested address is invalid or unavailable, the implementation MUST
 	indicate this in the associated entry in GatewayStatus.Addresses.
 
-
 	The Addresses field represents a request for the address(es) on the
 	"outside of the Gateway", that traffic bound for this Gateway will use.
 	This could be the IP address or hostname of an external load balancer or
 	other networking infrastructure, or some other address that traffic will
 	be sent to.
 
-
 	If no Addresses are specified, the implementation MAY schedule the
 	Gateway in an implementation-specific manner, assigning an appropriate
 	set of Addresses.
-
 
 	The implementation MUST bind all Listeners to every GatewayAddress that
 	it assigns to the Gateway and add a corresponding entry in
 	GatewayStatus.Addresses.
 
-
 	Support: Extended
-
 
 
 	"""
@@ -132,7 +126,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Value of the address. The validity of the values will depend
 	on the type and support by the controller.
 
-
 	Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
 	"""
 											maxLength: 253
@@ -157,6 +150,83 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 									rule:    "self.all(a1, a1.type == 'Hostname' ? self.exists_one(a2, a2.type == a1.type && a2.value == a1.value) : true )"
 								}]
 							}
+							backendTLS: {
+								description: """
+	BackendTLS configures TLS settings for when this Gateway is connecting to
+	backends with TLS.
+
+	Support: Core
+
+
+	"""
+								properties: clientCertificateRef: {
+									description: """
+	ClientCertificateRef is a reference to an object that contains a Client
+	Certificate and the associated private key.
+
+	References to a resource in different namespace are invalid UNLESS there
+	is a ReferenceGrant in the target namespace that allows the certificate
+	to be attached. If a ReferenceGrant does not allow this reference, the
+	"ResolvedRefs" condition MUST be set to False for this listener with the
+	"RefNotPermitted" reason.
+
+	ClientCertificateRef can reference to standard Kubernetes resources, i.e.
+	Secret, or implementation-specific custom resources.
+
+	This setting can be overridden on the service level by use of BackendTLSPolicy.
+
+	Support: Core
+
+
+	"""
+									properties: {
+										group: {
+											default: ""
+											description: """
+	Group is the group of the referent. For example, "gateway.networking.k8s.io".
+	When unspecified or empty string, core API group is inferred.
+	"""
+											maxLength: 253
+											pattern:   "^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+											type:      "string"
+										}
+										kind: {
+											default:     "Secret"
+											description: "Kind is kind of the referent. For example \"Secret\"."
+											maxLength:   63
+											minLength:   1
+											pattern:     "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
+											type:        "string"
+										}
+										name: {
+											description: "Name is the name of the referent."
+											maxLength:   253
+											minLength:   1
+											type:        "string"
+										}
+										namespace: {
+											description: """
+	Namespace is the namespace of the referenced object. When unspecified, the local
+	namespace is inferred.
+
+	Note that when a namespace different than the local namespace is specified,
+	a ReferenceGrant object is required in the referent namespace to allow that
+	namespace's owner to accept the reference. See the ReferenceGrant
+	documentation for details.
+
+	Support: Core
+	"""
+											maxLength: 63
+											minLength: 1
+											pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+											type:      "string"
+										}
+									}
+									required: ["name"]
+									type: "object"
+								}
+								type: "object"
+							}
 							gatewayClassName: {
 								description: """
 	GatewayClassName used for this Gateway. This is the name of a
@@ -170,11 +240,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 								description: """
 	Infrastructure defines infrastructure level attributes about this Gateway instance.
 
-
-	Support: Core
-
-
-
+	Support: Extended
 	"""
 								properties: {
 									annotations: {
@@ -192,46 +258,66 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 										description: """
 	Annotations that SHOULD be applied to any resources created in response to this Gateway.
 
-
 	For implementations creating other Kubernetes objects, this should be the `metadata.annotations` field on resources.
 	For other implementations, this refers to any relevant (implementation specific) "annotations" concepts.
 
-
 	An implementation may chose to add additional implementation-specific annotations as they see fit.
-
 
 	Support: Extended
 	"""
 										maxProperties: 8
 										type:          "object"
+										"x-kubernetes-validations": [{
+											message: "Annotation keys must be in the form of an optional DNS subdomain prefix followed by a required name segment of up to 63 characters."
+											rule:    "self.all(key, key.matches(r\"\"\"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9]$\"\"\"))"
+										}, {
+											message: "If specified, the annotation key's prefix must be a DNS subdomain not longer than 253 characters in total."
+											rule:    "self.all(key, key.split(\"/\")[0].size() < 253)"
+										}]
 									}
 									labels: {
 										additionalProperties: {
 											description: """
-	AnnotationValue is the value of an annotation in Gateway API. This is used
-	for validation of maps such as TLS options. This roughly matches Kubernetes
-	annotation validation, although the length validation in that case is based
-	on the entire size of the annotations struct.
+	LabelValue is the value of a label in the Gateway API. This is used for validation
+	of maps such as Gateway infrastructure labels. This matches the Kubernetes
+	label validation rules:
+	* must be 63 characters or less (can be empty),
+	* unless empty, must begin and end with an alphanumeric character ([a-z0-9A-Z]),
+	* could contain dashes (-), underscores (_), dots (.), and alphanumerics between.
+
+	Valid values include:
+
+	* MyValue
+	* my.name
+	* 123-my-value
 	"""
-											maxLength: 4096
+											maxLength: 63
 											minLength: 0
+											pattern:   "^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
 											type:      "string"
 										}
 										description: """
 	Labels that SHOULD be applied to any resources created in response to this Gateway.
 
-
 	For implementations creating other Kubernetes objects, this should be the `metadata.labels` field on resources.
 	For other implementations, this refers to any relevant (implementation specific) "labels" concepts.
 
-
 	An implementation may chose to add additional implementation-specific labels as they see fit.
 
+	If an implementation maps these labels to Pods, or any other resource that would need to be recreated when labels
+	change, it SHOULD clearly warn about this behavior in documentation.
 
 	Support: Extended
 	"""
 										maxProperties: 8
 										type:          "object"
+										"x-kubernetes-validations": [{
+											message: "Label keys must be in the form of an optional DNS subdomain prefix followed by a required name segment of up to 63 characters."
+											rule:    "self.all(key, key.matches(r\"\"\"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9]$\"\"\"))"
+										}, {
+											message: "If specified, the label key's prefix must be a DNS subdomain not longer than 253 characters in total."
+											rule:    "self.all(key, key.split(\"/\")[0].size() < 253)"
+										}]
 									}
 									parametersRef: {
 										description: """
@@ -239,14 +325,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	parameters corresponding to the Gateway. This is optional if the
 	controller does not require any additional configuration.
 
-
 	This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
-
 
 	The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
 	the merging behavior is implementation specific.
 	It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
-
 
 	Support: Implementation-specific
 	"""
@@ -287,7 +370,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	logical endpoints that are bound on this Gateway's addresses.
 	At least one Listener MUST be specified.
 
-
 	Each Listener in a set of Listeners (for example, in a single Gateway)
 	MUST be _distinct_, in that a traffic flow MUST be able to be assigned to
 	exactly one listener. (This section uses "set of Listeners" rather than
@@ -295,31 +377,23 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	from multiple Gateways onto a single data plane, and these rules _also_
 	apply in that case).
 
-
 	Practically, this means that each listener in a set MUST have a unique
 	combination of Port, Protocol, and, if supported by the protocol, Hostname.
-
 
 	Some combinations of port, protocol, and TLS settings are considered
 	Core support and MUST be supported by implementations based on their
 	targeted conformance profile:
 
-
 	HTTP Profile
-
 
 	1. HTTPRoute, Port: 80, Protocol: HTTP
 	2. HTTPRoute, Port: 443, Protocol: HTTPS, TLS Mode: Terminate, TLS keypair provided
 
-
 	TLS Profile
-
 
 	1. TLSRoute, Port: 443, Protocol: TLS, TLS Mode: Passthrough
 
-
 	"Distinct" Listeners have the following property:
-
 
 	The implementation can match inbound requests to a single distinct
 	Listener. When multiple Listeners share values for fields (for
@@ -327,9 +401,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	can match requests to only one of the Listeners using other
 	Listener fields.
 
-
 	For example, the following Listener scenarios are distinct:
-
 
 	1. Multiple Listeners with the same Port that all use the "HTTP"
 	   Protocol that all have unique Hostname values.
@@ -338,27 +410,22 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	3. A mixture of "TCP" and "UDP" Protocol Listeners, where no Listener
 	   with the same Protocol has the same Port value.
 
-
 	Some fields in the Listener struct have possible values that affect
 	whether the Listener is distinct. Hostname is particularly relevant
 	for HTTP or HTTPS protocols.
-
 
 	When using the Hostname value to select between same-Port, same-Protocol
 	Listeners, the Hostname value must be different on each Listener for the
 	Listener to be distinct.
 
-
 	When the Listeners are distinct based on Hostname, inbound request
 	hostnames MUST match from the most specific to least specific Hostname
 	values to choose the correct Listener and its associated set of Routes.
-
 
 	Exact matches must be processed before wildcard matches, and wildcard
 	matches must be processed before fallback (empty Hostname value)
 	matches. For example, `"foo.example.com"` takes precedence over
 	`"*.example.com"`, and `"*.example.com"` takes precedence over `""`.
-
 
 	Additionally, if there are multiple wildcard entries, more specific
 	wildcard entries must be processed before less specific wildcard entries.
@@ -366,16 +433,13 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	The precise definition here is that the higher the number of dots in the
 	hostname to the right of the wildcard character, the higher the precedence.
 
-
 	The wildcard character will match any number of characters _and dots_ to
 	the left, however, so `"*.example.com"` will match both
 	`"foo.bar.example.com"` _and_ `"bar.example.com"`.
 
-
 	If a set of Listeners contains Listeners that are not distinct, then those
 	Listeners are Conflicted, and the implementation MUST set the "Conflicted"
 	condition in the Listener Status to "True".
-
 
 	Implementations MAY choose to accept a Gateway with some Conflicted
 	Listeners only if they only accept the partial Listener set that contains
@@ -386,7 +450,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Listener in this case, otherwise it violates the requirement that at
 	least one Listener must be present.
 
-
 	The implementation MUST set a "ListenersNotValid" condition on the
 	Gateway Status when the Gateway contains Conflicted Listeners whether or
 	not they accept the Gateway. That Condition SHOULD clearly
@@ -394,25 +457,20 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Accepted. Additionally, the Listener status for those listeners SHOULD
 	indicate which Listeners are conflicted and not Accepted.
 
-
 	A Gateway's Listeners are considered "compatible" if:
-
 
 	1. They are distinct.
 	2. The implementation can serve them in compliance with the Addresses
 	   requirement that all Listeners are available on all assigned
 	   addresses.
 
-
 	Compatible combinations in Extended support are expected to vary across
 	implementations. A combination that is compatible for one implementation
 	may not be compatible for another.
 
-
 	For example, an implementation that cannot serve both TCP and UDP listeners
 	on the same address, or cannot mix HTTPS and generic TLS listens on the same port
 	would not consider those cases compatible, even though they are distinct.
-
 
 	Note that requests SHOULD match at most one Listener. For example, if
 	Listeners are defined for "foo.example.com" and "*.example.com", a
@@ -421,10 +479,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	This concept is known as "Listener Isolation". Implementations that do
 	not support Listener Isolation MUST clearly document this.
 
-
 	Implementations MAY merge separate Gateways onto a single set of
 	Addresses if all Listeners across all Gateways are compatible.
-
 
 	Support: Core
 	"""
@@ -441,11 +497,9 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Listener and the trusted namespaces where those Route resources MAY be
 	present.
 
-
 	Although a client request may match multiple route rules, only one rule
 	may ultimately receive the request. Matching precedence MUST be
 	determined in order of the following criteria:
-
 
 	* The most specific match as defined by the Route type.
 	* The oldest Route based on creation timestamp. For example, a Route with
@@ -455,14 +509,12 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	  alphabetical order (namespace/name) should be given precedence. For
 	  example, foo/bar is given precedence over foo/baz.
 
-
 	All valid rules within a Route attached to this Listener should be
 	implemented. Invalid Route rules can be ignored (sometimes that will mean
 	the full Route). If a Route rule transitions from valid to invalid,
 	support for that Route rule should be dropped to ensure consistency. For
 	example, even if a filter specified by a Route rule is invalid, the rest
 	of the rules within that Route should still be supported.
-
 
 	Support: Core
 	"""
@@ -473,13 +525,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	to this Gateway Listener. When unspecified or empty, the kinds of Routes
 	selected are determined using the Listener protocol.
 
-
 	A RouteGroupKind MUST correspond to kinds of Routes that are compatible
 	with the application protocol specified in the Listener's Protocol field.
 	If an implementation does not support or recognize this resource type, it
 	MUST set the "ResolvedRefs" condition to False for this Listener with the
 	"InvalidRouteKinds" reason.
-
 
 	Support: Core
 	"""
@@ -513,7 +563,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Namespaces indicates namespaces from which Routes may be attached to this
 	Listener. This is restricted to the namespace of this Gateway by default.
 
-
 	Support: Core
 	"""
 													properties: {
@@ -523,12 +572,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	From indicates where Routes will be selected for this Gateway. Possible
 	values are:
 
-
 	* All: Routes in all namespaces may be used by this Gateway.
 	* Selector: Routes in namespaces selected by the selector may be used by
 	  this Gateway.
 	* Same: Only Routes in the same namespace may be used by this Gateway.
-
 
 	Support: Core
 	"""
@@ -544,7 +591,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Selector must be specified when From is set to "Selector". In that case,
 	only Routes in Namespaces matching this Selector will be selected by this
 	Gateway. This field is ignored for other values of "From".
-
 
 	Support: Core
 	"""
@@ -615,10 +661,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	field is ignored for protocols that don't require hostname based
 	matching.
 
-
 	Implementations MUST apply Hostname matching appropriately for each of
 	the following protocols:
-
 
 	* TLS: The Listener Hostname MUST match the SNI.
 	* HTTP: The Listener Hostname MUST match the Host header of the request.
@@ -627,18 +671,15 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	  ensure that both the SNI and Host header match the Listener hostname,
 	  it MUST clearly document that.
 
-
 	For HTTPRoute and TLSRoute resources, there is an interaction with the
 	`spec.hostnames` array. When both listener and route specify hostnames,
 	there MUST be an intersection between the values for a Route to be
 	accepted. For more information, refer to the Route specific Hostnames
 	documentation.
 
-
 	Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
 	as a suffix match. That means that a match for `*.example.com` would match
 	both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
-
 
 	Support: Core
 	"""
@@ -652,7 +693,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Name is the name of the Listener. This name MUST be unique within a
 	Gateway.
 
-
 	Support: Core
 	"""
 											maxLength: 253
@@ -665,7 +705,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Port is the network port. Multiple listeners may use the
 	same port, subject to the Listener compatibility rules.
 
-
 	Support: Core
 	"""
 											format:  "int32"
@@ -677,12 +716,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 											description: """
 	Protocol specifies the network protocol this listener expects to receive.
 
-
 	Support: Core
 	"""
 											maxLength: 255
 											minLength: 1
-											pattern:   "^[a-zA-Z0-9]([-a-zSA-Z0-9]*[a-zA-Z0-9])?$|[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\\/[A-Za-z0-9]+$"
+											pattern:   "^[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?$|[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\\/[A-Za-z0-9]+$"
 											type:      "string"
 										}
 										tls: {
@@ -691,14 +729,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	the Protocol field is "HTTPS" or "TLS". It is invalid to set this field
 	if the Protocol field is "HTTP", "TCP", or "UDP".
 
-
 	The association of SNIs to Certificate defined in GatewayTLSConfig is
 	defined based on the Hostname field for this listener.
 
-
 	The GatewayClass MUST use the longest matching SNI out of all
 	available certificates for any TLS handshake.
-
 
 	Support: Core
 	"""
@@ -710,11 +745,9 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	establish a TLS handshake for requests that match the hostname of the
 	associated listener.
 
-
 	A single CertificateRef to a Kubernetes Secret has "Core" support.
 	Implementations MAY choose to support attaching multiple certificates to
 	a Listener, but this behavior is implementation-specific.
-
 
 	References to a resource in different namespace are invalid UNLESS there
 	is a ReferenceGrant in the target namespace that allows the certificate
@@ -722,17 +755,13 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	"ResolvedRefs" condition MUST be set to False for this listener with the
 	"RefNotPermitted" reason.
 
-
 	This field is required to have at least one element when the mode is set
 	to "Terminate" (default) and is optional otherwise.
-
 
 	CertificateRefs can reference to standard Kubernetes resources, i.e.
 	Secret, or implementation-specific custom resources.
 
-
 	Support: Core - A single reference to a Kubernetes Secret of type kubernetes.io/tls
-
 
 	Support: Implementation-specific (More than one reference or other resource types)
 	"""
@@ -741,10 +770,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	SecretObjectReference identifies an API object including its namespace,
 	defaulting to Secret.
 
-
 	The API object must be valid in the cluster; the Group and Kind must
 	be registered in the cluster for this reference to be valid.
-
 
 	References to objects with invalid Group and Kind are not valid, and must
 	be rejected by the implementation, with appropriate Conditions set
@@ -780,12 +807,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Namespace is the namespace of the referenced object. When unspecified, the local
 	namespace is inferred.
 
-
 	Note that when a namespace different than the local namespace is specified,
 	a ReferenceGrant object is required in the referent namespace to allow that
 	namespace's owner to accept the reference. See the ReferenceGrant
 	documentation for details.
-
 
 	Support: Core
 	"""
@@ -809,9 +834,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	that requests a user to specify the client certificate.
 	The maximum depth of a certificate chain accepted in verification is Implementation specific.
 
-
 	Support: Extended
-
 
 
 	"""
@@ -822,20 +845,16 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	the Certificate Authorities that can be used
 	as a trust anchor to validate the certificates presented by the client.
 
-
 	A single CA certificate reference to a Kubernetes ConfigMap
 	has "Core" support.
 	Implementations MAY choose to support attaching multiple CA certificates to
 	a Listener, but this behavior is implementation-specific.
 
-
 	Support: Core - A single reference to a Kubernetes ConfigMap
 	with the CA certificate in a key named `ca.crt`.
 
-
 	Support: Implementation-specific (More than one reference, or other kinds
 	of resources).
-
 
 	References to a resource in a different namespace are invalid UNLESS there
 	is a ReferenceGrant in the target namespace that allows the certificate
@@ -847,10 +866,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 															description: """
 	ObjectReference identifies an API object including its namespace.
 
-
 	The API object must be valid in the cluster; the Group and Kind must
 	be registered in the cluster for this reference to be valid.
-
 
 	References to objects with invalid Group and Kind are not valid, and must
 	be rejected by the implementation, with appropriate Conditions set
@@ -884,12 +901,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Namespace is the namespace of the referenced object. When unspecified, the local
 	namespace is inferred.
 
-
 	Note that when a namespace different than the local namespace is specified,
 	a ReferenceGrant object is required in the referent namespace to allow that
 	namespace's owner to accept the reference. See the ReferenceGrant
 	documentation for details.
-
 
 	Support: Core
 	"""
@@ -918,7 +933,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Mode defines the TLS behavior for the TLS session initiated by the client.
 	There are two possible modes:
 
-
 	- Terminate: The TLS session between the downstream client and the
 	  Gateway is terminated at the Gateway. This mode requires certificates
 	  to be specified in some way, such as populating the certificateRefs
@@ -927,7 +941,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	  implies that the Gateway can't decipher the TLS stream except for
 	  the ClientHello message of the TLS protocol. The certificateRefs field
 	  is ignored in this mode.
-
 
 	Support: Core
 	"""
@@ -954,12 +967,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	configuration for each implementation. For example, configuring the
 	minimum TLS version or supported cipher suites.
 
-
 	A set of common keys MAY be defined by the API in the future. To avoid
 	any ambiguity, implementation-specific definitions MUST use
 	domain-prefixed names, such as `example.com/my-custom-option`.
 	Un-prefixed names are reserved for key names defined by Gateway API.
-
 
 	Support: Implementation-specific
 	"""
@@ -1031,15 +1042,12 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Addresses lists the network addresses that have been bound to the
 	Gateway.
 
-
 	This list may differ from the addresses provided in the spec under some
 	conditions:
-
 
 	  * no addresses are specified, all addresses are dynamically assigned
 	  * a combination of specified and dynamic addresses are assigned
 	  * a specified address was unusable (e.g. already in use)
-
 
 
 	"""
@@ -1070,7 +1078,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 											description: """
 	Value of the address. The validity of the values will depend
 	on the type and support by the controller.
-
 
 	Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
 	"""
@@ -1106,40 +1113,19 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 								description: """
 	Conditions describe the current conditions of the Gateway.
 
-
 	Implementations should prefer to express Gateway conditions
 	using the `GatewayConditionType` and `GatewayConditionReason`
 	constants so that operators and tools can converge on a common
 	vocabulary to describe Gateway state.
 
-
 	Known condition types are:
-
 
 	* "Accepted"
 	* "Programmed"
 	* "Ready"
 	"""
 								items: {
-									description: """
-	Condition contains details for one aspect of the current state of this API Resource.
-	---
-	This struct is intended for direct use as an array at the field path .status.conditions.  For example,
-
-
-	\ttype FooStatus struct{
-	\t    // Represents the observations of a foo's current state.
-	\t    // Known .status.conditions.type are: "Available", "Progressing", and "Degraded"
-	\t    // +patchMergeKey=type
-	\t    // +patchStrategy=merge
-	\t    // +listType=map
-	\t    // +listMapKey=type
-	\t    Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
-
-
-	\t    // other fields
-	\t}
-	"""
+									description: "Condition contains details for one aspect of the current state of this API Resource."
 									properties: {
 										lastTransitionTime: {
 											description: """
@@ -1190,16 +1176,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 											type: "string"
 										}
 										type: {
-											description: """
-	type of condition in CamelCase or in foo.example.com/CamelCase.
-	---
-	Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
-	useful (see .node.status.conditions), the ability to deconflict is important.
-	The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
-	"""
-											maxLength: 316
-											pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-											type:      "string"
+											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
+											maxLength:   316
+											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type:        "string"
 										}
 									}
 									required: [
@@ -1226,7 +1206,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	AttachedRoutes represents the total number of Routes that have been
 	successfully attached to this Listener.
 
-
 	Successful attachment of a Route to a Listener is based solely on the
 	combination of the AllowedRoutes field on the corresponding Listener
 	and the Route's ParentRefs field. A Route is successfully attached to
@@ -1239,7 +1218,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	for Listeners with condition Accepted: false and MUST count successfully
 	attached Routes that may themselves have Accepted: false conditions.
 
-
 	Uses for this field include troubleshooting Route attachment and
 	measuring blast radius/impact of changes to a Listener.
 	"""
@@ -1249,25 +1227,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 										conditions: {
 											description: "Conditions describe the current condition of this listener."
 											items: {
-												description: """
-	Condition contains details for one aspect of the current state of this API Resource.
-	---
-	This struct is intended for direct use as an array at the field path .status.conditions.  For example,
-
-
-	\ttype FooStatus struct{
-	\t    // Represents the observations of a foo's current state.
-	\t    // Known .status.conditions.type are: "Available", "Progressing", and "Degraded"
-	\t    // +patchMergeKey=type
-	\t    // +patchStrategy=merge
-	\t    // +listType=map
-	\t    // +listMapKey=type
-	\t    Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
-
-
-	\t    // other fields
-	\t}
-	"""
+												description: "Condition contains details for one aspect of the current state of this API Resource."
 												properties: {
 													lastTransitionTime: {
 														description: """
@@ -1318,16 +1278,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 														type: "string"
 													}
 													type: {
-														description: """
-	type of condition in CamelCase or in foo.example.com/CamelCase.
-	---
-	Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
-	useful (see .node.status.conditions), the ability to deconflict is important.
-	The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
-	"""
-														maxLength: 316
-														pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-														type:      "string"
+														description: "type of condition in CamelCase or in foo.example.com/CamelCase."
+														maxLength:   316
+														pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+														type:        "string"
 													}
 												}
 												required: [
@@ -1356,7 +1310,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	SupportedKinds is the list indicating the Kinds supported by this
 	listener. This MUST represent the kinds an implementation supports for
 	that Listener configuration.
-
 
 	If kinds are specified in Spec that are not supported, they MUST NOT
 	appear in this list and an implementation MUST set the "ResolvedRefs"
@@ -1467,26 +1420,21 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	requested address is invalid or unavailable, the implementation MUST
 	indicate this in the associated entry in GatewayStatus.Addresses.
 
-
 	The Addresses field represents a request for the address(es) on the
 	"outside of the Gateway", that traffic bound for this Gateway will use.
 	This could be the IP address or hostname of an external load balancer or
 	other networking infrastructure, or some other address that traffic will
 	be sent to.
 
-
 	If no Addresses are specified, the implementation MAY schedule the
 	Gateway in an implementation-specific manner, assigning an appropriate
 	set of Addresses.
-
 
 	The implementation MUST bind all Listeners to every GatewayAddress that
 	it assigns to the Gateway and add a corresponding entry in
 	GatewayStatus.Addresses.
 
-
 	Support: Extended
-
 
 
 	"""
@@ -1518,7 +1466,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Value of the address. The validity of the values will depend
 	on the type and support by the controller.
 
-
 	Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
 	"""
 											maxLength: 253
@@ -1543,6 +1490,83 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 									rule:    "self.all(a1, a1.type == 'Hostname' ? self.exists_one(a2, a2.type == a1.type && a2.value == a1.value) : true )"
 								}]
 							}
+							backendTLS: {
+								description: """
+	BackendTLS configures TLS settings for when this Gateway is connecting to
+	backends with TLS.
+
+	Support: Core
+
+
+	"""
+								properties: clientCertificateRef: {
+									description: """
+	ClientCertificateRef is a reference to an object that contains a Client
+	Certificate and the associated private key.
+
+	References to a resource in different namespace are invalid UNLESS there
+	is a ReferenceGrant in the target namespace that allows the certificate
+	to be attached. If a ReferenceGrant does not allow this reference, the
+	"ResolvedRefs" condition MUST be set to False for this listener with the
+	"RefNotPermitted" reason.
+
+	ClientCertificateRef can reference to standard Kubernetes resources, i.e.
+	Secret, or implementation-specific custom resources.
+
+	This setting can be overridden on the service level by use of BackendTLSPolicy.
+
+	Support: Core
+
+
+	"""
+									properties: {
+										group: {
+											default: ""
+											description: """
+	Group is the group of the referent. For example, "gateway.networking.k8s.io".
+	When unspecified or empty string, core API group is inferred.
+	"""
+											maxLength: 253
+											pattern:   "^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+											type:      "string"
+										}
+										kind: {
+											default:     "Secret"
+											description: "Kind is kind of the referent. For example \"Secret\"."
+											maxLength:   63
+											minLength:   1
+											pattern:     "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
+											type:        "string"
+										}
+										name: {
+											description: "Name is the name of the referent."
+											maxLength:   253
+											minLength:   1
+											type:        "string"
+										}
+										namespace: {
+											description: """
+	Namespace is the namespace of the referenced object. When unspecified, the local
+	namespace is inferred.
+
+	Note that when a namespace different than the local namespace is specified,
+	a ReferenceGrant object is required in the referent namespace to allow that
+	namespace's owner to accept the reference. See the ReferenceGrant
+	documentation for details.
+
+	Support: Core
+	"""
+											maxLength: 63
+											minLength: 1
+											pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+											type:      "string"
+										}
+									}
+									required: ["name"]
+									type: "object"
+								}
+								type: "object"
+							}
 							gatewayClassName: {
 								description: """
 	GatewayClassName used for this Gateway. This is the name of a
@@ -1556,11 +1580,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 								description: """
 	Infrastructure defines infrastructure level attributes about this Gateway instance.
 
-
-	Support: Core
-
-
-
+	Support: Extended
 	"""
 								properties: {
 									annotations: {
@@ -1578,46 +1598,66 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 										description: """
 	Annotations that SHOULD be applied to any resources created in response to this Gateway.
 
-
 	For implementations creating other Kubernetes objects, this should be the `metadata.annotations` field on resources.
 	For other implementations, this refers to any relevant (implementation specific) "annotations" concepts.
 
-
 	An implementation may chose to add additional implementation-specific annotations as they see fit.
-
 
 	Support: Extended
 	"""
 										maxProperties: 8
 										type:          "object"
+										"x-kubernetes-validations": [{
+											message: "Annotation keys must be in the form of an optional DNS subdomain prefix followed by a required name segment of up to 63 characters."
+											rule:    "self.all(key, key.matches(r\"\"\"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9]$\"\"\"))"
+										}, {
+											message: "If specified, the annotation key's prefix must be a DNS subdomain not longer than 253 characters in total."
+											rule:    "self.all(key, key.split(\"/\")[0].size() < 253)"
+										}]
 									}
 									labels: {
 										additionalProperties: {
 											description: """
-	AnnotationValue is the value of an annotation in Gateway API. This is used
-	for validation of maps such as TLS options. This roughly matches Kubernetes
-	annotation validation, although the length validation in that case is based
-	on the entire size of the annotations struct.
+	LabelValue is the value of a label in the Gateway API. This is used for validation
+	of maps such as Gateway infrastructure labels. This matches the Kubernetes
+	label validation rules:
+	* must be 63 characters or less (can be empty),
+	* unless empty, must begin and end with an alphanumeric character ([a-z0-9A-Z]),
+	* could contain dashes (-), underscores (_), dots (.), and alphanumerics between.
+
+	Valid values include:
+
+	* MyValue
+	* my.name
+	* 123-my-value
 	"""
-											maxLength: 4096
+											maxLength: 63
 											minLength: 0
+											pattern:   "^(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?$"
 											type:      "string"
 										}
 										description: """
 	Labels that SHOULD be applied to any resources created in response to this Gateway.
 
-
 	For implementations creating other Kubernetes objects, this should be the `metadata.labels` field on resources.
 	For other implementations, this refers to any relevant (implementation specific) "labels" concepts.
 
-
 	An implementation may chose to add additional implementation-specific labels as they see fit.
 
+	If an implementation maps these labels to Pods, or any other resource that would need to be recreated when labels
+	change, it SHOULD clearly warn about this behavior in documentation.
 
 	Support: Extended
 	"""
 										maxProperties: 8
 										type:          "object"
+										"x-kubernetes-validations": [{
+											message: "Label keys must be in the form of an optional DNS subdomain prefix followed by a required name segment of up to 63 characters."
+											rule:    "self.all(key, key.matches(r\"\"\"^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9]$\"\"\"))"
+										}, {
+											message: "If specified, the label key's prefix must be a DNS subdomain not longer than 253 characters in total."
+											rule:    "self.all(key, key.split(\"/\")[0].size() < 253)"
+										}]
 									}
 									parametersRef: {
 										description: """
@@ -1625,14 +1665,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	parameters corresponding to the Gateway. This is optional if the
 	controller does not require any additional configuration.
 
-
 	This follows the same semantics as GatewayClass's `parametersRef`, but on a per-Gateway basis
-
 
 	The Gateway's GatewayClass may provide its own `parametersRef`. When both are specified,
 	the merging behavior is implementation specific.
 	It is generally recommended that GatewayClass provides defaults that can be overridden by a Gateway.
-
 
 	Support: Implementation-specific
 	"""
@@ -1673,7 +1710,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	logical endpoints that are bound on this Gateway's addresses.
 	At least one Listener MUST be specified.
 
-
 	Each Listener in a set of Listeners (for example, in a single Gateway)
 	MUST be _distinct_, in that a traffic flow MUST be able to be assigned to
 	exactly one listener. (This section uses "set of Listeners" rather than
@@ -1681,31 +1717,23 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	from multiple Gateways onto a single data plane, and these rules _also_
 	apply in that case).
 
-
 	Practically, this means that each listener in a set MUST have a unique
 	combination of Port, Protocol, and, if supported by the protocol, Hostname.
-
 
 	Some combinations of port, protocol, and TLS settings are considered
 	Core support and MUST be supported by implementations based on their
 	targeted conformance profile:
 
-
 	HTTP Profile
-
 
 	1. HTTPRoute, Port: 80, Protocol: HTTP
 	2. HTTPRoute, Port: 443, Protocol: HTTPS, TLS Mode: Terminate, TLS keypair provided
 
-
 	TLS Profile
-
 
 	1. TLSRoute, Port: 443, Protocol: TLS, TLS Mode: Passthrough
 
-
 	"Distinct" Listeners have the following property:
-
 
 	The implementation can match inbound requests to a single distinct
 	Listener. When multiple Listeners share values for fields (for
@@ -1713,9 +1741,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	can match requests to only one of the Listeners using other
 	Listener fields.
 
-
 	For example, the following Listener scenarios are distinct:
-
 
 	1. Multiple Listeners with the same Port that all use the "HTTP"
 	   Protocol that all have unique Hostname values.
@@ -1724,27 +1750,22 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	3. A mixture of "TCP" and "UDP" Protocol Listeners, where no Listener
 	   with the same Protocol has the same Port value.
 
-
 	Some fields in the Listener struct have possible values that affect
 	whether the Listener is distinct. Hostname is particularly relevant
 	for HTTP or HTTPS protocols.
-
 
 	When using the Hostname value to select between same-Port, same-Protocol
 	Listeners, the Hostname value must be different on each Listener for the
 	Listener to be distinct.
 
-
 	When the Listeners are distinct based on Hostname, inbound request
 	hostnames MUST match from the most specific to least specific Hostname
 	values to choose the correct Listener and its associated set of Routes.
-
 
 	Exact matches must be processed before wildcard matches, and wildcard
 	matches must be processed before fallback (empty Hostname value)
 	matches. For example, `"foo.example.com"` takes precedence over
 	`"*.example.com"`, and `"*.example.com"` takes precedence over `""`.
-
 
 	Additionally, if there are multiple wildcard entries, more specific
 	wildcard entries must be processed before less specific wildcard entries.
@@ -1752,16 +1773,13 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	The precise definition here is that the higher the number of dots in the
 	hostname to the right of the wildcard character, the higher the precedence.
 
-
 	The wildcard character will match any number of characters _and dots_ to
 	the left, however, so `"*.example.com"` will match both
 	`"foo.bar.example.com"` _and_ `"bar.example.com"`.
 
-
 	If a set of Listeners contains Listeners that are not distinct, then those
 	Listeners are Conflicted, and the implementation MUST set the "Conflicted"
 	condition in the Listener Status to "True".
-
 
 	Implementations MAY choose to accept a Gateway with some Conflicted
 	Listeners only if they only accept the partial Listener set that contains
@@ -1772,7 +1790,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Listener in this case, otherwise it violates the requirement that at
 	least one Listener must be present.
 
-
 	The implementation MUST set a "ListenersNotValid" condition on the
 	Gateway Status when the Gateway contains Conflicted Listeners whether or
 	not they accept the Gateway. That Condition SHOULD clearly
@@ -1780,25 +1797,20 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Accepted. Additionally, the Listener status for those listeners SHOULD
 	indicate which Listeners are conflicted and not Accepted.
 
-
 	A Gateway's Listeners are considered "compatible" if:
-
 
 	1. They are distinct.
 	2. The implementation can serve them in compliance with the Addresses
 	   requirement that all Listeners are available on all assigned
 	   addresses.
 
-
 	Compatible combinations in Extended support are expected to vary across
 	implementations. A combination that is compatible for one implementation
 	may not be compatible for another.
 
-
 	For example, an implementation that cannot serve both TCP and UDP listeners
 	on the same address, or cannot mix HTTPS and generic TLS listens on the same port
 	would not consider those cases compatible, even though they are distinct.
-
 
 	Note that requests SHOULD match at most one Listener. For example, if
 	Listeners are defined for "foo.example.com" and "*.example.com", a
@@ -1807,10 +1819,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	This concept is known as "Listener Isolation". Implementations that do
 	not support Listener Isolation MUST clearly document this.
 
-
 	Implementations MAY merge separate Gateways onto a single set of
 	Addresses if all Listeners across all Gateways are compatible.
-
 
 	Support: Core
 	"""
@@ -1827,11 +1837,9 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Listener and the trusted namespaces where those Route resources MAY be
 	present.
 
-
 	Although a client request may match multiple route rules, only one rule
 	may ultimately receive the request. Matching precedence MUST be
 	determined in order of the following criteria:
-
 
 	* The most specific match as defined by the Route type.
 	* The oldest Route based on creation timestamp. For example, a Route with
@@ -1841,14 +1849,12 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	  alphabetical order (namespace/name) should be given precedence. For
 	  example, foo/bar is given precedence over foo/baz.
 
-
 	All valid rules within a Route attached to this Listener should be
 	implemented. Invalid Route rules can be ignored (sometimes that will mean
 	the full Route). If a Route rule transitions from valid to invalid,
 	support for that Route rule should be dropped to ensure consistency. For
 	example, even if a filter specified by a Route rule is invalid, the rest
 	of the rules within that Route should still be supported.
-
 
 	Support: Core
 	"""
@@ -1859,13 +1865,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	to this Gateway Listener. When unspecified or empty, the kinds of Routes
 	selected are determined using the Listener protocol.
 
-
 	A RouteGroupKind MUST correspond to kinds of Routes that are compatible
 	with the application protocol specified in the Listener's Protocol field.
 	If an implementation does not support or recognize this resource type, it
 	MUST set the "ResolvedRefs" condition to False for this Listener with the
 	"InvalidRouteKinds" reason.
-
 
 	Support: Core
 	"""
@@ -1899,7 +1903,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Namespaces indicates namespaces from which Routes may be attached to this
 	Listener. This is restricted to the namespace of this Gateway by default.
 
-
 	Support: Core
 	"""
 													properties: {
@@ -1909,12 +1912,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	From indicates where Routes will be selected for this Gateway. Possible
 	values are:
 
-
 	* All: Routes in all namespaces may be used by this Gateway.
 	* Selector: Routes in namespaces selected by the selector may be used by
 	  this Gateway.
 	* Same: Only Routes in the same namespace may be used by this Gateway.
-
 
 	Support: Core
 	"""
@@ -1930,7 +1931,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Selector must be specified when From is set to "Selector". In that case,
 	only Routes in Namespaces matching this Selector will be selected by this
 	Gateway. This field is ignored for other values of "From".
-
 
 	Support: Core
 	"""
@@ -2001,10 +2001,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	field is ignored for protocols that don't require hostname based
 	matching.
 
-
 	Implementations MUST apply Hostname matching appropriately for each of
 	the following protocols:
-
 
 	* TLS: The Listener Hostname MUST match the SNI.
 	* HTTP: The Listener Hostname MUST match the Host header of the request.
@@ -2013,18 +2011,15 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	  ensure that both the SNI and Host header match the Listener hostname,
 	  it MUST clearly document that.
 
-
 	For HTTPRoute and TLSRoute resources, there is an interaction with the
 	`spec.hostnames` array. When both listener and route specify hostnames,
 	there MUST be an intersection between the values for a Route to be
 	accepted. For more information, refer to the Route specific Hostnames
 	documentation.
 
-
 	Hostnames that are prefixed with a wildcard label (`*.`) are interpreted
 	as a suffix match. That means that a match for `*.example.com` would match
 	both `test.example.com`, and `foo.test.example.com`, but not `example.com`.
-
 
 	Support: Core
 	"""
@@ -2038,7 +2033,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Name is the name of the Listener. This name MUST be unique within a
 	Gateway.
 
-
 	Support: Core
 	"""
 											maxLength: 253
@@ -2051,7 +2045,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Port is the network port. Multiple listeners may use the
 	same port, subject to the Listener compatibility rules.
 
-
 	Support: Core
 	"""
 											format:  "int32"
@@ -2063,12 +2056,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 											description: """
 	Protocol specifies the network protocol this listener expects to receive.
 
-
 	Support: Core
 	"""
 											maxLength: 255
 											minLength: 1
-											pattern:   "^[a-zA-Z0-9]([-a-zSA-Z0-9]*[a-zA-Z0-9])?$|[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\\/[A-Za-z0-9]+$"
+											pattern:   "^[a-zA-Z0-9]([-a-zA-Z0-9]*[a-zA-Z0-9])?$|[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*\\/[A-Za-z0-9]+$"
 											type:      "string"
 										}
 										tls: {
@@ -2077,14 +2069,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	the Protocol field is "HTTPS" or "TLS". It is invalid to set this field
 	if the Protocol field is "HTTP", "TCP", or "UDP".
 
-
 	The association of SNIs to Certificate defined in GatewayTLSConfig is
 	defined based on the Hostname field for this listener.
 
-
 	The GatewayClass MUST use the longest matching SNI out of all
 	available certificates for any TLS handshake.
-
 
 	Support: Core
 	"""
@@ -2096,11 +2085,9 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	establish a TLS handshake for requests that match the hostname of the
 	associated listener.
 
-
 	A single CertificateRef to a Kubernetes Secret has "Core" support.
 	Implementations MAY choose to support attaching multiple certificates to
 	a Listener, but this behavior is implementation-specific.
-
 
 	References to a resource in different namespace are invalid UNLESS there
 	is a ReferenceGrant in the target namespace that allows the certificate
@@ -2108,17 +2095,13 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	"ResolvedRefs" condition MUST be set to False for this listener with the
 	"RefNotPermitted" reason.
 
-
 	This field is required to have at least one element when the mode is set
 	to "Terminate" (default) and is optional otherwise.
-
 
 	CertificateRefs can reference to standard Kubernetes resources, i.e.
 	Secret, or implementation-specific custom resources.
 
-
 	Support: Core - A single reference to a Kubernetes Secret of type kubernetes.io/tls
-
 
 	Support: Implementation-specific (More than one reference or other resource types)
 	"""
@@ -2127,10 +2110,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	SecretObjectReference identifies an API object including its namespace,
 	defaulting to Secret.
 
-
 	The API object must be valid in the cluster; the Group and Kind must
 	be registered in the cluster for this reference to be valid.
-
 
 	References to objects with invalid Group and Kind are not valid, and must
 	be rejected by the implementation, with appropriate Conditions set
@@ -2166,12 +2147,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Namespace is the namespace of the referenced object. When unspecified, the local
 	namespace is inferred.
 
-
 	Note that when a namespace different than the local namespace is specified,
 	a ReferenceGrant object is required in the referent namespace to allow that
 	namespace's owner to accept the reference. See the ReferenceGrant
 	documentation for details.
-
 
 	Support: Core
 	"""
@@ -2195,9 +2174,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	that requests a user to specify the client certificate.
 	The maximum depth of a certificate chain accepted in verification is Implementation specific.
 
-
 	Support: Extended
-
 
 
 	"""
@@ -2208,20 +2185,16 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	the Certificate Authorities that can be used
 	as a trust anchor to validate the certificates presented by the client.
 
-
 	A single CA certificate reference to a Kubernetes ConfigMap
 	has "Core" support.
 	Implementations MAY choose to support attaching multiple CA certificates to
 	a Listener, but this behavior is implementation-specific.
 
-
 	Support: Core - A single reference to a Kubernetes ConfigMap
 	with the CA certificate in a key named `ca.crt`.
 
-
 	Support: Implementation-specific (More than one reference, or other kinds
 	of resources).
-
 
 	References to a resource in a different namespace are invalid UNLESS there
 	is a ReferenceGrant in the target namespace that allows the certificate
@@ -2233,10 +2206,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 															description: """
 	ObjectReference identifies an API object including its namespace.
 
-
 	The API object must be valid in the cluster; the Group and Kind must
 	be registered in the cluster for this reference to be valid.
-
 
 	References to objects with invalid Group and Kind are not valid, and must
 	be rejected by the implementation, with appropriate Conditions set
@@ -2270,12 +2241,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Namespace is the namespace of the referenced object. When unspecified, the local
 	namespace is inferred.
 
-
 	Note that when a namespace different than the local namespace is specified,
 	a ReferenceGrant object is required in the referent namespace to allow that
 	namespace's owner to accept the reference. See the ReferenceGrant
 	documentation for details.
-
 
 	Support: Core
 	"""
@@ -2304,7 +2273,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Mode defines the TLS behavior for the TLS session initiated by the client.
 	There are two possible modes:
 
-
 	- Terminate: The TLS session between the downstream client and the
 	  Gateway is terminated at the Gateway. This mode requires certificates
 	  to be specified in some way, such as populating the certificateRefs
@@ -2313,7 +2281,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	  implies that the Gateway can't decipher the TLS stream except for
 	  the ClientHello message of the TLS protocol. The certificateRefs field
 	  is ignored in this mode.
-
 
 	Support: Core
 	"""
@@ -2340,12 +2307,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	configuration for each implementation. For example, configuring the
 	minimum TLS version or supported cipher suites.
 
-
 	A set of common keys MAY be defined by the API in the future. To avoid
 	any ambiguity, implementation-specific definitions MUST use
 	domain-prefixed names, such as `example.com/my-custom-option`.
 	Un-prefixed names are reserved for key names defined by Gateway API.
-
 
 	Support: Implementation-specific
 	"""
@@ -2417,15 +2382,12 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	Addresses lists the network addresses that have been bound to the
 	Gateway.
 
-
 	This list may differ from the addresses provided in the spec under some
 	conditions:
-
 
 	  * no addresses are specified, all addresses are dynamically assigned
 	  * a combination of specified and dynamic addresses are assigned
 	  * a specified address was unusable (e.g. already in use)
-
 
 
 	"""
@@ -2456,7 +2418,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 											description: """
 	Value of the address. The validity of the values will depend
 	on the type and support by the controller.
-
 
 	Examples: `1.2.3.4`, `128::1`, `my-ip-address`.
 	"""
@@ -2492,40 +2453,19 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 								description: """
 	Conditions describe the current conditions of the Gateway.
 
-
 	Implementations should prefer to express Gateway conditions
 	using the `GatewayConditionType` and `GatewayConditionReason`
 	constants so that operators and tools can converge on a common
 	vocabulary to describe Gateway state.
 
-
 	Known condition types are:
-
 
 	* "Accepted"
 	* "Programmed"
 	* "Ready"
 	"""
 								items: {
-									description: """
-	Condition contains details for one aspect of the current state of this API Resource.
-	---
-	This struct is intended for direct use as an array at the field path .status.conditions.  For example,
-
-
-	\ttype FooStatus struct{
-	\t    // Represents the observations of a foo's current state.
-	\t    // Known .status.conditions.type are: "Available", "Progressing", and "Degraded"
-	\t    // +patchMergeKey=type
-	\t    // +patchStrategy=merge
-	\t    // +listType=map
-	\t    // +listMapKey=type
-	\t    Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
-
-
-	\t    // other fields
-	\t}
-	"""
+									description: "Condition contains details for one aspect of the current state of this API Resource."
 									properties: {
 										lastTransitionTime: {
 											description: """
@@ -2576,16 +2516,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 											type: "string"
 										}
 										type: {
-											description: """
-	type of condition in CamelCase or in foo.example.com/CamelCase.
-	---
-	Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
-	useful (see .node.status.conditions), the ability to deconflict is important.
-	The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
-	"""
-											maxLength: 316
-											pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-											type:      "string"
+											description: "type of condition in CamelCase or in foo.example.com/CamelCase."
+											maxLength:   316
+											pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+											type:        "string"
 										}
 									}
 									required: [
@@ -2612,7 +2546,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	AttachedRoutes represents the total number of Routes that have been
 	successfully attached to this Listener.
 
-
 	Successful attachment of a Route to a Listener is based solely on the
 	combination of the AllowedRoutes field on the corresponding Listener
 	and the Route's ParentRefs field. A Route is successfully attached to
@@ -2625,7 +2558,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	for Listeners with condition Accepted: false and MUST count successfully
 	attached Routes that may themselves have Accepted: false conditions.
 
-
 	Uses for this field include troubleshooting Route attachment and
 	measuring blast radius/impact of changes to a Listener.
 	"""
@@ -2635,25 +2567,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 										conditions: {
 											description: "Conditions describe the current condition of this listener."
 											items: {
-												description: """
-	Condition contains details for one aspect of the current state of this API Resource.
-	---
-	This struct is intended for direct use as an array at the field path .status.conditions.  For example,
-
-
-	\ttype FooStatus struct{
-	\t    // Represents the observations of a foo's current state.
-	\t    // Known .status.conditions.type are: "Available", "Progressing", and "Degraded"
-	\t    // +patchMergeKey=type
-	\t    // +patchStrategy=merge
-	\t    // +listType=map
-	\t    // +listMapKey=type
-	\t    Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
-
-
-	\t    // other fields
-	\t}
-	"""
+												description: "Condition contains details for one aspect of the current state of this API Resource."
 												properties: {
 													lastTransitionTime: {
 														description: """
@@ -2704,16 +2618,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 														type: "string"
 													}
 													type: {
-														description: """
-	type of condition in CamelCase or in foo.example.com/CamelCase.
-	---
-	Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
-	useful (see .node.status.conditions), the ability to deconflict is important.
-	The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
-	"""
-														maxLength: 316
-														pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-														type:      "string"
+														description: "type of condition in CamelCase or in foo.example.com/CamelCase."
+														maxLength:   316
+														pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+														type:        "string"
 													}
 												}
 												required: [
@@ -2742,7 +2650,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "gateways.gateway
 	SupportedKinds is the list indicating the Kinds supported by this
 	listener. This MUST represent the kinds an implementation supports for
 	that Listener configuration.
-
 
 	If kinds are specified in Spec that are not supported, they MUST NOT
 	appear in this list and an implementation MUST set the "ResolvedRefs"

@@ -4,7 +4,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.15.0"
+		annotations: "controller-gen.kubebuilder.io/version": "v0.16.1"
 		name: "envoypatchpolicies.gateway.envoyproxy.io"
 	}
 	spec: {
@@ -81,6 +81,17 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	"""
 													type: "string"
 												}
+												jsonPath: {
+													description: """
+	JSONPath is a JSONPath expression. Refer to https://datatracker.ietf.org/doc/rfc9535/ for more details.
+	It produces one or more JSONPointer expressions based on the given JSON document.
+	If no JSONPointer is found, it will result in an error.
+	If the 'Path' property is also set, it will be appended to the resulting JSONPointer expressions from the JSONPath evaluation.
+	This is useful when creating a property that does not yet exist in the JSON document.
+	The final JSONPointer expressions specifies the locations in the target document/field where the operation will be applied.
+	"""
+													type: "string"
+												}
 												op: {
 													description: "Op is the type of operation to perform"
 													enum: [
@@ -95,8 +106,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 												}
 												path: {
 													description: """
-	Path is the location of the target document/field where the operation will be performed
-	Refer to https://datatracker.ietf.org/doc/html/rfc6901 for more details.
+	Path is a JSONPointer expression. Refer to https://datatracker.ietf.org/doc/html/rfc6901 for more details.
+	It specifies the location of the target document/field where the operation will be performed
 	"""
 													type: "string"
 												}
@@ -108,10 +119,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 													"x-kubernetes-preserve-unknown-fields": true
 												}
 											}
-											required: [
-												"op",
-												"path",
-											]
+											required: ["op"]
 											type: "object"
 										}
 										type: {
@@ -211,26 +219,21 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	the controller first sees the policy and SHOULD update the entry as
 	appropriate when the relevant ancestor is modified.
 
-
 	Note that choosing the relevant ancestor is left to the Policy designers;
 	an important part of Policy design is designing the right object level at
 	which to namespace this status.
-
 
 	Note also that implementations MUST ONLY populate ancestor status for
 	the Ancestor resources they are responsible for. Implementations MUST
 	use the ControllerName field to uniquely identify the entries in this list
 	that they are responsible for.
 
-
 	Note that to achieve this, the list of PolicyAncestorStatus structs
 	MUST be treated as a map with a composite key, made up of the AncestorRef
 	and ControllerName fields combined.
 
-
 	A maximum of 16 ancestors will be represented in this list. An empty list
 	means the Policy is not relevant for any ancestors.
-
 
 	If this slice is full, implementations MUST NOT add further entries.
 	Instead they MUST consider the policy unimplementable and signal that
@@ -244,7 +247,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	PolicyAncestorStatus describes the status of a route with respect to an
 	associated Ancestor.
 
-
 	Ancestors refer to objects that are either the Target of a policy or above it
 	in terms of object hierarchy. For example, if a policy targets a Service, the
 	Policy's Ancestors are, in order, the Service, the HTTPRoute, the Gateway, and
@@ -253,27 +255,22 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	SHOULD use Gateway as the PolicyAncestorStatus object unless the designers
 	have a _very_ good reason otherwise.
 
-
 	In the context of policy attachment, the Ancestor is used to distinguish which
 	resource results in a distinct application of this policy. For example, if a policy
 	targets a Service, it may have a distinct result per attached Gateway.
-
 
 	Policies targeting the same resource may have different effects depending on the
 	ancestors of those resources. For example, different Gateways targeting the same
 	Service may have different capabilities, especially if they have different underlying
 	implementations.
 
-
 	For example, in BackendTLSPolicy, the Policy attaches to a Service that is
 	used as a backend in a HTTPRoute that is itself attached to a Gateway.
 	In this case, the relevant object for status is the Gateway, and that is the
 	ancestor object referred to in this status.
 
-
 	Note that a parent is also an ancestor, so for objects where the parent is the
 	relevant object for status, this struct SHOULD still be used.
-
 
 	This struct is intended to be used in a slice that's effectively a map,
 	with a composite key made up of the AncestorRef and the ControllerName.
@@ -293,7 +290,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	To set the core API group (such as for a "Service" kind referent),
 	Group must be explicitly set to "" (empty string).
 
-
 	Support: Core
 	"""
 												maxLength: 253
@@ -305,13 +301,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 												description: """
 	Kind is kind of the referent.
 
-
 	There are two kinds of parent resources with "Core" support:
-
 
 	* Gateway (Gateway conformance profile)
 	* Service (Mesh conformance profile, ClusterIP Services only)
-
 
 	Support for other resources is Implementation-Specific.
 	"""
@@ -324,7 +317,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 												description: """
 	Name is the name of the referent.
 
-
 	Support: Core
 	"""
 												maxLength: 253
@@ -336,19 +328,16 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	Namespace is the namespace of the referent. When unspecified, this refers
 	to the local namespace of the Route.
 
-
 	Note that there are specific rules for ParentRefs which cross namespace
 	boundaries. Cross-namespace references are only valid if they are explicitly
 	allowed by something in the namespace they are referring to. For example:
 	Gateway has the AllowedRoutes field, and ReferenceGrant provides a
 	generic way to enable any other kind of cross-namespace reference.
 
-
 	<gateway:experimental:description>
 	ParentRefs from a Route to a Service in the same namespace are "producer"
 	routes, which apply default routing rules to inbound connections from
 	any namespace to the Service.
-
 
 	ParentRefs from a Route to a Service in a different namespace are
 	"consumer" routes, and these routing rules are only applied to outbound
@@ -356,7 +345,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	the intended destination of the connections are a Service targeted as a
 	ParentRef of the Route.
 	</gateway:experimental:description>
-
 
 	Support: Core
 	"""
@@ -370,7 +358,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	Port is the network port this Route targets. It can be interpreted
 	differently based on the type of parent resource.
 
-
 	When the parent resource is a Gateway, this targets all listeners
 	listening on the specified port that also support this kind of Route(and
 	select this Route). It's not recommended to set `Port` unless the
@@ -379,18 +366,15 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	and SectionName are specified, the name and port of the selected listener
 	must match both specified values.
 
-
 	<gateway:experimental:description>
 	When the parent resource is a Service, this targets a specific port in the
 	Service spec. When both Port (experimental) and SectionName are specified,
 	the name and port of the selected port must match both specified values.
 	</gateway:experimental:description>
 
-
 	Implementations MAY choose to support other parent resources.
 	Implementations supporting other types of parent resources MUST clearly
 	document how/if Port is interpreted.
-
 
 	For the purpose of status, an attachment is considered successful as
 	long as the parent resource accepts it partially. For example, Gateway
@@ -399,7 +383,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	from the referencing Route, the Route MUST be considered successfully
 	attached. If no Gateway listeners accept attachment from this Route,
 	the Route MUST be considered detached from the Gateway.
-
 
 	Support: Extended
 	"""
@@ -413,7 +396,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	SectionName is the name of a section within the target resource. In the
 	following resources, SectionName is interpreted as the following:
 
-
 	* Gateway: Listener name. When both Port (experimental) and SectionName
 	are specified, the name and port of the selected listener must match
 	both specified values.
@@ -421,11 +403,9 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	are specified, the name and port of the selected listener must match
 	both specified values.
 
-
 	Implementations MAY choose to support attaching Routes to other resources.
 	If that is the case, they MUST clearly document how SectionName is
 	interpreted.
-
 
 	When unspecified (empty string), this will reference the entire resource.
 	For the purpose of status, an attachment is considered successful if at
@@ -435,7 +415,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	the referencing Route, the Route MUST be considered successfully
 	attached. If no Gateway listeners accept attachment from this Route, the
 	Route MUST be considered detached from the Gateway.
-
 
 	Support: Core
 	"""
@@ -451,25 +430,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 									conditions: {
 										description: "Conditions describes the status of the Policy with respect to the given Ancestor."
 										items: {
-											description: """
-	Condition contains details for one aspect of the current state of this API Resource.
-	---
-	This struct is intended for direct use as an array at the field path .status.conditions.  For example,
-
-
-	\ttype FooStatus struct{
-	\t    // Represents the observations of a foo's current state.
-	\t    // Known .status.conditions.type are: "Available", "Progressing", and "Degraded"
-	\t    // +patchMergeKey=type
-	\t    // +patchStrategy=merge
-	\t    // +listType=map
-	\t    // +listMapKey=type
-	\t    Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
-
-
-	\t    // other fields
-	\t}
-	"""
+											description: "Condition contains details for one aspect of the current state of this API Resource."
 											properties: {
 												lastTransitionTime: {
 													description: """
@@ -520,16 +481,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 													type: "string"
 												}
 												type: {
-													description: """
-	type of condition in CamelCase or in foo.example.com/CamelCase.
-	---
-	Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
-	useful (see .node.status.conditions), the ability to deconflict is important.
-	The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
-	"""
-													maxLength: 316
-													pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-													type:      "string"
+													description: "type of condition in CamelCase or in foo.example.com/CamelCase."
+													maxLength:   316
+													pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+													type:        "string"
 												}
 											}
 											required: [
@@ -553,14 +508,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoypatchpolici
 	controller that wrote this status. This corresponds with the
 	controllerName field on GatewayClass.
 
-
 	Example: "example.net/gateway-controller".
-
 
 	The format of this field is DOMAIN "/" PATH, where DOMAIN and PATH are
 	valid Kubernetes names
 	(https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names).
-
 
 	Controllers MUST populate this field when writing status. Controllers should ensure that
 	entries to status populated with their ControllerName are cleaned up when they are no

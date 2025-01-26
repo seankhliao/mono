@@ -21,9 +21,9 @@ k8s: apps: v1: Deployment: "kube-system": {
 		spec: template: spec: {
 			containers: [{
 				name:            "cilium-operator"
-				image:           "quay.io/cilium/operator-generic:v1.16.2@sha256:cccfd3b886d52cb132c06acca8ca559f0fce91a6bd99016219b1a81fdbc4813a"
+				image:           "quay.io/cilium/operator:v1.16.6@sha256:09ab2878e103fa32a00fd1fe4469f7042cfb053627b44c82fa03a04a820c0b46"
 				imagePullPolicy: "IfNotPresent"
-				command: ["cilium-operator-generic"]
+				command: ["cilium-operator"]
 				args: [
 					"--config-dir=/tmp/cilium/config-map",
 					"--debug=$(CILIUM_DEBUG)",

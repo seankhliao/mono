@@ -8,11 +8,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	kind:       "CustomResourceDefinition"
 	metadata: {
 		annotations: {
-			"api-approved.kubernetes.io":               "https://github.com/kubernetes-sigs/gateway-api/pull/2997"
-			"gateway.networking.k8s.io/bundle-version": "v1.1.0"
+			"api-approved.kubernetes.io":               "https://github.com/kubernetes-sigs/gateway-api/pull/3328"
+			"gateway.networking.k8s.io/bundle-version": "v1.2.1"
 			"gateway.networking.k8s.io/channel":        "experimental"
 		}
-		creationTimestamp: null
 		labels: "gateway.networking.k8s.io/policy": "Direct"
 		name: "backendtlspolicies.gateway.networking.k8s.io"
 	}
@@ -63,6 +62,33 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 					spec: {
 						description: "Spec defines the desired state of BackendTLSPolicy."
 						properties: {
+							options: {
+								additionalProperties: {
+									description: """
+	AnnotationValue is the value of an annotation in Gateway API. This is used
+	for validation of maps such as TLS options. This roughly matches Kubernetes
+	annotation validation, although the length validation in that case is based
+	on the entire size of the annotations struct.
+	"""
+									maxLength: 4096
+									minLength: 0
+									type:      "string"
+								}
+								description: """
+	Options are a list of key/value pairs to enable extended TLS
+	configuration for each implementation. For example, configuring the
+	minimum TLS version or supported cipher suites.
+
+	A set of common keys MAY be defined by the API in the future. To avoid
+	any ambiguity, implementation-specific definitions MUST use
+	domain-prefixed names, such as `example.com/my-custom-option`.
+	Un-prefixed names are reserved for key names defined by Gateway API.
+
+	Support: Implementation-specific
+	"""
+								maxProperties: 16
+								type:          "object"
+							}
 							targetRefs: {
 								description: """
 	TargetRefs identifies an API object to apply the policy to.
@@ -72,9 +98,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	by default, but this default may change in the future to provide
 	a more granular application of the policy.
 
-
 	Support: Extended for Kubernetes Service
-
 
 	Support: Implementation-specific for any other resource
 	"""
@@ -85,7 +109,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	target single resources. For more information on how this policy attachment
 	mode works, and a sample Policy resource, refer to the policy attachment
 	documentation for Gateway API.
-
 
 	Note: This should only be used for direct policy attachment when references
 	to SectionName are actually needed. In all other cases,
@@ -117,11 +140,9 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	unspecified, this targetRef targets the entire resource. In the following
 	resources, SectionName is interpreted as the following:
 
-
 	* Gateway: Listener name
 	* HTTPRoute: HTTPRouteRule name
 	* Service: Port name
-
 
 	If a SectionName is specified, but does not exist on the targeted object,
 	the Policy must fail to attach, and the policy implementation should record
@@ -153,25 +174,20 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	contain a PEM-encoded TLS CA certificate bundle, which is used to
 	validate a TLS handshake between the Gateway and backend Pod.
 
-
 	If CACertificateRefs is empty or unspecified, then WellKnownCACertificates must be
 	specified. Only one of CACertificateRefs or WellKnownCACertificates may be specified,
 	not both. If CACertifcateRefs is empty or unspecified, the configuration for
 	WellKnownCACertificates MUST be honored instead if supported by the implementation.
 
-
 	References to a resource in a different namespace are invalid for the
 	moment, although we will revisit this in the future.
-
 
 	A single CACertificateRef to a Kubernetes ConfigMap kind has "Core" support.
 	Implementations MAY choose to support attaching multiple certificates to
 	a backend, but this behavior is implementation-specific.
 
-
 	Support: Core - An optional single reference to a Kubernetes ConfigMap,
 	with the CA certificate in a key named `ca.crt`.
-
 
 	Support: Implementation-specific (More than one reference, or other kinds
 	of resources).
@@ -182,7 +198,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	referrer.
 	The API object must be valid in the cluster; the Group and Kind must
 	be registered in the cluster for this reference to be valid.
-
 
 	References to objects with invalid Group and Kind are not valid, and must
 	be rejected by the implementation, with appropriate Conditions set
@@ -227,11 +242,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	Hostname is used for two purposes in the connection between Gateways and
 	backends:
 
-
 	1. Hostname MUST be used as the SNI to connect to the backend (RFC 6066).
-	2. Hostname MUST be used for authentication and MUST match the certificate
-	   served by the matching backend.
-
+	2. If SubjectAltNames is not specified, Hostname MUST be used for
+	   authentication and MUST match the certificate served by the matching
+	   backend.
 
 	Support: Core
 	"""
@@ -240,11 +254,79 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 										pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
 										type:      "string"
 									}
+									subjectAltNames: {
+										description: """
+	SubjectAltNames contains one or more Subject Alternative Names.
+	When specified, the certificate served from the backend MUST have at least one
+	Subject Alternate Name matching one of the specified SubjectAltNames.
+
+	Support: Core
+	"""
+										items: {
+											description: "SubjectAltName represents Subject Alternative Name."
+											properties: {
+												hostname: {
+													description: """
+	Hostname contains Subject Alternative Name specified in DNS name format.
+	Required when Type is set to Hostname, ignored otherwise.
+
+	Support: Core
+	"""
+													maxLength: 253
+													minLength: 1
+													pattern:   "^(\\*\\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+													type:      "string"
+												}
+												type: {
+													description: """
+	Type determines the format of the Subject Alternative Name. Always required.
+
+	Support: Core
+	"""
+													enum: [
+														"Hostname",
+														"URI",
+													]
+													type: "string"
+												}
+												uri: {
+													description: """
+	URI contains Subject Alternative Name specified in a full URI format.
+	It MUST include both a scheme (e.g., "http" or "ftp") and a scheme-specific-part.
+	Common values include SPIFFE IDs like "spiffe://mycluster.example.com/ns/myns/sa/svc1sa".
+	Required when Type is set to URI, ignored otherwise.
+
+	Support: Core
+	"""
+													maxLength: 253
+													minLength: 1
+													pattern:   "^(([^:/?#]+):)(//([^/?#]*))([^?#]*)(\\?([^#]*))?(#(.*))?"
+													type:      "string"
+												}
+											}
+											required: ["type"]
+											type: "object"
+											"x-kubernetes-validations": [{
+												message: "SubjectAltName element must contain Hostname, if Type is set to Hostname"
+												rule:    "!(self.type == \"Hostname\" && (!has(self.hostname) || self.hostname == \"\"))"
+											}, {
+												message: "SubjectAltName element must not contain Hostname, if Type is not set to Hostname"
+												rule:    "!(self.type != \"Hostname\" && has(self.hostname) && self.hostname != \"\")"
+											}, {
+												message: "SubjectAltName element must contain URI, if Type is set to URI"
+												rule:    "!(self.type == \"URI\" && (!has(self.uri) || self.uri == \"\"))"
+											}, {
+												message: "SubjectAltName element must not contain URI, if Type is not set to URI"
+												rule:    "!(self.type != \"URI\" && has(self.uri) && self.uri != \"\")"
+											}]
+										}
+										maxItems: 5
+										type:     "array"
+									}
 									wellKnownCACertificates: {
 										description: """
 	WellKnownCACertificates specifies whether system CA certificates may be used in
 	the TLS handshake between the gateway and backend pod.
-
 
 	If WellKnownCACertificates is unspecified or empty (""), then CACertificateRefs
 	must be specified with at least one entry for a valid configuration. Only one of
@@ -252,7 +334,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	implementation does not support the WellKnownCACertificates field or the value
 	supplied is not supported, the Status Conditions on the Policy MUST be
 	updated to include an Accepted: False Condition with Reason: Invalid.
-
 
 	Support: Implementation-specific
 	"""
@@ -288,26 +369,21 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	the controller first sees the policy and SHOULD update the entry as
 	appropriate when the relevant ancestor is modified.
 
-
 	Note that choosing the relevant ancestor is left to the Policy designers;
 	an important part of Policy design is designing the right object level at
 	which to namespace this status.
-
 
 	Note also that implementations MUST ONLY populate ancestor status for
 	the Ancestor resources they are responsible for. Implementations MUST
 	use the ControllerName field to uniquely identify the entries in this list
 	that they are responsible for.
 
-
 	Note that to achieve this, the list of PolicyAncestorStatus structs
 	MUST be treated as a map with a composite key, made up of the AncestorRef
 	and ControllerName fields combined.
 
-
 	A maximum of 16 ancestors will be represented in this list. An empty list
 	means the Policy is not relevant for any ancestors.
-
 
 	If this slice is full, implementations MUST NOT add further entries.
 	Instead they MUST consider the policy unimplementable and signal that
@@ -321,7 +397,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	PolicyAncestorStatus describes the status of a route with respect to an
 	associated Ancestor.
 
-
 	Ancestors refer to objects that are either the Target of a policy or above it
 	in terms of object hierarchy. For example, if a policy targets a Service, the
 	Policy's Ancestors are, in order, the Service, the HTTPRoute, the Gateway, and
@@ -330,27 +405,22 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	SHOULD use Gateway as the PolicyAncestorStatus object unless the designers
 	have a _very_ good reason otherwise.
 
-
 	In the context of policy attachment, the Ancestor is used to distinguish which
 	resource results in a distinct application of this policy. For example, if a policy
 	targets a Service, it may have a distinct result per attached Gateway.
-
 
 	Policies targeting the same resource may have different effects depending on the
 	ancestors of those resources. For example, different Gateways targeting the same
 	Service may have different capabilities, especially if they have different underlying
 	implementations.
 
-
 	For example, in BackendTLSPolicy, the Policy attaches to a Service that is
 	used as a backend in a HTTPRoute that is itself attached to a Gateway.
 	In this case, the relevant object for status is the Gateway, and that is the
 	ancestor object referred to in this status.
 
-
 	Note that a parent is also an ancestor, so for objects where the parent is the
 	relevant object for status, this struct SHOULD still be used.
-
 
 	This struct is intended to be used in a slice that's effectively a map,
 	with a composite key made up of the AncestorRef and the ControllerName.
@@ -370,7 +440,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	To set the core API group (such as for a "Service" kind referent),
 	Group must be explicitly set to "" (empty string).
 
-
 	Support: Core
 	"""
 												maxLength: 253
@@ -382,13 +451,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 												description: """
 	Kind is kind of the referent.
 
-
 	There are two kinds of parent resources with "Core" support:
-
 
 	* Gateway (Gateway conformance profile)
 	* Service (Mesh conformance profile, ClusterIP Services only)
-
 
 	Support for other resources is Implementation-Specific.
 	"""
@@ -401,7 +467,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 												description: """
 	Name is the name of the referent.
 
-
 	Support: Core
 	"""
 												maxLength: 253
@@ -413,7 +478,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	Namespace is the namespace of the referent. When unspecified, this refers
 	to the local namespace of the Route.
 
-
 	Note that there are specific rules for ParentRefs which cross namespace
 	boundaries. Cross-namespace references are only valid if they are explicitly
 	allowed by something in the namespace they are referring to. For example:
@@ -421,18 +485,15 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	generic way to enable any other kind of cross-namespace reference.
 
 
-
 	ParentRefs from a Route to a Service in the same namespace are "producer"
 	routes, which apply default routing rules to inbound connections from
 	any namespace to the Service.
-
 
 	ParentRefs from a Route to a Service in a different namespace are
 	"consumer" routes, and these routing rules are only applied to outbound
 	connections originating from the same namespace as the Route, for which
 	the intended destination of the connections are a Service targeted as a
 	ParentRef of the Route.
-
 
 
 	Support: Core
@@ -447,7 +508,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	Port is the network port this Route targets. It can be interpreted
 	differently based on the type of parent resource.
 
-
 	When the parent resource is a Gateway, this targets all listeners
 	listening on the specified port that also support this kind of Route(and
 	select this Route). It's not recommended to set `Port` unless the
@@ -457,17 +517,14 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	must match both specified values.
 
 
-
 	When the parent resource is a Service, this targets a specific port in the
 	Service spec. When both Port (experimental) and SectionName are specified,
 	the name and port of the selected port must match both specified values.
 
 
-
 	Implementations MAY choose to support other parent resources.
 	Implementations supporting other types of parent resources MUST clearly
 	document how/if Port is interpreted.
-
 
 	For the purpose of status, an attachment is considered successful as
 	long as the parent resource accepts it partially. For example, Gateway
@@ -476,7 +533,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	from the referencing Route, the Route MUST be considered successfully
 	attached. If no Gateway listeners accept attachment from this Route,
 	the Route MUST be considered detached from the Gateway.
-
 
 	Support: Extended
 	"""
@@ -490,7 +546,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	SectionName is the name of a section within the target resource. In the
 	following resources, SectionName is interpreted as the following:
 
-
 	* Gateway: Listener name. When both Port (experimental) and SectionName
 	are specified, the name and port of the selected listener must match
 	both specified values.
@@ -498,11 +553,9 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	are specified, the name and port of the selected listener must match
 	both specified values.
 
-
 	Implementations MAY choose to support attaching Routes to other resources.
 	If that is the case, they MUST clearly document how SectionName is
 	interpreted.
-
 
 	When unspecified (empty string), this will reference the entire resource.
 	For the purpose of status, an attachment is considered successful if at
@@ -512,7 +565,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	the referencing Route, the Route MUST be considered successfully
 	attached. If no Gateway listeners accept attachment from this Route, the
 	Route MUST be considered detached from the Gateway.
-
 
 	Support: Core
 	"""
@@ -528,25 +580,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 									conditions: {
 										description: "Conditions describes the status of the Policy with respect to the given Ancestor."
 										items: {
-											description: """
-	Condition contains details for one aspect of the current state of this API Resource.
-	---
-	This struct is intended for direct use as an array at the field path .status.conditions.  For example,
-
-
-	\ttype FooStatus struct{
-	\t    // Represents the observations of a foo's current state.
-	\t    // Known .status.conditions.type are: "Available", "Progressing", and "Degraded"
-	\t    // +patchMergeKey=type
-	\t    // +patchStrategy=merge
-	\t    // +listType=map
-	\t    // +listMapKey=type
-	\t    Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
-
-
-	\t    // other fields
-	\t}
-	"""
+											description: "Condition contains details for one aspect of the current state of this API Resource."
 											properties: {
 												lastTransitionTime: {
 													description: """
@@ -597,16 +631,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 													type: "string"
 												}
 												type: {
-													description: """
-	type of condition in CamelCase or in foo.example.com/CamelCase.
-	---
-	Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
-	useful (see .node.status.conditions), the ability to deconflict is important.
-	The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
-	"""
-													maxLength: 316
-													pattern:   "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
-													type:      "string"
+													description: "type of condition in CamelCase or in foo.example.com/CamelCase."
+													maxLength:   316
+													pattern:     "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$"
+													type:        "string"
 												}
 											}
 											required: [
@@ -630,14 +658,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "backendtlspolici
 	controller that wrote this status. This corresponds with the
 	controllerName field on GatewayClass.
 
-
 	Example: "example.net/gateway-controller".
-
 
 	The format of this field is DOMAIN "/" PATH, where DOMAIN and PATH are
 	valid Kubernetes names
 	(https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names).
-
 
 	Controllers MUST populate this field when writing status. Controllers should ensure that
 	entries to status populated with their ControllerName are cleaned up when they are no

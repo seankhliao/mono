@@ -28,7 +28,7 @@ k8s: apps: v1: Deployment: "prometheus": {
 			let storage_dir = "/var/lib/prometheus"
 			let http_port = 9090
 			containers: [{
-				image: "quay.io/prometheus/prometheus:v3.0.0"
+				image: "quay.io/prometheus/prometheus:v3.1.0"
 				name:  "prometheus"
 				args: [
 					"--config.file=\(config_dir)/prometheus.yaml",

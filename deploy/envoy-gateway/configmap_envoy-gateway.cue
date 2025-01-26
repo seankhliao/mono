@@ -12,14 +12,14 @@ k8s: "": "v1": "ConfigMap": "envoy-gateway-system": "envoy-gateway": {
 			type: "Kubernetes"
 			kubernetes: envoyService: type: "ClusterIP"
 			kubernetes: rateLimitDeployment: {
-				container: image: "docker.io/envoyproxy/ratelimit:26f28d78"
+				container: image: "docker.io/envoyproxy/ratelimit:49af5cca"
 				patch: type:      "StrategicMerge"
 				patch: value: spec: template: spec: containers: [{
 					imagePullPolicy: "IfNotPresent"
 					name:            "envoy-ratelimit"
 				}]
 			}
-			kubernetes: shutdownManager: image: "docker.io/envoyproxy/gateway:v1.1.2"
+			kubernetes: shutdownManager: image: "docker.io/envoyproxy/gateway:v1.2.6"
 		}
 	})
 }

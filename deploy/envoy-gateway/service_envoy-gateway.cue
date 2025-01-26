@@ -17,6 +17,10 @@ k8s: "": "v1": "Service": "envoy-gateway-system": "envoy-gateway": {
 			name:       "wasm"
 			port:       18002
 			targetPort: 18002
+		}, {
+			name:       "metrics"
+			port:       19001
+			targetPort: 19001
 		}]
 	}
 }

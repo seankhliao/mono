@@ -4,7 +4,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	apiVersion: "apiextensions.k8s.io/v1"
 	kind:       "CustomResourceDefinition"
 	metadata: {
-		annotations: "controller-gen.kubebuilder.io/version": "v0.15.0"
+		annotations: "controller-gen.kubebuilder.io/version": "v0.16.1"
 		name: "envoyproxies.gateway.envoyproxy.io"
 	}
 	spec: {
@@ -127,12 +127,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Namespace is the namespace of the referenced object. When unspecified, the local
 	namespace is inferred.
 
-
 	Note that when a namespace different than the local namespace is specified,
 	a ReferenceGrant object is required in the referent namespace to allow that
 	namespace's owner to accept the reference. See the ReferenceGrant
 	documentation for details.
-
 
 	Support: Core
 	"""
@@ -217,15 +215,78 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Bootstrap configuration used. You can edit this configuration, and rerun `egctl x translate` to ensure there are no validation errors.
 	"""
 								properties: {
+									jsonPatches: {
+										description: """
+	JSONPatches is an array of JSONPatches to be applied to the default bootstrap. Patches are
+	applied in the order in which they are defined.
+	"""
+										items: {
+											description: """
+	JSONPatchOperation defines the JSON Patch Operation as defined in
+	https://datatracker.ietf.org/doc/html/rfc6902
+	"""
+											properties: {
+												from: {
+													description: """
+	From is the source location of the value to be copied or moved. Only valid
+	for move or copy operations
+	Refer to https://datatracker.ietf.org/doc/html/rfc6901 for more details.
+	"""
+													type: "string"
+												}
+												jsonPath: {
+													description: """
+	JSONPath is a JSONPath expression. Refer to https://datatracker.ietf.org/doc/rfc9535/ for more details.
+	It produces one or more JSONPointer expressions based on the given JSON document.
+	If no JSONPointer is found, it will result in an error.
+	If the 'Path' property is also set, it will be appended to the resulting JSONPointer expressions from the JSONPath evaluation.
+	This is useful when creating a property that does not yet exist in the JSON document.
+	The final JSONPointer expressions specifies the locations in the target document/field where the operation will be applied.
+	"""
+													type: "string"
+												}
+												op: {
+													description: "Op is the type of operation to perform"
+													enum: [
+														"add",
+														"remove",
+														"replace",
+														"move",
+														"copy",
+														"test",
+													]
+													type: "string"
+												}
+												path: {
+													description: """
+	Path is a JSONPointer expression. Refer to https://datatracker.ietf.org/doc/html/rfc6901 for more details.
+	It specifies the location of the target document/field where the operation will be performed
+	"""
+													type: "string"
+												}
+												value: {
+													description: """
+	Value is the new value of the path location. The value is only used by
+	the `add` and `replace` operations.
+	"""
+													"x-kubernetes-preserve-unknown-fields": true
+												}
+											}
+											required: ["op"]
+											type: "object"
+										}
+										type: "array"
+									}
 									type: {
 										default: "Replace"
 										description: """
-	Type is the type of the bootstrap configuration, it should be either Replace or Merge.
+	Type is the type of the bootstrap configuration, it should be either Replace,  Merge, or JSONPatch.
 	If unspecified, it defaults to Replace.
 	"""
 										enum: [
 											"Merge",
 											"Replace",
+											"JSONPatch",
 										]
 										type: "string"
 									}
@@ -234,8 +295,11 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 										type:        "string"
 									}
 								}
-								required: ["value"]
 								type: "object"
+								"x-kubernetes-validations": [{
+									message: "provided bootstrap patch doesn't match the configured patch type"
+									rule:    "self.type == 'JSONPatch' ? self.jsonPatches.size() > 0 : has(self.value)"
+								}]
 							}
 							concurrency: {
 								description: """
@@ -261,41 +325,37 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	If unspecified, the default filter order is applied.
 	Default filter order is:
 
+	- envoy.filters.http.health_check
 
 	- envoy.filters.http.fault
 
-
 	- envoy.filters.http.cors
-
 
 	- envoy.filters.http.ext_authz
 
-
-	- envoy.filters.http.basic_authn
-
+	- envoy.filters.http.basic_auth
 
 	- envoy.filters.http.oauth2
 
-
 	- envoy.filters.http.jwt_authn
 
+	- envoy.filters.http.stateful_session
 
 	- envoy.filters.http.ext_proc
 
-
 	- envoy.filters.http.wasm
-
 
 	- envoy.filters.http.rbac
 
-
 	- envoy.filters.http.local_ratelimit
-
 
 	- envoy.filters.http.ratelimit
 
+	- envoy.filters.http.custom_response
 
 	- envoy.filters.http.router
+
+	Note: "envoy.filters.http.router" cannot be reordered, it's always the last filter in the chain.
 	"""
 								items: {
 									description: "FilterPosition defines the position of an Envoy HTTP filter in the filter chain."
@@ -306,17 +366,20 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Only one of Before or After must be set.
 	"""
 											enum: [
+												"envoy.filters.http.health_check",
+												"envoy.filters.http.fault",
 												"envoy.filters.http.cors",
 												"envoy.filters.http.ext_authz",
-												"envoy.filters.http.basic_authn",
+												"envoy.filters.http.basic_auth",
 												"envoy.filters.http.oauth2",
 												"envoy.filters.http.jwt_authn",
-												"envoy.filters.http.fault",
+												"envoy.filters.http.stateful_session",
+												"envoy.filters.http.ext_proc",
+												"envoy.filters.http.wasm",
+												"envoy.filters.http.rbac",
 												"envoy.filters.http.local_ratelimit",
 												"envoy.filters.http.ratelimit",
-												"envoy.filters.http.wasm",
-												"envoy.filters.http.ext_proc",
-												"envoy.filters.http.rbac",
+												"envoy.filters.http.custom_response",
 											]
 											type: "string"
 										}
@@ -326,34 +389,40 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Only one of Before or After must be set.
 	"""
 											enum: [
+												"envoy.filters.http.health_check",
+												"envoy.filters.http.fault",
 												"envoy.filters.http.cors",
 												"envoy.filters.http.ext_authz",
-												"envoy.filters.http.basic_authn",
+												"envoy.filters.http.basic_auth",
 												"envoy.filters.http.oauth2",
 												"envoy.filters.http.jwt_authn",
-												"envoy.filters.http.fault",
+												"envoy.filters.http.stateful_session",
+												"envoy.filters.http.ext_proc",
+												"envoy.filters.http.wasm",
+												"envoy.filters.http.rbac",
 												"envoy.filters.http.local_ratelimit",
 												"envoy.filters.http.ratelimit",
-												"envoy.filters.http.wasm",
-												"envoy.filters.http.ext_proc",
-												"envoy.filters.http.rbac",
+												"envoy.filters.http.custom_response",
 											]
 											type: "string"
 										}
 										name: {
 											description: "Name of the filter."
 											enum: [
+												"envoy.filters.http.health_check",
+												"envoy.filters.http.fault",
 												"envoy.filters.http.cors",
 												"envoy.filters.http.ext_authz",
-												"envoy.filters.http.basic_authn",
+												"envoy.filters.http.basic_auth",
 												"envoy.filters.http.oauth2",
 												"envoy.filters.http.jwt_authn",
-												"envoy.filters.http.fault",
+												"envoy.filters.http.stateful_session",
+												"envoy.filters.http.ext_proc",
+												"envoy.filters.http.wasm",
+												"envoy.filters.http.rbac",
 												"envoy.filters.http.local_ratelimit",
 												"envoy.filters.http.ratelimit",
-												"envoy.filters.http.wasm",
-												"envoy.filters.http.ext_proc",
-												"envoy.filters.http.rbac",
+												"envoy.filters.http.custom_response",
 											]
 											type: "string"
 										}
@@ -369,6 +438,23 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 									}]
 								}
 								type: "array"
+							}
+							ipFamily: {
+								description: """
+	IPFamily specifies the IP family for the EnvoyProxy fleet.
+	This setting only affects the Gateway listener port and does not impact
+	other aspects of the Envoy proxy configuration.
+	If not specified, the system will operate as follows:
+	- It defaults to IPv4 only.
+	- IPv6 and dual-stack environments are not supported in this default configuration.
+	Note: To enable IPv6 or dual-stack functionality, explicit configuration is required.
+	"""
+								enum: [
+									"IPv4",
+									"IPv6",
+									"DualStack",
+								]
+								type: "string"
 							}
 							logging: {
 								default: level: default: "warn"
@@ -466,9 +552,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																							type: "string"
 																						}
@@ -543,9 +627,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																							type: "string"
 																						}
@@ -582,22 +664,30 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Claims lists the names of resources, defined in spec.resourceClaims,
 	that are used by this container.
 
-
 	This is an alpha field and requires enabling the
 	DynamicResourceAllocation feature gate.
-
 
 	This field is immutable. It can only be set for containers.
 	"""
 																		items: {
 																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																			properties: name: {
-																				description: """
+																			properties: {
+																				name: {
+																					description: """
 	Name must match the name of one entry in pod.spec.resourceClaims of
 	the Pod where this field is used. It makes that resource available
 	inside a container.
 	"""
-																				type: "string"
+																					type: "string"
+																				}
+																				request: {
+																					description: """
+	Request is the name chosen for a request in the referenced claim.
+	If empty, everything from the claim is made available, otherwise
+	only the result of this request.
+	"""
+																					type: "string"
+																				}
 																			}
 																			required: ["name"]
 																			type: "object"
@@ -732,7 +822,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																	procMount: {
 																		description: """
 	procMount denotes the type of proc mount to use for the containers.
-	The default is DefaultProcMount which uses the container runtime defaults for
+	The default value is Default which uses the container runtime defaults for
 	readonly paths and masked paths.
 	This requires the ProcMountType feature flag to be enabled.
 	Note that this field cannot be set when spec.os.name is windows.
@@ -830,7 +920,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	type indicates which kind of seccomp profile will be applied.
 	Valid options are:
 
-
 	Localhost - a profile defined in a file on the node should be used.
 	RuntimeDefault - the container runtime default profile should be used.
 	Unconfined - no profile should be applied.
@@ -927,9 +1016,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	RecursiveReadOnly specifies whether read-only mounts should be handled
 	recursively.
 
-
 	If ReadOnly is false, this field has no meaning and must be unspecified.
-
 
 	If ReadOnly is true, and this field is set to Disabled, the mount is not made
 	recursively read-only.  If this field is set to IfPossible, the mount is made
@@ -938,10 +1025,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	supported by the container runtime, otherwise the pod will not be started and
 	an error will be generated to indicate the reason.
 
-
 	If this field is set to IfPossible or Enabled, MountPropagation must be set to
 	None (or be unspecified, which defaults to None).
-
 
 	If this field is not specified, it is treated as an equivalent of Disabled.
 	"""
@@ -988,7 +1073,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 															type: {
 																description: """
 	Type is the type of merge operation to perform
-
 
 	By default, StrategicMerge is used as the patch type.
 	"""
@@ -1336,7 +1420,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 	Also, matchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																									items: type: "string"
 																									type:                     "array"
@@ -1352,7 +1436,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 	Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																									items: type: "string"
 																									type:                     "array"
@@ -1552,7 +1636,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 	Also, matchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																							items: type: "string"
 																							type:                     "array"
@@ -1568,7 +1652,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 	Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																							items: type: "string"
 																							type:                     "array"
@@ -1757,7 +1841,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 	Also, matchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																									items: type: "string"
 																									type:                     "array"
@@ -1773,7 +1857,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 	Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																									items: type: "string"
 																									type:                     "array"
@@ -1973,7 +2057,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 	Also, matchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																							items: type: "string"
 																							type:                     "array"
@@ -1989,7 +2073,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 	Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																							items: type: "string"
 																							type:                     "array"
@@ -2118,9 +2202,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																		type: "string"
 																	}
@@ -2187,11 +2269,9 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Some volume types allow the Kubelet to change the ownership of that volume
 	to be owned by the pod:
 
-
 	1. The owning GID will be the FSGroup
 	2. The setgid bit is set (new files created in the volume will be owned by FSGroup)
 	3. The permission bits are OR'd with rw-rw----
-
 
 	If unset, the Kubelet will not modify the ownership and permissions of any volume.
 	Note that this field cannot be set when spec.os.name is windows.
@@ -2295,7 +2375,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	type indicates which kind of seccomp profile will be applied.
 	Valid options are:
 
-
 	Localhost - a profile defined in a file on the node should be used.
 	RuntimeDefault - the container runtime default profile should be used.
 	Unconfined - no profile should be applied.
@@ -2308,12 +2387,14 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																	}
 																	supplementalGroups: {
 																		description: """
-	A list of groups applied to the first process run in each container, in addition
-	to the container's primary GID, the fsGroup (if specified), and group memberships
-	defined in the container image for the uid of the container process. If unspecified,
-	no additional groups are added to any container. Note that group memberships
-	defined in the container image for the uid of the container process are still effective,
-	even if they are not included in this list.
+	A list of groups applied to the first process run in each container, in
+	addition to the container's primary GID and fsGroup (if specified).  If
+	the SupplementalGroupsPolicy feature is enabled, the
+	supplementalGroupsPolicy field determines whether these are in addition
+	to or instead of any group memberships defined in the container image.
+	If unspecified, no additional groups are added, though group memberships
+	defined in the container image may still be used, depending on the
+	supplementalGroupsPolicy field.
 	Note that this field cannot be set when spec.os.name is windows.
 	"""
 																		items: {
@@ -2322,6 +2403,16 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																		}
 																		type:                     "array"
 																		"x-kubernetes-list-type": "atomic"
+																	}
+																	supplementalGroupsPolicy: {
+																		description: """
+	Defines how supplemental groups of the first container processes are calculated.
+	Valid values are "Merge" and "Strict". If not specified, "Merge" is used.
+	(Alpha) Using the field requires the SupplementalGroupsPolicy feature gate to be enabled
+	and the container runtime must implement support for this feature.
+	Note that this field cannot be set when spec.os.name is windows.
+	"""
+																		type: "string"
 																	}
 																	sysctls: {
 																		description: """
@@ -2527,7 +2618,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Keys that don't exist in the incoming pod labels will
 	be ignored. A null or empty list means only match against labelSelector.
 
-
 	This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).
 	"""
 																			items: type: "string"
@@ -2570,7 +2660,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Valid values are integers greater than 0.
 	When value is not nil, WhenUnsatisfiable must be DoNotSchedule.
 
-
 	For example, in a 3-zone cluster, MaxSkew is set to 2, MinDomains is set to 5 and pods with the same
 	labelSelector spread as 2/2/2:
 	| zone1 | zone2 | zone3 |
@@ -2590,7 +2679,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	- Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations.
 	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
-
 	If this value is nil, the behavior is equivalent to the Honor policy.
 	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 	"""
@@ -2603,7 +2691,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	- Honor: nodes without taints, along with tainted nodes for which the incoming pod
 	has a toleration, are included.
 	- Ignore: node taints are ignored. All nodes are included.
-
 
 	If this value is nil, the behavior is equivalent to the Ignore policy.
 	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
@@ -2679,7 +2766,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Tip: Ensure that the filesystem type is supported by the host operating system.
 	Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -2727,6 +2813,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "string"
 																				}
 																				fsType: {
+																					default: "ext4"
 																					description: """
 	fsType is Filesystem type to mount.
 	Must be a filesystem type supported by the host operating system.
@@ -2739,6 +2826,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "string"
 																				}
 																				readOnly: {
+																					default: false
 																					description: """
 	readOnly Defaults to false (read/write). ReadOnly here will force
 	the ReadOnly setting in VolumeMounts.
@@ -2820,9 +2908,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -2875,9 +2961,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -2966,9 +3050,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																					type: "string"
 																				}
@@ -3013,9 +3095,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -3175,7 +3255,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	The volume's lifecycle is tied to the pod that defines it - it will be created before the pod starts,
 	and deleted when the pod is removed.
 
-
 	Use this if:
 	a) the volume is only needed while the pod runs,
 	b) features of normal volumes like restoring from snapshot or capacity
@@ -3186,16 +3265,13 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	   information on the connection between this volume type
 	   and PersistentVolumeClaim).
 
-
 	Use PersistentVolumeClaim or one of the vendor-specific
 	APIs for volumes that persist for longer than the lifecycle
 	of an individual pod.
 
-
 	Use CSI for light-weight local ephemeral volumes if the CSI driver is meant to
 	be used that way - see the documentation of the driver for
 	more information.
-
 
 	A pod can use both types of ephemeral volumes and
 	persistent volumes at the same time.
@@ -3210,7 +3286,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	entry. Pod validation will reject the pod if the concatenated name
 	is not valid for a PVC (for example, too long).
 
-
 	An existing PVC with that name that is not owned by the pod
 	will *not* be used for the pod to avoid using an unrelated
 	volume by mistake. Starting the pod is then blocked until
@@ -3220,10 +3295,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	this should not be necessary, but it may be useful when
 	manually reconstructing a broken cluster.
 
-
 	This field is read-only and no changes will be made by Kubernetes
 	to the PVC after it has been created.
-
 
 	Required, must not be nil.
 	"""
@@ -3469,7 +3542,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 	exists.
 	More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-	(Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled.
+	(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 	"""
 																								type: "string"
 																							}
@@ -3501,7 +3574,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	fsType is the filesystem type to mount.
 	Must be a filesystem type supported by the host operating system.
 	Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -3580,9 +3652,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -3623,7 +3693,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Tip: Ensure that the filesystem type is supported by the host operating system.
 	Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -3728,9 +3797,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	used for system agents or other privileged things that are allowed
 	to see the host machine. Most containers will NOT need this.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
-	---
-	TODO(jonesdl) We need to restrict who can use host directory mounts and who can/can not
-	mount host directories as read/write.
 	"""
 																			properties: {
 																				path: {
@@ -3751,6 +3817,48 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																				}
 																			}
 																			required: ["path"]
+																			type: "object"
+																		}
+																		image: {
+																			description: """
+	image represents an OCI object (a container image or artifact) pulled and mounted on the kubelet's host machine.
+	The volume is resolved at pod startup depending on which PullPolicy value is provided:
+
+	- Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails.
+	- Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn't present.
+	- IfNotPresent: the kubelet pulls if the reference isn't already present on disk. Container creation will fail if the reference isn't present and the pull fails.
+
+	The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation.
+	A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message.
+	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
+	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
+	The volume will be mounted read-only (ro) and non-executable files (noexec).
+	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
+	"""
+																			properties: {
+																				pullPolicy: {
+																					description: """
+	Policy for pulling OCI objects. Possible values are:
+	Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails.
+	Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn't present.
+	IfNotPresent: the kubelet pulls if the reference isn't already present on disk. Container creation will fail if the reference isn't present and the pull fails.
+	Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+	"""
+																					type: "string"
+																				}
+																				reference: {
+																					description: """
+	Required: Image or artifact reference to be used.
+	Behaves in the same way as pod.spec.containers[*].image.
+	Pull secrets will be assembled in the same way as for the container image by looking up node credentials, SA image pull secrets, and pod spec image pull secrets.
+	More info: https://kubernetes.io/docs/concepts/containers/images
+	This field is optional to allow higher level config management to default or override
+	container images in workload controllers like Deployments and StatefulSets.
+	"""
+																					type: "string"
+																				}
+																			}
 																			type: "object"
 																		}
 																		iscsi: {
@@ -3774,7 +3882,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Tip: Ensure that the filesystem type is supported by the host operating system.
 	Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#iscsi
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -3791,6 +3898,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "string"
 																				}
 																				iscsiInterface: {
+																					default: "default"
 																					description: """
 	iscsiInterface is the interface Name that uses an iSCSI transport.
 	Defaults to 'default' (tcp).
@@ -3827,9 +3935,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -3980,22 +4086,25 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:   "integer"
 																				}
 																				sources: {
-																					description: "sources is the list of volume projections"
+																					description: """
+	sources is the list of volume projections. Each entry in this list
+	handles one source.
+	"""
 																					items: {
-																						description: "Projection that may be projected along with other supported volume types"
+																						description: """
+	Projection that may be projected along with other supported volume types.
+	Exactly one of these fields must be set.
+	"""
 																						properties: {
 																							clusterTrustBundle: {
 																								description: """
 	ClusterTrustBundle allows a pod to access the `.spec.trustBundle` field
 	of ClusterTrustBundle objects in an auto-updating file.
 
-
 	Alpha, gated by the ClusterTrustBundleProjection feature gate.
-
 
 	ClusterTrustBundle objects can either be selected by name, or by the
 	combination of signer name and a label selector.
-
 
 	Kubelet performs aggressive normalization of the PEM contents written
 	into the pod filesystem.  Esoteric PEM features such as inter-block
@@ -4156,9 +4265,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																										type: "string"
 																									}
@@ -4305,9 +4412,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																										type: "string"
 																									}
@@ -4425,7 +4530,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Tip: Ensure that the filesystem type is supported by the host operating system.
 	Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -4437,6 +4541,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type: "string"
 																				}
 																				keyring: {
+																					default: "/etc/ceph/keyring"
 																					description: """
 	keyring is the path to key ring for RBDUser.
 	Default is /etc/ceph/keyring.
@@ -4454,6 +4559,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					"x-kubernetes-list-type": "atomic"
 																				}
 																				pool: {
+																					default: "rbd"
 																					description: """
 	pool is the rados pool name.
 	Default is rbd.
@@ -4483,9 +4589,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -4493,6 +4597,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					"x-kubernetes-map-type": "atomic"
 																				}
 																				user: {
+																					default: "admin"
 																					description: """
 	user is the rados user name.
 	Default is admin.
@@ -4511,6 +4616,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																			description: "scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes."
 																			properties: {
 																				fsType: {
+																					default: "xfs"
 																					description: """
 	fsType is the filesystem type to mount.
 	Must be a filesystem type supported by the host operating system.
@@ -4546,9 +4652,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -4560,6 +4664,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "boolean"
 																				}
 																				storageMode: {
+																					default: "ThinProvisioned"
 																					description: """
 	storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.
 	Default is ThinProvisioned.
@@ -4700,9 +4805,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -4770,13 +4873,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 														description: "The daemonset strategy to use to replace existing pods with new ones."
 														properties: {
 															rollingUpdate: {
-																description: """
-	Rolling update config params. Present only if type = "RollingUpdate".
-	---
-	TODO: Update this to follow our convention for oneOf, whatever we decide it
-	to be. Same as Deployment `strategy.rollingUpdate`.
-	See https://github.com/kubernetes/kubernetes/issues/35345
-	"""
+																description: "Rolling update config params. Present only if type = \"RollingUpdate\"."
 																properties: {
 																	maxSurge: {
 																		anyOf: [{
@@ -4893,9 +4990,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																							type: "string"
 																						}
@@ -4970,9 +5065,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																							type: "string"
 																						}
@@ -5009,22 +5102,30 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Claims lists the names of resources, defined in spec.resourceClaims,
 	that are used by this container.
 
-
 	This is an alpha field and requires enabling the
 	DynamicResourceAllocation feature gate.
-
 
 	This field is immutable. It can only be set for containers.
 	"""
 																		items: {
 																			description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																			properties: name: {
-																				description: """
+																			properties: {
+																				name: {
+																					description: """
 	Name must match the name of one entry in pod.spec.resourceClaims of
 	the Pod where this field is used. It makes that resource available
 	inside a container.
 	"""
-																				type: "string"
+																					type: "string"
+																				}
+																				request: {
+																					description: """
+	Request is the name chosen for a request in the referenced claim.
+	If empty, everything from the claim is made available, otherwise
+	only the result of this request.
+	"""
+																					type: "string"
+																				}
 																			}
 																			required: ["name"]
 																			type: "object"
@@ -5159,7 +5260,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																	procMount: {
 																		description: """
 	procMount denotes the type of proc mount to use for the containers.
-	The default is DefaultProcMount which uses the container runtime defaults for
+	The default value is Default which uses the container runtime defaults for
 	readonly paths and masked paths.
 	This requires the ProcMountType feature flag to be enabled.
 	Note that this field cannot be set when spec.os.name is windows.
@@ -5257,7 +5358,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	type indicates which kind of seccomp profile will be applied.
 	Valid options are:
 
-
 	Localhost - a profile defined in a file on the node should be used.
 	RuntimeDefault - the container runtime default profile should be used.
 	Unconfined - no profile should be applied.
@@ -5354,9 +5454,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	RecursiveReadOnly specifies whether read-only mounts should be handled
 	recursively.
 
-
 	If ReadOnly is false, this field has no meaning and must be unspecified.
-
 
 	If ReadOnly is true, and this field is set to Disabled, the mount is not made
 	recursively read-only.  If this field is set to IfPossible, the mount is made
@@ -5365,10 +5463,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	supported by the container runtime, otherwise the pod will not be started and
 	an error will be generated to indicate the reason.
 
-
 	If this field is set to IfPossible or Enabled, MountPropagation must be set to
 	None (or be unspecified, which defaults to None).
-
 
 	If this field is not specified, it is treated as an equivalent of Disabled.
 	"""
@@ -5483,9 +5579,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																								type: "string"
 																							}
@@ -5560,9 +5654,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																								type: "string"
 																							}
@@ -5608,9 +5700,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -5636,9 +5726,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -5988,10 +6076,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "integer"
 																				}
 																				service: {
+																					default: ""
 																					description: """
 	Service is the name of the service to place in the gRPC HealthCheckRequest
 	(see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
-
 
 	If this is not specified, the default behavior is defined by gRPC.
 	"""
@@ -6252,10 +6340,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "integer"
 																				}
 																				service: {
+																					default: ""
 																					description: """
 	Service is the name of the service to place in the gRPC HealthCheckRequest
 	(see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
-
 
 	If this is not specified, the default behavior is defined by gRPC.
 	"""
@@ -6446,22 +6534,30 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Claims lists the names of resources, defined in spec.resourceClaims,
 	that are used by this container.
 
-
 	This is an alpha field and requires enabling the
 	DynamicResourceAllocation feature gate.
-
 
 	This field is immutable. It can only be set for containers.
 	"""
 																			items: {
 																				description: "ResourceClaim references one entry in PodSpec.ResourceClaims."
-																				properties: name: {
-																					description: """
+																				properties: {
+																					name: {
+																						description: """
 	Name must match the name of one entry in pod.spec.resourceClaims of
 	the Pod where this field is used. It makes that resource available
 	inside a container.
 	"""
-																					type: "string"
+																						type: "string"
+																					}
+																					request: {
+																						description: """
+	Request is the name chosen for a request in the referenced claim.
+	If empty, everything from the claim is made available, otherwise
+	only the result of this request.
+	"""
+																						type: "string"
+																					}
 																				}
 																				required: ["name"]
 																				type: "object"
@@ -6616,7 +6712,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																		procMount: {
 																			description: """
 	procMount denotes the type of proc mount to use for the containers.
-	The default is DefaultProcMount which uses the container runtime defaults for
+	The default value is Default which uses the container runtime defaults for
 	readonly paths and masked paths.
 	This requires the ProcMountType feature flag to be enabled.
 	Note that this field cannot be set when spec.os.name is windows.
@@ -6713,7 +6809,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					description: """
 	type indicates which kind of seccomp profile will be applied.
 	Valid options are:
-
 
 	Localhost - a profile defined in a file on the node should be used.
 	RuntimeDefault - the container runtime default profile should be used.
@@ -6813,10 +6908,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "integer"
 																				}
 																				service: {
+																					default: ""
 																					description: """
 	Service is the name of the service to place in the gRPC HealthCheckRequest
 	(see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
-
 
 	If this is not specified, the default behavior is defined by gRPC.
 	"""
@@ -7083,9 +7178,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	RecursiveReadOnly specifies whether read-only mounts should be handled
 	recursively.
 
-
 	If ReadOnly is false, this field has no meaning and must be unspecified.
-
 
 	If ReadOnly is true, and this field is set to Disabled, the mount is not made
 	recursively read-only.  If this field is set to IfPossible, the mount is made
@@ -7094,10 +7187,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	supported by the container runtime, otherwise the pod will not be started and
 	an error will be generated to indicate the reason.
 
-
 	If this field is set to IfPossible or Enabled, MountPropagation must be set to
 	None (or be unspecified, which defaults to None).
-
 
 	If this field is not specified, it is treated as an equivalent of Disabled.
 	"""
@@ -7158,7 +7249,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 															type: {
 																description: """
 	Type is the type of merge operation to perform
-
 
 	By default, StrategicMerge is used as the patch type.
 	"""
@@ -7506,7 +7596,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 	Also, matchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																									items: type: "string"
 																									type:                     "array"
@@ -7522,7 +7612,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 	Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																									items: type: "string"
 																									type:                     "array"
@@ -7722,7 +7812,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 	Also, matchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																							items: type: "string"
 																							type:                     "array"
@@ -7738,7 +7828,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 	Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																							items: type: "string"
 																							type:                     "array"
@@ -7927,7 +8017,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 	Also, matchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																									items: type: "string"
 																									type:                     "array"
@@ -7943,7 +8033,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 	Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																									items: type: "string"
 																									type:                     "array"
@@ -8143,7 +8233,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both matchLabelKeys and labelSelector.
 	Also, matchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																							items: type: "string"
 																							type:                     "array"
@@ -8159,7 +8249,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	pod labels will be ignored. The default value is empty.
 	The same key is forbidden to exist in both mismatchLabelKeys and labelSelector.
 	Also, mismatchLabelKeys cannot be set when labelSelector isn't set.
-	This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+	This is a beta field and requires enabling MatchLabelKeysInPodAffinity feature gate (enabled by default).
 	"""
 																							items: type: "string"
 																							type:                     "array"
@@ -8288,9 +8378,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																		type: "string"
 																	}
@@ -8357,11 +8445,9 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Some volume types allow the Kubelet to change the ownership of that volume
 	to be owned by the pod:
 
-
 	1. The owning GID will be the FSGroup
 	2. The setgid bit is set (new files created in the volume will be owned by FSGroup)
 	3. The permission bits are OR'd with rw-rw----
-
 
 	If unset, the Kubelet will not modify the ownership and permissions of any volume.
 	Note that this field cannot be set when spec.os.name is windows.
@@ -8465,7 +8551,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	type indicates which kind of seccomp profile will be applied.
 	Valid options are:
 
-
 	Localhost - a profile defined in a file on the node should be used.
 	RuntimeDefault - the container runtime default profile should be used.
 	Unconfined - no profile should be applied.
@@ -8478,12 +8563,14 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																	}
 																	supplementalGroups: {
 																		description: """
-	A list of groups applied to the first process run in each container, in addition
-	to the container's primary GID, the fsGroup (if specified), and group memberships
-	defined in the container image for the uid of the container process. If unspecified,
-	no additional groups are added to any container. Note that group memberships
-	defined in the container image for the uid of the container process are still effective,
-	even if they are not included in this list.
+	A list of groups applied to the first process run in each container, in
+	addition to the container's primary GID and fsGroup (if specified).  If
+	the SupplementalGroupsPolicy feature is enabled, the
+	supplementalGroupsPolicy field determines whether these are in addition
+	to or instead of any group memberships defined in the container image.
+	If unspecified, no additional groups are added, though group memberships
+	defined in the container image may still be used, depending on the
+	supplementalGroupsPolicy field.
 	Note that this field cannot be set when spec.os.name is windows.
 	"""
 																		items: {
@@ -8492,6 +8579,16 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																		}
 																		type:                     "array"
 																		"x-kubernetes-list-type": "atomic"
+																	}
+																	supplementalGroupsPolicy: {
+																		description: """
+	Defines how supplemental groups of the first container processes are calculated.
+	Valid values are "Merge" and "Strict". If not specified, "Merge" is used.
+	(Alpha) Using the field requires the SupplementalGroupsPolicy feature gate to be enabled
+	and the container runtime must implement support for this feature.
+	Note that this field cannot be set when spec.os.name is windows.
+	"""
+																		type: "string"
 																	}
 																	sysctls: {
 																		description: """
@@ -8697,7 +8794,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Keys that don't exist in the incoming pod labels will
 	be ignored. A null or empty list means only match against labelSelector.
 
-
 	This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).
 	"""
 																			items: type: "string"
@@ -8740,7 +8836,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Valid values are integers greater than 0.
 	When value is not nil, WhenUnsatisfiable must be DoNotSchedule.
 
-
 	For example, in a 3-zone cluster, MaxSkew is set to 2, MinDomains is set to 5 and pods with the same
 	labelSelector spread as 2/2/2:
 	| zone1 | zone2 | zone3 |
@@ -8760,7 +8855,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	- Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations.
 	- Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
 
-
 	If this value is nil, the behavior is equivalent to the Honor policy.
 	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
 	"""
@@ -8773,7 +8867,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	- Honor: nodes without taints, along with tainted nodes for which the incoming pod
 	has a toleration, are included.
 	- Ignore: node taints are ignored. All nodes are included.
-
 
 	If this value is nil, the behavior is equivalent to the Ignore policy.
 	This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
@@ -8849,7 +8942,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Tip: Ensure that the filesystem type is supported by the host operating system.
 	Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -8897,6 +8989,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "string"
 																				}
 																				fsType: {
+																					default: "ext4"
 																					description: """
 	fsType is Filesystem type to mount.
 	Must be a filesystem type supported by the host operating system.
@@ -8909,6 +9002,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "string"
 																				}
 																				readOnly: {
+																					default: false
 																					description: """
 	readOnly Defaults to false (read/write). ReadOnly here will force
 	the ReadOnly setting in VolumeMounts.
@@ -8990,9 +9084,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -9045,9 +9137,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -9136,9 +9226,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																					type: "string"
 																				}
@@ -9183,9 +9271,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -9345,7 +9431,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	The volume's lifecycle is tied to the pod that defines it - it will be created before the pod starts,
 	and deleted when the pod is removed.
 
-
 	Use this if:
 	a) the volume is only needed while the pod runs,
 	b) features of normal volumes like restoring from snapshot or capacity
@@ -9356,16 +9441,13 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	   information on the connection between this volume type
 	   and PersistentVolumeClaim).
 
-
 	Use PersistentVolumeClaim or one of the vendor-specific
 	APIs for volumes that persist for longer than the lifecycle
 	of an individual pod.
 
-
 	Use CSI for light-weight local ephemeral volumes if the CSI driver is meant to
 	be used that way - see the documentation of the driver for
 	more information.
-
 
 	A pod can use both types of ephemeral volumes and
 	persistent volumes at the same time.
@@ -9380,7 +9462,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	entry. Pod validation will reject the pod if the concatenated name
 	is not valid for a PVC (for example, too long).
 
-
 	An existing PVC with that name that is not owned by the pod
 	will *not* be used for the pod to avoid using an unrelated
 	volume by mistake. Starting the pod is then blocked until
@@ -9390,10 +9471,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	this should not be necessary, but it may be useful when
 	manually reconstructing a broken cluster.
 
-
 	This field is read-only and no changes will be made by Kubernetes
 	to the PVC after it has been created.
-
 
 	Required, must not be nil.
 	"""
@@ -9639,7 +9718,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
 	exists.
 	More info: https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/
-	(Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled.
+	(Beta) Using this field requires the VolumeAttributesClass feature gate to be enabled (off by default).
 	"""
 																								type: "string"
 																							}
@@ -9671,7 +9750,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	fsType is the filesystem type to mount.
 	Must be a filesystem type supported by the host operating system.
 	Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -9750,9 +9828,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -9793,7 +9869,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Tip: Ensure that the filesystem type is supported by the host operating system.
 	Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -9898,9 +9973,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	used for system agents or other privileged things that are allowed
 	to see the host machine. Most containers will NOT need this.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
-	---
-	TODO(jonesdl) We need to restrict who can use host directory mounts and who can/can not
-	mount host directories as read/write.
 	"""
 																			properties: {
 																				path: {
@@ -9921,6 +9993,48 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																				}
 																			}
 																			required: ["path"]
+																			type: "object"
+																		}
+																		image: {
+																			description: """
+	image represents an OCI object (a container image or artifact) pulled and mounted on the kubelet's host machine.
+	The volume is resolved at pod startup depending on which PullPolicy value is provided:
+
+	- Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails.
+	- Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn't present.
+	- IfNotPresent: the kubelet pulls if the reference isn't already present on disk. Container creation will fail if the reference isn't present and the pull fails.
+
+	The volume gets re-resolved if the pod gets deleted and recreated, which means that new remote content will become available on pod recreation.
+	A failure to resolve or pull the image during pod startup will block containers from starting and may add significant latency. Failures will be retried using normal volume backoff and will be reported on the pod reason and message.
+	The types of objects that may be mounted by this volume are defined by the container runtime implementation on a host machine and at minimum must include all valid types supported by the container image field.
+	The OCI object gets mounted in a single directory (spec.containers[*].volumeMounts.mountPath) by merging the manifest layers in the same way as for container images.
+	The volume will be mounted read-only (ro) and non-executable files (noexec).
+	Sub path mounts for containers are not supported (spec.containers[*].volumeMounts.subpath).
+	The field spec.securityContext.fsGroupChangePolicy has no effect on this volume type.
+	"""
+																			properties: {
+																				pullPolicy: {
+																					description: """
+	Policy for pulling OCI objects. Possible values are:
+	Always: the kubelet always attempts to pull the reference. Container creation will fail If the pull fails.
+	Never: the kubelet never pulls the reference and only uses a local image or artifact. Container creation will fail if the reference isn't present.
+	IfNotPresent: the kubelet pulls if the reference isn't already present on disk. Container creation will fail if the reference isn't present and the pull fails.
+	Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+	"""
+																					type: "string"
+																				}
+																				reference: {
+																					description: """
+	Required: Image or artifact reference to be used.
+	Behaves in the same way as pod.spec.containers[*].image.
+	Pull secrets will be assembled in the same way as for the container image by looking up node credentials, SA image pull secrets, and pod spec image pull secrets.
+	More info: https://kubernetes.io/docs/concepts/containers/images
+	This field is optional to allow higher level config management to default or override
+	container images in workload controllers like Deployments and StatefulSets.
+	"""
+																					type: "string"
+																				}
+																			}
 																			type: "object"
 																		}
 																		iscsi: {
@@ -9944,7 +10058,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Tip: Ensure that the filesystem type is supported by the host operating system.
 	Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#iscsi
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -9961,6 +10074,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "string"
 																				}
 																				iscsiInterface: {
+																					default: "default"
 																					description: """
 	iscsiInterface is the interface Name that uses an iSCSI transport.
 	Defaults to 'default' (tcp).
@@ -9997,9 +10111,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -10150,22 +10262,25 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:   "integer"
 																				}
 																				sources: {
-																					description: "sources is the list of volume projections"
+																					description: """
+	sources is the list of volume projections. Each entry in this list
+	handles one source.
+	"""
 																					items: {
-																						description: "Projection that may be projected along with other supported volume types"
+																						description: """
+	Projection that may be projected along with other supported volume types.
+	Exactly one of these fields must be set.
+	"""
 																						properties: {
 																							clusterTrustBundle: {
 																								description: """
 	ClusterTrustBundle allows a pod to access the `.spec.trustBundle` field
 	of ClusterTrustBundle objects in an auto-updating file.
 
-
 	Alpha, gated by the ClusterTrustBundleProjection feature gate.
-
 
 	ClusterTrustBundle objects can either be selected by name, or by the
 	combination of signer name and a label selector.
-
 
 	Kubelet performs aggressive normalization of the PEM contents written
 	into the pod filesystem.  Esoteric PEM features such as inter-block
@@ -10326,9 +10441,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																										type: "string"
 																									}
@@ -10475,9 +10588,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																										type: "string"
 																									}
@@ -10595,7 +10706,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Tip: Ensure that the filesystem type is supported by the host operating system.
 	Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
 	More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd
-	TODO: how do we prevent errors in the filesystem from compromising the machine
 	"""
 																					type: "string"
 																				}
@@ -10607,6 +10717,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type: "string"
 																				}
 																				keyring: {
+																					default: "/etc/ceph/keyring"
 																					description: """
 	keyring is the path to key ring for RBDUser.
 	Default is /etc/ceph/keyring.
@@ -10624,6 +10735,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					"x-kubernetes-list-type": "atomic"
 																				}
 																				pool: {
+																					default: "rbd"
 																					description: """
 	pool is the rados pool name.
 	Default is rbd.
@@ -10653,9 +10765,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -10663,6 +10773,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					"x-kubernetes-map-type": "atomic"
 																				}
 																				user: {
+																					default: "admin"
 																					description: """
 	user is the rados user name.
 	Default is admin.
@@ -10681,6 +10792,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																			description: "scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes."
 																			properties: {
 																				fsType: {
+																					default: "xfs"
 																					description: """
 	fsType is the filesystem type to mount.
 	Must be a filesystem type supported by the host operating system.
@@ -10716,9 +10828,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -10730,6 +10840,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																					type:        "boolean"
 																				}
 																				storageMode: {
+																					default: "ThinProvisioned"
 																					description: """
 	storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.
 	Default is ThinProvisioned.
@@ -10870,9 +10981,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	This field is effectively required, but due to backwards compatibility is
 	allowed to be empty. Instances of this type with an empty value here are
 	almost certainly wrong.
-	TODO: Add other useful fields. apiVersion, kind, uid?
 	More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-	TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
 	"""
 																						type: "string"
 																					}
@@ -10948,9 +11057,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																description: """
 	Rolling update config params. Present only if DeploymentStrategyType =
 	RollingUpdate.
-	---
-	TODO: Update this to follow our convention for oneOf, whatever we decide it
-	to be.
 	"""
 																properties: {
 																	maxSurge: {
@@ -11819,6 +11925,14 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 														]
 														type: "string"
 													}
+													labels: {
+														additionalProperties: type: "string"
+														description: """
+	Labels that should be appended to the service.
+	By default, no labels are appended.
+	"""
+														type: "object"
+													}
 													loadBalancerClass: {
 														description: """
 	LoadBalancerClass, when specified, allows for choosing the LoadBalancer provider
@@ -11863,7 +11977,6 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 															type: {
 																description: """
 	Type is the type of merge operation to perform
-
 
 	By default, StrategicMerge is used as the patch type.
 	"""
@@ -11930,7 +12043,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	infrastructure resources for running the data plane, e.g. Envoy proxy, and
 	optional auxiliary control planes. Supported types are "Kubernetes".
 	"""
-										enum: ["Kubernetes"]
+										enum: [
+											"Kubernetes",
+											"Custom",
+										]
 										type: "string"
 									}
 								}
@@ -11950,14 +12066,14 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 									drainTimeout: {
 										description: """
 	DrainTimeout defines the graceful drain timeout. This should be less than the pod's terminationGracePeriodSeconds.
-	If unspecified, defaults to 600 seconds.
+	If unspecified, defaults to 60 seconds.
 	"""
 										type: "string"
 									}
 									minDrainDuration: {
 										description: """
 	MinDrainDuration defines the minimum drain duration allowing time for endpoint deprogramming to complete.
-	If unspecified, defaults to 5 seconds.
+	If unspecified, defaults to 10 seconds.
 	"""
 										type: "string"
 									}
@@ -12034,7 +12150,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Invalid [CEL](https://www.envoyproxy.io/docs/envoy/latest/xds/type/v3/cel.proto.html#common-expression-language-cel-proto) expressions will be ignored.
 	"""
 															items: type: "string"
-															type: "array"
+															maxItems: 10
+															type:     "array"
 														}
 														sinks: {
 															description: "Sinks defines the sinks of accesslog."
@@ -12044,14 +12161,110 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																	als: {
 																		description: "ALS defines the gRPC Access Log Service (ALS) sink."
 																		properties: {
+																			backendRef: {
+																				description: """
+	BackendRef references a Kubernetes object that represents the
+	backend server to which the authorization request will be sent.
+
+	Deprecated: Use BackendRefs instead.
+	"""
+																				properties: {
+																					group: {
+																						default: ""
+																						description: """
+	Group is the group of the referent. For example, "gateway.networking.k8s.io".
+	When unspecified or empty string, core API group is inferred.
+	"""
+																						maxLength: 253
+																						pattern:   "^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+																						type:      "string"
+																					}
+																					kind: {
+																						default: "Service"
+																						description: """
+	Kind is the Kubernetes resource kind of the referent. For example
+	"Service".
+
+	Defaults to "Service" when not specified.
+
+	ExternalName services can refer to CNAME DNS records that may live
+	outside of the cluster and as such are difficult to reason about in
+	terms of conformance. They also may not be safe to forward to (see
+	CVE-2021-25740 for more information). Implementations SHOULD NOT
+	support ExternalName Services.
+
+	Support: Core (Services with a type other than ExternalName)
+
+	Support: Implementation-specific (Services with type ExternalName)
+	"""
+																						maxLength: 63
+																						minLength: 1
+																						pattern:   "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
+																						type:      "string"
+																					}
+																					name: {
+																						description: "Name is the name of the referent."
+																						maxLength:   253
+																						minLength:   1
+																						type:        "string"
+																					}
+																					namespace: {
+																						description: """
+	Namespace is the namespace of the backend. When unspecified, the local
+	namespace is inferred.
+
+	Note that when a namespace different than the local namespace is specified,
+	a ReferenceGrant object is required in the referent namespace to allow that
+	namespace's owner to accept the reference. See the ReferenceGrant
+	documentation for details.
+
+	Support: Core
+	"""
+																						maxLength: 63
+																						minLength: 1
+																						pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+																						type:      "string"
+																					}
+																					port: {
+																						description: """
+	Port specifies the destination port number to use for this resource.
+	Port is required when the referent is a Kubernetes Service. In this
+	case, the port number is the service port number, not the target port.
+	For other resources, destination port might be derived from the referent
+	resource or this field.
+	"""
+																						format:  "int32"
+																						maximum: 65535
+																						minimum: 1
+																						type:    "integer"
+																					}
+																				}
+																				required: ["name"]
+																				type: "object"
+																				"x-kubernetes-validations": [{
+																					message: "Must have port for Service reference"
+																					rule:    "(size(self.group) == 0 && self.kind == 'Service') ? has(self.port) : true"
+																				}]
+																			}
 																			backendRefs: {
 																				description: """
-	BackendRefs references a Kubernetes object that represents the gRPC service to which
-	the access logs will be sent. Currently only Service is supported.
+	BackendRefs references a Kubernetes object that represents the
+	backend server to which the authorization request will be sent.
 	"""
 																				items: {
 																					description: "BackendRef defines how an ObjectReference that is specific to BackendRef."
 																					properties: {
+																						fallback: {
+																							description: """
+	Fallback indicates whether the backend is designated as a fallback.
+	Multiple fallback backends can be configured.
+	It is highly recommended to configure active or passive health checks to ensure that failover can be detected
+	when the active backends become unhealthy and to automatically readjust once the primary backends are healthy again.
+	The overprovisioning factor is set to 1.4, meaning the fallback backends will only start receiving traffic when
+	the health of the active backends falls below 72%.
+	"""
+																							type: "boolean"
+																						}
 																						group: {
 																							default: ""
 																							description: """
@@ -12068,9 +12281,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Kind is the Kubernetes resource kind of the referent. For example
 	"Service".
 
-
 	Defaults to "Service" when not specified.
-
 
 	ExternalName services can refer to CNAME DNS records that may live
 	outside of the cluster and as such are difficult to reason about in
@@ -12078,9 +12289,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	CVE-2021-25740 for more information). Implementations SHOULD NOT
 	support ExternalName Services.
 
-
 	Support: Core (Services with a type other than ExternalName)
-
 
 	Support: Implementation-specific (Services with type ExternalName)
 	"""
@@ -12100,12 +12309,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Namespace is the namespace of the backend. When unspecified, the local
 	namespace is inferred.
 
-
 	Note that when a namespace different than the local namespace is specified,
 	a ReferenceGrant object is required in the referent namespace to allow that
 	namespace's owner to accept the reference. See the ReferenceGrant
 	documentation for details.
-
 
 	Support: Core
 	"""
@@ -12135,16 +12342,809 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																						rule:    "(size(self.group) == 0 && self.kind == 'Service') ? has(self.port) : true"
 																					}]
 																				}
-																				maxItems: 1
-																				minItems: 1
+																				maxItems: 16
 																				type:     "array"
-																				"x-kubernetes-validations": [{
-																					message: "BackendRefs only supports Service kind."
-																					rule:    "self.all(f, f.kind == 'Service')"
-																				}, {
-																					message: "BackendRefs only supports Core group."
-																					rule:    "self.all(f, f.group == '')"
-																				}]
+																			}
+																			backendSettings: {
+																				description: """
+	BackendSettings holds configuration for managing the connection
+	to the backend.
+	"""
+																				properties: {
+																					circuitBreaker: {
+																						description: """
+	Circuit Breaker settings for the upstream connections and requests.
+	If not set, circuit breakers will be enabled with the default thresholds
+	"""
+																						properties: {
+																							maxConnections: {
+																								default:     1024
+																								description: "The maximum number of connections that Envoy will establish to the referenced backend defined within a xRoute rule."
+																								format:      "int64"
+																								maximum:     4294967295
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							maxParallelRequests: {
+																								default:     1024
+																								description: "The maximum number of parallel requests that Envoy will make to the referenced backend defined within a xRoute rule."
+																								format:      "int64"
+																								maximum:     4294967295
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							maxParallelRetries: {
+																								default:     1024
+																								description: "The maximum number of parallel retries that Envoy will make to the referenced backend defined within a xRoute rule."
+																								format:      "int64"
+																								maximum:     4294967295
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							maxPendingRequests: {
+																								default:     1024
+																								description: "The maximum number of pending requests that Envoy will queue to the referenced backend defined within a xRoute rule."
+																								format:      "int64"
+																								maximum:     4294967295
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							maxRequestsPerConnection: {
+																								description: """
+	The maximum number of requests that Envoy will make over a single connection to the referenced backend defined within a xRoute rule.
+	Default: unlimited.
+	"""
+																								format:  "int64"
+																								maximum: 4294967295
+																								minimum: 0
+																								type:    "integer"
+																							}
+																						}
+																						type: "object"
+																					}
+																					connection: {
+																						description: "Connection includes backend connection settings."
+																						properties: {
+																							bufferLimit: {
+																								allOf: [{
+																									pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																								}, {
+																									pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																								}]
+																								anyOf: [{
+																									type: "integer"
+																								}, {
+																									type: "string"
+																								}]
+																								description: """
+	BufferLimit Soft limit on size of the cluster’s connections read and write buffers.
+	BufferLimit applies to connection streaming (maybe non-streaming) channel between processes, it's in user space.
+	If unspecified, an implementation defined default is applied (32768 bytes).
+	For example, 20Mi, 1Gi, 256Ki etc.
+	Note: that when the suffix is not provided, the value is interpreted as bytes.
+	"""
+																								"x-kubernetes-int-or-string": true
+																							}
+																							socketBufferLimit: {
+																								allOf: [{
+																									pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																								}, {
+																									pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																								}]
+																								anyOf: [{
+																									type: "integer"
+																								}, {
+																									type: "string"
+																								}]
+																								description: """
+	SocketBufferLimit provides configuration for the maximum buffer size in bytes for each socket
+	to backend.
+	SocketBufferLimit applies to socket streaming channel between TCP/IP stacks, it's in kernel space.
+	For example, 20Mi, 1Gi, 256Ki etc.
+	Note that when the suffix is not provided, the value is interpreted as bytes.
+	"""
+																								"x-kubernetes-int-or-string": true
+																							}
+																						}
+																						type: "object"
+																					}
+																					dns: {
+																						description: "DNS includes dns resolution settings."
+																						properties: {
+																							dnsRefreshRate: {
+																								description: """
+	DNSRefreshRate specifies the rate at which DNS records should be refreshed.
+	Defaults to 30 seconds.
+	"""
+																								type: "string"
+																							}
+																							respectDnsTtl: {
+																								description: """
+	RespectDNSTTL indicates whether the DNS Time-To-Live (TTL) should be respected.
+	If the value is set to true, the DNS refresh rate will be set to the resource record’s TTL.
+	Defaults to true.
+	"""
+																								type: "boolean"
+																							}
+																						}
+																						type: "object"
+																					}
+																					healthCheck: {
+																						description: "HealthCheck allows gateway to perform active health checking on backends."
+																						properties: {
+																							active: {
+																								description: "Active health check configuration"
+																								properties: {
+																									grpc: {
+																										description: """
+	GRPC defines the configuration of the GRPC health checker.
+	It's optional, and can only be used if the specified type is GRPC.
+	"""
+																										properties: service: {
+																											description: """
+	Service to send in the health check request.
+	If this is not specified, then the health check request applies to the entire
+	server and not to a specific service.
+	"""
+																											type: "string"
+																										}
+																										type: "object"
+																									}
+																									healthyThreshold: {
+																										default:     1
+																										description: "HealthyThreshold defines the number of healthy health checks required before a backend host is marked healthy."
+																										format:      "int32"
+																										minimum:     1
+																										type:        "integer"
+																									}
+																									http: {
+																										description: """
+	HTTP defines the configuration of http health checker.
+	It's required while the health checker type is HTTP.
+	"""
+																										properties: {
+																											expectedResponse: {
+																												description: "ExpectedResponse defines a list of HTTP expected responses to match."
+																												properties: {
+																													binary: {
+																														description: "Binary payload base64 encoded."
+																														format:      "byte"
+																														type:        "string"
+																													}
+																													text: {
+																														description: "Text payload in plain text."
+																														type:        "string"
+																													}
+																													type: {
+																														allOf: [{
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}, {
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}]
+																														description: "Type defines the type of the payload."
+																														type:        "string"
+																													}
+																												}
+																												required: ["type"]
+																												type: "object"
+																												"x-kubernetes-validations": [{
+																													message: "If payload type is Text, text field needs to be set."
+																													rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																												}, {
+																													message: "If payload type is Binary, binary field needs to be set."
+																													rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																												}]
+																											}
+																											expectedStatuses: {
+																												description: """
+	ExpectedStatuses defines a list of HTTP response statuses considered healthy.
+	Defaults to 200 only
+	"""
+																												items: {
+																													description:      "HTTPStatus defines the http status code."
+																													exclusiveMaximum: true
+																													maximum:          600
+																													minimum:          100
+																													type:             "integer"
+																												}
+																												type: "array"
+																											}
+																											method: {
+																												description: """
+	Method defines the HTTP method used for health checking.
+	Defaults to GET
+	"""
+																												type: "string"
+																											}
+																											path: {
+																												description: "Path defines the HTTP path that will be requested during health checking."
+																												maxLength:   1024
+																												minLength:   1
+																												type:        "string"
+																											}
+																										}
+																										required: ["path"]
+																										type: "object"
+																									}
+																									interval: {
+																										default:     "3s"
+																										description: "Interval defines the time between active health checks."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																									tcp: {
+																										description: """
+	TCP defines the configuration of tcp health checker.
+	It's required while the health checker type is TCP.
+	"""
+																										properties: {
+																											receive: {
+																												description: "Receive defines the expected response payload."
+																												properties: {
+																													binary: {
+																														description: "Binary payload base64 encoded."
+																														format:      "byte"
+																														type:        "string"
+																													}
+																													text: {
+																														description: "Text payload in plain text."
+																														type:        "string"
+																													}
+																													type: {
+																														allOf: [{
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}, {
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}]
+																														description: "Type defines the type of the payload."
+																														type:        "string"
+																													}
+																												}
+																												required: ["type"]
+																												type: "object"
+																												"x-kubernetes-validations": [{
+																													message: "If payload type is Text, text field needs to be set."
+																													rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																												}, {
+																													message: "If payload type is Binary, binary field needs to be set."
+																													rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																												}]
+																											}
+																											send: {
+																												description: "Send defines the request payload."
+																												properties: {
+																													binary: {
+																														description: "Binary payload base64 encoded."
+																														format:      "byte"
+																														type:        "string"
+																													}
+																													text: {
+																														description: "Text payload in plain text."
+																														type:        "string"
+																													}
+																													type: {
+																														allOf: [{
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}, {
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}]
+																														description: "Type defines the type of the payload."
+																														type:        "string"
+																													}
+																												}
+																												required: ["type"]
+																												type: "object"
+																												"x-kubernetes-validations": [{
+																													message: "If payload type is Text, text field needs to be set."
+																													rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																												}, {
+																													message: "If payload type is Binary, binary field needs to be set."
+																													rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																												}]
+																											}
+																										}
+																										type: "object"
+																									}
+																									timeout: {
+																										default:     "1s"
+																										description: "Timeout defines the time to wait for a health check response."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																									type: {
+																										allOf: [{
+																											enum: [
+																												"HTTP",
+																												"TCP",
+																												"GRPC",
+																											]
+																										}, {
+																											enum: [
+																												"HTTP",
+																												"TCP",
+																												"GRPC",
+																											]
+																										}]
+																										description: "Type defines the type of health checker."
+																										type:        "string"
+																									}
+																									unhealthyThreshold: {
+																										default:     3
+																										description: "UnhealthyThreshold defines the number of unhealthy health checks required before a backend host is marked unhealthy."
+																										format:      "int32"
+																										minimum:     1
+																										type:        "integer"
+																									}
+																								}
+																								required: ["type"]
+																								type: "object"
+																								"x-kubernetes-validations": [{
+																									message: "If Health Checker type is HTTP, http field needs to be set."
+																									rule:    "self.type == 'HTTP' ? has(self.http) : !has(self.http)"
+																								}, {
+																									message: "If Health Checker type is TCP, tcp field needs to be set."
+																									rule:    "self.type == 'TCP' ? has(self.tcp) : !has(self.tcp)"
+																								}, {
+																									message: "The grpc field can only be set if the Health Checker type is GRPC."
+																									rule:    "has(self.grpc) ? self.type == 'GRPC' : true"
+																								}]
+																							}
+																							passive: {
+																								description: "Passive passive check configuration"
+																								properties: {
+																									baseEjectionTime: {
+																										default:     "30s"
+																										description: "BaseEjectionTime defines the base duration for which a host will be ejected on consecutive failures."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																									consecutive5XxErrors: {
+																										default:     5
+																										description: "Consecutive5xxErrors sets the number of consecutive 5xx errors triggering ejection."
+																										format:      "int32"
+																										type:        "integer"
+																									}
+																									consecutiveGatewayErrors: {
+																										default:     0
+																										description: "ConsecutiveGatewayErrors sets the number of consecutive gateway errors triggering ejection."
+																										format:      "int32"
+																										type:        "integer"
+																									}
+																									consecutiveLocalOriginFailures: {
+																										default: 5
+																										description: """
+	ConsecutiveLocalOriginFailures sets the number of consecutive local origin failures triggering ejection.
+	Parameter takes effect only when split_external_local_origin_errors is set to true.
+	"""
+																										format: "int32"
+																										type:   "integer"
+																									}
+																									interval: {
+																										default:     "3s"
+																										description: "Interval defines the time between passive health checks."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																									maxEjectionPercent: {
+																										default:     10
+																										description: "MaxEjectionPercent sets the maximum percentage of hosts in a cluster that can be ejected."
+																										format:      "int32"
+																										type:        "integer"
+																									}
+																									splitExternalLocalOriginErrors: {
+																										default:     false
+																										description: "SplitExternalLocalOriginErrors enables splitting of errors between external and local origin."
+																										type:        "boolean"
+																									}
+																								}
+																								type: "object"
+																							}
+																						}
+																						type: "object"
+																					}
+																					http2: {
+																						description: "HTTP2 provides HTTP/2 configuration for backend connections."
+																						properties: {
+																							initialConnectionWindowSize: {
+																								allOf: [{
+																									pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																								}, {
+																									pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																								}]
+																								anyOf: [{
+																									type: "integer"
+																								}, {
+																									type: "string"
+																								}]
+																								description: """
+	InitialConnectionWindowSize sets the initial window size for HTTP/2 connections.
+	If not set, the default value is 1 MiB.
+	"""
+																								"x-kubernetes-int-or-string": true
+																							}
+																							initialStreamWindowSize: {
+																								allOf: [{
+																									pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																								}, {
+																									pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																								}]
+																								anyOf: [{
+																									type: "integer"
+																								}, {
+																									type: "string"
+																								}]
+																								description: """
+	InitialStreamWindowSize sets the initial window size for HTTP/2 streams.
+	If not set, the default value is 64 KiB(64*1024).
+	"""
+																								"x-kubernetes-int-or-string": true
+																							}
+																							maxConcurrentStreams: {
+																								description: """
+	MaxConcurrentStreams sets the maximum number of concurrent streams allowed per connection.
+	If not set, the default value is 100.
+	"""
+																								format:  "int32"
+																								maximum: 2147483647
+																								minimum: 1
+																								type:    "integer"
+																							}
+																							onInvalidMessage: {
+																								description: """
+	OnInvalidMessage determines if Envoy will terminate the connection or just the offending stream in the event of HTTP messaging error
+	It's recommended for L2 Envoy deployments to set this value to TerminateStream.
+	https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
+	Default: TerminateConnection
+	"""
+																								type: "string"
+																							}
+																						}
+																						type: "object"
+																					}
+																					loadBalancer: {
+																						description: """
+	LoadBalancer policy to apply when routing traffic from the gateway to
+	the backend endpoints. Defaults to `LeastRequest`.
+	"""
+																						properties: {
+																							consistentHash: {
+																								description: """
+	ConsistentHash defines the configuration when the load balancer type is
+	set to ConsistentHash
+	"""
+																								properties: {
+																									cookie: {
+																										description: "Cookie configures the cookie hash policy when the consistent hash type is set to Cookie."
+																										properties: {
+																											attributes: {
+																												additionalProperties: type: "string"
+																												description: "Additional Attributes to set for the generated cookie."
+																												type:        "object"
+																											}
+																											name: {
+																												description: """
+	Name of the cookie to hash.
+	If this cookie does not exist in the request, Envoy will generate a cookie and set
+	the TTL on the response back to the client based on Layer 4
+	attributes of the backend endpoint, to ensure that these future requests
+	go to the same backend endpoint. Make sure to set the TTL field for this case.
+	"""
+																												type: "string"
+																											}
+																											ttl: {
+																												description: """
+	TTL of the generated cookie if the cookie is not present. This value sets the
+	Max-Age attribute value.
+	"""
+																												type: "string"
+																											}
+																										}
+																										required: ["name"]
+																										type: "object"
+																									}
+																									header: {
+																										description: "Header configures the header hash policy when the consistent hash type is set to Header."
+																										properties: name: {
+																											description: "Name of the header to hash."
+																											type:        "string"
+																										}
+																										required: ["name"]
+																										type: "object"
+																									}
+																									tableSize: {
+																										default:     65537
+																										description: "The table size for consistent hashing, must be prime number limited to 5000011."
+																										format:      "int64"
+																										maximum:     5000011
+																										minimum:     2
+																										type:        "integer"
+																									}
+																									type: {
+																										description: """
+	ConsistentHashType defines the type of input to hash on. Valid Type values are
+	"SourceIP",
+	"Header",
+	"Cookie".
+	"""
+																										enum: [
+																											"SourceIP",
+																											"Header",
+																											"Cookie",
+																										]
+																										type: "string"
+																									}
+																								}
+																								required: ["type"]
+																								type: "object"
+																								"x-kubernetes-validations": [{
+																									message: "If consistent hash type is header, the header field must be set."
+																									rule:    "self.type == 'Header' ? has(self.header) : !has(self.header)"
+																								}, {
+																									message: "If consistent hash type is cookie, the cookie field must be set."
+																									rule:    "self.type == 'Cookie' ? has(self.cookie) : !has(self.cookie)"
+																								}]
+																							}
+																							slowStart: {
+																								description: """
+	SlowStart defines the configuration related to the slow start load balancer policy.
+	If set, during slow start window, traffic sent to the newly added hosts will gradually increase.
+	Currently this is only supported for RoundRobin and LeastRequest load balancers
+	"""
+																								properties: window: {
+																									description: """
+	Window defines the duration of the warm up period for newly added host.
+	During slow start window, traffic sent to the newly added hosts will gradually increase.
+	Currently only supports linear growth of traffic. For additional details,
+	see https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/cluster.proto#config-cluster-v3-cluster-slowstartconfig
+	"""
+																									type: "string"
+																								}
+																								required: ["window"]
+																								type: "object"
+																							}
+																							type: {
+																								description: """
+	Type decides the type of Load Balancer policy.
+	Valid LoadBalancerType values are
+	"ConsistentHash",
+	"LeastRequest",
+	"Random",
+	"RoundRobin".
+	"""
+																								enum: [
+																									"ConsistentHash",
+																									"LeastRequest",
+																									"Random",
+																									"RoundRobin",
+																								]
+																								type: "string"
+																							}
+																						}
+																						required: ["type"]
+																						type: "object"
+																						"x-kubernetes-validations": [{
+																							message: "If LoadBalancer type is consistentHash, consistentHash field needs to be set."
+																							rule:    "self.type == 'ConsistentHash' ? has(self.consistentHash) : !has(self.consistentHash)"
+																						}, {
+																							message: "Currently SlowStart is only supported for RoundRobin and LeastRequest load balancers."
+																							rule:    "self.type in ['Random', 'ConsistentHash'] ? !has(self.slowStart) : true "
+																						}]
+																					}
+																					proxyProtocol: {
+																						description: "ProxyProtocol enables the Proxy Protocol when communicating with the backend."
+																						properties: version: {
+																							description: """
+	Version of ProxyProtol
+	Valid ProxyProtocolVersion values are
+	"V1"
+	"V2"
+	"""
+																							enum: [
+																								"V1",
+																								"V2",
+																							]
+																							type: "string"
+																						}
+																						required: ["version"]
+																						type: "object"
+																					}
+																					retry: {
+																						description: """
+	Retry provides more advanced usage, allowing users to customize the number of retries, retry fallback strategy, and retry triggering conditions.
+	If not set, retry will be disabled.
+	"""
+																						properties: {
+																							numRetries: {
+																								default:     2
+																								description: "NumRetries is the number of retries to be attempted. Defaults to 2."
+																								format:      "int32"
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							perRetry: {
+																								description: "PerRetry is the retry policy to be applied per retry attempt."
+																								properties: {
+																									backOff: {
+																										description: """
+	Backoff is the backoff policy to be applied per retry attempt. gateway uses a fully jittered exponential
+	back-off algorithm for retries. For additional details,
+	see https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/router_filter#config-http-filters-router-x-envoy-max-retries
+	"""
+																										properties: {
+																											baseInterval: {
+																												description: "BaseInterval is the base interval between retries."
+																												format:      "duration"
+																												type:        "string"
+																											}
+																											maxInterval: {
+																												description: """
+	MaxInterval is the maximum interval between retries. This parameter is optional, but must be greater than or equal to the base_interval if set.
+	The default is 10 times the base_interval
+	"""
+																												format: "duration"
+																												type:   "string"
+																											}
+																										}
+																										type: "object"
+																									}
+																									timeout: {
+																										description: "Timeout is the timeout per retry attempt."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																								}
+																								type: "object"
+																							}
+																							retryOn: {
+																								description: """
+	RetryOn specifies the retry trigger condition.
+
+	If not specified, the default is to retry on connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes(503).
+	"""
+																								properties: {
+																									httpStatusCodes: {
+																										description: """
+	HttpStatusCodes specifies the http status codes to be retried.
+	The retriable-status-codes trigger must also be configured for these status codes to trigger a retry.
+	"""
+																										items: {
+																											description:      "HTTPStatus defines the http status code."
+																											exclusiveMaximum: true
+																											maximum:          600
+																											minimum:          100
+																											type:             "integer"
+																										}
+																										type: "array"
+																									}
+																									triggers: {
+																										description: "Triggers specifies the retry trigger condition(Http/Grpc)."
+																										items: {
+																											description: "TriggerEnum specifies the conditions that trigger retries."
+																											enum: [
+																												"5xx",
+																												"gateway-error",
+																												"reset",
+																												"connect-failure",
+																												"retriable-4xx",
+																												"refused-stream",
+																												"retriable-status-codes",
+																												"cancelled",
+																												"deadline-exceeded",
+																												"internal",
+																												"resource-exhausted",
+																												"unavailable",
+																											]
+																											type: "string"
+																										}
+																										type: "array"
+																									}
+																								}
+																								type: "object"
+																							}
+																						}
+																						type: "object"
+																					}
+																					tcpKeepalive: {
+																						description: """
+	TcpKeepalive settings associated with the upstream client connection.
+	Disabled by default.
+	"""
+																						properties: {
+																							idleTime: {
+																								description: """
+	The duration a connection needs to be idle before keep-alive
+	probes start being sent.
+	The duration format is
+	Defaults to `7200s`.
+	"""
+																								pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																								type:    "string"
+																							}
+																							interval: {
+																								description: """
+	The duration between keep-alive probes.
+	Defaults to `75s`.
+	"""
+																								pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																								type:    "string"
+																							}
+																							probes: {
+																								description: """
+	The total number of unacknowledged probes to send before deciding
+	the connection is dead.
+	Defaults to 9.
+	"""
+																								format: "int32"
+																								type:   "integer"
+																							}
+																						}
+																						type: "object"
+																					}
+																					timeout: {
+																						description: "Timeout settings for the backend connections."
+																						properties: {
+																							http: {
+																								description: "Timeout settings for HTTP."
+																								properties: {
+																									connectionIdleTimeout: {
+																										description: """
+	The idle timeout for an HTTP connection. Idle time is defined as a period in which there are no active requests in the connection.
+	Default: 1 hour.
+	"""
+																										pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																										type:    "string"
+																									}
+																									maxConnectionDuration: {
+																										description: """
+	The maximum duration of an HTTP connection.
+	Default: unlimited.
+	"""
+																										pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																										type:    "string"
+																									}
+																									requestTimeout: {
+																										description: "RequestTimeout is the time until which entire response is received from the upstream."
+																										pattern:     "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																										type:        "string"
+																									}
+																								}
+																								type: "object"
+																							}
+																							tcp: {
+																								description: "Timeout settings for TCP."
+																								properties: connectTimeout: {
+																									description: """
+	The timeout for network connection establishment, including TCP and TLS handshakes.
+	Default: 10 seconds.
+	"""
+																									pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																									type:    "string"
+																								}
+																								type: "object"
+																							}
+																						}
+																						type: "object"
+																					}
+																				}
+																				type: "object"
 																			}
 																			http: {
 																				description: "HTTP defines additional configuration specific to HTTP access logs."
@@ -12185,14 +13185,23 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																				type: "string"
 																			}
 																		}
-																		required: [
-																			"backendRefs",
-																			"type",
-																		]
+																		required: ["type"]
 																		type: "object"
 																		"x-kubernetes-validations": [{
 																			message: "The http field may only be set when type is HTTP."
 																			rule:    "self.type == 'HTTP' || !has(self.http)"
+																		}, {
+																			message: "BackendRefs must be used, backendRef is not supported."
+																			rule:    "!has(self.backendRef)"
+																		}, {
+																			message: "must have at least one backend in backendRefs"
+																			rule:    "has(self.backendRefs) && self.backendRefs.size() > 0"
+																		}, {
+																			message: "BackendRefs only supports Service kind."
+																			rule:    "has(self.backendRefs) ? self.backendRefs.all(f, f.kind == 'Service') : true"
+																		}, {
+																			message: "BackendRefs only supports Core group."
+																			rule:    "has(self.backendRefs) ? (self.backendRefs.all(f, f.group == \"\")) : true"
 																		}]
 																	}
 																	file: {
@@ -12207,15 +13216,110 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																	openTelemetry: {
 																		description: "OpenTelemetry defines the OpenTelemetry accesslog sink."
 																		properties: {
+																			backendRef: {
+																				description: """
+	BackendRef references a Kubernetes object that represents the
+	backend server to which the authorization request will be sent.
+
+	Deprecated: Use BackendRefs instead.
+	"""
+																				properties: {
+																					group: {
+																						default: ""
+																						description: """
+	Group is the group of the referent. For example, "gateway.networking.k8s.io".
+	When unspecified or empty string, core API group is inferred.
+	"""
+																						maxLength: 253
+																						pattern:   "^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+																						type:      "string"
+																					}
+																					kind: {
+																						default: "Service"
+																						description: """
+	Kind is the Kubernetes resource kind of the referent. For example
+	"Service".
+
+	Defaults to "Service" when not specified.
+
+	ExternalName services can refer to CNAME DNS records that may live
+	outside of the cluster and as such are difficult to reason about in
+	terms of conformance. They also may not be safe to forward to (see
+	CVE-2021-25740 for more information). Implementations SHOULD NOT
+	support ExternalName Services.
+
+	Support: Core (Services with a type other than ExternalName)
+
+	Support: Implementation-specific (Services with type ExternalName)
+	"""
+																						maxLength: 63
+																						minLength: 1
+																						pattern:   "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
+																						type:      "string"
+																					}
+																					name: {
+																						description: "Name is the name of the referent."
+																						maxLength:   253
+																						minLength:   1
+																						type:        "string"
+																					}
+																					namespace: {
+																						description: """
+	Namespace is the namespace of the backend. When unspecified, the local
+	namespace is inferred.
+
+	Note that when a namespace different than the local namespace is specified,
+	a ReferenceGrant object is required in the referent namespace to allow that
+	namespace's owner to accept the reference. See the ReferenceGrant
+	documentation for details.
+
+	Support: Core
+	"""
+																						maxLength: 63
+																						minLength: 1
+																						pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+																						type:      "string"
+																					}
+																					port: {
+																						description: """
+	Port specifies the destination port number to use for this resource.
+	Port is required when the referent is a Kubernetes Service. In this
+	case, the port number is the service port number, not the target port.
+	For other resources, destination port might be derived from the referent
+	resource or this field.
+	"""
+																						format:  "int32"
+																						maximum: 65535
+																						minimum: 1
+																						type:    "integer"
+																					}
+																				}
+																				required: ["name"]
+																				type: "object"
+																				"x-kubernetes-validations": [{
+																					message: "Must have port for Service reference"
+																					rule:    "(size(self.group) == 0 && self.kind == 'Service') ? has(self.port) : true"
+																				}]
+																			}
 																			backendRefs: {
 																				description: """
 	BackendRefs references a Kubernetes object that represents the
-	backend server to which the access log will be sent.
-	Only Service kind is supported for now.
+	backend server to which the authorization request will be sent.
 	"""
 																				items: {
 																					description: "BackendRef defines how an ObjectReference that is specific to BackendRef."
 																					properties: {
+																						fallback: {
+																							description: """
+	Fallback indicates whether the backend is designated as a fallback.
+	Multiple fallback backends can be configured.
+	It is highly recommended to configure active or passive health checks to ensure that failover can be detected
+	when the active backends become unhealthy and to automatically readjust once the primary backends are healthy again.
+	The overprovisioning factor is set to 1.4, meaning the fallback backends will only start receiving traffic when
+	the health of the active backends falls below 72%.
+	"""
+																							type: "boolean"
+																						}
 																						group: {
 																							default: ""
 																							description: """
@@ -12232,9 +13336,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Kind is the Kubernetes resource kind of the referent. For example
 	"Service".
 
-
 	Defaults to "Service" when not specified.
-
 
 	ExternalName services can refer to CNAME DNS records that may live
 	outside of the cluster and as such are difficult to reason about in
@@ -12242,9 +13344,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	CVE-2021-25740 for more information). Implementations SHOULD NOT
 	support ExternalName Services.
 
-
 	Support: Core (Services with a type other than ExternalName)
-
 
 	Support: Implementation-specific (Services with type ExternalName)
 	"""
@@ -12264,12 +13364,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Namespace is the namespace of the backend. When unspecified, the local
 	namespace is inferred.
 
-
 	Note that when a namespace different than the local namespace is specified,
 	a ReferenceGrant object is required in the referent namespace to allow that
 	namespace's owner to accept the reference. See the ReferenceGrant
 	documentation for details.
-
 
 	Support: Core
 	"""
@@ -12299,15 +13397,809 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																						rule:    "(size(self.group) == 0 && self.kind == 'Service') ? has(self.port) : true"
 																					}]
 																				}
-																				maxItems: 1
+																				maxItems: 16
 																				type:     "array"
-																				"x-kubernetes-validations": [{
-																					message: "only support Service kind."
-																					rule:    "self.all(f, f.kind == 'Service')"
-																				}, {
-																					message: "BackendRefs only supports Core group."
-																					rule:    "self.all(f, f.group == '')"
-																				}]
+																			}
+																			backendSettings: {
+																				description: """
+	BackendSettings holds configuration for managing the connection
+	to the backend.
+	"""
+																				properties: {
+																					circuitBreaker: {
+																						description: """
+	Circuit Breaker settings for the upstream connections and requests.
+	If not set, circuit breakers will be enabled with the default thresholds
+	"""
+																						properties: {
+																							maxConnections: {
+																								default:     1024
+																								description: "The maximum number of connections that Envoy will establish to the referenced backend defined within a xRoute rule."
+																								format:      "int64"
+																								maximum:     4294967295
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							maxParallelRequests: {
+																								default:     1024
+																								description: "The maximum number of parallel requests that Envoy will make to the referenced backend defined within a xRoute rule."
+																								format:      "int64"
+																								maximum:     4294967295
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							maxParallelRetries: {
+																								default:     1024
+																								description: "The maximum number of parallel retries that Envoy will make to the referenced backend defined within a xRoute rule."
+																								format:      "int64"
+																								maximum:     4294967295
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							maxPendingRequests: {
+																								default:     1024
+																								description: "The maximum number of pending requests that Envoy will queue to the referenced backend defined within a xRoute rule."
+																								format:      "int64"
+																								maximum:     4294967295
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							maxRequestsPerConnection: {
+																								description: """
+	The maximum number of requests that Envoy will make over a single connection to the referenced backend defined within a xRoute rule.
+	Default: unlimited.
+	"""
+																								format:  "int64"
+																								maximum: 4294967295
+																								minimum: 0
+																								type:    "integer"
+																							}
+																						}
+																						type: "object"
+																					}
+																					connection: {
+																						description: "Connection includes backend connection settings."
+																						properties: {
+																							bufferLimit: {
+																								allOf: [{
+																									pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																								}, {
+																									pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																								}]
+																								anyOf: [{
+																									type: "integer"
+																								}, {
+																									type: "string"
+																								}]
+																								description: """
+	BufferLimit Soft limit on size of the cluster’s connections read and write buffers.
+	BufferLimit applies to connection streaming (maybe non-streaming) channel between processes, it's in user space.
+	If unspecified, an implementation defined default is applied (32768 bytes).
+	For example, 20Mi, 1Gi, 256Ki etc.
+	Note: that when the suffix is not provided, the value is interpreted as bytes.
+	"""
+																								"x-kubernetes-int-or-string": true
+																							}
+																							socketBufferLimit: {
+																								allOf: [{
+																									pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																								}, {
+																									pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																								}]
+																								anyOf: [{
+																									type: "integer"
+																								}, {
+																									type: "string"
+																								}]
+																								description: """
+	SocketBufferLimit provides configuration for the maximum buffer size in bytes for each socket
+	to backend.
+	SocketBufferLimit applies to socket streaming channel between TCP/IP stacks, it's in kernel space.
+	For example, 20Mi, 1Gi, 256Ki etc.
+	Note that when the suffix is not provided, the value is interpreted as bytes.
+	"""
+																								"x-kubernetes-int-or-string": true
+																							}
+																						}
+																						type: "object"
+																					}
+																					dns: {
+																						description: "DNS includes dns resolution settings."
+																						properties: {
+																							dnsRefreshRate: {
+																								description: """
+	DNSRefreshRate specifies the rate at which DNS records should be refreshed.
+	Defaults to 30 seconds.
+	"""
+																								type: "string"
+																							}
+																							respectDnsTtl: {
+																								description: """
+	RespectDNSTTL indicates whether the DNS Time-To-Live (TTL) should be respected.
+	If the value is set to true, the DNS refresh rate will be set to the resource record’s TTL.
+	Defaults to true.
+	"""
+																								type: "boolean"
+																							}
+																						}
+																						type: "object"
+																					}
+																					healthCheck: {
+																						description: "HealthCheck allows gateway to perform active health checking on backends."
+																						properties: {
+																							active: {
+																								description: "Active health check configuration"
+																								properties: {
+																									grpc: {
+																										description: """
+	GRPC defines the configuration of the GRPC health checker.
+	It's optional, and can only be used if the specified type is GRPC.
+	"""
+																										properties: service: {
+																											description: """
+	Service to send in the health check request.
+	If this is not specified, then the health check request applies to the entire
+	server and not to a specific service.
+	"""
+																											type: "string"
+																										}
+																										type: "object"
+																									}
+																									healthyThreshold: {
+																										default:     1
+																										description: "HealthyThreshold defines the number of healthy health checks required before a backend host is marked healthy."
+																										format:      "int32"
+																										minimum:     1
+																										type:        "integer"
+																									}
+																									http: {
+																										description: """
+	HTTP defines the configuration of http health checker.
+	It's required while the health checker type is HTTP.
+	"""
+																										properties: {
+																											expectedResponse: {
+																												description: "ExpectedResponse defines a list of HTTP expected responses to match."
+																												properties: {
+																													binary: {
+																														description: "Binary payload base64 encoded."
+																														format:      "byte"
+																														type:        "string"
+																													}
+																													text: {
+																														description: "Text payload in plain text."
+																														type:        "string"
+																													}
+																													type: {
+																														allOf: [{
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}, {
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}]
+																														description: "Type defines the type of the payload."
+																														type:        "string"
+																													}
+																												}
+																												required: ["type"]
+																												type: "object"
+																												"x-kubernetes-validations": [{
+																													message: "If payload type is Text, text field needs to be set."
+																													rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																												}, {
+																													message: "If payload type is Binary, binary field needs to be set."
+																													rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																												}]
+																											}
+																											expectedStatuses: {
+																												description: """
+	ExpectedStatuses defines a list of HTTP response statuses considered healthy.
+	Defaults to 200 only
+	"""
+																												items: {
+																													description:      "HTTPStatus defines the http status code."
+																													exclusiveMaximum: true
+																													maximum:          600
+																													minimum:          100
+																													type:             "integer"
+																												}
+																												type: "array"
+																											}
+																											method: {
+																												description: """
+	Method defines the HTTP method used for health checking.
+	Defaults to GET
+	"""
+																												type: "string"
+																											}
+																											path: {
+																												description: "Path defines the HTTP path that will be requested during health checking."
+																												maxLength:   1024
+																												minLength:   1
+																												type:        "string"
+																											}
+																										}
+																										required: ["path"]
+																										type: "object"
+																									}
+																									interval: {
+																										default:     "3s"
+																										description: "Interval defines the time between active health checks."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																									tcp: {
+																										description: """
+	TCP defines the configuration of tcp health checker.
+	It's required while the health checker type is TCP.
+	"""
+																										properties: {
+																											receive: {
+																												description: "Receive defines the expected response payload."
+																												properties: {
+																													binary: {
+																														description: "Binary payload base64 encoded."
+																														format:      "byte"
+																														type:        "string"
+																													}
+																													text: {
+																														description: "Text payload in plain text."
+																														type:        "string"
+																													}
+																													type: {
+																														allOf: [{
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}, {
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}]
+																														description: "Type defines the type of the payload."
+																														type:        "string"
+																													}
+																												}
+																												required: ["type"]
+																												type: "object"
+																												"x-kubernetes-validations": [{
+																													message: "If payload type is Text, text field needs to be set."
+																													rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																												}, {
+																													message: "If payload type is Binary, binary field needs to be set."
+																													rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																												}]
+																											}
+																											send: {
+																												description: "Send defines the request payload."
+																												properties: {
+																													binary: {
+																														description: "Binary payload base64 encoded."
+																														format:      "byte"
+																														type:        "string"
+																													}
+																													text: {
+																														description: "Text payload in plain text."
+																														type:        "string"
+																													}
+																													type: {
+																														allOf: [{
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}, {
+																															enum: [
+																																"Text",
+																																"Binary",
+																															]
+																														}]
+																														description: "Type defines the type of the payload."
+																														type:        "string"
+																													}
+																												}
+																												required: ["type"]
+																												type: "object"
+																												"x-kubernetes-validations": [{
+																													message: "If payload type is Text, text field needs to be set."
+																													rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																												}, {
+																													message: "If payload type is Binary, binary field needs to be set."
+																													rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																												}]
+																											}
+																										}
+																										type: "object"
+																									}
+																									timeout: {
+																										default:     "1s"
+																										description: "Timeout defines the time to wait for a health check response."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																									type: {
+																										allOf: [{
+																											enum: [
+																												"HTTP",
+																												"TCP",
+																												"GRPC",
+																											]
+																										}, {
+																											enum: [
+																												"HTTP",
+																												"TCP",
+																												"GRPC",
+																											]
+																										}]
+																										description: "Type defines the type of health checker."
+																										type:        "string"
+																									}
+																									unhealthyThreshold: {
+																										default:     3
+																										description: "UnhealthyThreshold defines the number of unhealthy health checks required before a backend host is marked unhealthy."
+																										format:      "int32"
+																										minimum:     1
+																										type:        "integer"
+																									}
+																								}
+																								required: ["type"]
+																								type: "object"
+																								"x-kubernetes-validations": [{
+																									message: "If Health Checker type is HTTP, http field needs to be set."
+																									rule:    "self.type == 'HTTP' ? has(self.http) : !has(self.http)"
+																								}, {
+																									message: "If Health Checker type is TCP, tcp field needs to be set."
+																									rule:    "self.type == 'TCP' ? has(self.tcp) : !has(self.tcp)"
+																								}, {
+																									message: "The grpc field can only be set if the Health Checker type is GRPC."
+																									rule:    "has(self.grpc) ? self.type == 'GRPC' : true"
+																								}]
+																							}
+																							passive: {
+																								description: "Passive passive check configuration"
+																								properties: {
+																									baseEjectionTime: {
+																										default:     "30s"
+																										description: "BaseEjectionTime defines the base duration for which a host will be ejected on consecutive failures."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																									consecutive5XxErrors: {
+																										default:     5
+																										description: "Consecutive5xxErrors sets the number of consecutive 5xx errors triggering ejection."
+																										format:      "int32"
+																										type:        "integer"
+																									}
+																									consecutiveGatewayErrors: {
+																										default:     0
+																										description: "ConsecutiveGatewayErrors sets the number of consecutive gateway errors triggering ejection."
+																										format:      "int32"
+																										type:        "integer"
+																									}
+																									consecutiveLocalOriginFailures: {
+																										default: 5
+																										description: """
+	ConsecutiveLocalOriginFailures sets the number of consecutive local origin failures triggering ejection.
+	Parameter takes effect only when split_external_local_origin_errors is set to true.
+	"""
+																										format: "int32"
+																										type:   "integer"
+																									}
+																									interval: {
+																										default:     "3s"
+																										description: "Interval defines the time between passive health checks."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																									maxEjectionPercent: {
+																										default:     10
+																										description: "MaxEjectionPercent sets the maximum percentage of hosts in a cluster that can be ejected."
+																										format:      "int32"
+																										type:        "integer"
+																									}
+																									splitExternalLocalOriginErrors: {
+																										default:     false
+																										description: "SplitExternalLocalOriginErrors enables splitting of errors between external and local origin."
+																										type:        "boolean"
+																									}
+																								}
+																								type: "object"
+																							}
+																						}
+																						type: "object"
+																					}
+																					http2: {
+																						description: "HTTP2 provides HTTP/2 configuration for backend connections."
+																						properties: {
+																							initialConnectionWindowSize: {
+																								allOf: [{
+																									pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																								}, {
+																									pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																								}]
+																								anyOf: [{
+																									type: "integer"
+																								}, {
+																									type: "string"
+																								}]
+																								description: """
+	InitialConnectionWindowSize sets the initial window size for HTTP/2 connections.
+	If not set, the default value is 1 MiB.
+	"""
+																								"x-kubernetes-int-or-string": true
+																							}
+																							initialStreamWindowSize: {
+																								allOf: [{
+																									pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																								}, {
+																									pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																								}]
+																								anyOf: [{
+																									type: "integer"
+																								}, {
+																									type: "string"
+																								}]
+																								description: """
+	InitialStreamWindowSize sets the initial window size for HTTP/2 streams.
+	If not set, the default value is 64 KiB(64*1024).
+	"""
+																								"x-kubernetes-int-or-string": true
+																							}
+																							maxConcurrentStreams: {
+																								description: """
+	MaxConcurrentStreams sets the maximum number of concurrent streams allowed per connection.
+	If not set, the default value is 100.
+	"""
+																								format:  "int32"
+																								maximum: 2147483647
+																								minimum: 1
+																								type:    "integer"
+																							}
+																							onInvalidMessage: {
+																								description: """
+	OnInvalidMessage determines if Envoy will terminate the connection or just the offending stream in the event of HTTP messaging error
+	It's recommended for L2 Envoy deployments to set this value to TerminateStream.
+	https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
+	Default: TerminateConnection
+	"""
+																								type: "string"
+																							}
+																						}
+																						type: "object"
+																					}
+																					loadBalancer: {
+																						description: """
+	LoadBalancer policy to apply when routing traffic from the gateway to
+	the backend endpoints. Defaults to `LeastRequest`.
+	"""
+																						properties: {
+																							consistentHash: {
+																								description: """
+	ConsistentHash defines the configuration when the load balancer type is
+	set to ConsistentHash
+	"""
+																								properties: {
+																									cookie: {
+																										description: "Cookie configures the cookie hash policy when the consistent hash type is set to Cookie."
+																										properties: {
+																											attributes: {
+																												additionalProperties: type: "string"
+																												description: "Additional Attributes to set for the generated cookie."
+																												type:        "object"
+																											}
+																											name: {
+																												description: """
+	Name of the cookie to hash.
+	If this cookie does not exist in the request, Envoy will generate a cookie and set
+	the TTL on the response back to the client based on Layer 4
+	attributes of the backend endpoint, to ensure that these future requests
+	go to the same backend endpoint. Make sure to set the TTL field for this case.
+	"""
+																												type: "string"
+																											}
+																											ttl: {
+																												description: """
+	TTL of the generated cookie if the cookie is not present. This value sets the
+	Max-Age attribute value.
+	"""
+																												type: "string"
+																											}
+																										}
+																										required: ["name"]
+																										type: "object"
+																									}
+																									header: {
+																										description: "Header configures the header hash policy when the consistent hash type is set to Header."
+																										properties: name: {
+																											description: "Name of the header to hash."
+																											type:        "string"
+																										}
+																										required: ["name"]
+																										type: "object"
+																									}
+																									tableSize: {
+																										default:     65537
+																										description: "The table size for consistent hashing, must be prime number limited to 5000011."
+																										format:      "int64"
+																										maximum:     5000011
+																										minimum:     2
+																										type:        "integer"
+																									}
+																									type: {
+																										description: """
+	ConsistentHashType defines the type of input to hash on. Valid Type values are
+	"SourceIP",
+	"Header",
+	"Cookie".
+	"""
+																										enum: [
+																											"SourceIP",
+																											"Header",
+																											"Cookie",
+																										]
+																										type: "string"
+																									}
+																								}
+																								required: ["type"]
+																								type: "object"
+																								"x-kubernetes-validations": [{
+																									message: "If consistent hash type is header, the header field must be set."
+																									rule:    "self.type == 'Header' ? has(self.header) : !has(self.header)"
+																								}, {
+																									message: "If consistent hash type is cookie, the cookie field must be set."
+																									rule:    "self.type == 'Cookie' ? has(self.cookie) : !has(self.cookie)"
+																								}]
+																							}
+																							slowStart: {
+																								description: """
+	SlowStart defines the configuration related to the slow start load balancer policy.
+	If set, during slow start window, traffic sent to the newly added hosts will gradually increase.
+	Currently this is only supported for RoundRobin and LeastRequest load balancers
+	"""
+																								properties: window: {
+																									description: """
+	Window defines the duration of the warm up period for newly added host.
+	During slow start window, traffic sent to the newly added hosts will gradually increase.
+	Currently only supports linear growth of traffic. For additional details,
+	see https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/cluster.proto#config-cluster-v3-cluster-slowstartconfig
+	"""
+																									type: "string"
+																								}
+																								required: ["window"]
+																								type: "object"
+																							}
+																							type: {
+																								description: """
+	Type decides the type of Load Balancer policy.
+	Valid LoadBalancerType values are
+	"ConsistentHash",
+	"LeastRequest",
+	"Random",
+	"RoundRobin".
+	"""
+																								enum: [
+																									"ConsistentHash",
+																									"LeastRequest",
+																									"Random",
+																									"RoundRobin",
+																								]
+																								type: "string"
+																							}
+																						}
+																						required: ["type"]
+																						type: "object"
+																						"x-kubernetes-validations": [{
+																							message: "If LoadBalancer type is consistentHash, consistentHash field needs to be set."
+																							rule:    "self.type == 'ConsistentHash' ? has(self.consistentHash) : !has(self.consistentHash)"
+																						}, {
+																							message: "Currently SlowStart is only supported for RoundRobin and LeastRequest load balancers."
+																							rule:    "self.type in ['Random', 'ConsistentHash'] ? !has(self.slowStart) : true "
+																						}]
+																					}
+																					proxyProtocol: {
+																						description: "ProxyProtocol enables the Proxy Protocol when communicating with the backend."
+																						properties: version: {
+																							description: """
+	Version of ProxyProtol
+	Valid ProxyProtocolVersion values are
+	"V1"
+	"V2"
+	"""
+																							enum: [
+																								"V1",
+																								"V2",
+																							]
+																							type: "string"
+																						}
+																						required: ["version"]
+																						type: "object"
+																					}
+																					retry: {
+																						description: """
+	Retry provides more advanced usage, allowing users to customize the number of retries, retry fallback strategy, and retry triggering conditions.
+	If not set, retry will be disabled.
+	"""
+																						properties: {
+																							numRetries: {
+																								default:     2
+																								description: "NumRetries is the number of retries to be attempted. Defaults to 2."
+																								format:      "int32"
+																								minimum:     0
+																								type:        "integer"
+																							}
+																							perRetry: {
+																								description: "PerRetry is the retry policy to be applied per retry attempt."
+																								properties: {
+																									backOff: {
+																										description: """
+	Backoff is the backoff policy to be applied per retry attempt. gateway uses a fully jittered exponential
+	back-off algorithm for retries. For additional details,
+	see https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/router_filter#config-http-filters-router-x-envoy-max-retries
+	"""
+																										properties: {
+																											baseInterval: {
+																												description: "BaseInterval is the base interval between retries."
+																												format:      "duration"
+																												type:        "string"
+																											}
+																											maxInterval: {
+																												description: """
+	MaxInterval is the maximum interval between retries. This parameter is optional, but must be greater than or equal to the base_interval if set.
+	The default is 10 times the base_interval
+	"""
+																												format: "duration"
+																												type:   "string"
+																											}
+																										}
+																										type: "object"
+																									}
+																									timeout: {
+																										description: "Timeout is the timeout per retry attempt."
+																										format:      "duration"
+																										type:        "string"
+																									}
+																								}
+																								type: "object"
+																							}
+																							retryOn: {
+																								description: """
+	RetryOn specifies the retry trigger condition.
+
+	If not specified, the default is to retry on connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes(503).
+	"""
+																								properties: {
+																									httpStatusCodes: {
+																										description: """
+	HttpStatusCodes specifies the http status codes to be retried.
+	The retriable-status-codes trigger must also be configured for these status codes to trigger a retry.
+	"""
+																										items: {
+																											description:      "HTTPStatus defines the http status code."
+																											exclusiveMaximum: true
+																											maximum:          600
+																											minimum:          100
+																											type:             "integer"
+																										}
+																										type: "array"
+																									}
+																									triggers: {
+																										description: "Triggers specifies the retry trigger condition(Http/Grpc)."
+																										items: {
+																											description: "TriggerEnum specifies the conditions that trigger retries."
+																											enum: [
+																												"5xx",
+																												"gateway-error",
+																												"reset",
+																												"connect-failure",
+																												"retriable-4xx",
+																												"refused-stream",
+																												"retriable-status-codes",
+																												"cancelled",
+																												"deadline-exceeded",
+																												"internal",
+																												"resource-exhausted",
+																												"unavailable",
+																											]
+																											type: "string"
+																										}
+																										type: "array"
+																									}
+																								}
+																								type: "object"
+																							}
+																						}
+																						type: "object"
+																					}
+																					tcpKeepalive: {
+																						description: """
+	TcpKeepalive settings associated with the upstream client connection.
+	Disabled by default.
+	"""
+																						properties: {
+																							idleTime: {
+																								description: """
+	The duration a connection needs to be idle before keep-alive
+	probes start being sent.
+	The duration format is
+	Defaults to `7200s`.
+	"""
+																								pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																								type:    "string"
+																							}
+																							interval: {
+																								description: """
+	The duration between keep-alive probes.
+	Defaults to `75s`.
+	"""
+																								pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																								type:    "string"
+																							}
+																							probes: {
+																								description: """
+	The total number of unacknowledged probes to send before deciding
+	the connection is dead.
+	Defaults to 9.
+	"""
+																								format: "int32"
+																								type:   "integer"
+																							}
+																						}
+																						type: "object"
+																					}
+																					timeout: {
+																						description: "Timeout settings for the backend connections."
+																						properties: {
+																							http: {
+																								description: "Timeout settings for HTTP."
+																								properties: {
+																									connectionIdleTimeout: {
+																										description: """
+	The idle timeout for an HTTP connection. Idle time is defined as a period in which there are no active requests in the connection.
+	Default: 1 hour.
+	"""
+																										pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																										type:    "string"
+																									}
+																									maxConnectionDuration: {
+																										description: """
+	The maximum duration of an HTTP connection.
+	Default: unlimited.
+	"""
+																										pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																										type:    "string"
+																									}
+																									requestTimeout: {
+																										description: "RequestTimeout is the time until which entire response is received from the upstream."
+																										pattern:     "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																										type:        "string"
+																									}
+																								}
+																								type: "object"
+																							}
+																							tcp: {
+																								description: "Timeout settings for TCP."
+																								properties: connectTimeout: {
+																									description: """
+	The timeout for network connection establishment, including TCP and TLS handshakes.
+	Default: 10 seconds.
+	"""
+																									pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																									type:    "string"
+																								}
+																								type: "object"
+																							}
+																						}
+																						type: "object"
+																					}
+																				}
+																				type: "object"
 																			}
 																			host: {
 																				description: """
@@ -12339,6 +14231,15 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																		"x-kubernetes-validations": [{
 																			message: "host or backendRefs needs to be set"
 																			rule:    "has(self.host) || self.backendRefs.size() > 0"
+																		}, {
+																			message: "BackendRefs must be used, backendRef is not supported."
+																			rule:    "!has(self.backendRef)"
+																		}, {
+																			message: "BackendRefs only supports Service kind."
+																			rule:    "has(self.backendRefs) ? self.backendRefs.all(f, f.kind == 'Service') : true"
+																		}, {
+																			message: "BackendRefs only supports Core group."
+																			rule:    "has(self.backendRefs) ? (self.backendRefs.all(f, f.group == \"\")) : true"
 																		}]
 																	}
 																	type: {
@@ -12367,6 +14268,20 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 															minItems: 1
 															type:     "array"
 														}
+														type: {
+															description: """
+	Type defines the component emitting the accesslog, such as Listener and Route.
+	If type not defined, the setting would apply to:
+	(1) All Routes.
+	(2) Listeners if and only if Envoy does not find a matching route for a request.
+	If type is defined, the accesslog settings would apply to the relevant component (as-is).
+	"""
+															enum: [
+																"Listener",
+																"Route",
+															]
+															type: "string"
+														}
 													}
 													required: ["sinks"]
 													type: "object"
@@ -12387,6 +14302,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Please use with caution.
 	"""
 												type: "boolean"
+											}
+											enableRequestResponseSizesStats: {
+												description: "EnableRequestResponseSizesStats enables publishing of histograms tracking header and body sizes of requests and responses."
+												type:        "boolean"
 											}
 											enableVirtualHostStats: {
 												description: "EnableVirtualHostStats enables envoy stat metrics for virtual hosts."
@@ -12471,15 +14390,110 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	It's required if the sink type is OpenTelemetry.
 	"""
 															properties: {
+																backendRef: {
+																	description: """
+	BackendRef references a Kubernetes object that represents the
+	backend server to which the authorization request will be sent.
+
+	Deprecated: Use BackendRefs instead.
+	"""
+																	properties: {
+																		group: {
+																			default: ""
+																			description: """
+	Group is the group of the referent. For example, "gateway.networking.k8s.io".
+	When unspecified or empty string, core API group is inferred.
+	"""
+																			maxLength: 253
+																			pattern:   "^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+																			type:      "string"
+																		}
+																		kind: {
+																			default: "Service"
+																			description: """
+	Kind is the Kubernetes resource kind of the referent. For example
+	"Service".
+
+	Defaults to "Service" when not specified.
+
+	ExternalName services can refer to CNAME DNS records that may live
+	outside of the cluster and as such are difficult to reason about in
+	terms of conformance. They also may not be safe to forward to (see
+	CVE-2021-25740 for more information). Implementations SHOULD NOT
+	support ExternalName Services.
+
+	Support: Core (Services with a type other than ExternalName)
+
+	Support: Implementation-specific (Services with type ExternalName)
+	"""
+																			maxLength: 63
+																			minLength: 1
+																			pattern:   "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
+																			type:      "string"
+																		}
+																		name: {
+																			description: "Name is the name of the referent."
+																			maxLength:   253
+																			minLength:   1
+																			type:        "string"
+																		}
+																		namespace: {
+																			description: """
+	Namespace is the namespace of the backend. When unspecified, the local
+	namespace is inferred.
+
+	Note that when a namespace different than the local namespace is specified,
+	a ReferenceGrant object is required in the referent namespace to allow that
+	namespace's owner to accept the reference. See the ReferenceGrant
+	documentation for details.
+
+	Support: Core
+	"""
+																			maxLength: 63
+																			minLength: 1
+																			pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+																			type:      "string"
+																		}
+																		port: {
+																			description: """
+	Port specifies the destination port number to use for this resource.
+	Port is required when the referent is a Kubernetes Service. In this
+	case, the port number is the service port number, not the target port.
+	For other resources, destination port might be derived from the referent
+	resource or this field.
+	"""
+																			format:  "int32"
+																			maximum: 65535
+																			minimum: 1
+																			type:    "integer"
+																		}
+																	}
+																	required: ["name"]
+																	type: "object"
+																	"x-kubernetes-validations": [{
+																		message: "Must have port for Service reference"
+																		rule:    "(size(self.group) == 0 && self.kind == 'Service') ? has(self.port) : true"
+																	}]
+																}
 																backendRefs: {
 																	description: """
 	BackendRefs references a Kubernetes object that represents the
-	backend server to which the metric will be sent.
-	Only Service kind is supported for now.
+	backend server to which the authorization request will be sent.
 	"""
 																	items: {
 																		description: "BackendRef defines how an ObjectReference that is specific to BackendRef."
 																		properties: {
+																			fallback: {
+																				description: """
+	Fallback indicates whether the backend is designated as a fallback.
+	Multiple fallback backends can be configured.
+	It is highly recommended to configure active or passive health checks to ensure that failover can be detected
+	when the active backends become unhealthy and to automatically readjust once the primary backends are healthy again.
+	The overprovisioning factor is set to 1.4, meaning the fallback backends will only start receiving traffic when
+	the health of the active backends falls below 72%.
+	"""
+																				type: "boolean"
+																			}
 																			group: {
 																				default: ""
 																				description: """
@@ -12496,9 +14510,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Kind is the Kubernetes resource kind of the referent. For example
 	"Service".
 
-
 	Defaults to "Service" when not specified.
-
 
 	ExternalName services can refer to CNAME DNS records that may live
 	outside of the cluster and as such are difficult to reason about in
@@ -12506,9 +14518,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	CVE-2021-25740 for more information). Implementations SHOULD NOT
 	support ExternalName Services.
 
-
 	Support: Core (Services with a type other than ExternalName)
-
 
 	Support: Implementation-specific (Services with type ExternalName)
 	"""
@@ -12528,12 +14538,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Namespace is the namespace of the backend. When unspecified, the local
 	namespace is inferred.
 
-
 	Note that when a namespace different than the local namespace is specified,
 	a ReferenceGrant object is required in the referent namespace to allow that
 	namespace's owner to accept the reference. See the ReferenceGrant
 	documentation for details.
-
 
 	Support: Core
 	"""
@@ -12563,15 +14571,809 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																			rule:    "(size(self.group) == 0 && self.kind == 'Service') ? has(self.port) : true"
 																		}]
 																	}
-																	maxItems: 1
+																	maxItems: 16
 																	type:     "array"
-																	"x-kubernetes-validations": [{
-																		message: "only support Service kind."
-																		rule:    "self.all(f, f.kind == 'Service')"
-																	}, {
-																		message: "BackendRefs only supports Core group."
-																		rule:    "self.all(f, f.group == '')"
-																	}]
+																}
+																backendSettings: {
+																	description: """
+	BackendSettings holds configuration for managing the connection
+	to the backend.
+	"""
+																	properties: {
+																		circuitBreaker: {
+																			description: """
+	Circuit Breaker settings for the upstream connections and requests.
+	If not set, circuit breakers will be enabled with the default thresholds
+	"""
+																			properties: {
+																				maxConnections: {
+																					default:     1024
+																					description: "The maximum number of connections that Envoy will establish to the referenced backend defined within a xRoute rule."
+																					format:      "int64"
+																					maximum:     4294967295
+																					minimum:     0
+																					type:        "integer"
+																				}
+																				maxParallelRequests: {
+																					default:     1024
+																					description: "The maximum number of parallel requests that Envoy will make to the referenced backend defined within a xRoute rule."
+																					format:      "int64"
+																					maximum:     4294967295
+																					minimum:     0
+																					type:        "integer"
+																				}
+																				maxParallelRetries: {
+																					default:     1024
+																					description: "The maximum number of parallel retries that Envoy will make to the referenced backend defined within a xRoute rule."
+																					format:      "int64"
+																					maximum:     4294967295
+																					minimum:     0
+																					type:        "integer"
+																				}
+																				maxPendingRequests: {
+																					default:     1024
+																					description: "The maximum number of pending requests that Envoy will queue to the referenced backend defined within a xRoute rule."
+																					format:      "int64"
+																					maximum:     4294967295
+																					minimum:     0
+																					type:        "integer"
+																				}
+																				maxRequestsPerConnection: {
+																					description: """
+	The maximum number of requests that Envoy will make over a single connection to the referenced backend defined within a xRoute rule.
+	Default: unlimited.
+	"""
+																					format:  "int64"
+																					maximum: 4294967295
+																					minimum: 0
+																					type:    "integer"
+																				}
+																			}
+																			type: "object"
+																		}
+																		connection: {
+																			description: "Connection includes backend connection settings."
+																			properties: {
+																				bufferLimit: {
+																					allOf: [{
+																						pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																					}, {
+																						pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																					}]
+																					anyOf: [{
+																						type: "integer"
+																					}, {
+																						type: "string"
+																					}]
+																					description: """
+	BufferLimit Soft limit on size of the cluster’s connections read and write buffers.
+	BufferLimit applies to connection streaming (maybe non-streaming) channel between processes, it's in user space.
+	If unspecified, an implementation defined default is applied (32768 bytes).
+	For example, 20Mi, 1Gi, 256Ki etc.
+	Note: that when the suffix is not provided, the value is interpreted as bytes.
+	"""
+																					"x-kubernetes-int-or-string": true
+																				}
+																				socketBufferLimit: {
+																					allOf: [{
+																						pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																					}, {
+																						pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																					}]
+																					anyOf: [{
+																						type: "integer"
+																					}, {
+																						type: "string"
+																					}]
+																					description: """
+	SocketBufferLimit provides configuration for the maximum buffer size in bytes for each socket
+	to backend.
+	SocketBufferLimit applies to socket streaming channel between TCP/IP stacks, it's in kernel space.
+	For example, 20Mi, 1Gi, 256Ki etc.
+	Note that when the suffix is not provided, the value is interpreted as bytes.
+	"""
+																					"x-kubernetes-int-or-string": true
+																				}
+																			}
+																			type: "object"
+																		}
+																		dns: {
+																			description: "DNS includes dns resolution settings."
+																			properties: {
+																				dnsRefreshRate: {
+																					description: """
+	DNSRefreshRate specifies the rate at which DNS records should be refreshed.
+	Defaults to 30 seconds.
+	"""
+																					type: "string"
+																				}
+																				respectDnsTtl: {
+																					description: """
+	RespectDNSTTL indicates whether the DNS Time-To-Live (TTL) should be respected.
+	If the value is set to true, the DNS refresh rate will be set to the resource record’s TTL.
+	Defaults to true.
+	"""
+																					type: "boolean"
+																				}
+																			}
+																			type: "object"
+																		}
+																		healthCheck: {
+																			description: "HealthCheck allows gateway to perform active health checking on backends."
+																			properties: {
+																				active: {
+																					description: "Active health check configuration"
+																					properties: {
+																						grpc: {
+																							description: """
+	GRPC defines the configuration of the GRPC health checker.
+	It's optional, and can only be used if the specified type is GRPC.
+	"""
+																							properties: service: {
+																								description: """
+	Service to send in the health check request.
+	If this is not specified, then the health check request applies to the entire
+	server and not to a specific service.
+	"""
+																								type: "string"
+																							}
+																							type: "object"
+																						}
+																						healthyThreshold: {
+																							default:     1
+																							description: "HealthyThreshold defines the number of healthy health checks required before a backend host is marked healthy."
+																							format:      "int32"
+																							minimum:     1
+																							type:        "integer"
+																						}
+																						http: {
+																							description: """
+	HTTP defines the configuration of http health checker.
+	It's required while the health checker type is HTTP.
+	"""
+																							properties: {
+																								expectedResponse: {
+																									description: "ExpectedResponse defines a list of HTTP expected responses to match."
+																									properties: {
+																										binary: {
+																											description: "Binary payload base64 encoded."
+																											format:      "byte"
+																											type:        "string"
+																										}
+																										text: {
+																											description: "Text payload in plain text."
+																											type:        "string"
+																										}
+																										type: {
+																											allOf: [{
+																												enum: [
+																													"Text",
+																													"Binary",
+																												]
+																											}, {
+																												enum: [
+																													"Text",
+																													"Binary",
+																												]
+																											}]
+																											description: "Type defines the type of the payload."
+																											type:        "string"
+																										}
+																									}
+																									required: ["type"]
+																									type: "object"
+																									"x-kubernetes-validations": [{
+																										message: "If payload type is Text, text field needs to be set."
+																										rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																									}, {
+																										message: "If payload type is Binary, binary field needs to be set."
+																										rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																									}]
+																								}
+																								expectedStatuses: {
+																									description: """
+	ExpectedStatuses defines a list of HTTP response statuses considered healthy.
+	Defaults to 200 only
+	"""
+																									items: {
+																										description:      "HTTPStatus defines the http status code."
+																										exclusiveMaximum: true
+																										maximum:          600
+																										minimum:          100
+																										type:             "integer"
+																									}
+																									type: "array"
+																								}
+																								method: {
+																									description: """
+	Method defines the HTTP method used for health checking.
+	Defaults to GET
+	"""
+																									type: "string"
+																								}
+																								path: {
+																									description: "Path defines the HTTP path that will be requested during health checking."
+																									maxLength:   1024
+																									minLength:   1
+																									type:        "string"
+																								}
+																							}
+																							required: ["path"]
+																							type: "object"
+																						}
+																						interval: {
+																							default:     "3s"
+																							description: "Interval defines the time between active health checks."
+																							format:      "duration"
+																							type:        "string"
+																						}
+																						tcp: {
+																							description: """
+	TCP defines the configuration of tcp health checker.
+	It's required while the health checker type is TCP.
+	"""
+																							properties: {
+																								receive: {
+																									description: "Receive defines the expected response payload."
+																									properties: {
+																										binary: {
+																											description: "Binary payload base64 encoded."
+																											format:      "byte"
+																											type:        "string"
+																										}
+																										text: {
+																											description: "Text payload in plain text."
+																											type:        "string"
+																										}
+																										type: {
+																											allOf: [{
+																												enum: [
+																													"Text",
+																													"Binary",
+																												]
+																											}, {
+																												enum: [
+																													"Text",
+																													"Binary",
+																												]
+																											}]
+																											description: "Type defines the type of the payload."
+																											type:        "string"
+																										}
+																									}
+																									required: ["type"]
+																									type: "object"
+																									"x-kubernetes-validations": [{
+																										message: "If payload type is Text, text field needs to be set."
+																										rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																									}, {
+																										message: "If payload type is Binary, binary field needs to be set."
+																										rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																									}]
+																								}
+																								send: {
+																									description: "Send defines the request payload."
+																									properties: {
+																										binary: {
+																											description: "Binary payload base64 encoded."
+																											format:      "byte"
+																											type:        "string"
+																										}
+																										text: {
+																											description: "Text payload in plain text."
+																											type:        "string"
+																										}
+																										type: {
+																											allOf: [{
+																												enum: [
+																													"Text",
+																													"Binary",
+																												]
+																											}, {
+																												enum: [
+																													"Text",
+																													"Binary",
+																												]
+																											}]
+																											description: "Type defines the type of the payload."
+																											type:        "string"
+																										}
+																									}
+																									required: ["type"]
+																									type: "object"
+																									"x-kubernetes-validations": [{
+																										message: "If payload type is Text, text field needs to be set."
+																										rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																									}, {
+																										message: "If payload type is Binary, binary field needs to be set."
+																										rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																									}]
+																								}
+																							}
+																							type: "object"
+																						}
+																						timeout: {
+																							default:     "1s"
+																							description: "Timeout defines the time to wait for a health check response."
+																							format:      "duration"
+																							type:        "string"
+																						}
+																						type: {
+																							allOf: [{
+																								enum: [
+																									"HTTP",
+																									"TCP",
+																									"GRPC",
+																								]
+																							}, {
+																								enum: [
+																									"HTTP",
+																									"TCP",
+																									"GRPC",
+																								]
+																							}]
+																							description: "Type defines the type of health checker."
+																							type:        "string"
+																						}
+																						unhealthyThreshold: {
+																							default:     3
+																							description: "UnhealthyThreshold defines the number of unhealthy health checks required before a backend host is marked unhealthy."
+																							format:      "int32"
+																							minimum:     1
+																							type:        "integer"
+																						}
+																					}
+																					required: ["type"]
+																					type: "object"
+																					"x-kubernetes-validations": [{
+																						message: "If Health Checker type is HTTP, http field needs to be set."
+																						rule:    "self.type == 'HTTP' ? has(self.http) : !has(self.http)"
+																					}, {
+																						message: "If Health Checker type is TCP, tcp field needs to be set."
+																						rule:    "self.type == 'TCP' ? has(self.tcp) : !has(self.tcp)"
+																					}, {
+																						message: "The grpc field can only be set if the Health Checker type is GRPC."
+																						rule:    "has(self.grpc) ? self.type == 'GRPC' : true"
+																					}]
+																				}
+																				passive: {
+																					description: "Passive passive check configuration"
+																					properties: {
+																						baseEjectionTime: {
+																							default:     "30s"
+																							description: "BaseEjectionTime defines the base duration for which a host will be ejected on consecutive failures."
+																							format:      "duration"
+																							type:        "string"
+																						}
+																						consecutive5XxErrors: {
+																							default:     5
+																							description: "Consecutive5xxErrors sets the number of consecutive 5xx errors triggering ejection."
+																							format:      "int32"
+																							type:        "integer"
+																						}
+																						consecutiveGatewayErrors: {
+																							default:     0
+																							description: "ConsecutiveGatewayErrors sets the number of consecutive gateway errors triggering ejection."
+																							format:      "int32"
+																							type:        "integer"
+																						}
+																						consecutiveLocalOriginFailures: {
+																							default: 5
+																							description: """
+	ConsecutiveLocalOriginFailures sets the number of consecutive local origin failures triggering ejection.
+	Parameter takes effect only when split_external_local_origin_errors is set to true.
+	"""
+																							format: "int32"
+																							type:   "integer"
+																						}
+																						interval: {
+																							default:     "3s"
+																							description: "Interval defines the time between passive health checks."
+																							format:      "duration"
+																							type:        "string"
+																						}
+																						maxEjectionPercent: {
+																							default:     10
+																							description: "MaxEjectionPercent sets the maximum percentage of hosts in a cluster that can be ejected."
+																							format:      "int32"
+																							type:        "integer"
+																						}
+																						splitExternalLocalOriginErrors: {
+																							default:     false
+																							description: "SplitExternalLocalOriginErrors enables splitting of errors between external and local origin."
+																							type:        "boolean"
+																						}
+																					}
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		http2: {
+																			description: "HTTP2 provides HTTP/2 configuration for backend connections."
+																			properties: {
+																				initialConnectionWindowSize: {
+																					allOf: [{
+																						pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																					}, {
+																						pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																					}]
+																					anyOf: [{
+																						type: "integer"
+																					}, {
+																						type: "string"
+																					}]
+																					description: """
+	InitialConnectionWindowSize sets the initial window size for HTTP/2 connections.
+	If not set, the default value is 1 MiB.
+	"""
+																					"x-kubernetes-int-or-string": true
+																				}
+																				initialStreamWindowSize: {
+																					allOf: [{
+																						pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																					}, {
+																						pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																					}]
+																					anyOf: [{
+																						type: "integer"
+																					}, {
+																						type: "string"
+																					}]
+																					description: """
+	InitialStreamWindowSize sets the initial window size for HTTP/2 streams.
+	If not set, the default value is 64 KiB(64*1024).
+	"""
+																					"x-kubernetes-int-or-string": true
+																				}
+																				maxConcurrentStreams: {
+																					description: """
+	MaxConcurrentStreams sets the maximum number of concurrent streams allowed per connection.
+	If not set, the default value is 100.
+	"""
+																					format:  "int32"
+																					maximum: 2147483647
+																					minimum: 1
+																					type:    "integer"
+																				}
+																				onInvalidMessage: {
+																					description: """
+	OnInvalidMessage determines if Envoy will terminate the connection or just the offending stream in the event of HTTP messaging error
+	It's recommended for L2 Envoy deployments to set this value to TerminateStream.
+	https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
+	Default: TerminateConnection
+	"""
+																					type: "string"
+																				}
+																			}
+																			type: "object"
+																		}
+																		loadBalancer: {
+																			description: """
+	LoadBalancer policy to apply when routing traffic from the gateway to
+	the backend endpoints. Defaults to `LeastRequest`.
+	"""
+																			properties: {
+																				consistentHash: {
+																					description: """
+	ConsistentHash defines the configuration when the load balancer type is
+	set to ConsistentHash
+	"""
+																					properties: {
+																						cookie: {
+																							description: "Cookie configures the cookie hash policy when the consistent hash type is set to Cookie."
+																							properties: {
+																								attributes: {
+																									additionalProperties: type: "string"
+																									description: "Additional Attributes to set for the generated cookie."
+																									type:        "object"
+																								}
+																								name: {
+																									description: """
+	Name of the cookie to hash.
+	If this cookie does not exist in the request, Envoy will generate a cookie and set
+	the TTL on the response back to the client based on Layer 4
+	attributes of the backend endpoint, to ensure that these future requests
+	go to the same backend endpoint. Make sure to set the TTL field for this case.
+	"""
+																									type: "string"
+																								}
+																								ttl: {
+																									description: """
+	TTL of the generated cookie if the cookie is not present. This value sets the
+	Max-Age attribute value.
+	"""
+																									type: "string"
+																								}
+																							}
+																							required: ["name"]
+																							type: "object"
+																						}
+																						header: {
+																							description: "Header configures the header hash policy when the consistent hash type is set to Header."
+																							properties: name: {
+																								description: "Name of the header to hash."
+																								type:        "string"
+																							}
+																							required: ["name"]
+																							type: "object"
+																						}
+																						tableSize: {
+																							default:     65537
+																							description: "The table size for consistent hashing, must be prime number limited to 5000011."
+																							format:      "int64"
+																							maximum:     5000011
+																							minimum:     2
+																							type:        "integer"
+																						}
+																						type: {
+																							description: """
+	ConsistentHashType defines the type of input to hash on. Valid Type values are
+	"SourceIP",
+	"Header",
+	"Cookie".
+	"""
+																							enum: [
+																								"SourceIP",
+																								"Header",
+																								"Cookie",
+																							]
+																							type: "string"
+																						}
+																					}
+																					required: ["type"]
+																					type: "object"
+																					"x-kubernetes-validations": [{
+																						message: "If consistent hash type is header, the header field must be set."
+																						rule:    "self.type == 'Header' ? has(self.header) : !has(self.header)"
+																					}, {
+																						message: "If consistent hash type is cookie, the cookie field must be set."
+																						rule:    "self.type == 'Cookie' ? has(self.cookie) : !has(self.cookie)"
+																					}]
+																				}
+																				slowStart: {
+																					description: """
+	SlowStart defines the configuration related to the slow start load balancer policy.
+	If set, during slow start window, traffic sent to the newly added hosts will gradually increase.
+	Currently this is only supported for RoundRobin and LeastRequest load balancers
+	"""
+																					properties: window: {
+																						description: """
+	Window defines the duration of the warm up period for newly added host.
+	During slow start window, traffic sent to the newly added hosts will gradually increase.
+	Currently only supports linear growth of traffic. For additional details,
+	see https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/cluster.proto#config-cluster-v3-cluster-slowstartconfig
+	"""
+																						type: "string"
+																					}
+																					required: ["window"]
+																					type: "object"
+																				}
+																				type: {
+																					description: """
+	Type decides the type of Load Balancer policy.
+	Valid LoadBalancerType values are
+	"ConsistentHash",
+	"LeastRequest",
+	"Random",
+	"RoundRobin".
+	"""
+																					enum: [
+																						"ConsistentHash",
+																						"LeastRequest",
+																						"Random",
+																						"RoundRobin",
+																					]
+																					type: "string"
+																				}
+																			}
+																			required: ["type"]
+																			type: "object"
+																			"x-kubernetes-validations": [{
+																				message: "If LoadBalancer type is consistentHash, consistentHash field needs to be set."
+																				rule:    "self.type == 'ConsistentHash' ? has(self.consistentHash) : !has(self.consistentHash)"
+																			}, {
+																				message: "Currently SlowStart is only supported for RoundRobin and LeastRequest load balancers."
+																				rule:    "self.type in ['Random', 'ConsistentHash'] ? !has(self.slowStart) : true "
+																			}]
+																		}
+																		proxyProtocol: {
+																			description: "ProxyProtocol enables the Proxy Protocol when communicating with the backend."
+																			properties: version: {
+																				description: """
+	Version of ProxyProtol
+	Valid ProxyProtocolVersion values are
+	"V1"
+	"V2"
+	"""
+																				enum: [
+																					"V1",
+																					"V2",
+																				]
+																				type: "string"
+																			}
+																			required: ["version"]
+																			type: "object"
+																		}
+																		retry: {
+																			description: """
+	Retry provides more advanced usage, allowing users to customize the number of retries, retry fallback strategy, and retry triggering conditions.
+	If not set, retry will be disabled.
+	"""
+																			properties: {
+																				numRetries: {
+																					default:     2
+																					description: "NumRetries is the number of retries to be attempted. Defaults to 2."
+																					format:      "int32"
+																					minimum:     0
+																					type:        "integer"
+																				}
+																				perRetry: {
+																					description: "PerRetry is the retry policy to be applied per retry attempt."
+																					properties: {
+																						backOff: {
+																							description: """
+	Backoff is the backoff policy to be applied per retry attempt. gateway uses a fully jittered exponential
+	back-off algorithm for retries. For additional details,
+	see https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/router_filter#config-http-filters-router-x-envoy-max-retries
+	"""
+																							properties: {
+																								baseInterval: {
+																									description: "BaseInterval is the base interval between retries."
+																									format:      "duration"
+																									type:        "string"
+																								}
+																								maxInterval: {
+																									description: """
+	MaxInterval is the maximum interval between retries. This parameter is optional, but must be greater than or equal to the base_interval if set.
+	The default is 10 times the base_interval
+	"""
+																									format: "duration"
+																									type:   "string"
+																								}
+																							}
+																							type: "object"
+																						}
+																						timeout: {
+																							description: "Timeout is the timeout per retry attempt."
+																							format:      "duration"
+																							type:        "string"
+																						}
+																					}
+																					type: "object"
+																				}
+																				retryOn: {
+																					description: """
+	RetryOn specifies the retry trigger condition.
+
+	If not specified, the default is to retry on connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes(503).
+	"""
+																					properties: {
+																						httpStatusCodes: {
+																							description: """
+	HttpStatusCodes specifies the http status codes to be retried.
+	The retriable-status-codes trigger must also be configured for these status codes to trigger a retry.
+	"""
+																							items: {
+																								description:      "HTTPStatus defines the http status code."
+																								exclusiveMaximum: true
+																								maximum:          600
+																								minimum:          100
+																								type:             "integer"
+																							}
+																							type: "array"
+																						}
+																						triggers: {
+																							description: "Triggers specifies the retry trigger condition(Http/Grpc)."
+																							items: {
+																								description: "TriggerEnum specifies the conditions that trigger retries."
+																								enum: [
+																									"5xx",
+																									"gateway-error",
+																									"reset",
+																									"connect-failure",
+																									"retriable-4xx",
+																									"refused-stream",
+																									"retriable-status-codes",
+																									"cancelled",
+																									"deadline-exceeded",
+																									"internal",
+																									"resource-exhausted",
+																									"unavailable",
+																								]
+																								type: "string"
+																							}
+																							type: "array"
+																						}
+																					}
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																		tcpKeepalive: {
+																			description: """
+	TcpKeepalive settings associated with the upstream client connection.
+	Disabled by default.
+	"""
+																			properties: {
+																				idleTime: {
+																					description: """
+	The duration a connection needs to be idle before keep-alive
+	probes start being sent.
+	The duration format is
+	Defaults to `7200s`.
+	"""
+																					pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																					type:    "string"
+																				}
+																				interval: {
+																					description: """
+	The duration between keep-alive probes.
+	Defaults to `75s`.
+	"""
+																					pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																					type:    "string"
+																				}
+																				probes: {
+																					description: """
+	The total number of unacknowledged probes to send before deciding
+	the connection is dead.
+	Defaults to 9.
+	"""
+																					format: "int32"
+																					type:   "integer"
+																				}
+																			}
+																			type: "object"
+																		}
+																		timeout: {
+																			description: "Timeout settings for the backend connections."
+																			properties: {
+																				http: {
+																					description: "Timeout settings for HTTP."
+																					properties: {
+																						connectionIdleTimeout: {
+																							description: """
+	The idle timeout for an HTTP connection. Idle time is defined as a period in which there are no active requests in the connection.
+	Default: 1 hour.
+	"""
+																							pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																							type:    "string"
+																						}
+																						maxConnectionDuration: {
+																							description: """
+	The maximum duration of an HTTP connection.
+	Default: unlimited.
+	"""
+																							pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																							type:    "string"
+																						}
+																						requestTimeout: {
+																							description: "RequestTimeout is the time until which entire response is received from the upstream."
+																							pattern:     "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																							type:        "string"
+																						}
+																					}
+																					type: "object"
+																				}
+																				tcp: {
+																					description: "Timeout settings for TCP."
+																					properties: connectTimeout: {
+																						description: """
+	The timeout for network connection establishment, including TCP and TLS handshakes.
+	Default: 10 seconds.
+	"""
+																						pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																						type:    "string"
+																					}
+																					type: "object"
+																				}
+																			}
+																			type: "object"
+																		}
+																	}
+																	type: "object"
 																}
 																host: {
 																	description: """
@@ -12596,6 +15398,15 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 															"x-kubernetes-validations": [{
 																message: "host or backendRefs needs to be set"
 																rule:    "has(self.host) || self.backendRefs.size() > 0"
+															}, {
+																message: "BackendRefs must be used, backendRef is not supported."
+																rule:    "!has(self.backendRef)"
+															}, {
+																message: "only supports Service kind."
+																rule:    "has(self.backendRefs) ? self.backendRefs.all(f, f.kind == 'Service') : true"
+															}, {
+																message: "BackendRefs only supports Core group."
+																rule:    "has(self.backendRefs) ? (self.backendRefs.all(f, f.group == \"\")) : true"
 															}]
 														}
 														type: {
@@ -12615,7 +15426,8 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 														rule:    "self.type == 'OpenTelemetry' ? has(self.openTelemetry) : !has(self.openTelemetry)"
 													}]
 												}
-												type: "array"
+												maxItems: 16
+												type:     "array"
 											}
 										}
 										type: "object"
@@ -12700,15 +15512,110 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 											provider: {
 												description: "Provider defines the tracing provider."
 												properties: {
+													backendRef: {
+														description: """
+	BackendRef references a Kubernetes object that represents the
+	backend server to which the authorization request will be sent.
+
+	Deprecated: Use BackendRefs instead.
+	"""
+														properties: {
+															group: {
+																default: ""
+																description: """
+	Group is the group of the referent. For example, "gateway.networking.k8s.io".
+	When unspecified or empty string, core API group is inferred.
+	"""
+																maxLength: 253
+																pattern:   "^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+																type:      "string"
+															}
+															kind: {
+																default: "Service"
+																description: """
+	Kind is the Kubernetes resource kind of the referent. For example
+	"Service".
+
+	Defaults to "Service" when not specified.
+
+	ExternalName services can refer to CNAME DNS records that may live
+	outside of the cluster and as such are difficult to reason about in
+	terms of conformance. They also may not be safe to forward to (see
+	CVE-2021-25740 for more information). Implementations SHOULD NOT
+	support ExternalName Services.
+
+	Support: Core (Services with a type other than ExternalName)
+
+	Support: Implementation-specific (Services with type ExternalName)
+	"""
+																maxLength: 63
+																minLength: 1
+																pattern:   "^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"
+																type:      "string"
+															}
+															name: {
+																description: "Name is the name of the referent."
+																maxLength:   253
+																minLength:   1
+																type:        "string"
+															}
+															namespace: {
+																description: """
+	Namespace is the namespace of the backend. When unspecified, the local
+	namespace is inferred.
+
+	Note that when a namespace different than the local namespace is specified,
+	a ReferenceGrant object is required in the referent namespace to allow that
+	namespace's owner to accept the reference. See the ReferenceGrant
+	documentation for details.
+
+	Support: Core
+	"""
+																maxLength: 63
+																minLength: 1
+																pattern:   "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+																type:      "string"
+															}
+															port: {
+																description: """
+	Port specifies the destination port number to use for this resource.
+	Port is required when the referent is a Kubernetes Service. In this
+	case, the port number is the service port number, not the target port.
+	For other resources, destination port might be derived from the referent
+	resource or this field.
+	"""
+																format:  "int32"
+																maximum: 65535
+																minimum: 1
+																type:    "integer"
+															}
+														}
+														required: ["name"]
+														type: "object"
+														"x-kubernetes-validations": [{
+															message: "Must have port for Service reference"
+															rule:    "(size(self.group) == 0 && self.kind == 'Service') ? has(self.port) : true"
+														}]
+													}
 													backendRefs: {
 														description: """
 	BackendRefs references a Kubernetes object that represents the
-	backend server to which the trace will be sent.
-	Only Service kind is supported for now.
+	backend server to which the authorization request will be sent.
 	"""
 														items: {
 															description: "BackendRef defines how an ObjectReference that is specific to BackendRef."
 															properties: {
+																fallback: {
+																	description: """
+	Fallback indicates whether the backend is designated as a fallback.
+	Multiple fallback backends can be configured.
+	It is highly recommended to configure active or passive health checks to ensure that failover can be detected
+	when the active backends become unhealthy and to automatically readjust once the primary backends are healthy again.
+	The overprovisioning factor is set to 1.4, meaning the fallback backends will only start receiving traffic when
+	the health of the active backends falls below 72%.
+	"""
+																	type: "boolean"
+																}
 																group: {
 																	default: ""
 																	description: """
@@ -12725,9 +15632,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Kind is the Kubernetes resource kind of the referent. For example
 	"Service".
 
-
 	Defaults to "Service" when not specified.
-
 
 	ExternalName services can refer to CNAME DNS records that may live
 	outside of the cluster and as such are difficult to reason about in
@@ -12735,9 +15640,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	CVE-2021-25740 for more information). Implementations SHOULD NOT
 	support ExternalName Services.
 
-
 	Support: Core (Services with a type other than ExternalName)
-
 
 	Support: Implementation-specific (Services with type ExternalName)
 	"""
@@ -12757,12 +15660,10 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 	Namespace is the namespace of the backend. When unspecified, the local
 	namespace is inferred.
 
-
 	Note that when a namespace different than the local namespace is specified,
 	a ReferenceGrant object is required in the referent namespace to allow that
 	namespace's owner to accept the reference. See the ReferenceGrant
 	documentation for details.
-
 
 	Support: Core
 	"""
@@ -12792,15 +15693,809 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 																rule:    "(size(self.group) == 0 && self.kind == 'Service') ? has(self.port) : true"
 															}]
 														}
-														maxItems: 1
+														maxItems: 16
 														type:     "array"
-														"x-kubernetes-validations": [{
-															message: "only support Service kind."
-															rule:    "self.all(f, f.kind == 'Service')"
-														}, {
-															message: "BackendRefs only supports Core group."
-															rule:    "self.all(f, f.group == '')"
-														}]
+													}
+													backendSettings: {
+														description: """
+	BackendSettings holds configuration for managing the connection
+	to the backend.
+	"""
+														properties: {
+															circuitBreaker: {
+																description: """
+	Circuit Breaker settings for the upstream connections and requests.
+	If not set, circuit breakers will be enabled with the default thresholds
+	"""
+																properties: {
+																	maxConnections: {
+																		default:     1024
+																		description: "The maximum number of connections that Envoy will establish to the referenced backend defined within a xRoute rule."
+																		format:      "int64"
+																		maximum:     4294967295
+																		minimum:     0
+																		type:        "integer"
+																	}
+																	maxParallelRequests: {
+																		default:     1024
+																		description: "The maximum number of parallel requests that Envoy will make to the referenced backend defined within a xRoute rule."
+																		format:      "int64"
+																		maximum:     4294967295
+																		minimum:     0
+																		type:        "integer"
+																	}
+																	maxParallelRetries: {
+																		default:     1024
+																		description: "The maximum number of parallel retries that Envoy will make to the referenced backend defined within a xRoute rule."
+																		format:      "int64"
+																		maximum:     4294967295
+																		minimum:     0
+																		type:        "integer"
+																	}
+																	maxPendingRequests: {
+																		default:     1024
+																		description: "The maximum number of pending requests that Envoy will queue to the referenced backend defined within a xRoute rule."
+																		format:      "int64"
+																		maximum:     4294967295
+																		minimum:     0
+																		type:        "integer"
+																	}
+																	maxRequestsPerConnection: {
+																		description: """
+	The maximum number of requests that Envoy will make over a single connection to the referenced backend defined within a xRoute rule.
+	Default: unlimited.
+	"""
+																		format:  "int64"
+																		maximum: 4294967295
+																		minimum: 0
+																		type:    "integer"
+																	}
+																}
+																type: "object"
+															}
+															connection: {
+																description: "Connection includes backend connection settings."
+																properties: {
+																	bufferLimit: {
+																		allOf: [{
+																			pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																		}, {
+																			pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																		}]
+																		anyOf: [{
+																			type: "integer"
+																		}, {
+																			type: "string"
+																		}]
+																		description: """
+	BufferLimit Soft limit on size of the cluster’s connections read and write buffers.
+	BufferLimit applies to connection streaming (maybe non-streaming) channel between processes, it's in user space.
+	If unspecified, an implementation defined default is applied (32768 bytes).
+	For example, 20Mi, 1Gi, 256Ki etc.
+	Note: that when the suffix is not provided, the value is interpreted as bytes.
+	"""
+																		"x-kubernetes-int-or-string": true
+																	}
+																	socketBufferLimit: {
+																		allOf: [{
+																			pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																		}, {
+																			pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																		}]
+																		anyOf: [{
+																			type: "integer"
+																		}, {
+																			type: "string"
+																		}]
+																		description: """
+	SocketBufferLimit provides configuration for the maximum buffer size in bytes for each socket
+	to backend.
+	SocketBufferLimit applies to socket streaming channel between TCP/IP stacks, it's in kernel space.
+	For example, 20Mi, 1Gi, 256Ki etc.
+	Note that when the suffix is not provided, the value is interpreted as bytes.
+	"""
+																		"x-kubernetes-int-or-string": true
+																	}
+																}
+																type: "object"
+															}
+															dns: {
+																description: "DNS includes dns resolution settings."
+																properties: {
+																	dnsRefreshRate: {
+																		description: """
+	DNSRefreshRate specifies the rate at which DNS records should be refreshed.
+	Defaults to 30 seconds.
+	"""
+																		type: "string"
+																	}
+																	respectDnsTtl: {
+																		description: """
+	RespectDNSTTL indicates whether the DNS Time-To-Live (TTL) should be respected.
+	If the value is set to true, the DNS refresh rate will be set to the resource record’s TTL.
+	Defaults to true.
+	"""
+																		type: "boolean"
+																	}
+																}
+																type: "object"
+															}
+															healthCheck: {
+																description: "HealthCheck allows gateway to perform active health checking on backends."
+																properties: {
+																	active: {
+																		description: "Active health check configuration"
+																		properties: {
+																			grpc: {
+																				description: """
+	GRPC defines the configuration of the GRPC health checker.
+	It's optional, and can only be used if the specified type is GRPC.
+	"""
+																				properties: service: {
+																					description: """
+	Service to send in the health check request.
+	If this is not specified, then the health check request applies to the entire
+	server and not to a specific service.
+	"""
+																					type: "string"
+																				}
+																				type: "object"
+																			}
+																			healthyThreshold: {
+																				default:     1
+																				description: "HealthyThreshold defines the number of healthy health checks required before a backend host is marked healthy."
+																				format:      "int32"
+																				minimum:     1
+																				type:        "integer"
+																			}
+																			http: {
+																				description: """
+	HTTP defines the configuration of http health checker.
+	It's required while the health checker type is HTTP.
+	"""
+																				properties: {
+																					expectedResponse: {
+																						description: "ExpectedResponse defines a list of HTTP expected responses to match."
+																						properties: {
+																							binary: {
+																								description: "Binary payload base64 encoded."
+																								format:      "byte"
+																								type:        "string"
+																							}
+																							text: {
+																								description: "Text payload in plain text."
+																								type:        "string"
+																							}
+																							type: {
+																								allOf: [{
+																									enum: [
+																										"Text",
+																										"Binary",
+																									]
+																								}, {
+																									enum: [
+																										"Text",
+																										"Binary",
+																									]
+																								}]
+																								description: "Type defines the type of the payload."
+																								type:        "string"
+																							}
+																						}
+																						required: ["type"]
+																						type: "object"
+																						"x-kubernetes-validations": [{
+																							message: "If payload type is Text, text field needs to be set."
+																							rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																						}, {
+																							message: "If payload type is Binary, binary field needs to be set."
+																							rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																						}]
+																					}
+																					expectedStatuses: {
+																						description: """
+	ExpectedStatuses defines a list of HTTP response statuses considered healthy.
+	Defaults to 200 only
+	"""
+																						items: {
+																							description:      "HTTPStatus defines the http status code."
+																							exclusiveMaximum: true
+																							maximum:          600
+																							minimum:          100
+																							type:             "integer"
+																						}
+																						type: "array"
+																					}
+																					method: {
+																						description: """
+	Method defines the HTTP method used for health checking.
+	Defaults to GET
+	"""
+																						type: "string"
+																					}
+																					path: {
+																						description: "Path defines the HTTP path that will be requested during health checking."
+																						maxLength:   1024
+																						minLength:   1
+																						type:        "string"
+																					}
+																				}
+																				required: ["path"]
+																				type: "object"
+																			}
+																			interval: {
+																				default:     "3s"
+																				description: "Interval defines the time between active health checks."
+																				format:      "duration"
+																				type:        "string"
+																			}
+																			tcp: {
+																				description: """
+	TCP defines the configuration of tcp health checker.
+	It's required while the health checker type is TCP.
+	"""
+																				properties: {
+																					receive: {
+																						description: "Receive defines the expected response payload."
+																						properties: {
+																							binary: {
+																								description: "Binary payload base64 encoded."
+																								format:      "byte"
+																								type:        "string"
+																							}
+																							text: {
+																								description: "Text payload in plain text."
+																								type:        "string"
+																							}
+																							type: {
+																								allOf: [{
+																									enum: [
+																										"Text",
+																										"Binary",
+																									]
+																								}, {
+																									enum: [
+																										"Text",
+																										"Binary",
+																									]
+																								}]
+																								description: "Type defines the type of the payload."
+																								type:        "string"
+																							}
+																						}
+																						required: ["type"]
+																						type: "object"
+																						"x-kubernetes-validations": [{
+																							message: "If payload type is Text, text field needs to be set."
+																							rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																						}, {
+																							message: "If payload type is Binary, binary field needs to be set."
+																							rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																						}]
+																					}
+																					send: {
+																						description: "Send defines the request payload."
+																						properties: {
+																							binary: {
+																								description: "Binary payload base64 encoded."
+																								format:      "byte"
+																								type:        "string"
+																							}
+																							text: {
+																								description: "Text payload in plain text."
+																								type:        "string"
+																							}
+																							type: {
+																								allOf: [{
+																									enum: [
+																										"Text",
+																										"Binary",
+																									]
+																								}, {
+																									enum: [
+																										"Text",
+																										"Binary",
+																									]
+																								}]
+																								description: "Type defines the type of the payload."
+																								type:        "string"
+																							}
+																						}
+																						required: ["type"]
+																						type: "object"
+																						"x-kubernetes-validations": [{
+																							message: "If payload type is Text, text field needs to be set."
+																							rule:    "self.type == 'Text' ? has(self.text) : !has(self.text)"
+																						}, {
+																							message: "If payload type is Binary, binary field needs to be set."
+																							rule:    "self.type == 'Binary' ? has(self.binary) : !has(self.binary)"
+																						}]
+																					}
+																				}
+																				type: "object"
+																			}
+																			timeout: {
+																				default:     "1s"
+																				description: "Timeout defines the time to wait for a health check response."
+																				format:      "duration"
+																				type:        "string"
+																			}
+																			type: {
+																				allOf: [{
+																					enum: [
+																						"HTTP",
+																						"TCP",
+																						"GRPC",
+																					]
+																				}, {
+																					enum: [
+																						"HTTP",
+																						"TCP",
+																						"GRPC",
+																					]
+																				}]
+																				description: "Type defines the type of health checker."
+																				type:        "string"
+																			}
+																			unhealthyThreshold: {
+																				default:     3
+																				description: "UnhealthyThreshold defines the number of unhealthy health checks required before a backend host is marked unhealthy."
+																				format:      "int32"
+																				minimum:     1
+																				type:        "integer"
+																			}
+																		}
+																		required: ["type"]
+																		type: "object"
+																		"x-kubernetes-validations": [{
+																			message: "If Health Checker type is HTTP, http field needs to be set."
+																			rule:    "self.type == 'HTTP' ? has(self.http) : !has(self.http)"
+																		}, {
+																			message: "If Health Checker type is TCP, tcp field needs to be set."
+																			rule:    "self.type == 'TCP' ? has(self.tcp) : !has(self.tcp)"
+																		}, {
+																			message: "The grpc field can only be set if the Health Checker type is GRPC."
+																			rule:    "has(self.grpc) ? self.type == 'GRPC' : true"
+																		}]
+																	}
+																	passive: {
+																		description: "Passive passive check configuration"
+																		properties: {
+																			baseEjectionTime: {
+																				default:     "30s"
+																				description: "BaseEjectionTime defines the base duration for which a host will be ejected on consecutive failures."
+																				format:      "duration"
+																				type:        "string"
+																			}
+																			consecutive5XxErrors: {
+																				default:     5
+																				description: "Consecutive5xxErrors sets the number of consecutive 5xx errors triggering ejection."
+																				format:      "int32"
+																				type:        "integer"
+																			}
+																			consecutiveGatewayErrors: {
+																				default:     0
+																				description: "ConsecutiveGatewayErrors sets the number of consecutive gateway errors triggering ejection."
+																				format:      "int32"
+																				type:        "integer"
+																			}
+																			consecutiveLocalOriginFailures: {
+																				default: 5
+																				description: """
+	ConsecutiveLocalOriginFailures sets the number of consecutive local origin failures triggering ejection.
+	Parameter takes effect only when split_external_local_origin_errors is set to true.
+	"""
+																				format: "int32"
+																				type:   "integer"
+																			}
+																			interval: {
+																				default:     "3s"
+																				description: "Interval defines the time between passive health checks."
+																				format:      "duration"
+																				type:        "string"
+																			}
+																			maxEjectionPercent: {
+																				default:     10
+																				description: "MaxEjectionPercent sets the maximum percentage of hosts in a cluster that can be ejected."
+																				format:      "int32"
+																				type:        "integer"
+																			}
+																			splitExternalLocalOriginErrors: {
+																				default:     false
+																				description: "SplitExternalLocalOriginErrors enables splitting of errors between external and local origin."
+																				type:        "boolean"
+																			}
+																		}
+																		type: "object"
+																	}
+																}
+																type: "object"
+															}
+															http2: {
+																description: "HTTP2 provides HTTP/2 configuration for backend connections."
+																properties: {
+																	initialConnectionWindowSize: {
+																		allOf: [{
+																			pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																		}, {
+																			pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																		}]
+																		anyOf: [{
+																			type: "integer"
+																		}, {
+																			type: "string"
+																		}]
+																		description: """
+	InitialConnectionWindowSize sets the initial window size for HTTP/2 connections.
+	If not set, the default value is 1 MiB.
+	"""
+																		"x-kubernetes-int-or-string": true
+																	}
+																	initialStreamWindowSize: {
+																		allOf: [{
+																			pattern: "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
+																		}, {
+																			pattern: "^[1-9]+[0-9]*([EPTGMK]i|[EPTGMk])?$"
+																		}]
+																		anyOf: [{
+																			type: "integer"
+																		}, {
+																			type: "string"
+																		}]
+																		description: """
+	InitialStreamWindowSize sets the initial window size for HTTP/2 streams.
+	If not set, the default value is 64 KiB(64*1024).
+	"""
+																		"x-kubernetes-int-or-string": true
+																	}
+																	maxConcurrentStreams: {
+																		description: """
+	MaxConcurrentStreams sets the maximum number of concurrent streams allowed per connection.
+	If not set, the default value is 100.
+	"""
+																		format:  "int32"
+																		maximum: 2147483647
+																		minimum: 1
+																		type:    "integer"
+																	}
+																	onInvalidMessage: {
+																		description: """
+	OnInvalidMessage determines if Envoy will terminate the connection or just the offending stream in the event of HTTP messaging error
+	It's recommended for L2 Envoy deployments to set this value to TerminateStream.
+	https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
+	Default: TerminateConnection
+	"""
+																		type: "string"
+																	}
+																}
+																type: "object"
+															}
+															loadBalancer: {
+																description: """
+	LoadBalancer policy to apply when routing traffic from the gateway to
+	the backend endpoints. Defaults to `LeastRequest`.
+	"""
+																properties: {
+																	consistentHash: {
+																		description: """
+	ConsistentHash defines the configuration when the load balancer type is
+	set to ConsistentHash
+	"""
+																		properties: {
+																			cookie: {
+																				description: "Cookie configures the cookie hash policy when the consistent hash type is set to Cookie."
+																				properties: {
+																					attributes: {
+																						additionalProperties: type: "string"
+																						description: "Additional Attributes to set for the generated cookie."
+																						type:        "object"
+																					}
+																					name: {
+																						description: """
+	Name of the cookie to hash.
+	If this cookie does not exist in the request, Envoy will generate a cookie and set
+	the TTL on the response back to the client based on Layer 4
+	attributes of the backend endpoint, to ensure that these future requests
+	go to the same backend endpoint. Make sure to set the TTL field for this case.
+	"""
+																						type: "string"
+																					}
+																					ttl: {
+																						description: """
+	TTL of the generated cookie if the cookie is not present. This value sets the
+	Max-Age attribute value.
+	"""
+																						type: "string"
+																					}
+																				}
+																				required: ["name"]
+																				type: "object"
+																			}
+																			header: {
+																				description: "Header configures the header hash policy when the consistent hash type is set to Header."
+																				properties: name: {
+																					description: "Name of the header to hash."
+																					type:        "string"
+																				}
+																				required: ["name"]
+																				type: "object"
+																			}
+																			tableSize: {
+																				default:     65537
+																				description: "The table size for consistent hashing, must be prime number limited to 5000011."
+																				format:      "int64"
+																				maximum:     5000011
+																				minimum:     2
+																				type:        "integer"
+																			}
+																			type: {
+																				description: """
+	ConsistentHashType defines the type of input to hash on. Valid Type values are
+	"SourceIP",
+	"Header",
+	"Cookie".
+	"""
+																				enum: [
+																					"SourceIP",
+																					"Header",
+																					"Cookie",
+																				]
+																				type: "string"
+																			}
+																		}
+																		required: ["type"]
+																		type: "object"
+																		"x-kubernetes-validations": [{
+																			message: "If consistent hash type is header, the header field must be set."
+																			rule:    "self.type == 'Header' ? has(self.header) : !has(self.header)"
+																		}, {
+																			message: "If consistent hash type is cookie, the cookie field must be set."
+																			rule:    "self.type == 'Cookie' ? has(self.cookie) : !has(self.cookie)"
+																		}]
+																	}
+																	slowStart: {
+																		description: """
+	SlowStart defines the configuration related to the slow start load balancer policy.
+	If set, during slow start window, traffic sent to the newly added hosts will gradually increase.
+	Currently this is only supported for RoundRobin and LeastRequest load balancers
+	"""
+																		properties: window: {
+																			description: """
+	Window defines the duration of the warm up period for newly added host.
+	During slow start window, traffic sent to the newly added hosts will gradually increase.
+	Currently only supports linear growth of traffic. For additional details,
+	see https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/cluster.proto#config-cluster-v3-cluster-slowstartconfig
+	"""
+																			type: "string"
+																		}
+																		required: ["window"]
+																		type: "object"
+																	}
+																	type: {
+																		description: """
+	Type decides the type of Load Balancer policy.
+	Valid LoadBalancerType values are
+	"ConsistentHash",
+	"LeastRequest",
+	"Random",
+	"RoundRobin".
+	"""
+																		enum: [
+																			"ConsistentHash",
+																			"LeastRequest",
+																			"Random",
+																			"RoundRobin",
+																		]
+																		type: "string"
+																	}
+																}
+																required: ["type"]
+																type: "object"
+																"x-kubernetes-validations": [{
+																	message: "If LoadBalancer type is consistentHash, consistentHash field needs to be set."
+																	rule:    "self.type == 'ConsistentHash' ? has(self.consistentHash) : !has(self.consistentHash)"
+																}, {
+																	message: "Currently SlowStart is only supported for RoundRobin and LeastRequest load balancers."
+																	rule:    "self.type in ['Random', 'ConsistentHash'] ? !has(self.slowStart) : true "
+																}]
+															}
+															proxyProtocol: {
+																description: "ProxyProtocol enables the Proxy Protocol when communicating with the backend."
+																properties: version: {
+																	description: """
+	Version of ProxyProtol
+	Valid ProxyProtocolVersion values are
+	"V1"
+	"V2"
+	"""
+																	enum: [
+																		"V1",
+																		"V2",
+																	]
+																	type: "string"
+																}
+																required: ["version"]
+																type: "object"
+															}
+															retry: {
+																description: """
+	Retry provides more advanced usage, allowing users to customize the number of retries, retry fallback strategy, and retry triggering conditions.
+	If not set, retry will be disabled.
+	"""
+																properties: {
+																	numRetries: {
+																		default:     2
+																		description: "NumRetries is the number of retries to be attempted. Defaults to 2."
+																		format:      "int32"
+																		minimum:     0
+																		type:        "integer"
+																	}
+																	perRetry: {
+																		description: "PerRetry is the retry policy to be applied per retry attempt."
+																		properties: {
+																			backOff: {
+																				description: """
+	Backoff is the backoff policy to be applied per retry attempt. gateway uses a fully jittered exponential
+	back-off algorithm for retries. For additional details,
+	see https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/router_filter#config-http-filters-router-x-envoy-max-retries
+	"""
+																				properties: {
+																					baseInterval: {
+																						description: "BaseInterval is the base interval between retries."
+																						format:      "duration"
+																						type:        "string"
+																					}
+																					maxInterval: {
+																						description: """
+	MaxInterval is the maximum interval between retries. This parameter is optional, but must be greater than or equal to the base_interval if set.
+	The default is 10 times the base_interval
+	"""
+																						format: "duration"
+																						type:   "string"
+																					}
+																				}
+																				type: "object"
+																			}
+																			timeout: {
+																				description: "Timeout is the timeout per retry attempt."
+																				format:      "duration"
+																				type:        "string"
+																			}
+																		}
+																		type: "object"
+																	}
+																	retryOn: {
+																		description: """
+	RetryOn specifies the retry trigger condition.
+
+	If not specified, the default is to retry on connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes(503).
+	"""
+																		properties: {
+																			httpStatusCodes: {
+																				description: """
+	HttpStatusCodes specifies the http status codes to be retried.
+	The retriable-status-codes trigger must also be configured for these status codes to trigger a retry.
+	"""
+																				items: {
+																					description:      "HTTPStatus defines the http status code."
+																					exclusiveMaximum: true
+																					maximum:          600
+																					minimum:          100
+																					type:             "integer"
+																				}
+																				type: "array"
+																			}
+																			triggers: {
+																				description: "Triggers specifies the retry trigger condition(Http/Grpc)."
+																				items: {
+																					description: "TriggerEnum specifies the conditions that trigger retries."
+																					enum: [
+																						"5xx",
+																						"gateway-error",
+																						"reset",
+																						"connect-failure",
+																						"retriable-4xx",
+																						"refused-stream",
+																						"retriable-status-codes",
+																						"cancelled",
+																						"deadline-exceeded",
+																						"internal",
+																						"resource-exhausted",
+																						"unavailable",
+																					]
+																					type: "string"
+																				}
+																				type: "array"
+																			}
+																		}
+																		type: "object"
+																	}
+																}
+																type: "object"
+															}
+															tcpKeepalive: {
+																description: """
+	TcpKeepalive settings associated with the upstream client connection.
+	Disabled by default.
+	"""
+																properties: {
+																	idleTime: {
+																		description: """
+	The duration a connection needs to be idle before keep-alive
+	probes start being sent.
+	The duration format is
+	Defaults to `7200s`.
+	"""
+																		pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																		type:    "string"
+																	}
+																	interval: {
+																		description: """
+	The duration between keep-alive probes.
+	Defaults to `75s`.
+	"""
+																		pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																		type:    "string"
+																	}
+																	probes: {
+																		description: """
+	The total number of unacknowledged probes to send before deciding
+	the connection is dead.
+	Defaults to 9.
+	"""
+																		format: "int32"
+																		type:   "integer"
+																	}
+																}
+																type: "object"
+															}
+															timeout: {
+																description: "Timeout settings for the backend connections."
+																properties: {
+																	http: {
+																		description: "Timeout settings for HTTP."
+																		properties: {
+																			connectionIdleTimeout: {
+																				description: """
+	The idle timeout for an HTTP connection. Idle time is defined as a period in which there are no active requests in the connection.
+	Default: 1 hour.
+	"""
+																				pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																				type:    "string"
+																			}
+																			maxConnectionDuration: {
+																				description: """
+	The maximum duration of an HTTP connection.
+	Default: unlimited.
+	"""
+																				pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																				type:    "string"
+																			}
+																			requestTimeout: {
+																				description: "RequestTimeout is the time until which entire response is received from the upstream."
+																				pattern:     "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																				type:        "string"
+																			}
+																		}
+																		type: "object"
+																	}
+																	tcp: {
+																		description: "Timeout settings for TCP."
+																		properties: connectTimeout: {
+																			description: """
+	The timeout for network connection establishment, including TCP and TLS handshakes.
+	Default: 10 seconds.
+	"""
+																			pattern: "^([0-9]{1,5}(h|m|s|ms)){1,4}$"
+																			type:    "string"
+																		}
+																		type: "object"
+																	}
+																}
+																type: "object"
+															}
+														}
+														type: "object"
 													}
 													host: {
 														description: """
@@ -12825,6 +16520,7 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 														enum: [
 															"OpenTelemetry",
 															"Zipkin",
+															"Datadog",
 														]
 														type: "string"
 													}
@@ -12855,6 +16551,15 @@ k8s: "apiextensions.k8s.io": v1: CustomResourceDefinition: "": "envoyproxies.gat
 												"x-kubernetes-validations": [{
 													message: "host or backendRefs needs to be set"
 													rule:    "has(self.host) || self.backendRefs.size() > 0"
+												}, {
+													message: "BackendRefs must be used, backendRef is not supported."
+													rule:    "!has(self.backendRef)"
+												}, {
+													message: "only supports Service kind."
+													rule:    "has(self.backendRefs) ? self.backendRefs.all(f, f.kind == 'Service') : true"
+												}, {
+													message: "BackendRefs only supports Core group."
+													rule:    "has(self.backendRefs) ? (self.backendRefs.all(f, f.group == \"\")) : true"
 												}]
 											}
 											samplingRate: {

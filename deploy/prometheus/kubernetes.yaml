@@ -79,7 +79,7 @@ spec:
         app.kubernetes.io/name: prometheus
     spec:
       containers:
-        - image: quay.io/prometheus/prometheus:v3.0.0
+        - image: quay.io/prometheus/prometheus:v3.1.0
           name: prometheus
           args:
             - --config.file=/etc/prometheus/prometheus.yaml

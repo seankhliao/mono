@@ -139,7 +139,7 @@ spec:
         app.kubernetes.io/name: jaeger
     spec:
       containers:
-        - image: quay.io/jaegertracing/jaeger:2.0.0
+        - image: quay.io/jaegertracing/jaeger:2.2.0
           name: jaeger
           args:
             - --config=file:/etc/jaeger/jaeger.yaml
