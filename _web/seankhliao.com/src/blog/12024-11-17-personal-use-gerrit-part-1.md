@@ -118,7 +118,7 @@ but lets go over some of the settings.
 The config file format is the same as git config, `#` are comments.
 
 ```gitconfig
-# This is a plugin for auto submit when all requriements are met
+# This is a plugin for auto submit when all requirements are met
 [automerge]
     botEmail = gerrit@liao.dev
 

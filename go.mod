@@ -106,6 +106,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/chrismellard/docker-credential-acr-env v0.0.0-20230304212654-82a0ddb27589 // indirect
+	github.com/client9/misspell v0.3.4 // indirect
 	github.com/cncf/xds/go v0.0.0-20241223141626-cff3c89139a3 // indirect
 	github.com/cockroachdb/apd/v3 v3.2.1 // indirect
 	github.com/containerd/cgroups/v3 v3.0.5 // indirect
@@ -303,6 +304,7 @@ require (
 tool (
 	cuelang.org/go/cmd/cue
 	github.com/bufbuild/buf/cmd/buf
+	github.com/client9/misspell/cmd/misspell
 	github.com/google/ko
 	go.seankhliao.com/mono/cmd/cli/blogengine
 	go.seankhliao.com/mono/cmd/cli/fin

@@ -1,6 +1,6 @@
 # no rss on this blog
 
-## suffer the tyrany of the algorithm??
+## suffer the tyranny of the algorithm??
 
 ### _rss_ unavailable on this blog
 
