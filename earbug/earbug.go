@@ -37,6 +37,12 @@ func Register(a *App, r yhttp.Registrar) {
 	r.Pattern("GET", a.host, "/auth/callback", a.authCallback, a.AuthN, a.AuthZ(auth.AllowRegistered))
 }
 
+func Background(a *App) []func(context.Context) error {
+	return []func(context.Context) error{
+		a.updateLoop,
+	}
+}
+
 type App struct {
 	o          yo11y.O11y
 	mAdded     metric.Int64Counter
@@ -116,9 +122,8 @@ func New(c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
 // 	s.Users[uid] = data
 // }
 
-func (a *App) Update() error {
+func (a *App) updateLoop(ctx context.Context) error {
 	for {
-		ctx := context.Background()
 		ctx, cancel := context.WithTimeout(ctx, a.updateFreq)
 		a.update(ctx)
 		cancel()

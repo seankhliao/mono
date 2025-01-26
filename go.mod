@@ -41,7 +41,6 @@ require (
 	k8s.io/apimachinery v0.32.1
 	k8s.io/client-go v0.32.1
 	maragu.dev/gomponents v1.0.0
-	sigs.k8s.io/gateway-api v1.2.1
 )
 
 require (
@@ -305,8 +304,8 @@ tool (
 	cuelang.org/go/cmd/cue
 	github.com/bufbuild/buf/cmd/buf
 	github.com/google/ko
-	go.seankhliao.com/mono/cmd/blogengine
-	go.seankhliao.com/mono/cmd/fin
+	go.seankhliao.com/mono/cmd/cli/blogengine
+	go.seankhliao.com/mono/cmd/cli/fin
 	golang.org/x/vuln/cmd/govulncheck
 	google.golang.org/protobuf/cmd/protoc-gen-go
 	honnef.co/go/tools/cmd/staticcheck

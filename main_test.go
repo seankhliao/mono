@@ -22,6 +22,9 @@ func TestLint(t *testing.T) {
 			"vet",
 			[]string{"go", "vet", "./..."},
 		}, {
+			"mod tidy",
+			[]string{"go", "mod", "tidy", "-diff"},
+		}, {
 			"staticcheck",
 			[]string{"go", "tool", "staticcheck", "./..."},
 		}, {
