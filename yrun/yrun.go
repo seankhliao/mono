@@ -101,6 +101,7 @@ func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
 	// storage
 	bkt, err := blob.OpenBucket(ctx, "file://"+runConfig.Store)
 	if err != nil {
+		return fmt.Errorf("open storage dir: %w", err)
 	}
 
 	// app setup
@@ -235,7 +236,7 @@ func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
 		})
 	}
 
-	if runConfig.Background != nil {
+	if runConfig.Shutdown != nil {
 		shutlg := o11y.L.WithGroup("register-shutdown")
 		shutlg.LogAttrs(ctx, slog.LevelInfo, "registering shutdown functions")
 		for _, task := range runConfig.Shutdown(app) {

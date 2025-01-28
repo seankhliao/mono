@@ -147,6 +147,9 @@ func Print(prefix string, t any) []string {
 		}
 
 		envKey := structField.Tag.Get("env")
+		if envKey == "" {
+			continue
+		}
 		if prefix != "" {
 			envKey = prefix + "_" + envKey
 		}

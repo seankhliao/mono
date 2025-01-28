@@ -9,8 +9,8 @@ import (
 
 	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/otel/trace"
-	"go.seankhliao.com/mono/auth"
 	earbugv5 "go.seankhliao.com/mono/earbug/v5"
+	"golang.org/x/oauth2"
 )
 
 func (a *App) authBegin(rw http.ResponseWriter, r *http.Request) {
@@ -27,7 +27,13 @@ func (a *App) authBegin(rw http.ResponseWriter, r *http.Request) {
 func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	ctx, span := a.o.T.Start(r.Context(), "authCallback")
 	defer span.End()
-	info := auth.FromContext(ctx)
+
+	ctx = context.WithValue(ctx, oauth2.HTTPClient, a.http)
+
+	// TODO: fix auth
+	// info := auth.FromContext(ctx)
+	//        userID := info.GetUserId()
+	userID := int64(1167012155348904831)
 
 	var tokenMarshaled []byte
 	err := a.o.Region(ctx, "exchange", func(ctx context.Context, span trace.Span) error {
@@ -48,12 +54,12 @@ func (a *App) authCallback(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	a.store.Do(ctx, func(s *earbugv5.Store) {
-		data, ok := s.GetUsers()[info.GetUserId()]
+		data, ok := s.GetUsers()[userID]
 		if !ok {
 			data = &earbugv5.UserData{}
 		}
 		data.SetToken(tokenMarshaled)
-		s.GetUsers()[info.GetUserId()] = data
+		s.GetUsers()[userID] = data
 	})
 
 	rw.Write([]byte("success"))

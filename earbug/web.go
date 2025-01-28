@@ -13,6 +13,7 @@ import (
 	"github.com/google/cel-go/cel"
 	"github.com/google/cel-go/common/types/ref"
 	"github.com/google/cel-go/interpreter"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"go.seankhliao.com/mono/auth"
 	earbugv5 "go.seankhliao.com/mono/earbug/v5"
@@ -101,6 +102,7 @@ func (a *App) handleIndex(rw http.ResponseWriter, r *http.Request) {
 	if userID <= 0 {
 		userID = a.publicID
 	}
+	span.SetAttributes(attribute.Int64("user_id", userID))
 
 	var opts queryOptions
 	var playbacks []DisplayPlayback

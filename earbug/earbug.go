@@ -4,14 +4,12 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 
-	"github.com/google/cel-go/cel"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/metric"
-	"go.seankhliao.com/mono/auth"
 	earbugv5 "go.seankhliao.com/mono/earbug/v5"
-	"go.seankhliao.com/mono/httpencoding"
 	"go.seankhliao.com/mono/yhttp"
 	"go.seankhliao.com/mono/yo11y"
 	"go.seankhliao.com/mono/ystore"
@@ -22,19 +20,18 @@ import (
 type Config struct {
 	Host string
 
-	Oauth2 oauth2.Config
+	ClientID     string `env:"SPOTIFY_CLIENT_ID"`
+	ClientSecret string `env:"SPOTIFY_CLIENT_SECRET"`
 
-	Key string
-
-	PublicID int64
+	PublicID int64 `env:"PUBLIC_ID"`
 
 	UpdateFreq time.Duration
 }
 
 func Register(a *App, r yhttp.Registrar) {
-	r.Pattern("GET", a.host, "/{$}", a.handleIndex, a.AuthN, a.AuthZ(auth.AllowAnonymous), httpencoding.Handler)
-	r.Pattern("GET", a.host, "/auth/begin", a.authBegin, a.AuthN, a.AuthZ(auth.AllowRegistered))
-	r.Pattern("GET", a.host, "/auth/callback", a.authCallback, a.AuthN, a.AuthZ(auth.AllowRegistered))
+	r.Pattern("GET", a.host, "/{$}", a.handleIndex)
+	r.Pattern("GET", a.host, "/auth/begin", a.authBegin)
+	r.Pattern("GET", a.host, "/auth/callback", a.authCallback)
 }
 
 func Background(a *App) []func(context.Context) error {
@@ -53,9 +50,9 @@ type App struct {
 	http  *http.Client
 	store *ystore.Store[*earbugv5.Store]
 
-	// inserted
-	AuthN yhttp.Interceptor
-	AuthZ func(cel.Program) yhttp.Interceptor
+	// // inserted
+	// AuthN yhttp.Interceptor
+	// AuthZ func(cel.Program) yhttp.Interceptor
 
 	// config
 	host       string
@@ -71,13 +68,29 @@ func New(c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
 
 	a := &App{
 		o: o.Sub("earbug"),
+
 		http: &http.Client{
 			Transport: otelhttp.NewTransport(http.DefaultTransport),
 		},
-		host:       c.Host,
-		bkt:        bkt,
-		dataKey:    c.Key,
-		oauth2:     c.Oauth2,
+
+		host:    c.Host,
+		bkt:     bkt,
+		dataKey: `earbug.pb.zstd`,
+		oauth2: oauth2.Config{
+			ClientID:     c.ClientID,
+			ClientSecret: c.ClientSecret,
+			Endpoint: oauth2.Endpoint{
+				AuthURL:   "https://accounts.spotify.com/authorize",
+				TokenURL:  "https://accounts.spotify.com/api/token",
+				AuthStyle: oauth2.AuthStyleInParams,
+			},
+			RedirectURL: (&url.URL{
+				Scheme: "https",
+				Host:   c.Host,
+				Path:   "/auth/callback",
+			}).String(),
+			Scopes: []string{"user-read-recently-played"},
+		},
 		publicID:   c.PublicID,
 		updateFreq: c.UpdateFreq,
 	}
@@ -89,7 +102,7 @@ func New(c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
 	ctx, span := o.T.Start(ctx, "initData")
 	defer span.End()
 
-	store, err := ystore.New(ctx, bkt, c.Key, func() *earbugv5.Store {
+	store, err := ystore.New(ctx, bkt, a.dataKey, func() *earbugv5.Store {
 		return earbugv5.Store_builder{
 			Tracks: make(map[string]*earbugv5.Track),
 			Users:  make(map[int64]*earbugv5.UserData),
@@ -103,7 +116,11 @@ func New(c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
 	// a.store.Do(ctx, a.migrate)
 	// a.store.Sync(ctx)
 
-	a.http = &http.Client{Transport: otelhttp.NewTransport(http.DefaultTransport)}
+	a.http = &http.Client{
+		Transport: &yhttp.UserAgent{
+			Next: otelhttp.NewTransport(http.DefaultTransport),
+		},
+	}
 	return a, nil
 }
 
