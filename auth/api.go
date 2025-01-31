@@ -66,7 +66,7 @@ func (a *App) AuthN(next http.Handler) http.Handler {
 				)
 				// start a new anonymous session
 				token := genToken("moox_")
-				info := authv1.TokenInfo_builder{
+				info = authv1.TokenInfo_builder{
 					SessionId: &token,
 					Created:   timestamppb.Now(),
 				}.Build()

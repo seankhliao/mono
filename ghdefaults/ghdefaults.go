@@ -25,17 +25,17 @@ func Register(a *App, r yhttp.Registrar) {
 }
 
 type Config struct {
-	Host          string
 	AppID         int64  `env:"GITHUB_APP_ID"`
 	PrivateKey    string `env:"GITHUB_APP_PRIVATE_KEY"`
 	WebhookSecret string `env:"GITHUB_APP_WEBHOOK_SECRET"`
+	Host          string
 }
 
 type App struct {
-	host          string
+	appID         int64
 	webhookSecret string
 	privateKey    string
-	appID         int64
+	host          string
 
 	o      yo11y.O11y
 	mOwner metric.Int64Counter

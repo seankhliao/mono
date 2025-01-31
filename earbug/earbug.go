@@ -139,9 +139,9 @@ func New(c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
 // 	s.Users[uid] = data
 // }
 
-func (a *App) updateLoop(ctx context.Context) error {
+func (a *App) updateLoop(baseCtx context.Context) error {
 	for {
-		ctx, cancel := context.WithTimeout(ctx, a.updateFreq)
+		ctx, cancel := context.WithTimeout(baseCtx, a.updateFreq)
 		a.update(ctx)
 		cancel()
 

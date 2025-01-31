@@ -81,27 +81,37 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond)
 	spin.Start()
 	defer spin.Stop()
-	var idx int
 
-	var siteMapTxt bytes.Buffer
 	rendered := make(map[string]*bytes.Buffer)
-	err = fs.WalkDir(fsys, ".", func(p string, d fs.DirEntry, err error) error {
-		if err != nil || d.IsDir() {
-			return err
+	rendered["sitemap.txt"] = new(bytes.Buffer)
+	err = fs.WalkDir(fsys, ".", walk(fsys, spin, rendered, gtm, baseUrl, compact))
+	if err != nil {
+		return nil, fmt.Errorf("process source: %w", err)
+	}
+
+	spin.FinalMSG = fmt.Sprintf("%3d rendered pages\n", len(rendered))
+
+	return rendered, nil
+}
+
+func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, gtm, baseUrl string, compact bool) fs.WalkDirFunc {
+	var idx int
+	return func(p string, d fs.DirEntry, openErr error) error {
+		if openErr != nil || d.IsDir() {
+			return openErr
 		}
 
 		idx++
 		spin.Suffix = fmt.Sprintf("%3d processing %q", idx, p)
 
-		inFile, err := fsys.Open(p)
-		if err != nil {
-			return fmt.Errorf("open file: %w", err)
+		inFile, openErr := fsys.Open(p)
+		if openErr != nil {
+			return fmt.Errorf("open file: %w", openErr)
 		}
 		defer inFile.Close()
 
 		buf := new(bytes.Buffer)
 		if strings.HasSuffix(p, ".md") {
-
 			b, err := io.ReadAll(inFile)
 			if err != nil {
 				return fmt.Errorf("read file: %w", err)
@@ -129,7 +139,8 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 			if p == "index.md" { // root index
 				o.HideTitles = true
 			} else if strings.HasSuffix(p, "/index.md") { // all other directory indexes
-				list, err := directoryList(fsys, p)
+				var list gomponents.Node
+				list, err = directoryList(fsys, p)
 				if err != nil {
 					return err
 				}
@@ -141,36 +152,27 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 				return fmt.Errorf("render: %w", err)
 			}
 
-			fmt.Fprintf(&siteMapTxt, "%s\n", u)
+			fmt.Fprintf(rendered["sitemap.txt"], "%s\n", u)
 			p = p[:len(p)-3] + ".html"
 		} else if strings.HasSuffix(p, ".cue") {
 			u := baseUrl + canonicalPathFromRelPath(p)
-			err = processTable(buf, inFile, u, gtm)
-			if err != nil {
-				return fmt.Errorf("process table: %w", err)
+			openErr = processTable(buf, inFile, u, gtm)
+			if openErr != nil {
+				return fmt.Errorf("process table: %w", openErr)
 			}
-			fmt.Fprintf(&siteMapTxt, "%s\n", u)
+			fmt.Fprintf(rendered["sitemap.tyxt"], "%s\n", u)
 			p = p[:len(p)-4] + ".html"
 		} else {
-			_, err = io.Copy(buf, inFile)
-			if err != nil {
-				return fmt.Errorf("copy: %w", err)
+			_, openErr = io.Copy(buf, inFile)
+			if openErr != nil {
+				return fmt.Errorf("copy: %w", openErr)
 			}
 		}
 
 		rendered[p] = buf
 
 		return nil
-	})
-	if err != nil {
-		return nil, fmt.Errorf("process source: %w", err)
 	}
-
-	rendered["sitemap.txt"] = &siteMapTxt
-
-	spin.FinalMSG = fmt.Sprintf("%3d rendered pages\n", len(rendered))
-
-	return rendered, nil
 }
 
 func directoryList(fsys fs.FS, p string) (gomponents.Node, error) {

@@ -153,8 +153,8 @@ func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
 
 			group.Go(func() error {
 				<-ctx.Done()
-				ctx := context.Background()
-				return server.Shutdown(ctx)
+				shutCtx := context.Background()
+				return server.Shutdown(shutCtx)
 			})
 
 			httplg.LogAttrs(ctx, slog.LevelInfo, "starting http server",
@@ -221,8 +221,8 @@ func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
 
 			group.Go(func() error {
 				<-ctx.Done()
-				ctx := context.Background()
-				return server.Shutdown(ctx)
+				shutCtx := context.Background()
+				return server.Shutdown(shutCtx)
 			})
 
 			httplg.LogAttrs(ctx, slog.LevelInfo, "starting http server",

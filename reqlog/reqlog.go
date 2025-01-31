@@ -22,8 +22,8 @@ type Config struct {
 }
 
 type App struct {
-	config Config
 	o      yo11y.O11y
+	config Config
 }
 
 func New(c Config, o yo11y.O11y) (*App, error) {

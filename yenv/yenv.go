@@ -64,7 +64,7 @@ func FromEnv(envs map[string]string, prefix string, t any) error {
 		field := confStruct.Field(fi)
 		fieldPtr := field.Addr().Interface()
 
-		envVal, ok := envs[envKey]
+		envVal, hasValue := envs[envKey]
 		if u, ok := fieldPtr.(encoding.TextUnmarshaler); ok {
 			err := u.UnmarshalText([]byte(envVal))
 			if err != nil {
@@ -87,7 +87,7 @@ func FromEnv(envs map[string]string, prefix string, t any) error {
 			continue
 		}
 
-		if !ok {
+		if !hasValue {
 			continue
 		}
 
