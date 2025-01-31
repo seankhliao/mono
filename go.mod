@@ -7,7 +7,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.15.0
 	github.com/bradleyfalzon/ghinstallation/v2 v2.13.0
 	github.com/briandowns/spinner v1.23.1
-	github.com/go-json-experiment/json v0.0.0-20250116043007-0640c115aea5
+	github.com/go-json-experiment/json v0.0.0-20250129011340-4e0381018ad6
 	github.com/go-webauthn/webauthn v0.11.2
 	github.com/google/cel-go v0.22.1
 	github.com/google/go-github/v60 v60.0.0
