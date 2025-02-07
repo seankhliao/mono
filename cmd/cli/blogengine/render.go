@@ -160,7 +160,7 @@ func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, 
 			if openErr != nil {
 				return fmt.Errorf("process table: %w", openErr)
 			}
-			fmt.Fprintf(rendered["sitemap.tyxt"], "%s\n", u)
+			fmt.Fprintf(rendered["sitemap.txt"], "%s\n", u)
 			p = p[:len(p)-4] + ".html"
 		} else {
 			_, openErr = io.Copy(buf, inFile)
