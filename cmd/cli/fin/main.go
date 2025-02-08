@@ -27,6 +27,7 @@ func main() {
 		PushCommand(),
 		PullCommand(),
 		ConvertCommand(),
+		TradingCommand(),
 	))
 }
 
@@ -63,6 +64,12 @@ func ConvertCommand() ycli.Command {
 			"convert trading212 statements",
 			nil,
 			c.trading,
+		),
+		ycli.New(
+			"yonder",
+			"convert yonder statements",
+			nil,
+			c.yonder,
 		),
 	)
 }

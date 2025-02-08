@@ -1,3 +1,2 @@
-/_data/**/*.cue
-/_data/**/*.yaml
 /_web/*/dst
+/cmd/cli/fin/*.fin.cue

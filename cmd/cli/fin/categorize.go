@@ -51,7 +51,7 @@ var categories = []struct {
 	{
 		"FIN",
 		[]string{
-			"gic funds",
+			"gic funds", "from rewards", "yonder membership",
 		},
 		nil,
 	},
@@ -72,7 +72,8 @@ var categories = []struct {
 			"fresco trattoria pizze", "k food", "kfc", "shibuya soho",
 			"chinatown", "pasticceria", "uragano srl", "unico campania", "il gabbiano",
 			"la capannina", "bar tabacchi", "molo", "happy lamb hotpot",
-			"m&s earls", "covent garden market",
+			"m&s earls", "covent garden market", "tesco", "costa", "cafe",
+			"kuba cabana", "taco stand", "ole & steen",
 		},
 		[]string{
 			"restaurants", "retail_stores",
@@ -119,7 +120,7 @@ var categories = []struct {
 	{
 		"SAL",
 		[]string{
-			"snyk ltd", "circle uk trading",
+			"snyk ltd", "circle uk trading", "navan",
 		},
 		nil,
 	},
@@ -128,7 +129,7 @@ var categories = []struct {
 		[]string{
 			"my o2 bill payment", "o2 balanceweb", "amznmktplace", "aliexpress", "h3g dd",
 			"gsuite", "o2 online", "amazon", "hutchison 3g", "google", "bic camera",
-			"framework",
+			"framework", "hetzner", "viasat", "sp arace tech",
 		},
 		nil,
 	},
@@ -142,14 +143,15 @@ var categories = []struct {
 	{
 		"TRA",
 		[]string{
-			"transport",
 			"amex tls", "airlines", "airways", "radisson blu", "stansted express",
 			"autolinee", "editerraneo grand hot", "trenitalia", "fiumicino aeroporto",
-			"sorrento", "ferryhopper", "travel", "funicolare", "lbergo excelsior",
-			"eav", "smartrip", "shinkansen", "seven bank", "jr west",
+			"sorrento", "ferryhopper", "funicolare", "lbergo excelsior",
+			"eav", "smartrip", "shinkansen", "seven bank", "jr west", "uber",
+			"vaa mobile app",
 		},
 		[]string{
 			"hotels", "automobile",
+			"transport", "travel",
 		},
 	},
 	{

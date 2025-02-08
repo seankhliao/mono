@@ -48,6 +48,8 @@ func (c *Convert) chase(stdout, stderr io.Writer) error {
 			value *= -1
 		case "Refund":
 			src, dst = dst, src
+		case "Transfer":
+			src, dst = dst, src
 		default:
 			return fmt.Errorf("unhandled transaction type: %s", tx)
 		}
