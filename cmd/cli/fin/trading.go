@@ -55,6 +55,7 @@ func TradingCommand() ycli.Command {
 			for _, tr := range transactions {
 				// row := transactionRow{tr[0], tr[1], tr[2], tr[3], tr[4], tr[5], tr[6], tr[7], tr[8], tr[9], tr[10], tr[11], tr[12], tr[13], tr[14], tr[15], tr[16], tr[17], tr[18], tr[19], tr[20]}
 				row := transactionRow{tr[0], tr[1], tr[2], tr[3], tr[4], tr[5], tr[6], tr[7], tr[8], tr[9], tr[10], tr[11], tr[12], tr[13], tr[14], tr[15]}
+				_, _, _, _ = row.ID, row.Total, row.Currency_conversion_fee, row.Currency_Currency_conversion_fee
 				if !strings.HasSuffix(row.Action, "buy") && !strings.HasSuffix(row.Action, "sell") {
 					continue
 				}
