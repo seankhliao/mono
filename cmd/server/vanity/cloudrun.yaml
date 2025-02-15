@@ -17,6 +17,9 @@ spec:
       containerConcurrency: 80
       containers:
         - image: us-central1-docker.pkg.dev/com-seankhliao/run/vanity
+          env:
+            - name: STORAGE_DIR
+              value: "/tmp"
           ports:
             - containerPort: 8080
               name: http1
