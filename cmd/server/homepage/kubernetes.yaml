@@ -104,11 +104,20 @@ spec:
             - containerPort: 8082
               name: debug
           resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
             limits:
               cpu: 6
               memory: 8Gi
+          volumeMounts:
+            - name: data
+              mountPath: /data
       enableServiceLinks: false
       serviceAccountName: homepage
+      volumes:
+        - name: data
+          emptyDir: {}
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.31.1-standalone/serviceaccount-v1.json
 apiVersion: v1

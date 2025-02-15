@@ -106,6 +106,9 @@ spec:
             - containerPort: 8082
               name: debug
           resources:
+            requests:
+              cpu: 1
+              memory: 1Gi
             limits:
               cpu: 6
               memory: 8Gi

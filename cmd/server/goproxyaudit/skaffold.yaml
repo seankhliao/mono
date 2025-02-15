@@ -16,7 +16,7 @@ build:
           - -s
           - -w
   tagPolicy:
-    inputDigest: {}
+    sha256: {}
   platforms:
     - linux/amd64
     - linux/arm64/v8
