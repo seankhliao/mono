@@ -10,6 +10,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
+- _12025-11-07_ HANABIE
 - _12025-07-17_ Billie Eilish
 - _12025-06-19_ Ado
 - _12025-06-08_ YOASOBI
@@ -30,8 +31,23 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-02-25_ Pretty Guardian Sailor Moon
 - _12025-02-20_ Deyyess
 - _12025-02-19_ Phantom Siita
-- _12025-02-14_ ANKOR
-- _12025-02-12_ Kikuo
+
+##### _12025-02-14_ ANKOR
+
+With [_Seven Blood_] and [_Conquer Divide_]
+
+They're decent, though didn't leave any particularly lasting impression.
+It was only when [_ANKOR_] described themselves that I learned I was listening to metal...
+
+##### _12025-02-12_ Kikuo
+
+I guess when their social handles are kikuo_sound,
+it's not unexpected for [_kikuo_] be more like sounds in a modern art exhibition.
+That's not to say it wasn't good,
+just less... melodic?
+They're certainly proud of their work,
+showing off 2 of their "most unpopular, underarted" songs.
+Towards the end, I snapped back to attention when I heard the one song that I knew.
 
 ##### _12024-11-29_ renforshort
 
@@ -1128,6 +1144,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Akase Akari_]: https://www.youtube.com/@akaseakari174
 [_Alessandra_]: https://www.youtube.com/@alessandrasmusic
 [_Allie X_]: https://www.youtube.com/@AllieXXXXandra
+[_ANKOR_]: https://www.youtube.com/@AnkorOfficial
 [_Anna of the North_]: https://www.youtube.com/@annaofthenorthforreal
 [_Annika Bennett_]: https://www.youtube.com/@AnnikaBennett
 [_ari abdul_]: https://www.youtube.com/@AriAbdul
@@ -1163,6 +1180,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Christof Van Der Ven_]: https://www.youtube.com/@CHRISTOFVANDERVEN
 [_Clean Bandit_]: https://www.youtube.com/@cleanbandit
 [_Cloudy June_]: https://www.youtube.com/@CloudyJune
+[_Conquer Divide_]: https://www.youtube.com/@conquerdividemusic
 [_Deadbeat girl_]: https://www.youtube.com/@deadbeatgirl.mp3
 [_Dead Pony_]: https://www.youtube.com/@deadponyband
 [_Delain_]: https://www.youtube.com/@delainofficial
@@ -1208,6 +1226,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Kanna Hashimoto_]: https://www.instagram.com/kannahashimoto.mg
 [_Karin Ann_]: https://www.youtube.com/karinann
 [_Katelyn Tarver_]: https://www.youtube.com/@katelyntarver
+[_kikuo_]: https://www.youtube.com/@kikuo_sound
 [_Kimbra_]: https://www.youtube.com/@kimbramusic
 [_King Mala_]: https://www.youtube.com/@KiNGMALA
 [_Kings Elliot_]: https://www.youtube.com/@KingsElliot
@@ -1257,6 +1276,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Sadie Fine_]: https://www.youtube.com/@SadieFineSingsFine
 [_Scene Queen_]: https://www.youtube.com/@scenequeenrocks
 [_SERAINA TELLI_]: https://www.youtube.com/@serainatelli
+[_Seven Blood_]: https://www.youtube.com/@SevenBloodOfficial
 [_Skillet_]: https://www.youtube.com/@skilletband
 [_Sonia Stein_]: https://www.youtube.com/@SoniaStein
 [_Sophia Alexa_]: https://www.youtube.com/@SophiaAlexa
