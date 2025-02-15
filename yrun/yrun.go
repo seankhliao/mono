@@ -9,6 +9,7 @@ import (
 	"net"
 	"net/http"
 	"net/http/pprof"
+	"net/url"
 	"os"
 	"os/signal"
 	"runtime/debug"
@@ -21,7 +22,7 @@ import (
 	"go.seankhliao.com/mono/yhttp"
 	"go.seankhliao.com/mono/yo11y"
 	"gocloud.dev/blob"
-	_ "gocloud.dev/blob/fileblob"
+	"gocloud.dev/blob/fileblob"
 	_ "gocloud.dev/blob/gcsblob"
 	_ "gocloud.dev/blob/memblob"
 	"golang.org/x/sync/errgroup"
@@ -99,7 +100,15 @@ func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
 	}()
 
 	// storage
-	bkt, err := blob.OpenBucket(ctx, "file://"+runConfig.Store)
+	bkt, err := (&fileblob.URLOpener{
+		Options: fileblob.Options{
+			NoTempDir: true,
+		},
+	}).OpenBucketURL(ctx, &url.URL{
+		Scheme: fileblob.Scheme,
+		Path:   runConfig.Store,
+	})
+	// bkt, err := blob.OpenBucket(ctx, "file://"+runConfig.Store)
 	if err != nil {
 		return fmt.Errorf("open storage dir: %w", err)
 	}

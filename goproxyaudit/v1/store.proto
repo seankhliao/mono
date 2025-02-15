@@ -1,0 +1,43 @@
+edition = "2023";
+
+package goproxyaudit.v1;
+
+// import "google/protobuf/duration.proto";
+
+import "google/protobuf/timestamp.proto";
+
+message Store {
+  map<string, ModuleSegment> root = 1;
+
+  google.protobuf.Timestamp golang_org_last_index = 10;
+}
+
+message ModuleSegment {
+  Module module = 1;
+  map<string, ModuleSegment> children = 2;
+}
+
+message Module {
+  string module_name = 1;
+
+
+  string latest =2;
+  repeated ModuleVersion versions = 3;
+}
+
+message ModuleVersion {
+  string version = 1;
+
+  google.protobuf.Timestamp golang_org_indexed = 10;
+  bool golang_org_cached = 11;
+  string golang_org_error = 13;
+  bytes golang_org_sum = 14;
+  string golang_org_commit = 15;
+
+  google.protobuf.Timestamp direct_checked = 20;
+  string direct_host = 21;
+  string direct_vcs = 22;
+  string direct_error = 23;
+  string direct_sum = 24;
+  string direct_commit = 25;
+}

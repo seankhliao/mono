@@ -48,7 +48,7 @@ spec:
     targetPort: http
   - appProtocol: http
     name: debug
-    port: 8081
+    port: 8082
     protocol: TCP
     targetPort: debug
   selector:
@@ -104,8 +104,12 @@ spec:
           ports:
             - containerPort: 8080
               name: http
-            - containerPort: 8081
+            - containerPort: 8082
               name: debug
+          resources:
+            limits:
+              cpu: 6
+              memory: 8Gi
           volumeMounts:
             - name: data
               mountPath: /data

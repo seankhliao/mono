@@ -2,18 +2,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ghdefaults
+  name: goproxyaudit
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   labels:
-    app.kubernetes.io/name: ghdefaults
-  name: ghdefaults
-  namespace: ghdefaults
+    app.kubernetes.io/name: goproxyaudit
+  name: goproxyaudit
+  namespace: goproxyaudit
 spec:
   hostnames:
-  - ghdefaults.liao.dev
+  - goproxyaudit.liao.dev
   parentRefs:
   - group: gateway.networking.k8s.io
     kind: Gateway
@@ -23,7 +23,7 @@ spec:
   - backendRefs:
     - group: ""
       kind: Service
-      name: ghdefaults
+      name: goproxyaudit
       port: 80
       weight: 1
     matches:
@@ -36,9 +36,9 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/name: ghdefaults
-  name: ghdefaults
-  namespace: ghdefaults
+    app.kubernetes.io/name: goproxyaudit
+  name: goproxyaudit
+  namespace: goproxyaudit
 spec:
   ports:
   - appProtocol: http
@@ -52,23 +52,23 @@ spec:
     protocol: TCP
     targetPort: debug
   selector:
-    app.kubernetes.io/name: ghdefaults
+    app.kubernetes.io/name: goproxyaudit
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.31.1-standalone/deployment-apps-v1.json
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ghdefaults
-  namespace: ghdefaults
+  name: goproxyaudit
+  namespace: goproxyaudit
 spec:
   revisionHistoryLimit: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: ghdefaults
+      app.kubernetes.io/name: goproxyaudit
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: ghdefaults
+        app.kubernetes.io/name: goproxyaudit
     spec:
       containers:
         - env:
@@ -93,14 +93,13 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: OTEL_RESOURCE_ATTRIBUTES
-              value: k8s.container.name=ghdefaults,service.instance.id=$(POD_UID),k8s.namespace.name=$(POD_NAMESPACE),k8s.pod.name=$(POD_NAME),k8s.pod.uid=$(POD_UID),k8s.node.name=$(NODE_NAME)
+              value: k8s.container.name=goproxyaudit,service.instance.id=$(POD_UID),k8s.namespace.name=$(POD_NAMESPACE),k8s.pod.name=$(POD_NAME),k8s.pod.uid=$(POD_UID),k8s.node.name=$(NODE_NAME)
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://otelcol.opentelemetry.svc:4317
-          envFrom:
-            - secretRef:
-                name: ghdefaults
-          image: registry.liao.dev/ghdefaults
-          name: ghdefaults
+            - name: LOG_LEVEL
+              value: debug
+          image: registry.liao.dev/goproxyaudit
+          name: goproxyaudit
           ports:
             - containerPort: 8080
               name: http
@@ -110,12 +109,19 @@ spec:
             limits:
               cpu: 6
               memory: 8Gi
+          volumeMounts:
+            - name: data
+              mountPath: /data
       enableServiceLinks: false
-      serviceAccountName: ghdefaults
+      serviceAccountName: goproxyaudit
+      volumes:
+        - name: data
+          hostPath:
+            path: /opt/volumes/goproxyaudit
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/v1.31.1-standalone/serviceaccount-v1.json
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: ghdefaults
-  namespace: ghdefaults
+  name: goproxyaudit
+  namespace: goproxyaudit
