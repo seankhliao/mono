@@ -2,6 +2,7 @@ package homepage
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"net/http"
 	"time"
@@ -28,7 +29,7 @@ type App struct {
 	b    []byte
 }
 
-func New(c Config, o yo11y.O11y) (*App, error) {
+func New(ctx context.Context, c Config, o yo11y.O11y) (*App, error) {
 	ro := webstyle.NewOptions(c.Host, c.Host, []gomponents.Node{
 		html.H3(html.Em(gomponents.Text("inter")), gomponents.Text("webs")),
 		html.P(

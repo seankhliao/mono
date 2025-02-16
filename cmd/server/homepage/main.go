@@ -1,12 +1,8 @@
 package main
 
 import (
-	"context"
-
 	"go.seankhliao.com/mono/homepage"
-	"go.seankhliao.com/mono/yo11y"
 	"go.seankhliao.com/mono/yrun"
-	"gocloud.dev/blob"
 )
 
 func main() {
@@ -14,9 +10,7 @@ func main() {
 		Config: homepage.Config{
 			Host: "justia.liao.dev",
 		},
-		New: func(ctx context.Context, c homepage.Config, b *blob.Bucket, o yo11y.O11y) (*homepage.App, error) {
-			return homepage.New(c, o)
-		},
+		New: homepage.New,
 
 		HTTP: homepage.Register,
 	})

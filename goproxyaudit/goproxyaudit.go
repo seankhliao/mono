@@ -7,28 +7,20 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
-	"runtime"
-	"slices"
-	"strings"
 	"time"
 
+	"github.com/cockroachdb/pebble"
 	"github.com/go-json-experiment/json"
 	"github.com/go-json-experiment/json/jsontext"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	goproxyauditv1 "go.seankhliao.com/mono/goproxyaudit/v1"
 	"go.seankhliao.com/mono/yhttp"
+	"go.seankhliao.com/mono/ykv"
 	"go.seankhliao.com/mono/yo11y"
-	"go.seankhliao.com/mono/ystore"
-	"gocloud.dev/blob"
-	"golang.org/x/mod/semver"
-	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func Register(a *App, r yhttp.Registrar) {
-	// r.Handle("GET /data", http.StripPrefix("/data", (http.FileServerFS(a.bkt))))
-	r.Pattern("GET", "", "/view/{mod...}", a.viewModule)
-	r.Pattern("GET", "", "/stats", a.stats)
 }
 
 func Background(a *App) []func(context.Context) error {
@@ -39,10 +31,7 @@ func Background(a *App) []func(context.Context) error {
 
 func Shutdown(a *App) []func(context.Context) error {
 	return []func(context.Context) error{
-		func(ctx context.Context) error {
-			a.store.Sync(ctx, true)
-			return nil
-		},
+		a.kv.Shutdown,
 	}
 }
 
@@ -54,10 +43,12 @@ type App struct {
 	http *http.Client
 	o    yo11y.O11y
 
-	store *ystore.Store[*goproxyauditv1.Store]
+	// progress/since
+	// module/<module>/version/<version>/info
+	kv *ykv.KV
 }
 
-func New(ctx context.Context, c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
+func New(ctx context.Context, c Config, o yo11y.O11y) (*App, error) {
 	var a App
 
 	a.http = &http.Client{
@@ -69,11 +60,7 @@ func New(ctx context.Context, c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, e
 	a.o = o.Sub("goproxyaudit")
 
 	var err error
-	a.store, err = ystore.New(ctx, bkt, "goproxyaudit.pb.zstd", func() *goproxyauditv1.Store {
-		return goproxyauditv1.Store_builder{
-			Root: make(map[string]*goproxyauditv1.ModuleSegment),
-		}.Build()
-	})
+	a.kv, err = ykv.New(ctx, "/data/db.pebble")
 	if err != nil {
 		return nil, fmt.Errorf("init store: %w", err)
 	}
@@ -109,12 +96,18 @@ func (a *App) watchIndex(ctx context.Context) error {
 }
 
 func (a *App) updateFromIndex(ctx context.Context) (time.Time, error) {
-	defer runtime.GC()
+	ctx, span := a.o.T.Start(ctx, "updateFromIndex")
+	defer span.End()
 
-	var since time.Time
-	a.store.RDo(ctx, func(s *goproxyauditv1.Store) {
-		since = s.GetGolangOrgLastIndex().AsTime()
-	})
+	// last processed time
+	kvTimestamp := ykv.View[timestamppb.Timestamp](a.kv)
+	sinceTS, err := kvTimestamp.Get("progress/since")
+	if err != nil {
+		return time.Time{}, fmt.Errorf("read last")
+	}
+	since := sinceTS.AsTime()
+
+	// fetch
 	uri := indexURL + since.Format(time.RFC3339)
 	req, err := http.NewRequestWithContext(ctx, "GET", uri, http.NoBody)
 	if err != nil {
@@ -126,68 +119,49 @@ func (a *App) updateFromIndex(ctx context.Context) (time.Time, error) {
 	}
 	defer res.Body.Close()
 
+	// process each record
+	kvMod := ykv.View[goproxyauditv1.ModuleVersion](a.kv)
 	jtdec := jsontext.NewDecoder(res.Body)
-
-	var processed, added int
-	a.store.Do(ctx, func(s *goproxyauditv1.Store) {
-		for {
-			var rec IndexRecord
-			err = json.UnmarshalDecode(jtdec, &rec)
-			if errors.Is(err, io.EOF) {
-				break
-			} else if err != nil {
-				err = fmt.Errorf("decode record: %w", err)
-				break
-			}
-
-			processed++
-
-			segment := findSegment(s, rec.Path)
-			module := segment.GetModule()
-
-			if module == nil {
-				module = goproxyauditv1.Module_builder{
-					ModuleName: &rec.Path,
-				}.Build()
-				segment.SetModule(module)
-			}
-
-			moduleVersions := module.GetVersions()
-			idx, found := slices.BinarySearchFunc(moduleVersions, rec.Version, func(e *goproxyauditv1.ModuleVersion, t string) int {
-				return semver.Compare(e.GetVersion(), t)
-			})
-			if !found {
-				moduleVersions = slices.Insert(moduleVersions, idx, goproxyauditv1.ModuleVersion_builder{
-					Version:          &rec.Version,
-					GolangOrgIndexed: timestamppb.New(rec.Timestamp),
-				}.Build())
-				added++
-			} else {
-				a.o.L.LogAttrs(ctx, slog.LevelDebug, "duplicate module in index",
-					slog.String("path", rec.Path),
-					slog.Group("old",
-						slog.String("version", moduleVersions[idx].GetVersion()),
-						slog.Time("ts", moduleVersions[idx].GetGolangOrgIndexed().AsTime()),
-					),
-					slog.Group("new",
-						slog.String("version", rec.Version),
-						slog.Time("ts", rec.Timestamp),
-					),
-				)
-			}
-
-			module.SetVersions(moduleVersions)
-			module.SetLatest(moduleVersions[len(moduleVersions)-1].GetVersion())
-
-			since = rec.Timestamp
+	var processed int
+	for {
+		var rec IndexRecord
+		err = json.UnmarshalDecode(jtdec, &rec)
+		if errors.Is(err, io.EOF) {
+			break
+		} else if err != nil {
+			return since, a.o.Err(ctx, "decode record", err,
+				slog.String("module", rec.Path),
+			)
 		}
 
-		s.SetGolangOrgLastIndex(timestamppb.New(since))
-	})
+		processed++
 
+		key := fmt.Sprintf("module/%s/version/%s/info", rec.Path, rec.Version)
+		mod, err := kvMod.Get(key)
+		if errors.Is(err, pebble.ErrNotFound) {
+			mod = goproxyauditv1.ModuleVersion_builder{
+				Version:          &rec.Version,
+				GolangOrgIndexed: timestamppb.New(rec.Timestamp),
+			}.Build()
+		} else if err != nil {
+			return since, a.o.Err(ctx, "get module from kv store", err,
+				slog.String("key", key),
+			)
+		}
+
+		err = kvMod.Set(key, mod)
+		if err != nil {
+			return since, a.o.Err(ctx, "store module to kv store", err,
+				slog.String("key", key),
+			)
+		}
+
+		since = rec.Timestamp
+	}
+
+	kvTimestamp.Set("progress/since", timestamppb.New(since))
 	a.o.L.LogAttrs(ctx, slog.LevelInfo, "updated from index.golang.org",
 		slog.Int("processed", processed),
-		slog.Int("added", added),
 		slog.Time("last", since),
 	)
 
@@ -198,63 +172,4 @@ type IndexRecord struct {
 	Path      string
 	Version   string
 	Timestamp time.Time
-}
-
-func (a *App) viewModule(rw http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	moduleName := r.PathValue("mod")
-
-	var module *goproxyauditv1.Module
-	a.store.RDo(ctx, func(s *goproxyauditv1.Store) {
-		segment := findSegment(s, moduleName)
-		module = segment.GetModule()
-	})
-
-	encoder := protojson.MarshalOptions{Multiline: true}
-	b, err := encoder.Marshal(module)
-	if err != nil {
-		a.o.HTTPErr(ctx, "marshal module", err, rw, http.StatusInternalServerError,
-			slog.String("module.path", moduleName),
-		)
-		return
-	}
-
-	rw.Write(b)
-}
-
-func findSegment(s *goproxyauditv1.Store, moduleName string) *goproxyauditv1.ModuleSegment {
-	modsegs := strings.Split(moduleName, "/")
-	hostname := modsegs[0]
-	root := s.GetRoot()
-	if len(root) == 0 {
-		root = make(map[string]*goproxyauditv1.ModuleSegment)
-		s.SetRoot(root)
-	}
-	segment, ok := root[hostname]
-	if !ok {
-		segment = goproxyauditv1.ModuleSegment_builder{
-			Children: make(map[string]*goproxyauditv1.ModuleSegment),
-		}.Build()
-		root[hostname] = segment
-	}
-	modsegs = modsegs[1:]
-
-	for _, modseg := range modsegs {
-		children := segment.GetChildren()
-		if len(children) == 0 {
-			children = make(map[string]*goproxyauditv1.ModuleSegment)
-			segment.SetChildren(children)
-		}
-		var ok bool
-		segment, ok = children[modseg]
-		if !ok {
-			segment = goproxyauditv1.ModuleSegment_builder{
-				Children: make(map[string]*goproxyauditv1.ModuleSegment),
-			}.Build()
-			children[modseg] = segment
-		}
-	}
-
-	return segment
 }

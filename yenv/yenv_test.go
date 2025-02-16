@@ -4,6 +4,7 @@ import (
 	"encoding"
 	"slices"
 	"testing"
+	"time"
 )
 
 var environ = []string{
@@ -26,6 +27,7 @@ var environ = []string{
 	"TEST_P16_C2=42",
 	"TEST_P16_C3=true",
 	"TEST_P16_C4=frob2",
+	"TEST_P16_C5=5h4m3s",
 }
 
 var want = testStruct{
@@ -49,6 +51,7 @@ var want = testStruct{
 		42,
 		true,
 		unmarshaler{"unmarshaler called"},
+		5*time.Hour + 4*time.Minute + 3*time.Second,
 	},
 }
 
@@ -74,10 +77,11 @@ func TestPrint(t *testing.T) {
 }
 
 type childStruct struct {
-	C1 string      `env:"C1"`
-	C2 int         `env:"C2"`
-	C3 bool        `env:"C3"`
-	C4 unmarshaler `env:"C4"`
+	C1 string        `env:"C1"`
+	C2 int           `env:"C2"`
+	C3 bool          `env:"C3"`
+	C4 unmarshaler   `env:"C4"`
+	C5 time.Duration `env:"C5"`
 }
 type testStruct struct {
 	P1  string      `env:"P1"`

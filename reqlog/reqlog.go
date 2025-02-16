@@ -1,6 +1,7 @@
 package reqlog
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"log/slog"
@@ -26,7 +27,7 @@ type App struct {
 	config Config
 }
 
-func New(c Config, o yo11y.O11y) (*App, error) {
+func New(ctx context.Context, c Config, o yo11y.O11y) (*App, error) {
 	return &App{
 		config: c,
 		o:      o.Sub("reqlog"),

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"strings"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
 	"github.com/google/go-github/v60/github"
@@ -20,8 +19,8 @@ import (
 )
 
 func Register(a *App, r yhttp.Registrar) {
-	r.Pattern("GET", a.host, "/robots.txt", a.robots)
-	r.Pattern("POST", a.host, "/webhook", a.ServeHTTP)
+	r.Pattern("GET", a.Host, "/robots.txt", a.robots)
+	r.Pattern("POST", a.Host, "/webhook", a.ServeHTTP)
 }
 
 type Config struct {
@@ -32,62 +31,59 @@ type Config struct {
 }
 
 type App struct {
-	appID         int64
-	webhookSecret string
-	privateKey    string
-	host          string
+	Config
 
 	o      yo11y.O11y
 	mOwner metric.Int64Counter
 }
 
-func New(c Config, o yo11y.O11y) (*App, error) {
+func New(ctx context.Context, c Config, o yo11y.O11y) (*App, error) {
 	a := &App{
-		host:          c.Host,
-		webhookSecret: strings.TrimSpace(c.WebhookSecret),
-		privateKey:    c.PrivateKey + "\n",
-		appID:         c.AppID,
+		Config: c,
 
 		o: o.Sub("ghdefaults"),
 	}
 
 	a.mOwner, _ = a.o.M.Int64Counter("mono.ghdefaults.repo_updated", metric.WithUnit("repository"))
-
 	return a, nil
 }
 
 var defaultConfig = map[string]github.Repository{
 	"erred": {
-		AllowMergeCommit:    github.Bool(false),
-		AllowUpdateBranch:   github.Bool(true),
-		AllowAutoMerge:      github.Bool(true),
-		AllowSquashMerge:    github.Bool(true),
-		AllowRebaseMerge:    github.Bool(false),
-		DeleteBranchOnMerge: github.Bool(true),
-		HasIssues:           github.Bool(false),
-		HasWiki:             github.Bool(false),
-		HasPages:            github.Bool(false),
-		HasProjects:         github.Bool(false),
-		HasDownloads:        github.Bool(false),
-		HasDiscussions:      github.Bool(false),
-		IsTemplate:          github.Bool(false),
-		Archived:            github.Bool(true),
+		AllowMergeCommit:    ptr(false),
+		AllowUpdateBranch:   ptr(true),
+		AllowAutoMerge:      ptr(true),
+		AllowSquashMerge:    ptr(true),
+		AllowRebaseMerge:    ptr(false),
+		DeleteBranchOnMerge: ptr(true),
+		HasIssues:           ptr(false),
+		HasWiki:             ptr(false),
+		HasPages:            ptr(false),
+		HasProjects:         ptr(false),
+		HasDownloads:        ptr(false),
+		HasDiscussions:      ptr(false),
+		IsTemplate:          ptr(false),
+		Archived:            ptr(true),
 	},
 	"seankhliao": {
-		AllowMergeCommit:    github.Bool(false),
-		AllowUpdateBranch:   github.Bool(true),
-		AllowAutoMerge:      github.Bool(true),
-		AllowSquashMerge:    github.Bool(true),
-		AllowRebaseMerge:    github.Bool(false),
-		DeleteBranchOnMerge: github.Bool(true),
-		HasIssues:           github.Bool(false),
-		HasWiki:             github.Bool(false),
-		HasPages:            github.Bool(false),
-		HasProjects:         github.Bool(false),
-		HasDownloads:        github.Bool(false),
-		HasDiscussions:      github.Bool(false),
-		IsTemplate:          github.Bool(false),
+		AllowMergeCommit:    ptr(false),
+		AllowUpdateBranch:   ptr(true),
+		AllowAutoMerge:      ptr(true),
+		AllowSquashMerge:    ptr(true),
+		AllowRebaseMerge:    ptr(false),
+		DeleteBranchOnMerge: ptr(true),
+		HasIssues:           ptr(false),
+		HasWiki:             ptr(false),
+		HasPages:            ptr(false),
+		HasProjects:         ptr(false),
+		HasDownloads:        ptr(false),
+		HasDiscussions:      ptr(false),
+		IsTemplate:          ptr(false),
 	},
+}
+
+func ptr[T any](t T) *T {
+	return &t
 }
 
 var (
@@ -114,10 +110,10 @@ func (a *App) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	lvl := slog.LevelInfo
-	if ig := errors.Is(err, ErrIgnore); err != nil && !ig {
+	if ignore := errors.Is(err, ErrIgnore); err != nil && !ignore {
 		a.o.HTTPErr(ctx, "process event", err, rw, http.StatusInternalServerError)
 		return
-	} else if ig {
+	} else if ignore {
 		lvl = slog.LevelDebug
 	}
 	a.o.L.LogAttrs(ctx, lvl, "processed event",
@@ -130,7 +126,7 @@ func (a *App) getPayload(ctx context.Context, r *http.Request) (any, string, err
 	_, span := a.o.T.Start(ctx, "getPayload")
 	defer span.End()
 
-	payload, err := github.ValidatePayload(r, []byte(a.webhookSecret))
+	payload, err := github.ValidatePayload(r, []byte(a.WebhookSecret))
 	if err != nil {
 		return nil, "", fmt.Errorf("validate: %w", err)
 	}
@@ -220,7 +216,7 @@ func (a *App) setDefaults(ctx context.Context, installID int64, owner, repo stri
 
 	config := defaultConfig[owner]
 	tr := http.DefaultTransport
-	tr, err := ghinstallation.NewAppsTransport(tr, a.appID, []byte(a.privateKey))
+	tr, err := ghinstallation.NewAppsTransport(tr, a.AppID, []byte(a.PrivateKey))
 	if err != nil {
 		return fmt.Errorf("create ghinstallation transport: %w", err)
 	}
@@ -242,7 +238,7 @@ func (a *App) setDefaults(ctx context.Context, installID int64, owner, repo stri
 	}
 	if fork {
 		_, _, err = client.Repositories.EditActionsPermissions(ctx, owner, repo, github.ActionsPermissionsRepository{
-			Enabled: github.Bool(false),
+			Enabled: ptr(false),
 		})
 		if err != nil {
 			return fmt.Errorf("disable actions: %w", err)

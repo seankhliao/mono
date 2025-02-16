@@ -14,7 +14,6 @@ import (
 	"go.seankhliao.com/mono/yhttp"
 	"go.seankhliao.com/mono/yo11y"
 	"go.seankhliao.com/mono/yrun"
-	"gocloud.dev/blob"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
@@ -37,7 +36,7 @@ type App struct {
 	indexContent []byte
 }
 
-func New(ctx context.Context, c Config, _ *blob.Bucket, o yo11y.O11y) (*App, error) {
+func New(ctx context.Context, c Config, o yo11y.O11y) (*App, error) {
 	index, err := indexPage(c.Host)
 	if err != nil {
 		return nil, fmt.Errorf("render index template: %w", err)

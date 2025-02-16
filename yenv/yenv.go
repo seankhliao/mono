@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Map is a convenience function to turn key=value environment variables
@@ -91,37 +92,48 @@ func FromEnv(envs map[string]string, prefix string, t any) error {
 			continue
 		}
 
-		switch structField.Type.Kind() {
-		case reflect.Bool:
-			v, err := strconv.ParseBool(envVal)
+		switch structField.Type {
+		case reflect.TypeFor[time.Duration]():
+			v, err := time.ParseDuration(envVal)
 			if err != nil {
 				fieldErr.err = err
 				return fieldErr
 			}
-			field.SetBool(v)
-		case reflect.Float32, reflect.Float64:
-			v, err := strconv.ParseFloat(envVal, 64)
-			if err != nil {
-				fieldErr.err = err
-				return fieldErr
+			field.Set(reflect.ValueOf(v))
+		default:
+
+			switch structField.Type.Kind() {
+			case reflect.Bool:
+				v, err := strconv.ParseBool(envVal)
+				if err != nil {
+					fieldErr.err = err
+					return fieldErr
+				}
+				field.SetBool(v)
+			case reflect.Float32, reflect.Float64:
+				v, err := strconv.ParseFloat(envVal, 64)
+				if err != nil {
+					fieldErr.err = err
+					return fieldErr
+				}
+				field.SetFloat(v)
+			case reflect.Int, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Int8:
+				v, err := strconv.ParseInt(envVal, 10, 64)
+				if err != nil {
+					fieldErr.err = err
+					return fieldErr
+				}
+				field.SetInt(v)
+			case reflect.String:
+				field.SetString(envVal)
+			case reflect.Uint, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uint8:
+				v, err := strconv.ParseUint(envVal, 10, 64)
+				if err != nil {
+					fieldErr.err = err
+					return fieldErr
+				}
+				field.SetUint(v)
 			}
-			field.SetFloat(v)
-		case reflect.Int, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Int8:
-			v, err := strconv.ParseInt(envVal, 10, 64)
-			if err != nil {
-				fieldErr.err = err
-				return fieldErr
-			}
-			field.SetInt(v)
-		case reflect.String:
-			field.SetString(envVal)
-		case reflect.Uint, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uint8:
-			v, err := strconv.ParseUint(envVal, 10, 64)
-			if err != nil {
-				fieldErr.err = err
-				return fieldErr
-			}
-			field.SetUint(v)
 		}
 	}
 	return nil
@@ -156,7 +168,11 @@ func Print(prefix string, t any) []string {
 
 		field := confStruct.Field(fi).Interface()
 
-		if u, ok := field.(encoding.TextMarshaler); ok {
+		switch u := field.(type) {
+		case time.Duration:
+			out = append(out, fmt.Sprintf("%s=%s", envKey, u.String()))
+			continue
+		case encoding.TextMarshaler:
 			b, _ := u.MarshalText()
 			out = append(out, fmt.Sprintf("%s=%s", envKey, string(b)))
 			continue

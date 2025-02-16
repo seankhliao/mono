@@ -5,7 +5,6 @@ import (
 	"crypto/rand"
 	_ "embed"
 	"encoding/base32"
-	"fmt"
 	"net/http"
 
 	"github.com/go-webauthn/webauthn/protocol"
@@ -16,7 +15,6 @@ import (
 	"go.seankhliao.com/mono/yhttp"
 	"go.seankhliao.com/mono/yo11y"
 	"go.seankhliao.com/mono/ystore"
-	"gocloud.dev/blob"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -59,7 +57,7 @@ type App struct {
 	store *ystore.Store[*authv1.Store]
 }
 
-func New(c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
+func New(ctx context.Context, c Config, o yo11y.O11y) (*App, error) {
 	a := &App{
 		host:         c.Host,
 		cookieName:   c.CookieName,
@@ -88,24 +86,23 @@ func New(c Config, bkt *blob.Bucket, o yo11y.O11y) (*App, error) {
 		return nil, err
 	}
 
-	ctx := context.Background()
-	a.store, err = ystore.New(ctx, bkt, "auth.pb.zstd", func() *authv1.Store {
-		return authv1.Store_builder{
-			Users:    make(map[int64]*authv1.UserInfo),
-			Sessions: make(map[string]*authv1.TokenInfo),
-		}.Build()
-	})
-	if err != nil {
-		return nil, fmt.Errorf("init store: %w", err)
-	}
-	a.store.Do(ctx, func(s *authv1.Store) {
-		if s.GetSessions() == nil {
-			s.SetSessions(make(map[string]*authv1.TokenInfo))
-		}
-		if s.GetUsers() == nil {
-			s.SetUsers(make(map[int64]*authv1.UserInfo))
-		}
-	})
+	// a.store, err = ystore.New(ctx, bkt, "auth.pb.zstd", func() *authv1.Store {
+	// 	return authv1.Store_builder{
+	// 		Users:    make(map[int64]*authv1.UserInfo),
+	// 		Sessions: make(map[string]*authv1.TokenInfo),
+	// 	}.Build()
+	// })
+	// if err != nil {
+	// 	return nil, fmt.Errorf("init store: %w", err)
+	// }
+	// a.store.Do(ctx, func(s *authv1.Store) {
+	// 	if s.GetSessions() == nil {
+	// 		s.SetSessions(make(map[string]*authv1.TokenInfo))
+	// 	}
+	// 	if s.GetUsers() == nil {
+	// 		s.SetUsers(make(map[int64]*authv1.UserInfo))
+	// 	}
+	// })
 
 	// a.store.Do(ctx, a.migrate)
 	// a.store.Sync(ctx)

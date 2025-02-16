@@ -58,6 +58,9 @@ type O11y struct {
 type O11yReg struct {
 	LogZpage   http.Handler
 	TraceZpage http.Handler
+
+	ShutTrace  func(context.Context) error
+	ShutMetric func(context.Context) error
 }
 
 func (o O11y) Sub(name string) O11y {
@@ -156,14 +159,14 @@ func New(c Config) (O11y, O11yReg) {
 		)
 	}))
 
-	r.TraceZpage, err = NewTrace(ctx, res, c)
+	r.TraceZpage, r.ShutTrace, err = NewTrace(ctx, res, c)
 	if err != nil {
 		otelLog.LogAttrs(ctx, slog.LevelWarn, "failed to create trace exporter", slog.String("error", err.Error()))
 		otel.SetTracerProvider(tracenoop.NewTracerProvider())
 	}
 	o.T = otel.Tracer(shortName)
 
-	err = NewMetric(ctx, res, c)
+	r.ShutMetric, err = NewMetric(ctx, res, c)
 	if err != nil {
 		otelLog.LogAttrs(ctx, slog.LevelWarn, "failed to create metric exporter", slog.String("error", err.Error()))
 		otel.SetMeterProvider(noop.NewMeterProvider())
@@ -212,12 +215,12 @@ func NewLog(ctx context.Context, res *resource.Resource, c Config) (*slog.Logger
 	return logger, handler, zpage, nil
 }
 
-func NewMetric(ctx context.Context, res *resource.Resource, c Config) error {
+func NewMetric(ctx context.Context, res *resource.Resource, c Config) (func(context.Context) error, error) {
 	me, err := otlpmetricgrpc.New(ctx,
 		otlpmetricgrpc.WithServiceConfig(defaultServiceConfig),
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	mp := sdkmetric.NewMeterProvider(
 		sdkmetric.WithResource(res),
@@ -236,10 +239,11 @@ func NewMetric(ctx context.Context, res *resource.Resource, c Config) error {
 		),
 	)
 	otel.SetMeterProvider(mp)
-	return nil
+
+	return me.Shutdown, nil
 }
 
-func NewTrace(ctx context.Context, res *resource.Resource, c Config) (http.Handler, error) {
+func NewTrace(ctx context.Context, res *resource.Resource, c Config) (http.Handler, func(context.Context) error, error) {
 	ztrace := zpages.NewSpanProcessor()
 	traceZpage := zpages.NewTracezHandler(ztrace)
 
@@ -247,7 +251,7 @@ func NewTrace(ctx context.Context, res *resource.Resource, c Config) (http.Handl
 		otlptracegrpc.WithServiceConfig(defaultServiceConfig),
 	)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	tp := sdktrace.NewTracerProvider(
 		sdktrace.WithResource(res),
@@ -260,5 +264,5 @@ func NewTrace(ctx context.Context, res *resource.Resource, c Config) (http.Handl
 		propagation.TraceContext{},
 	))
 
-	return traceZpage, nil
+	return traceZpage, te.Shutdown, nil
 }
