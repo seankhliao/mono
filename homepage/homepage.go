@@ -1,3 +1,4 @@
+// homepage provides a simple static site for an underlying machine host.
 package homepage
 
 import (
@@ -16,17 +17,17 @@ import (
 )
 
 func Register(a *App, r yhttp.Registrar) {
-	r.Pattern("GET", a.host, "/{$}", a.ServeHTTP, httpencoding.Handler)
+	r.Pattern("GET", a.Host, "/{$}", a.ServeHTTP, httpencoding.Handler)
 }
 
 type Config struct {
-	Host string
+	Host string `env:"HOST"`
 }
 
 type App struct {
-	host string
-	t    time.Time
-	b    []byte
+	Config
+	t time.Time
+	b []byte
 }
 
 func New(ctx context.Context, c Config, o yo11y.O11y) (*App, error) {
@@ -44,9 +45,9 @@ func New(ctx context.Context, c Config, o yo11y.O11y) (*App, error) {
 	}
 
 	return &App{
-		host: c.Host,
-		t:    time.Now(),
-		b:    buf.Bytes(),
+		Config: c,
+		t:      time.Now(),
+		b:      buf.Bytes(),
 	}, nil
 }
 
