@@ -85,6 +85,8 @@ import (
         "golang.org/x/tools/go/packages"
 )
 
+var generatedRe = regexp.MustCompile(`(?m)^// Code generated .* DO NOT EDIT\.$`)
+
 func TestAnalysis(t *testing.T) {
         bi, ok := debug.ReadBuildInfo()
         if !ok {
