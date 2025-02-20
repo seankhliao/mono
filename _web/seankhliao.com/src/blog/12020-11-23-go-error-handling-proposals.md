@@ -2,7 +2,7 @@
 
 ## overview of error handling proposals in go
 
-_note:_ updated 12025-03-1
+_note:_ updated 12025-02-20
 
 ### _error_ handling
 
@@ -84,6 +84,7 @@ some rely on `wrap` being smart and passing through `nil` (so not `fmt.Errorf`),
 - [`x, err := foo()`<br>`err ? return _, wrap(err)`](https://go.dev/issue/66309)
 - [`x, err := foo()`<br>`on err, return _, wrap(err)`](https://go.dev/issue/32611)
 - [`x, err := foo()`<br>`on err return handler()`](https://go.dev/issue/48855)
+- [`x, err := foo()`<br>`err != nil ? return _, wrap(err)`](https://go.dev/issue/71808)
 - [`x, err := foo()`<br>`err ? { return _, wrap(err) }`](https://go.dev/issue/33067)
 - [`x, err := foo()`<br>`onErr { return _, wrap(err) }`](https://go.dev/issue/32946)
 - [`x, err := foo()`<br>`try err: _, wrap(err)`](https://go.dev/issue/56159)
@@ -134,6 +135,7 @@ some rely on `wrap` being smart and passing through `nil` (so not `fmt.Errorf`),
 - [`x := foo() ? wrap()`](https://gist.github.com/gregwebs/02479eeef8082cd199d9e6461cd1dab3)
 - [`x := foo() ? { return _, wrap(err) }`](https://go.dev/issue/71203),
   [additional discussion](https://go.dev/issue/71460)
+- [`x := foo() ? err { return _, wrap(err) }`](https://go.dev/issue/71528)
 - [`x := foo() ? err : _, wrap(err)`](https://go.dev/issue/65579)
 - [`x := foo() #@wrap()`](https://go.dev/issue/67251)
 - [`x := foo() @ return _, wrap(err)`](https://go.dev/issue/67859)
