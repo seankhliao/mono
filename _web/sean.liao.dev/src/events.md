@@ -19,7 +19,6 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-05-30_ Babymetal
 - _12025-05-03_ Aurora
 - _12025-04-17_ seven oops
-- _12025-04-12_ Bridear
 - _12025-03-27_ NERIAH
 - _12025-03-26_ WACK in the UK vol 5: Gang Parade, ASP, Kiss Kiss
 - _12025-03-25_ tiLLie
@@ -29,8 +28,24 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-02-28_ Clean Bandit
 - _12025-02-26_ Emei
 - _12025-02-25_ Pretty Guardian Sailor Moon
-- _12025-02-20_ Deyyess
-- _12025-02-19_ Phantom Siita
+
+##### _12025-02-20_ Deyyess
+
+With [bluegirl]
+
+Fine?
+
+##### _12025-02-19_ Phantom Siita
+
+It's been a while since a show completely had my attention that I forgot about the time,
+but [_Phantom Siita_] really did it.
+I thought it was an amazing show,
+even if they didn't have that much of their own songs.
+We got solos for each member,
+covers of [_Ado_] (their producer),
+and some other covers.
+I think most impressive was the overall theming,
+somewhat cute horror came across quite well on stage with their coordinated dancing. movements, and poses.
 
 ##### _12025-02-14_ ANKOR
 
@@ -1163,6 +1178,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Blackbriar_]: https://www.youtube.com/@blackbriarmusic
 [_Blackpink_]: https://www.youtube.com/@BLACKPINK
 [_Black Veil Brides_]: https://www.youtube.com/@blackveilbrides
+[_bluegirl_]: https://www.instagram.com/bluegirl
 [_briskin_]: https://www.youtube.com/@briskin01
 [_Caity Baser_]: https://www.youtube.com/@caitybaser
 [_Call Me Amour_]: https://www.youtube.com/@CALLMEAMOUR
@@ -1185,6 +1201,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Dead Pony_]: https://www.youtube.com/@deadponyband
 [_Delain_]: https://www.youtube.com/@delainofficial
 [_Detweiler_]: https://www.youtube.com/@detweiler5838
+[_Deyyess_]: https://www.youtube.com/@deyyess
 [_Echosmith_]: https://www.youtube.com/@echosmith
 [_Eden Hunter_]: https://www.youtube.com/@edenhunter_
 [_Ed Sheeran_]: https://www.youtube.com/@EdSheeran
@@ -1263,6 +1280,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Overlaps_]: https://www.youtube.com/@Overlaps
 [_Paris Paloma_]: https://www.youtube.com/@parispaloma
 [_Peach PRC_]: https://www.youtube.com/@PeachPrc
+[_Phantom Siita_]: https://www.youtube.com/@PhantomSiita
 [_phem_]: https://www.youtube.com/@phem4evr
 [_Pierce the Veil_]: https://www.youtube.com/@piercetheveil
 [_Poppy_]: https://www.youtube.com/@poppy
