@@ -29,6 +29,14 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-02-26_ Emei
 - _12025-02-25_ Pretty Guardian Sailor Moon
 
+##### _12025-02-23_ Cirque du Soleil: Corteo
+
+I've heard about [_Cirque du Soleil_] for a while,
+so finally getting to see them was quite something.
+It was themed, which was interesting to see how they mask their equipment,
+though I didn't really understand the storyline.
+I liked the aerial acrobatics the best.
+
 ##### _12025-02-20_ Deyyess
 
 With [bluegirl]
@@ -1194,6 +1202,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Chloe Levaillant_]: https://www.youtube.com/@chloelevaillant
 [_Chrissy Costanza_]: https://www.youtube.com/@chrissycostanza
 [_Christof Van Der Ven_]: https://www.youtube.com/@CHRISTOFVANDERVEN
+[_Cirque du Soleil_]: https://www.youtube.com/@CirqueduSoleil
 [_Clean Bandit_]: https://www.youtube.com/@cleanbandit
 [_Cloudy June_]: https://www.youtube.com/@CloudyJune
 [_Conquer Divide_]: https://www.youtube.com/@conquerdividemusic
