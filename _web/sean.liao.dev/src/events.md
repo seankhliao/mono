@@ -26,8 +26,29 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-03-13_ Clairo
 - _12025-03-01_ Natalie Jane
 - _12025-02-28_ Clean Bandit
-- _12025-02-26_ Emei
-- _12025-02-25_ Pretty Guardian Sailor Moon
+
+##### _12025-02-26_ Emei
+
+With [_Saint Clair_] and [_Haiden Henderson_]
+
+The opening acts were... forgettable.
+[_Saint Clair_] had some upbeat songs, [_Haiden Henderson_] seemed to mostly be covers?
+As for [_Emei_], it was quite the entertaining show,
+with a lot of songs that I played on repeat a while back...
+Every few shows, I see something weird,
+and this time it was an oversized slingshot,
+though I don't know what or why they fired something into the crowd.
+A+ audience interaction otherwise.
+
+##### _12025-02-25_ Pretty Guardian Sailor Moon: The Super Live
+
+[_Pretty Guardian Sailor Moon: The Super Live_] was an interesting musical to watch.
+A 2.5D musical meant a big screen as a backdrop that would show effects,
+and subtitles (the show was in Japanese).
+There was quite a bit of exposition,
+I guess it's hard to convey world building without it,
+but even without having seen any Sailor Moon content before,
+it was decently entertaining.
 
 ##### _12025-02-23_ Cirque du Soleil: Corteo
 
@@ -1216,6 +1237,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Ed Sheeran_]: https://www.youtube.com/@EdSheeran
 [_Elena Flury_]: https://www.youtube.com/@elenaflury
 [_Ellie Dixon_]: https://www.youtube.com/@EllieDixonMusic
+[_Emei_]: https://www.youtube.com/@its_emei
 [_Emi Jeen_]: https://www.youtube.com/@emijeenofficial
 [_Emilia Clarke_]: https://www.instagram.com/emilia_clarke
 [_Emlyn_]: https://www.youtube.com/@emlynmusicofficial
@@ -1233,6 +1255,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Gracey_]: https://www.youtube.com/@gracey
 [_Gretta Ray_]: https://www.youtube.com/@GrettaRay
 [_Griff_]: https://www.youtube.com/@wiffygriffy
+[_Haiden Henderson_]: https://www.youtube.com/@haidenhenderson
 [_HAIM_]: https://www.youtube.com/@HaimTheBand
 [_Halestorm_]: https://www.youtube.com/@HalestormRocks
 [_Halflives_]: https://www.youtube.com/@wehavehalflives
@@ -1293,6 +1316,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_phem_]: https://www.youtube.com/@phem4evr
 [_Pierce the Veil_]: https://www.youtube.com/@piercetheveil
 [_Poppy_]: https://www.youtube.com/@poppy
+[_Pretty Guardian Sailor Moon: The Super Live_]: https://sailormoonsuperliveuk.com/
 [_PVRIS_]: https://www.youtube.com/@PVRIS
 [_Radio Wolf_]: https://www.youtube.com/@RadioWolfMusic
 [_Rebecca Black_]: https://www.youtube.com/@rebecca
@@ -1301,6 +1325,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_RØRY_]: https://www.youtube.com/@its_r_o_r_y
 [_Sabrina Carpenter_]: https://www.youtube.com/@sabrinacarpenter
 [_Sadie Fine_]: https://www.youtube.com/@SadieFineSingsFine
+[_Saint Clair_]: https://www.instagram.com/thisissaintclair/
 [_Scene Queen_]: https://www.youtube.com/@scenequeenrocks
 [_SERAINA TELLI_]: https://www.youtube.com/@serainatelli
 [_Seven Blood_]: https://www.youtube.com/@SevenBloodOfficial
