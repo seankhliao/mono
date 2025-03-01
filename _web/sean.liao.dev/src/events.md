@@ -31,7 +31,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 We get to see [_Clean Bandit_] again,
 though it seems I only ever get to see them at charity events...
 Anyway, another amazing show,
-seems they've leaned more into collaboration with African / Carribean artists.
+seems they've leaned more into collaboration with African / Caribbean artists.
 The new songs sounded good,
 but of course, it's the old ones that gets everyone excited.
 
