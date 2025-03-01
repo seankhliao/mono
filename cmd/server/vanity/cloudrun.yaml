@@ -20,6 +20,12 @@ spec:
           env:
             - name: STORAGE_DIR
               value: "/tmp"
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_TRACES_EXPORTER
+              value: none
           ports:
             - containerPort: 8080
               name: http1

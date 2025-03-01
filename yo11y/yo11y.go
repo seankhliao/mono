@@ -15,17 +15,15 @@ import (
 
 	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/contrib/bridges/otelslog"
+	"go.opentelemetry.io/contrib/exporters/autoexport"
 	"go.opentelemetry.io/contrib/instrumentation/runtime"
 	"go.opentelemetry.io/contrib/zpages"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"
-	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
-	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/log/global"
 	"go.opentelemetry.io/otel/metric"
-	"go.opentelemetry.io/otel/metric/noop"
+	metricnoop "go.opentelemetry.io/otel/metric/noop"
 	"go.opentelemetry.io/otel/propagation"
 	sdklog "go.opentelemetry.io/otel/sdk/log"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
@@ -38,7 +36,7 @@ import (
 	"go.seankhliao.com/mono/multilog"
 )
 
-const defaultServiceConfig = `{"loadBalancingConfig":[{"round_robin":{}}]}`
+// const defaultServiceConfig = `{"loadBalancingConfig":[{"round_robin":{}}]}`
 
 type Config struct {
 	LogLevel  slog.Level `env:"LOG_LEVEL"`
@@ -169,7 +167,7 @@ func New(c Config) (O11y, O11yReg) {
 	r.ShutMetric, err = NewMetric(ctx, res, c)
 	if err != nil {
 		otelLog.LogAttrs(ctx, slog.LevelWarn, "failed to create metric exporter", slog.String("error", err.Error()))
-		otel.SetMeterProvider(noop.NewMeterProvider())
+		otel.SetMeterProvider(metricnoop.NewMeterProvider())
 	}
 	o.M = otel.Meter(shortName)
 
@@ -193,9 +191,7 @@ func NewLog(ctx context.Context, res *resource.Resource, c Config) (*slog.Logger
 		handler = slog.NewTextHandler(writer, &slog.HandlerOptions{Level: c.LogLevel})
 	}
 
-	le, err := otlploggrpc.New(ctx,
-		otlploggrpc.WithServiceConfig(defaultServiceConfig),
-	)
+	le, err := autoexport.NewLogExporter(ctx)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -216,17 +212,13 @@ func NewLog(ctx context.Context, res *resource.Resource, c Config) (*slog.Logger
 }
 
 func NewMetric(ctx context.Context, res *resource.Resource, c Config) (func(context.Context) error, error) {
-	me, err := otlpmetricgrpc.New(ctx,
-		otlpmetricgrpc.WithServiceConfig(defaultServiceConfig),
-	)
+	me, err := autoexport.NewMetricReader(ctx)
 	if err != nil {
 		return nil, err
 	}
 	mp := sdkmetric.NewMeterProvider(
 		sdkmetric.WithResource(res),
-		sdkmetric.WithReader(
-			sdkmetric.NewPeriodicReader(me),
-		),
+		sdkmetric.WithReader(me),
 		sdkmetric.WithView(
 			sdkmetric.NewView(sdkmetric.Instrument{
 				Kind: sdkmetric.InstrumentKindHistogram,
@@ -247,9 +239,7 @@ func NewTrace(ctx context.Context, res *resource.Resource, c Config) (http.Handl
 	ztrace := zpages.NewSpanProcessor()
 	traceZpage := zpages.NewTracezHandler(ztrace)
 
-	te, err := otlptracegrpc.New(ctx,
-		otlptracegrpc.WithServiceConfig(defaultServiceConfig),
-	)
+	te, err := autoexport.NewSpanExporter(ctx)
 	if err != nil {
 		return nil, nil, err
 	}
