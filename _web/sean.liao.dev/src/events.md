@@ -25,7 +25,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-03-14_ south arcade
 - _12025-03-13_ Clairo
 - _12025-03-01_ Natalie Jane
-- _12025-02-28_ Clean Bandit
+
+##### _12025-02-28_ Clean Bandit
+
+We get to see [_Clean Bandit_] again,
+though it seems I only ever get to see them at charity events...
+Anyway, another amazing show,
+seems they've leaned more into collaboration with African / Carribean artists.
+The new songs sounded good,
+but of course, it's the old ones that gets everyone excited.
 
 ##### _12025-02-26_ Emei
 
@@ -49,6 +57,7 @@ There was quite a bit of exposition,
 I guess it's hard to convey world building without it,
 but even without having seen any Sailor Moon content before,
 it was decently entertaining.
+It did have a bit of an old school comic vibe...
 
 ##### _12025-02-23_ Cirque du Soleil: Corteo
 
@@ -75,6 +84,8 @@ covers of [_Ado_] (their producer),
 and some other covers.
 I think most impressive was the overall theming,
 somewhat cute horror came across quite well on stage with their coordinated dancing. movements, and poses.
+I remember a comment from someone next to me:
+"their bangs don't move at all".
 
 ##### _12025-02-14_ ANKOR
 
