@@ -73,7 +73,8 @@ var categories = []struct {
 			"chinatown", "pasticceria", "uragano srl", "unico campania", "il gabbiano",
 			"la capannina", "bar tabacchi", "molo", "happy lamb hotpot",
 			"m&s earls", "covent garden market", "tesco", "costa", "cafe",
-			"kuba cabana", "taco stand", "ole & steen",
+			"kuba cabana", "taco stand", "ole & steen", "soderberg", "coffe",
+			"the lower third", "eventim", "misato", "o2 academy islington",
 		},
 		[]string{
 			"restaurants", "retail_stores",
@@ -129,7 +130,7 @@ var categories = []struct {
 		[]string{
 			"my o2 bill payment", "o2 balanceweb", "amznmktplace", "aliexpress", "h3g dd",
 			"gsuite", "o2 online", "amazon", "hutchison 3g", "google", "bic camera",
-			"framework", "hetzner", "viasat", "sp arace tech",
+			"framework", "hetzner", "viasat", "sp arace tech", "anker",
 		},
 		nil,
 	},
@@ -147,7 +148,7 @@ var categories = []struct {
 			"autolinee", "editerraneo grand hot", "trenitalia", "fiumicino aeroporto",
 			"sorrento", "ferryhopper", "funicolare", "lbergo excelsior",
 			"eav", "smartrip", "shinkansen", "seven bank", "jr west", "uber",
-			"vaa mobile app",
+			"vaa mobile app", "uscustoms",
 		},
 		[]string{
 			"hotels", "automobile",

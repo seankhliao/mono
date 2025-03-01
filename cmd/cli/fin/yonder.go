@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -12,6 +13,7 @@ func (c *Convert) yonder(stdout, stderr io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("read input: %w", err)
 	}
+	slices.Reverse(records[1:])
 	for _, rec := range records[1:] {
 		date := rec[0]
 		name, category := rec[1], rec[5]

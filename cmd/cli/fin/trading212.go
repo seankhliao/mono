@@ -114,11 +114,11 @@ func (c *Convert) trading(stdout, stderr io.Writer) error {
 			buf = bufs[feeCurr]
 			fmt.Fprintf(buf, "[TOC, FIN, %d, %q],\n", feeValue, "Currency conversion fee")
 
-		case "Market sell", "Limit sell":
+		case "Market sell", "Limit sell", "Stop sell":
 			desc := strings.Join([]string{rec[idxs["Time"]], rec[idxs["Ticker"]], rec[idxs["Name"]]}, " ")
 			fmt.Fprintf(buf, "[TOT, TOC, %d, %q],\n", value, desc)
 
-		case "Market buy":
+		case "Market buy", "Limit buy":
 			desc := strings.Join([]string{rec[idxs["Time"]], rec[idxs["Ticker"]], rec[idxs["Name"]]}, " ")
 			fmt.Fprintf(buf, "[TOC, TOT, %d, %q],\n", value, desc)
 
@@ -130,7 +130,7 @@ func (c *Convert) trading(stdout, stderr io.Writer) error {
 			desc := strings.Join([]string{rec[idxs["Time"]], "Share lending interest"}, " ")
 			fmt.Fprintf(buf, "[FIN, TOC, %d, %q],\n", value, desc)
 		default:
-			panic(action)
+			panic("unhandled action " + action)
 		}
 	}
 	for curr, months := range interest {
