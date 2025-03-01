@@ -5,8 +5,10 @@ package goreleases
 import (
 	"context"
 	"fmt"
+	"go/version"
 	"io"
 	"net/http"
+	"slices"
 
 	"github.com/go-json-experiment/json"
 )
@@ -31,6 +33,8 @@ type File struct {
 	Kind     string `json:"kind"`
 }
 
+// Releases returns a list of available Go releases from the Go Website.
+// Releases are sorted newest first.
 func Releases(client *http.Client, ctx context.Context, endpoint string, all bool) ([]Release, error) {
 	if endpoint == "" {
 		endpoint = ReleaseEndpoint
@@ -59,5 +63,10 @@ func Releases(client *http.Client, ctx context.Context, endpoint string, all boo
 	if err != nil {
 		return nil, fmt.Errorf("goreleases parse response: %w", err)
 	}
+
+	slices.SortFunc(releases, func(a, b Release) int {
+		return version.Compare(b.Version, a.Version)
+	})
+
 	return releases, nil
 }
