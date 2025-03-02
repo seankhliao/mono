@@ -24,7 +24,16 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-03-25_ tiLLie
 - _12025-03-14_ south arcade
 - _12025-03-13_ Clairo
-- _12025-03-01_ Natalie Jane
+
+##### _12025-03-01_ Natalie Jane
+
+With [_Oliver Cronin_], and  [_Band Of Silver_]
+
+It was fine, support didn't stand out much.
+[_Natalie Jane_] was better,
+though there were a lot of teenage girls in the audience,
+and I only recognized the last song,
+repeated as the encore.
 
 ##### _12025-02-28_ Clean Bandit
 
@@ -1210,6 +1219,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Ava Max_]: https://www.youtube.com/@avamax
 [_AViVA_]: https://www.youtube.com/@thisisaviva
 [_Avril Lavigne_]: https://www.youtube.com/@AvrilLavigne
+[_Band of Silver_]: https://www.youtube.com/@officialbandofsilver
 [_BANKS_]: https://www.youtube.com/@banks
 [_Bear’s Den_]: https://www.youtube.com/@bearsdenmusic
 [_Beth McCarthy_]: https://www.youtube.com/@BethMcCarthy
@@ -1312,6 +1322,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Mone Kamishiraishi_]: https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p
 [_MONSTERIDOL_]: https://www.youtube.com/@MONSTERIDOL
 [_Mothica_]: https://www.youtube.com/@Mothica
+[_Natalie Jane_]: https://www.youtube.com/@nataliejane
 [_National Children's Orchestra_]: https://www.youtube.com/@ncogb
 [_Nectar Woode_]: https://www.youtube.com/@NectarWoode
 [_Nessa Barrett_]: https://www.youtube.com/@NessaBarrett
@@ -1319,6 +1330,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_NINA_]: https://www.youtube.com/@iloveninamusic
 [_Nina Nesbitt_]: https://www.youtube.com/@ninanesbitt
 [_Nothing, Nowhere_]: https://www.youtube.com/@nothingnowheremusic
+[_Oliver Cronin_]: https://www.youtube.com/@OliverCronin
 [_ONE OK ROCK_]: https://www.youtube.com/@ONEOKROCK
 [_Overlaps_]: https://www.youtube.com/@Overlaps
 [_Paris Paloma_]: https://www.youtube.com/@parispaloma
