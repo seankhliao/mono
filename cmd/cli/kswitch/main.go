@@ -182,7 +182,7 @@ func (a *App) selectContext() (*clientcmdapi.Config, error) {
 			f := filepath.Join(src, p)
 			c, errL := clientcmd.LoadFromFile(f)
 			if errL != nil {
-				a.lg.Debug("failed load from file in dir", slog.String("file", f), slog.String("err", err.Error()))
+				a.lg.Debug("failed load from file in dir", slog.String("file", f), slog.String("err", errL.Error()))
 				return nil
 			}
 			mergeConfig(all, c)
