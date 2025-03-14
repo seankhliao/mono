@@ -260,6 +260,7 @@ func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, 
 			cacheDir = os.TempDir()
 		}
 		cacheFile := filepath.Join(cacheDir, "kswitch-ns-cache.json")
+		a.lg.Debug("namespace cache", slog.String("file", cacheFile))
 		nsCache := make(map[string][]string)
 		b, err := os.ReadFile(cacheFile)
 		if err != nil {
