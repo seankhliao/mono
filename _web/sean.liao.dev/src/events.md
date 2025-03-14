@@ -11,23 +11,44 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12025-11-07_ HANABIE
+- _12025-10-15_ Sumo
 - _12025-07-17_ Billie Eilish
 - _12025-06-19_ Ado
+- _12025-06-16_ Mothica
 - _12025-06-08_ YOASOBI
 - _12025-06-06_ Paris Paloma
 - _12025-06-04_ Nessa Barrett
 - _12025-05-30_ Babymetal
 - _12025-05-03_ Aurora
-- _12025-04-17_ seven oops
 - _12025-03-27_ NERIAH
 - _12025-03-26_ WACK in the UK vol 5: Gang Parade, ASP, Kiss Kiss
 - _12025-03-25_ tiLLie
 - _12025-03-14_ south arcade
-- _12025-03-13_ Clairo
+
+##### _12025-03-13_ Clairo
+
+With [_June McDoom_]
+
+Chill, dreamy, bedroom pop?
+Unlike all the flashy shows I've been to recently,
+[_Clairo_] felt much more tame,
+the only lights were a glittering golden backdrop
+and a warm white overhead light.
+It felt like a recording studio, or old jazz show?
+Quite cozy and relaxing.
+
+##### _12025-03-11_ Drum Tao
+
+[_Drum Tao_], when I first saw the name,
+I thought it might be some serene drumming...
+I don't think I couldd be more wrong.
+It was quite the flashy, cheerful affair,
+2 hours of various drums, flutes, and some dancing.
+It was energetic, and the performers genuinely looked really happy to be there.
 
 ##### _12025-03-01_ Natalie Jane
 
-With [_Oliver Cronin_], and  [_Band Of Silver_]
+With [_Oliver Cronin_], and [_Band Of Silver_]
 
 It was fine, support didn't stand out much.
 [_Natalie Jane_] was better,
@@ -105,8 +126,8 @@ It was only when [_ANKOR_] described themselves that I learned I was listening t
 
 ##### _12025-02-12_ Kikuo
 
-I guess when their social handles are kikuo_sound,
-it's not unexpected for [_kikuo_] be more like sounds in a modern art exhibition.
+I guess when their social handles are kikuo*sound,
+it's not unexpected for [\_kikuo*] be more like sounds in a modern art exhibition.
 That's not to say it wasn't good,
 just less... melodic?
 They're certainly proud of their work,
@@ -1245,6 +1266,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Chrissy Costanza_]: https://www.youtube.com/@chrissycostanza
 [_Christof Van Der Ven_]: https://www.youtube.com/@CHRISTOFVANDERVEN
 [_Cirque du Soleil_]: https://www.youtube.com/@CirqueduSoleil
+[_Clairo_]: https://www.youtube.com/@Clairo
 [_Clean Bandit_]: https://www.youtube.com/@cleanbandit
 [_Cloudy June_]: https://www.youtube.com/@CloudyJune
 [_Conquer Divide_]: https://www.youtube.com/@conquerdividemusic
@@ -1253,6 +1275,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Delain_]: https://www.youtube.com/@delainofficial
 [_Detweiler_]: https://www.youtube.com/@detweiler5838
 [_Deyyess_]: https://www.youtube.com/@deyyess
+[_Drum Tao_]: https://www.youtube.com/@DRUMTAOofficial
 [_Echosmith_]: https://www.youtube.com/@echosmith
 [_Eden Hunter_]: https://www.youtube.com/@edenhunter_
 [_Ed Sheeran_]: https://www.youtube.com/@EdSheeran
@@ -1291,6 +1314,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Jasmine Jethwa_]: https://www.youtube.com/@jasminejethwa7269
 [_Jayd Marie_]: https://www.youtube.com/@Jayd_Marie
 [_July Jones_]: https://www.youtube.com/@JulyJones
+[_June McDoom_]: https://www.youtube.com/@JuneMcDoom
 [_Kaeto_]: https://www.youtube.com/@KaetoEYO
 [_KAMELOT_]: https://www.youtube.com/@KAMELOT
 [_Kanna Hashimoto_]: https://www.instagram.com/kannahashimoto.mg
