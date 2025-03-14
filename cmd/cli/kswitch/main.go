@@ -242,6 +242,7 @@ func (a *App) saveContext(confPath string, conf *clientcmdapi.Config) (string, e
 	if !strings.Contains(confPath, tmpPrefix) {
 		confPath = filepath.Join(os.TempDir(), tmpPrefix+rand.Text())
 	}
+	a.lg.Debug("write to file", slog.String("file", confPath))
 	err := clientcmd.WriteToFile(*conf, confPath)
 	if err != nil {
 		return "", fmt.Errorf("save kubeconfig to file %s: %w", confPath, err)
@@ -376,6 +377,8 @@ func (a *App) currentConfig() (confPath string, conf *clientcmdapi.Config, manag
 	if strings.Contains(confPath, tmpPrefix) {
 		managed = true
 	}
+
+	a.context = conf.CurrentContext
 	return confPath, conf, managed
 }
 
