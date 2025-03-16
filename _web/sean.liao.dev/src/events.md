@@ -25,7 +25,21 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-03-27_ NERIAH
 - _12025-03-26_ WACK in the UK vol 5: Gang Parade, ASP, Kiss Kiss
 - _12025-03-25_ tiLLie
-- _12025-03-14_ south arcade
+
+##### _12025-03-14_ South Arcade
+
+With [_Hannah Grae_], and [_LEAP_]
+
+I liked [_Hannah Grae_], 
+though I was wondering if she was one of the artists that Youtube kept recommending me.
+[_LEAP_] sounded a bit too full of themselves...
+[_South Arcade_] was good,
+at least they played the one song I knew second.
+They have a distinct signature,
+I wasn't sure if it was repetitive or unique,
+but it definitely made their songs sound recognizable.
+
+[_South Arcade_]
 
 ##### _12025-03-13_ Clairo
 
@@ -1306,6 +1320,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Halestorm_]: https://www.youtube.com/@HalestormRocks
 [_Halflives_]: https://www.youtube.com/@wehavehalflives
 [_Halocene_]: https://www.youtube.com/@Halocene
+[_Hannah Grae_]: https://www.youtube.com/@hannahgrae
 [_Hatsune Miku_]: https://www.youtube.com/@HatsuneMiku
 [_Hemlocke Springs_]: https://www.youtube.com/@hemlockespringsmusic
 [_ili_]: https://www.youtube.com/@thisisili
@@ -1328,6 +1343,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Kings Elliot_]: https://www.youtube.com/@KingsElliot
 [_Kotaro Daigo_]: https://www.instagram.com/daigo_kotaro
 [_Larkins_]: https://www.youtube.com/@Larkinsband
+[_LEAP_]: https://www.youtube.com/@leap_the_band
 [_Lekna_]: https://www.youtube.com/@leknamusic
 [_Like a Storm_]: https://www.youtube.com/@officiallikeastorm
 [_Lizzie Esau_]: https://www.youtube.com/@lizzieesau
@@ -1381,6 +1397,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Skillet_]: https://www.youtube.com/@skilletband
 [_Sonia Stein_]: https://www.youtube.com/@SoniaStein
 [_Sophia Alexa_]: https://www.youtube.com/@SophiaAlexa
+[_South Arcade_]: https://www.youtube.com/@southarcadeuk
 [_Spirited Away_]: https://www.youtube.com/@SpiritedAwayLDN
 [_Tate McRae_]: https://www.youtube.com/@TateMcRae
 [_Taylor Acorn_]: https://www.youtube.com/@TaylorAcorn
