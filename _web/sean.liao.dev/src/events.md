@@ -21,6 +21,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-04_ Nessa Barrett
 - _12025-05-30_ Babymetal
 - _12025-05-03_ Aurora
+- _12025-05-01_ ARTMS
 - _12025-03-27_ NERIAH
 - _12025-03-26_ WACK in the UK vol 5: Gang Parade, ASP, Kiss Kiss
 - _12025-03-25_ tiLLie
