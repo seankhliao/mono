@@ -109,6 +109,7 @@ _data: [
 	["2024-06-28", 6, 38573, ["Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?", "Do You Love Your Mom and Her Two-Hit Multi-Target Attacks?"]],
 	["2024-06-28", 6, 40102, ["Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka? Namiuchigiwa no Okaasan wa Suki desu ka?", "Do You Love Your Mom and Her Two-Hit Multi-Target Attacks? Do You Love Your Mom on the Shore?"]],
 	["2024-12-24", 7, 53379, ["Uchi no Kaisha no Chiisai Senpai no Hanashi", "My Tiny Senpai"]],
+	["2025-03-18", 5, 57031, ["Vampire Dormitory", "Vampire Dormitory"]],
 	["2024-06-16", 8, 35968, ["Wotaku ni Koi wa Wotaku", "Wotakoi: Love is Hard for Otaku"]],
 	["2024-06-05", 8, 35968, ["Wotaku ni Koi wa Muzukashii OVA", "Wotakoi: Love is Hard for Otaku OVA"]],
 	["2024-07-06", 9, 54839, ["Yoru no Kurage wa Oyogenai", "Jellyfish Can't Swim in the Night"]],
