@@ -10,6 +10,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
+- _12025-11-15_ Billie Marten
 - _12025-11-07_ HANABIE
 - _12025-10-15_ Sumo
 - _12025-07-17_ Billie Eilish
