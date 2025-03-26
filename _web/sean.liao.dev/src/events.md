@@ -19,13 +19,36 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-16_ Mothica
 - _12025-06-08_ YOASOBI
 - _12025-06-06_ Paris Paloma
+- _12025-06-05_ Wack in the UK vol 6
 - _12025-06-04_ Nessa Barrett
 - _12025-05-30_ Babymetal
 - _12025-05-03_ Aurora
 - _12025-05-01_ ARTMS
+- _12025-04-02_ My Neighbour Totoro
+- _12025-03-31_ Ichiko Aoba
+- _12025-03-28_ Elektra
 - _12025-03-27_ NERIAH
-- _12025-03-26_ WACK in the UK vol 5: Gang Parade, ASP, Kiss Kiss
-- _12025-03-25_ tiLLie
+
+##### _12025-03-26_ WACK in the UK vol 5: Gang Parade, ASP, Kiss Kiss
+
+With [_KiSS KiSS_], [_ASP_], and [_Gang Parade_]
+
+[_KiSS KiSS_] were like the more traditionally kawaii idols,
+they were fun to see.
+[_ASP_] again, having seen them so many times,
+I don't think I'll get tired of them.
+_Mog Ryan_ is still my fav...
+[_Gang Parade_] is made up of [_KiSS KiSS_] plus other members,
+making for quite the crowded stage.
+With all the energetic dancing,
+I think everyone was hot and sweaty...
+
+##### _12025-03-25_ tiLLie
+
+With [_BEX_]
+
+[_BEX_] sounded quite different than what I thought [_tiLLie_] was.
+Both were decent small shows.
 
 ##### _12025-03-14_ South Arcade
 
@@ -1261,6 +1284,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_BANKS_]: https://www.youtube.com/@banks
 [_Bear’s Den_]: https://www.youtube.com/@bearsdenmusic
 [_Beth McCarthy_]: https://www.youtube.com/@BethMcCarthy
+[_BEX_]: https://www.youtube.com/@BEXBEXMUSIC
 [_Billie Eilish_]: https://www.youtube.com/@BillieEilish
 [_BiS_]: https://www.youtube.com/@BiS_official
 [_Blackbriar_]: https://www.youtube.com/@blackbriarmusic
@@ -1311,6 +1335,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Fletcher_]: https://www.youtube.com/@fletcher
 [_Frozen Crown_]: https://www.youtube.com/@FrozenCrown
 [_galacticbpd_]: https://www.instagram.com/galacticbpd_
+[_Gang Parade_]: https://www.youtube.com/@gangparade
 [_girli_]: https://www.youtube.com/@girlimusic
 [_girl in red_]: https://www.youtube.com/@girlinred
 [_Gracey_]: https://www.youtube.com/@gracey
@@ -1342,6 +1367,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Kimbra_]: https://www.youtube.com/@kimbramusic
 [_King Mala_]: https://www.youtube.com/@KiNGMALA
 [_Kings Elliot_]: https://www.youtube.com/@KingsElliot
+[_KiSS KiSS_]: https://www.youtube.com/@KiSSKiSSOFFiCiALCHANNEL
 [_Kotaro Daigo_]: https://www.instagram.com/daigo_kotaro
 [_Larkins_]: https://www.youtube.com/@Larkinsband
 [_LEAP_]: https://www.youtube.com/@leap_the_band
@@ -1406,6 +1432,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_The Pretty Reckless_]: https://www.youtube.com/@tprofficial
 [_The Rose_]: https://www.youtube.com/@theroseofficial
 [_The Staves_]: https://www.youtube.com/@thestaves
+[_tiLLie_]: https://www.youtube.com/@whoistiLLie
 [_Unflirt_]: https://www.youtube.com/@unflirt
 [_Uninvited_]: https://www.youtube.com/@uninvitedmusicuk
 [_UPSAHL_]: https://www.youtube.com/@UPSAHL
