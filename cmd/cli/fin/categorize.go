@@ -43,6 +43,7 @@ var categories = []struct {
 			"ticketmaster", "axslonvenuegbpecomm", "adyen n.v.", "dice.fm",
 			"www.wegottickets.com", "tcktweb", "tickets", "inflight services",
 			"fotografiska", "youtube", "museum", "megacon", "axslon", "breakingsounduk",
+			"royal albert hall",
 		},
 		[]string{
 			"entertainment",
@@ -75,6 +76,7 @@ var categories = []struct {
 			"m&s earls", "covent garden market", "tesco", "costa", "cafe",
 			"kuba cabana", "taco stand", "ole & steen", "soderberg", "coffe",
 			"the lower third", "eventim", "misato", "o2 academy islington",
+			"waitrose", "paul",
 		},
 		[]string{
 			"restaurants", "retail_stores",
