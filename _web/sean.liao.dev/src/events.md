@@ -27,7 +27,14 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-04-02_ My Neighbour Totoro
 - _12025-03-31_ Ichiko Aoba
 - _12025-03-28_ Elektra
-- _12025-03-27_ NERIAH
+
+##### _12025-03-27_ NERIAH
+
+With [_Izza_], and [_Gia Lily_]
+
+A fine evening.
+I think I knew more of [_NERIAH_]'s songs than I realized,
+though I wonder how much of it was spotify's related songs.
 
 ##### _12025-03-26_ WACK in the UK vol 5: Gang Parade, ASP, Kiss Kiss
 
@@ -1336,6 +1343,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Frozen Crown_]: https://www.youtube.com/@FrozenCrown
 [_galacticbpd_]: https://www.instagram.com/galacticbpd_
 [_Gang Parade_]: https://www.youtube.com/@gangparade
+[_Gia Lily_]: https://www.youtube.com/@GiaLily
 [_girli_]: https://www.youtube.com/@girlimusic
 [_girl in red_]: https://www.youtube.com/@girlinred
 [_Gracey_]: https://www.youtube.com/@gracey
@@ -1353,6 +1361,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_ILLUMISHADE_]: https://www.youtube.com/@ILLUMISHADE
 [_Isabel LaRosa_]: https://www.youtube.com/@isabellarosa5800
 [_IVE_]: https://www.youtube.com/@IVEstarship
+[_Izza_]: https://www.youtube.com/@izzaroze
 [_Jack Garratt_]: https://www.youtube.com/@JackGarratt
 [_Jasmine Jethwa_]: https://www.youtube.com/@jasminejethwa7269
 [_Jayd Marie_]: https://www.youtube.com/@Jayd_Marie
@@ -1394,6 +1403,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Natalie Jane_]: https://www.youtube.com/@nataliejane
 [_National Children's Orchestra_]: https://www.youtube.com/@ncogb
 [_Nectar Woode_]: https://www.youtube.com/@NectarWoode
+[_NERIAH_]: https://www.youtube.com/@thisisneriah
 [_Nessa Barrett_]: https://www.youtube.com/@NessaBarrett
 [_Nieve Ella_]: https://www.youtube.com/@nieveella
 [_NINA_]: https://www.youtube.com/@iloveninamusic
