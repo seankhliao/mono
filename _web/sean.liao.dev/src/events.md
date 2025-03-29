@@ -26,7 +26,12 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-05-01_ ARTMS
 - _12025-04-02_ My Neighbour Totoro
 - _12025-03-31_ Ichiko Aoba
-- _12025-03-28_ Elektra
+
+##### _12025-03-28_ Brie Larson is Elektra
+
+A weird show.
+New, experimental theatre,
+but.... very meh.
 
 ##### _12025-03-27_ NERIAH
 
