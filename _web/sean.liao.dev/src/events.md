@@ -18,7 +18,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-19_ Ado
 - _12025-06-16_ Mothica
 - _12025-06-08_ YOASOBI
-- _12025-06-06_ Paris Paloma
+- _12025-06-06_ Wack in the UK vol 6
 - _12025-06-05_ Wack in the UK vol 6
 - _12025-06-04_ Nessa Barrett
 - _12025-05-30_ Babymetal
