@@ -25,7 +25,11 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-05-03_ Aurora
 - _12025-05-01_ ARTMS
 - _12025-04-02_ My Neighbour Totoro
-- _12025-03-31_ Ichiko Aoba
+
+##### _12025-03-31_ Ichiko Aoba
+
+[_ICHIKO AOBA_] presented us with a calming, set of sounds,
+evoking thoughts of nature, and desires to sleep....
 
 ##### _12025-03-28_ Brie Larson is Elektra
 
@@ -1362,6 +1366,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Hannah Grae_]: https://www.youtube.com/@hannahgrae
 [_Hatsune Miku_]: https://www.youtube.com/@HatsuneMiku
 [_Hemlocke Springs_]: https://www.youtube.com/@hemlockespringsmusic
+[_ICHIKO AOBA_]: https://www.youtube.com/@ichikoaoba-hermine
 [_ili_]: https://www.youtube.com/@thisisili
 [_ILLUMISHADE_]: https://www.youtube.com/@ILLUMISHADE
 [_Isabel LaRosa_]: https://www.youtube.com/@isabellarosa5800
