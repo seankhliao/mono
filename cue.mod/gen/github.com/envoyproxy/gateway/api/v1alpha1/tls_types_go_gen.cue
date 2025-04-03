@@ -67,7 +67,12 @@ import gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
 	signatureAlgorithms?: [...string] @go(SignatureAlgorithms,[]string)
 
 	// ALPNProtocols supplies the list of ALPN protocols that should be
-	// exposed by the listener. By default h2 and http/1.1 are enabled.
+	// exposed by the listener or used by the proxy to connect to the backend.
+	// Defaults:
+	// 1. HTTPS Routes: h2 and http/1.1 are enabled in listener context.
+	// 2. Other Routes: ALPN is disabled.
+	// 3. Backends: proxy uses the appropriate ALPN options for the backend protocol.
+	// When an empty list is provided, the ALPN TLS extension is disabled.
 	// Supported values are:
 	// - http/1.0
 	// - http/1.1

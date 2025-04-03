@@ -41,7 +41,6 @@ import (
 	// If set, the cookies will be set on the specified domain and all subdomains.
 	// This means that requests to any subdomain will not require reauthentication after users log in to the parent domain.
 	// +optional
-	// +notImplementedHide
 	// +kubebuilder:validation:Pattern=`^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9]))*$`
 	cookieDomain?: null | string @go(CookieDomain,*string)
 

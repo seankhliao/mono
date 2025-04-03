@@ -6,7 +6,7 @@ package v1alpha1
 
 import (
 	gwapiv1a2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
-	"sigs.k8s.io/gateway-api/apis/v1"
+	gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
 )
 
 #PolicyTargetReferences: {
@@ -30,10 +30,10 @@ import (
 	// Group is the group that this selector targets. Defaults to gateway.networking.k8s.io
 	//
 	// +kubebuilder:default:="gateway.networking.k8s.io"
-	group?: null | v1.#Group @go(Group,*sigs.k8s.io/gateway-api/apis/v1.Group)
+	group?: null | gwapiv1.#Group @go(Group,*gwapiv1.Group)
 
 	// Kind is the resource kind that this selector targets.
-	kind: v1.#Kind @go(Kind,sigs.k8s.io/gateway-api/apis/v1.Kind)
+	kind: gwapiv1.#Kind @go(Kind)
 
 	// MatchLabels are the set of label selectors for identifying the targeted resource
 	matchLabels: {[string]: string} @go(MatchLabels,map[string]string)

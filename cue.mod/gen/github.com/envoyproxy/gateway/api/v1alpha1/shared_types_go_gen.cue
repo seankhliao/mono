@@ -23,7 +23,7 @@ import (
 #DefaultDeploymentMemoryResourceRequests: "512Mi"
 
 // DefaultEnvoyProxyImage is the default image used by envoyproxy
-#DefaultEnvoyProxyImage: "envoyproxy/envoy:distroless-v1.32.1"
+#DefaultEnvoyProxyImage: "docker.io/envoyproxy/envoy:distroless-v1.33.1"
 
 // DefaultShutdownManagerCPUResourceRequests for shutdown manager cpu resource
 #DefaultShutdownManagerCPUResourceRequests: "10m"
@@ -35,7 +35,7 @@ import (
 #DefaultShutdownManagerImage: "docker.io/envoyproxy/gateway-dev:latest"
 
 // DefaultRateLimitImage is the default image used by ratelimit.
-#DefaultRateLimitImage: "envoyproxy/ratelimit:28b1629a"
+#DefaultRateLimitImage: "docker.io/envoyproxy/ratelimit:0141a24f"
 
 // HTTPProtocol is the common-used http protocol.
 #HTTPProtocol: "http"
@@ -428,6 +428,11 @@ import (
 	// and resilience during maintenance operations.
 	// +optional
 	minAvailable?: null | int32 @go(MinAvailable,*int32)
+
+	// Patch defines how to perform the patch operation to the PodDisruptionBudget
+	//
+	// +optional
+	patch?: null | #KubernetesPatchSpec @go(Patch,*KubernetesPatchSpec)
 }
 
 // KubernetesHorizontalPodAutoscalerSpec defines Kubernetes Horizontal Pod Autoscaler settings of Envoy Proxy Deployment.
@@ -465,6 +470,11 @@ import (
 	//
 	// +optional
 	behavior?: null | autoscalingv2.#HorizontalPodAutoscalerBehavior @go(Behavior,*autoscalingv2.HorizontalPodAutoscalerBehavior)
+
+	// Patch defines how to perform the patch operation to the HorizontalPodAutoscaler
+	//
+	// +optional
+	patch?: null | #KubernetesPatchSpec @go(Patch,*KubernetesPatchSpec)
 }
 
 // HTTPStatus defines the http status code.
@@ -714,7 +724,15 @@ import (
 	contentType?: null | string @go(ContentType,*string)
 
 	// Body of the Custom Response
-	body: #CustomResponseBody @go(Body)
+	//
+	// +optional
+	body?: null | #CustomResponseBody @go(Body,*CustomResponseBody)
+
+	// Status Code of the Custom Response
+	// If unset, does not override the status of response.
+	//
+	// +optional
+	statusCode?: null | int @go(StatusCode,*int)
 }
 
 // ResponseValueType defines the types of values for the response body supported by Envoy Gateway.

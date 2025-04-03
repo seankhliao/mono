@@ -86,8 +86,6 @@ import (
 #MetricSpec: {
 	// type is the type of metric source.  It should be one of "ContainerResource", "External",
 	// "Object", "Pods" or "Resource", each mapping to a matching field in the object.
-	// Note: "ContainerResource" type is available on when the feature-gate
-	// HPAContainerMetrics is enabled
 	type: #MetricSourceType @go(Type) @protobuf(1,bytes)
 
 	// object refers to a metric describing a single kubernetes object
@@ -114,7 +112,6 @@ import (
 	// each pod of the current scale target (e.g. CPU or memory). Such metrics are
 	// built in to Kubernetes, and have special scaling options on top of those
 	// available to normal per-pod metrics using the "pods" source.
-	// This is an alpha feature and can be enabled by the HPAContainerMetrics feature flag.
 	// +optional
 	containerResource?: null | #ContainerResourceMetricSource @go(ContainerResource,*ContainerResourceMetricSource) @protobuf(7,bytes,opt)
 
@@ -464,8 +461,6 @@ import (
 #MetricStatus: {
 	// type is the type of metric source.  It will be one of "ContainerResource", "External",
 	// "Object", "Pods" or "Resource", each corresponds to a matching field in the object.
-	// Note: "ContainerResource" type is available on when the feature-gate
-	// HPAContainerMetrics is enabled
 	type: #MetricSourceType @go(Type) @protobuf(1,bytes)
 
 	// object refers to a metric describing a single kubernetes object

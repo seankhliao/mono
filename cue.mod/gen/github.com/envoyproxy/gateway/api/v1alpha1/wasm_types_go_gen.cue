@@ -9,6 +9,14 @@ import (
 	gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
 )
 
+// WasmEnv defines the environment variables for the VM of a Wasm extension
+#WasmEnv: {
+	// HostKeys is a list of keys for environment variables from the host envoy process
+	// that should be passed into the Wasm VM. This is useful for passing secrets to to Wasm extensions.
+	// +optional
+	hostKeys?: [...string] @go(HostKeys,[]string)
+}
+
 // Wasm defines a Wasm extension.
 //
 // Note: at the moment, Envoy Gateway does not support configuring Wasm runtime.
@@ -47,6 +55,10 @@ import (
 	// +optional
 	// +kubebuilder:default=false
 	failOpen?: null | bool @go(FailOpen,*bool)
+
+	// Env configures the environment for the Wasm extension
+	// +optional
+	env?: null | #WasmEnv @go(Env,*WasmEnv)
 }
 
 // WasmCodeSource defines the source of the Wasm code.

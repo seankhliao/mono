@@ -24,11 +24,21 @@ import gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
 #BufferedPartialExtBodyHeaderProcessingMode: #ExtProcBodyProcessingMode & "BufferedPartial"
 
 // ProcessingModeOptions defines if headers or body should be processed by the external service
+// and which attributes are sent to the processor
 #ProcessingModeOptions: {
 	// Defines body processing mode
 	//
 	// +optional
 	body?: null | #ExtProcBodyProcessingMode @go(Body,*ExtProcBodyProcessingMode)
+
+	// Defines which attributes are sent to the external processor. Envoy Gateway currently
+	// supports only the following attribute prefixes: connection, source, destination,
+	// request, response, upstream and xds.route.
+	// https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/advanced/attributes
+	//
+	// +optional
+	// +kubebuilder:validation:items:Pattern=`^(connection\.|source\.|destination\.|request\.|response\.|upstream\.|xds\.route_)[a-z_1-9]*$`
+	attributes?: [...string] @go(Attributes,[]string)
 }
 
 // ExtProcProcessingMode defines if and how headers and bodies are sent to the service.
@@ -45,6 +55,12 @@ import gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
 	//
 	// +optional
 	response?: null | #ProcessingModeOptions @go(Response,*ProcessingModeOptions)
+
+	// AllowModeOverride allows the external processor to override the processing mode set via the
+	// `mode_override` field in the gRPC response message. This defaults to false.
+	//
+	// +optional
+	allowModeOverride?: bool @go(AllowModeOverride)
 }
 
 // ExtProc defines the configuration for External Processing filter.
@@ -72,4 +88,30 @@ import gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
 	//
 	// +optional
 	processingMode?: null | #ExtProcProcessingMode @go(ProcessingMode,*ExtProcProcessingMode)
+
+	// Metadata defines options related to the sending and receiving of dynamic metadata.
+	// These options define which metadata namespaces would be sent to the processor and which dynamic metadata
+	// namespaces the processor would be permitted to emit metadata to.
+	// Users can specify custom namespaces or well-known envoy metadata namespace (such as envoy.filters.http.ext_authz)
+	// documented here: https://www.envoyproxy.io/docs/envoy/latest/configuration/advanced/well_known_dynamic_metadata#well-known-dynamic-metadata
+	// Default: no metadata context is sent or received from the external processor
+	//
+	// +optional
+	metadata?: null | #ExtProcMetadata @go(Metadata,*ExtProcMetadata)
+}
+
+// ExtProcMetadata defines options related to the sending and receiving of dynamic metadata to and from the
+// external processor service
+#ExtProcMetadata: {
+	// AccessibleNamespaces are metadata namespaces that are sent to the external processor as context
+	//
+	// +optional
+	accessibleNamespaces?: [...string] @go(AccessibleNamespaces,[]string)
+
+	// WritableNamespaces are metadata namespaces that the external processor can write to
+	//
+	// +kubebuilder:validation:XValidation:rule="self.all(f, !f.startsWith('envoy.filters.http'))",message="writableNamespaces cannot contain well-known Envoy HTTP filter namespaces"
+	// +kubebuilder:validation:MaxItems=8
+	// +optional
+	writableNamespaces?: [...string] @go(WritableNamespaces,[]string)
 }

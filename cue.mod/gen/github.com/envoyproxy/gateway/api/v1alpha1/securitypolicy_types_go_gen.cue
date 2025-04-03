@@ -39,6 +39,11 @@ import (
 #SecurityPolicySpec: {
 	#PolicyTargetReferences
 
+	// APIKeyAuth defines the configuration for the API Key Authentication.
+	//
+	// +optional
+	apiKeyAuth?: null | #APIKeyAuth @go(APIKeyAuth,*APIKeyAuth)
+
 	// CORS defines the configuration for Cross-Origin Resource Sharing (CORS).
 	//
 	// +optional

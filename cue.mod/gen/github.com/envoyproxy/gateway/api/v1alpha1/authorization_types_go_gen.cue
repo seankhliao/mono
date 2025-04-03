@@ -66,7 +66,6 @@ package v1alpha1
 	// Note: in order to use JWT claims for authorization, you must configure the
 	// JWT authentication in the same `SecurityPolicy`.
 	// +optional
-	// +notImplementedHide
 	jwt?: null | #JWTPrincipal @go(JWT,*JWTPrincipal)
 }
 

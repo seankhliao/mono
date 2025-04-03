@@ -263,6 +263,4 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 // conformance tests.
 #FeatureName: string
 
-#SupportedFeature: {
-	name: #FeatureName @go(Name)
-}
+#SupportedFeature: _

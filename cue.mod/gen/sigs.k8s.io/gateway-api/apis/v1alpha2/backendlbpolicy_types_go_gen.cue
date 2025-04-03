@@ -52,5 +52,5 @@ import (
 	// Support: Extended
 	//
 	// +optional
-	sessionPersistence?: null | v1.#SessionPersistence @go(SessionPersistence,*sigs.k8s.io/gateway-api/apis/v1.SessionPersistence)
+	sessionPersistence?: null | v1.#SessionPersistence @go(SessionPersistence,*SessionPersistence)
 }

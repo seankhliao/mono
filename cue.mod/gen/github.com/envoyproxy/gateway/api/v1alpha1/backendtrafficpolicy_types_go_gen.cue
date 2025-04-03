@@ -60,7 +60,6 @@ import (
 	// The compression config for the http streams.
 	//
 	// +optional
-	// +notImplementedHide
 	compression?: [...null | #Compression] @go(Compression,[]*Compression)
 
 	// ResponseOverride defines the configuration to override specific responses with a custom one.

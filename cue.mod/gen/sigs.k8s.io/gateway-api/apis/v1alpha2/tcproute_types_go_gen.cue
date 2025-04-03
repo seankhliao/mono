@@ -46,7 +46,7 @@ import (
 	//
 	// Support: Extended
 	// +optional
-	name?: null | v1.#SectionName @go(Name,*sigs.k8s.io/gateway-api/apis/v1.SectionName)
+	name?: null | v1.#SectionName @go(Name,*SectionName)
 
 	// BackendRefs defines the backend(s) where matching requests should be
 	// sent. If unspecified or invalid (refers to a non-existent resource or a
@@ -65,7 +65,7 @@ import (
 	//
 	// +kubebuilder:validation:MinItems=1
 	// +kubebuilder:validation:MaxItems=16
-	backendRefs?: [...v1.#BackendRef] @go(BackendRefs,[]sigs.k8s.io/gateway-api/apis/v1.BackendRef)
+	backendRefs?: [...v1.#BackendRef] @go(BackendRefs,[]BackendRef)
 }
 
 // TCPRouteList contains a list of TCPRoute

@@ -142,6 +142,14 @@ import (
 	// +kubebuilder:validation:Enum=IPv4;IPv6;DualStack
 	// +optional
 	ipFamily?: null | #IPFamily @go(IPFamily,*IPFamily)
+
+	// PreserveRouteOrder determines if the order of matching for HTTPRoutes is determined by Gateway-API
+	// specification (https://gateway-api.sigs.k8s.io/reference/spec/#gateway.networking.k8s.io/v1.HTTPRouteRule)
+	// or preserves the order defined by users in the HTTPRoute's HTTPRouteRule list.
+	// Default: False
+	//
+	// +optional
+	preserveRouteOrder?: null | bool @go(PreserveRouteOrder,*bool)
 }
 
 // RoutingType defines the type of routing of this Envoy proxy.
@@ -186,7 +194,7 @@ import (
 }
 
 // EnvoyFilter defines the type of Envoy HTTP filter.
-// +kubebuilder:validation:Enum=envoy.filters.http.health_check;envoy.filters.http.fault;envoy.filters.http.cors;envoy.filters.http.ext_authz;envoy.filters.http.basic_auth;envoy.filters.http.oauth2;envoy.filters.http.jwt_authn;envoy.filters.http.stateful_session;envoy.filters.http.ext_proc;envoy.filters.http.wasm;envoy.filters.http.rbac;envoy.filters.http.local_ratelimit;envoy.filters.http.ratelimit;envoy.filters.http.custom_response
+// +kubebuilder:validation:Enum=envoy.filters.http.health_check;envoy.filters.http.fault;envoy.filters.http.cors;envoy.filters.http.ext_authz;envoy.filters.http.api_key_auth;envoy.filters.http.basic_auth;envoy.filters.http.oauth2;envoy.filters.http.jwt_authn;envoy.filters.http.stateful_session;envoy.filters.http.ext_proc;envoy.filters.http.wasm;envoy.filters.http.rbac;envoy.filters.http.local_ratelimit;envoy.filters.http.ratelimit;envoy.filters.http.custom_response;envoy.filters.http.compressor
 #EnvoyFilter: string // #enumEnvoyFilter
 
 #enumEnvoyFilter:
@@ -194,6 +202,7 @@ import (
 	#EnvoyFilterFault |
 	#EnvoyFilterCORS |
 	#EnvoyFilterExtAuthz |
+	#EnvoyFilterAPIKeyAuth |
 	#EnvoyFilterBasicAuth |
 	#EnvoyFilterOAuth2 |
 	#EnvoyFilterJWTAuthn |
@@ -204,6 +213,7 @@ import (
 	#EnvoyFilterLocalRateLimit |
 	#EnvoyFilterRateLimit |
 	#EnvoyFilterCustomResponse |
+	#EnvoyFilterCompressor |
 	#EnvoyFilterRouter
 
 // EnvoyFilterHealthCheck defines the Envoy HTTP health check filter.
@@ -217,6 +227,10 @@ import (
 
 // EnvoyFilterExtAuthz defines the Envoy HTTP external authorization filter.
 #EnvoyFilterExtAuthz: #EnvoyFilter & "envoy.filters.http.ext_authz"
+
+// EnvoyFilterAPIKeyAuth defines the Envoy HTTP api key authentication filter.
+//nolint:gosec // this is not an API key credential.
+#EnvoyFilterAPIKeyAuth: #EnvoyFilter & "envoy.filters.http.api_key_auth"
 
 // EnvoyFilterBasicAuth defines the Envoy HTTP basic authentication filter.
 #EnvoyFilterBasicAuth: #EnvoyFilter & "envoy.filters.http.basic_auth"
@@ -247,6 +261,9 @@ import (
 
 // EnvoyFilterCustomResponse defines the Envoy HTTP custom response filter.
 #EnvoyFilterCustomResponse: #EnvoyFilter & "envoy.filters.http.custom_response"
+
+// EnvoyFilterCompressor defines the Envoy HTTP compressor filter.
+#EnvoyFilterCompressor: #EnvoyFilter & "envoy.filters.http.compressor"
 
 // EnvoyFilterRouter defines the Envoy HTTP router filter.
 #EnvoyFilterRouter: #EnvoyFilter & "envoy.filters.http.router"
