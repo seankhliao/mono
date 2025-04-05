@@ -79,4 +79,17 @@ Mismatched code bindings vs in cluster CRD leads to continuous reconciles.
 
 #### hallway track
 
+##### [cue](https://cuelang.org/)
 
+There's a new module system that disentangles it from Go.
+
+##### [hyperdx](https://www.hyperdx.io/) and [signoz](https://signoz.io/)
+
+Both are backends to a trace / logs /metrics implemented with clickhouse + opentelemetry.
+HyperDX looks better (and their sales are better)...
+
+##### [kcp](https://www.kcp.io/)
+
+A virtual control plane, without the built in compute resource types.
+Looks revived from a while back.
+Maybe useful for crossplane??
