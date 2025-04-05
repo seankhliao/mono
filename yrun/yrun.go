@@ -149,11 +149,15 @@ func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
 			httplh := o11y.H.WithGroup("external-http")
 			httplg := slog.New(httplh)
 
+			protos := new(http.Protocols)
+			protos.SetHTTP1(true)
+			protos.SetUnencryptedHTTP2(true)
 			server := &http.Server{
 				Addr:              runConfig.HTTPAddr,
 				Handler:           otelhttp.NewHandler(mux, "serve http"),
 				ReadHeaderTimeout: 10 * time.Second,
 				ErrorLog:          slog.NewLogLogger(httplh, slog.LevelWarn),
+				Protocols:         protos,
 			}
 
 			group.Go(func() error {
