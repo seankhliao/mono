@@ -7,7 +7,7 @@ build:
     - image: us-central1-docker.pkg.dev/com-seankhliao/run/vanity
       ko:
         main: .
-        fromImage: gcr.io/distroless/static-debian12:nonroot@sha256:3a03fc0826340c7deb82d4755ca391bef5adcedb8892e58412e1a6008199fa91
+        fromImage: gcr.io/distroless/static-debian12:nonroot@sha256:c0f429e16b13e583da7e5a6ec20dd656d325d88e6819cafe0adb0828976529dc
         env:
           - CGO_ENABLED=0
         flags:

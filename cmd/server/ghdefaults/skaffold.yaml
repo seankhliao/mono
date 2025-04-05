@@ -4,10 +4,10 @@ metadata:
   name: ghdefaults
 build:
   artifacts:
-    - image: registry.liao.dev/ghdefaults
+    - image:  us-central1-docker.pkg.dev/com-seankhliao/run/ghdefaults
       ko:
         main: .
-        fromImage: gcr.io/distroless/static-debian12:nonroot@sha256:3a03fc0826340c7deb82d4755ca391bef5adcedb8892e58412e1a6008199fa91
+        fromImage: gcr.io/distroless/static-debian12:nonroot@sha256:c0f429e16b13e583da7e5a6ec20dd656d325d88e6819cafe0adb0828976529dc
         env:
           - CGO_ENABLED=0
         flags:
@@ -19,11 +19,9 @@ build:
     sha256: {}
   platforms:
     - linux/amd64
-    - linux/arm64/v8
 manifests:
   rawYaml:
-    - kubernetes.yaml
+    - cloudrun.yaml
 deploy:
-  kubectl:
-    defaultNamespace: ghdefaults
-  kubeContext: user@asami
+  cloudrun:
+    region: us-central1

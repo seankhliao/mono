@@ -3,13 +3,13 @@ kind: Service
 metadata:
   annotations:
     run.googleapis.com/description: |
-      Serves go custom import paths
+      Sets default settings for github repos
     run.googleapis.com/client-name: skaffold
     run.googleapis.com/ingress: all
     run.googleapis.com/launch-stage: BETA
   labels:
     cloud.googleapis.com/location: us-central1
-  name: go-seankhliao-com
+  name: ghdefaults-seankhliao-com
   namespace: "330311169810"
 spec:
   template:
@@ -21,7 +21,7 @@ spec:
     spec:
       containerConcurrency: 1000
       containers:
-        - image: us-central1-docker.pkg.dev/com-seankhliao/run/vanity
+        - image: us-central1-docker.pkg.dev/com-seankhliao/run/ghdefaults
           env:
             - name: LOG_FORMAT
               value: json
@@ -31,6 +31,19 @@ spec:
               value: none
             - name: OTEL_TRACES_EXPORTER
               value: none
+            - name: GITHUB_APP_ID
+              value: '126001'
+            - name: GITHUB_APP_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: 1
+                  name: ghdefaults-github-app-private-key
+            - name: GITHUB_APP_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: 1
+                  name: ghdefaults-github-app-webhook-secret
+
           ports:
             - containerPort: 8080
               name: h2c
@@ -38,8 +51,8 @@ spec:
             limits:
               cpu: 1000m
               memory: 512Mi
-      serviceAccountName: go-seankhliao-com@com-seankhliao.iam.gserviceaccount.com
-      timeoutSeconds: 5
+      serviceAccountName: ghdefaults-seankhliao-com@com-seankhliao.iam.gserviceaccount.com
+      timeoutSeconds: 15
   traffic:
     - latestRevision: true
       percent: 100

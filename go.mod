@@ -4,6 +4,7 @@ go 1.24.0
 
 require (
 	cuelang.org/go v0.12.0
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/propagator v0.51.0
 	github.com/alecthomas/chroma/v2 v2.16.0
 	github.com/bradleyfalzon/ghinstallation/v2 v2.14.0
 	github.com/briandowns/spinner v1.23.2

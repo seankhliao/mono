@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"os"
 	"slices"
 	"strconv"
 	"sync"
@@ -47,6 +48,7 @@ var (
 func New(level slog.Level, out io.Writer) slog.Handler {
 	return &handler{
 		minLevel: level,
+		gcp:      os.Getenv("K_SERVICE") != "",
 		state:    new(state),
 		mu:       new(sync.Mutex),
 		w:        out,
@@ -55,6 +57,7 @@ func New(level slog.Level, out io.Writer) slog.Handler {
 
 type handler struct {
 	minLevel slog.Level
+	gcp      bool
 	state    *state
 	mu       *sync.Mutex
 	w        io.Writer
@@ -127,10 +130,20 @@ func (h *handler) Handle(ctx context.Context, r slog.Record) error {
 	buf = append(buf, `"level":"`...)
 	buf = append(buf, r.Level.String()...)
 	buf = append(buf, `"`...)
+	if h.gcp {
+		buf = append(buf, `,"severity":"`...)
+		buf = append(buf, r.Level.String()...)
+		buf = append(buf, `"`...)
+	}
 
 	// trace
 	spanCtx := trace.SpanContextFromContext(ctx)
 	if spanCtx.IsValid() {
+		if h.gcp {
+			buf = append(buf, `,"logging.googleapis.com/trace":"`...)
+			buf = append(buf, spanCtx.TraceID().String()...)
+			buf = append(buf, `"`...)
+		}
 		buf = append(buf, `,"trace_id":"`...)
 		buf = append(buf, spanCtx.TraceID().String()...)
 		buf = append(buf, `","span_id":"`...)

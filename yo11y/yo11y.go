@@ -13,6 +13,7 @@ import (
 	"runtime/debug"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/opentelemetry-operations-go/propagator"
 	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/contrib/bridges/otelslog"
 	"go.opentelemetry.io/contrib/exporters/autoexport"
@@ -250,6 +251,7 @@ func NewTrace(ctx context.Context, res *resource.Resource, c Config) (http.Handl
 	)
 	otel.SetTracerProvider(tp)
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(
+		propagator.CloudTraceFormatPropagator{},
 		propagation.Baggage{},
 		propagation.TraceContext{},
 	))
