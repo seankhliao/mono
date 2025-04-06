@@ -93,3 +93,8 @@ HyperDX looks better (and their sales are better)...
 A virtual control plane, without the built in compute resource types.
 Looks revived from a while back.
 Maybe useful for crossplane??
+
+##### [auditty.ai](https://auditty.ai/)
+
+eBPF(?) based interception of logs as your application writes them,
+deduplicating / summarizing them before they're persisted to disk.
