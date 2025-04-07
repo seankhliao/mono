@@ -68,3 +68,8 @@ earbug-2022-track.avif: earbug-2022-track.png
 github-merge-queue: github-merge-queue.avif
 github-merge-queue.avif: github-merge-queue.png
 	convert $? -write github-merge-queue.avif
+
+.PHONY: pruned-module-graph
+pruned-module-graph: pruned-module-graph.avif
+pruned-module-graph.avif: pruned-module-graph.png
+	convert $? -write pruned-module-graph.avif
