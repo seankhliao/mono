@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
@@ -97,6 +98,11 @@ func (m *mux) Pattern(method, host, pattern string, handler Handler, interceptor
 }
 
 func (m *mux) Handle(s string, h http.Handler) {
+	h = otelhttp.NewHandler(h, s,
+		otelhttp.WithSpanNameFormatter(func(_ string, r *http.Request) string {
+			return r.Pattern
+		}),
+	)
 	m.mux.Handle(s, h)
 }
 

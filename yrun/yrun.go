@@ -154,7 +154,7 @@ func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
 			protos.SetUnencryptedHTTP2(true)
 			server := &http.Server{
 				Addr:              runConfig.HTTPAddr,
-				Handler:           otelhttp.NewHandler(mux, "serve http"),
+				Handler:           mux,
 				ReadHeaderTimeout: 10 * time.Second,
 				ErrorLog:          slog.NewLogLogger(httplh, slog.LevelWarn),
 				Protocols:         protos,
