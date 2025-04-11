@@ -14,6 +14,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-11-07_ HANABIE
 - _12025-10-15_ Sumo
 - _12025-07-17_ Billie Eilish
+- _12025-07-06_ Sabrina Carpenter
 - _12025-06-28_ BROKEN BY THE SCREAM
 - _12025-06-19_ Ado
 - _12025-06-16_ Mothica
