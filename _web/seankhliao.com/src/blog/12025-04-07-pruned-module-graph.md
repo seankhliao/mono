@@ -10,9 +10,9 @@ actually meant.
 
 Some notes:
 
-* `go list -m all` shows the full set of dependency
-* `go list all` only shows packages in the pruned dependency graph
-* `go.mod` only contains modules in the pruned dependency graph
+* `go list -m all` shows the full set of dependencies
+* `go list all` only shows packages that are not pruned out
+* `go.mod` only contains modules that are not pruned out
 
 I tried to draw a graph (unrelated to the repo above):
 
