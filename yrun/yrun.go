@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
-	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.seankhliao.com/mono/yenv"
 	"go.seankhliao.com/mono/yhttp"
 	"go.seankhliao.com/mono/yo11y"
