@@ -25,7 +25,27 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-05-30_ Babymetal
 - _12025-05-03_ Aurora
 - _12025-05-01_ ARTMS
-- _12025-04-02_ My Neighbour Totoro
+- _12024-04-25_ RedHook
+
+##### _12025-04-17_ The Warning
+
+With [_Sophie Lloyd_] + [_Marisa Rodriguez_]
+
+While I'm not quite used to paying full attention to guitar solos,
+[_Sophie Lloyd_] was actually pretty good at putting the guitar front and centre.
+We also had [_Marisa Rodriguez_] to sing a few of the songs,
+I think they were ballad like? They exuded a lot of power.
+As for [_The Warning_],
+the first half hour didn't sound too distinctive,
+but they certainly got better towards the end.
+
+##### _12025-04-02_ My Neighbour Totoro
+
+[_My Neighbour Totoro_] was a theatre play 
+covering the same storyline as the original movie.
+It was in english, which to be honest just felt a bit weird.
+Compared to Spirited Away, [_My Neighbour Totoro_] was more lighthearted,
+and maybe a bit too comedic.
 
 ##### _12025-03-31_ Ichiko Aoba
 
@@ -1406,11 +1426,13 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Maeve_]: https://www.youtube.com/@internetmaeve
 [_Maggie Lindemann_]: https://www.youtube.com/@maggielindemann
 [_Maisie Peters_]: https://www.youtube.com/@MaisieHPeters
+[_Marisa Rodriguez_]: https://www.instagram.com/marisasingsalot/?hl=en
 [_McKenna Michels_]: https://www.youtube.com/@mckennamichelsmusic
 [_Melanie Martinez_]: https://www.youtube.com/@MelanieMartinez
 [_Mone Kamishiraishi_]: https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p
 [_MONSTERIDOL_]: https://www.youtube.com/@MONSTERIDOL
 [_Mothica_]: https://www.youtube.com/@Mothica
+[_My Neighbour Totoro_]: https://totoroshow.com/
 [_Natalie Jane_]: https://www.youtube.com/@nataliejane
 [_National Children's Orchestra_]: https://www.youtube.com/@ncogb
 [_Nectar Woode_]: https://www.youtube.com/@NectarWoode
@@ -1445,6 +1467,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Skillet_]: https://www.youtube.com/@skilletband
 [_Sonia Stein_]: https://www.youtube.com/@SoniaStein
 [_Sophia Alexa_]: https://www.youtube.com/@SophiaAlexa
+[_Sophie Lloyd_]: https://www.youtube.com/@SophieLloyd
 [_South Arcade_]: https://www.youtube.com/@southarcadeuk
 [_Spirited Away_]: https://www.youtube.com/@SpiritedAwayLDN
 [_Tate McRae_]: https://www.youtube.com/@TateMcRae
@@ -1453,6 +1476,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_The Pretty Reckless_]: https://www.youtube.com/@tprofficial
 [_The Rose_]: https://www.youtube.com/@theroseofficial
 [_The Staves_]: https://www.youtube.com/@thestaves
+[_The Warning_]: https://www.youtube.com/@TheWarning
 [_tiLLie_]: https://www.youtube.com/@whoistiLLie
 [_Unflirt_]: https://www.youtube.com/@unflirt
 [_Uninvited_]: https://www.youtube.com/@uninvitedmusicuk
