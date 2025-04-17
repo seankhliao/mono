@@ -2,6 +2,7 @@ package yrun
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -12,6 +13,7 @@ import (
 	"os"
 	"os/signal"
 	"runtime/debug"
+	"slices"
 	"syscall"
 	"time"
 
@@ -22,6 +24,10 @@ import (
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 )
+
+// Path to a config file.
+// Must contain a json array of strings in key=value format
+const EnvFileKey = "CONFIG_FILE"
 
 type Task = func(context.Context) error
 
@@ -71,7 +77,8 @@ func Run[C, A any](r Config[C, A]) (exitCode int) {
 
 func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
 	// config from env
-	envs := yenv.Map(append(DefaultEnv, os.Environ()...))
+	fileEnvs := envsFromFile(os.Getenv(EnvFileKey))
+	envs := yenv.Map(slices.Concat(DefaultEnv, fileEnvs, os.Environ()))
 	err := yenv.FromEnv(envs, "", &runConfig)
 	if err != nil {
 		return fmt.Errorf("process config from env: %w", err)
@@ -260,4 +267,17 @@ func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
 	}
 
 	return group.Wait()
+}
+
+func envsFromFile(fn string) []string {
+	if fn == "" {
+		return nil
+	}
+	b, err := os.ReadFile(fn)
+	if err != nil {
+		return nil
+	}
+	var envs []string
+	json.Unmarshal(b, &envs)
+	return envs
 }
