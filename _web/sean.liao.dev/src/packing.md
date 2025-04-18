@@ -8,9 +8,9 @@
   - [ ] Trim Nails
 - Travel
   - [ ] Passport
-  - [ ] UK BRP
-  - [ ] SIM Cards
-  - [ ] Credit Cards
+  - [ ] UK Evisa
+  - [ ] (e)SIM Cards
+  - [ ] Credit/Debit Cards
   - [ ] Cash
   - [ ] Travel Bag
 - Clothes
@@ -29,11 +29,11 @@
   - [ ] Hat
   - [ ] Sunglasses
   - [ ] Sunscreen
-  - [ ] Swimwear
+  - [ ] Swim wear
 - Tech
   - [ ] Wall Wart
   - [ ] Adapter plug
-  - [ ] USB C Cable
+  - [ ] USB C Cables
   - [ ] Phone
   - [ ] Battery Bank
   - [ ] Headphones
@@ -47,8 +47,9 @@
   - [ ] Shaver
   - [ ] Shaver Charger
   - [ ] Lip Balm
-  - [ ] Hair Band
-  - [ ] Hair Clip
+  - [ ] Skin care
+  - [ ] Hair band
+  - [ ] Hair clip
 
 <script>
 document.querySelectorAll("input[type=checkbox]").forEach(e => e.disabled = false)

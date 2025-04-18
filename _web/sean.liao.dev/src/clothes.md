@@ -39,7 +39,7 @@ _Western Rise Evolution Chino_
 slightly stiff,seams came apart after a few months.
 
 _Ministry of Supply Men's Velocity Dress Pant_
-once again very comfy, 
+once again very comfy,
 has a soft cotton(?) feel that makes it feel a bit more delicate.
 
 _lululemon ABC Slim-Fit Trouser 30"L Warpstreme_

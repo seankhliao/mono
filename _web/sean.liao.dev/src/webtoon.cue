@@ -17,7 +17,6 @@ Table: [for row in _data {
 _data: [
 	// rating, webtoon title number, name
 	[10, 2745, "Hero Killer"],
-	[10, 5811, "Ten Ways to Get Dumped by a Tyrant"],
 	[10, 6054, "The Price Is Your Everything"],
 	[10, 2009, "Your Throne"],
 	[9, 5815, "Cry, or Better Yet, Beg"],
@@ -28,6 +27,7 @@ _data: [
 	[8, 6821, "Even When I’m Dead"],
 	[8, 5896, "Obsidian Bride"],
 	[8, 6745, "Our Night Shift"],
+	[8, 5811, "Ten Ways to Get Dumped by a Tyrant"],
 	[8, 5419, "That Which Flows By"],
 	[8, 5478, "The Crown Princess Scandal"],
 	[8, 4464, "The Dark Lord's Confession"],

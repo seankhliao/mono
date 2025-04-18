@@ -41,7 +41,7 @@ but they certainly got better towards the end.
 
 ##### _12025-04-02_ My Neighbour Totoro
 
-[_My Neighbour Totoro_] was a theatre play 
+[_My Neighbour Totoro_] was a theatre play
 covering the same storyline as the original movie.
 It was in english, which to be honest just felt a bit weird.
 Compared to Spirited Away, [_My Neighbour Totoro_] was more lighthearted,
@@ -91,7 +91,7 @@ Both were decent small shows.
 
 With [_Hannah Grae_], and [_LEAP_]
 
-I liked [_Hannah Grae_], 
+I liked [_Hannah Grae_],
 though I was wondering if she was one of the artists that Youtube kept recommending me.
 [_LEAP_] sounded a bit too full of themselves...
 [_South Arcade_] was good,

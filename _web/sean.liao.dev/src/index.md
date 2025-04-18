@@ -12,7 +12,6 @@ The main page is:
 
 Notes on media and culture:
 
-- [music](/music/): named artists I like
 - [anime](/anime/): anime binge watch record
 - [webtoon](/webtoon): most of the webtoons I'm sort of keeping up on
 

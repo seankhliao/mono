@@ -146,7 +146,6 @@ Some textarea text
 </optgroup>
 </select>
 
-
 <fieldset>
 <legend>a fieldset</legend>
 
@@ -176,6 +175,7 @@ Some textarea text
 <label for=text-datalist>text input with datalist</label>
 <input type=text list=datalist id=text-datalist name=text-datalist>
 <datalist id=datalist>
+
   <option value=1>option 1</option>
   <option value=2>option 2</option>
   <option value=3>option 3</option>
