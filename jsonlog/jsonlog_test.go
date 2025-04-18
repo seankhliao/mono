@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -18,7 +19,6 @@ import (
 	"testing/slogtest"
 	"time"
 
-	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/otel/trace"
 )
 

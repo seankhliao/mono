@@ -102,6 +102,9 @@ func runAll(t *testing.T, tos []tool) {
 			b, err := exec.CommandContext(t.Context(), cmd, args...).CombinedOutput()
 			if err != nil {
 				t.Errorf("%s: %v\n%s", tc.name, err, string(b))
+				if len(tc.fix) > 0 {
+					t.Log("fix available, run with: go test -fix")
+				}
 			}
 		})
 	}

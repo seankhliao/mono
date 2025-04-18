@@ -2,6 +2,8 @@ package goproxyaudit
 
 import (
 	"context"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"io"
@@ -10,8 +12,6 @@ import (
 	"time"
 
 	"github.com/cockroachdb/pebble"
-	"github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	goproxyauditv1 "go.seankhliao.com/mono/goproxyaudit/v1"
 	"go.seankhliao.com/mono/yhttp"

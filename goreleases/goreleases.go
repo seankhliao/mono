@@ -4,13 +4,12 @@ package goreleases
 
 import (
 	"context"
+	"encoding/json/v2"
 	"fmt"
 	"go/version"
 	"io"
 	"net/http"
 	"slices"
-
-	"github.com/go-json-experiment/json"
 )
 
 const (

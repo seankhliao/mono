@@ -3,13 +3,13 @@ package auth
 import (
 	"context"
 	_ "embed"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
 
-	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"go.opentelemetry.io/otel/attribute"

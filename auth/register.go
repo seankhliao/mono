@@ -1,12 +1,12 @@
 package auth
 
 import (
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	mathrand "math/rand/v2"
 	"net/http"
 
-	"github.com/go-json-experiment/json"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
 	authv1 "go.seankhliao.com/mono/auth/v1"

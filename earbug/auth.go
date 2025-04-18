@@ -4,10 +4,10 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/base32"
+	"encoding/json/v2"
 	"fmt"
 	"net/http"
 
-	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/otel/trace"
 	earbugv5 "go.seankhliao.com/mono/earbug/v5"
 	"golang.org/x/oauth2"

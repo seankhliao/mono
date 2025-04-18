@@ -4,6 +4,7 @@ package yo11y
 
 import (
 	"context"
+	"encoding/json/v2"
 	"fmt"
 	"io"
 	"log/slog"
@@ -14,7 +15,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/opentelemetry-operations-go/propagator"
-	"github.com/go-json-experiment/json"
 	"go.opentelemetry.io/contrib/bridges/otelslog"
 	"go.opentelemetry.io/contrib/exporters/autoexport"
 	"go.opentelemetry.io/contrib/instrumentation/runtime"

@@ -3,6 +3,8 @@ package jsonlog
 import (
 	"context"
 	"encoding"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"fmt"
 	"io"
 	"log/slog"
@@ -12,8 +14,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-json-experiment/json"
-	"github.com/go-json-experiment/json/jsontext"
 	"go.opentelemetry.io/otel/trace"
 )
 

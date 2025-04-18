@@ -2,13 +2,13 @@ package reqlog
 
 import (
 	"context"
+	"encoding/json/jsontext"
 	"fmt"
 	"io"
 	"log/slog"
 	"net/http"
 	"strings"
 
-	"github.com/go-json-experiment/json/jsontext"
 	"go.seankhliao.com/mono/yhttp"
 	"go.seankhliao.com/mono/yo11y"
 )

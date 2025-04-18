@@ -2,10 +2,10 @@ package earbug
 
 import (
 	"context"
+	"encoding/json/v2"
 	"log/slog"
 	"time"
 
-	"github.com/go-json-experiment/json"
 	"github.com/zmb3/spotify/v2"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"

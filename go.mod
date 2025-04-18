@@ -11,7 +11,6 @@ require (
 	github.com/cert-manager/cert-manager v1.17.1
 	github.com/cockroachdb/pebble v1.1.5
 	github.com/envoyproxy/gateway v1.3.2
-	github.com/go-json-experiment/json v0.0.0-20250417205406-170dfdcf87d1
 	github.com/go-webauthn/webauthn v0.12.3
 	github.com/google/cel-go v0.24.1
 	github.com/google/go-github/v60 v60.0.0
