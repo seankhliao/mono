@@ -59,7 +59,7 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 
 #### _Travel_ Log
 
-- Austria — 12019-12
+- Austria — 12019-12, 12025-04
 - Belgium — 12019-10
 - Canada — 12019-04
 - Czechia — 12019-12
