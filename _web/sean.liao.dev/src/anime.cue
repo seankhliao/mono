@@ -79,6 +79,7 @@ _data: [
 	["2024-06-22", 8, 50360, ["Mushoku Tensei: Isekai Ittara Honki Dasu - Eris no Goblin Toubatsu", "Mushoku Tensei: Jobless Reincarnation - Eris the Goblin Slayer"]],
 	["2024-06-28", 7, 51179, ["Mushoku Tensei II: Isekai Ittara Honki Dasu", "Mushoku Tensei: Jobless Reincarnation Season 2"]],
 	["2024-07-05", 7, 55888, ["Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2", "Mushoku Tensei: Jobless Reincarnation Season 2 Part 2"]],
+	["2025-05-02", 7, 58082, ["NEET Kunoichi to Nazeka Dousei Hajimemashita", "I'm Living with an Otaku NEET Kunoichi!?"]],
 	["2024-05-03", 8, 51105, ["NieR:Automata Ver1.1a", "NieR:Automata Ver1.1a"]],
 	["2024-11-21", 8, 56063, ["NieR:Automata Ver1.1a (Cour 2)", "NieR:Automata Ver1.1a Part 2"]],
 	["2024-06-03", 8, 19815, ["No Game No Life", "No Game, No Life"]],
