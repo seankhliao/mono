@@ -43,7 +43,7 @@ var categories = []struct {
 			"ticketmaster", "axslonvenuegbpecomm", "adyen n.v.", "dice.fm",
 			"www.wegottickets.com", "tcktweb", "tickets", "inflight services",
 			"fotografiska", "youtube", "museum", "megacon", "axslon", "breakingsounduk",
-			"royal albert hall",
+			"royal albert hall", "axs",
 		},
 		[]string{
 			"entertainment",
@@ -76,7 +76,7 @@ var categories = []struct {
 			"m&s earls", "covent garden market", "tesco", "costa", "cafe",
 			"kuba cabana", "taco stand", "ole & steen", "soderberg", "coffe",
 			"the lower third", "eventim", "misato", "o2 academy islington",
-			"waitrose", "paul",
+			"waitrose", "paul", "marks & spencer", "koffee", "sainsbury",
 		},
 		[]string{
 			"restaurants", "retail_stores",
@@ -114,7 +114,7 @@ var categories = []struct {
 	{
 		"PER",
 		[]string{
-			"ebay", "london graphic centre",
+			"ebay", "london graphic centre", "crazycolor.co.uk",
 		},
 		[]string{
 			"government_services",
@@ -132,7 +132,7 @@ var categories = []struct {
 		[]string{
 			"my o2 bill payment", "o2 balanceweb", "amznmktplace", "aliexpress", "h3g dd",
 			"gsuite", "o2 online", "amazon", "hutchison 3g", "google", "bic camera",
-			"framework", "hetzner", "viasat", "sp arace tech", "anker",
+			"framework", "hetzner", "viasat", "sp arace tech", "anker", "three", "o2",
 		},
 		nil,
 	},
@@ -150,7 +150,7 @@ var categories = []struct {
 			"autolinee", "editerraneo grand hot", "trenitalia", "fiumicino aeroporto",
 			"sorrento", "ferryhopper", "funicolare", "lbergo excelsior",
 			"eav", "smartrip", "shinkansen", "seven bank", "jr west", "uber",
-			"vaa mobile app", "uscustoms",
+			"vaa mobile app", "uscustoms", "öbb", "booking",
 		},
 		[]string{
 			"hotels", "automobile",
@@ -160,7 +160,7 @@ var categories = []struct {
 	{
 		"TRP",
 		[]string{
-			"tfl travel ch",
+			"tfl travel ch", "tfl - transport for london",
 		},
 		nil,
 	},

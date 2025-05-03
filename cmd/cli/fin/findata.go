@@ -146,14 +146,14 @@ func Print(w io.Writer, c *Currency) {
 		for start, end := 0, min(5, len(group.Names)); start < len(group.Names); start, end = start+5, min(end+5, len(group.Names)) {
 			fmt.Fprint(w, strings.Repeat(" ", 7)) // padding for date
 			for _, n := range group.Names[start:end] {
-				fmt.Fprintf(w, " |    %31s", n) // account name
+				fmt.Fprintf(w, " |    %35s", n) // account name
 			}
 			fmt.Fprintln(w)
 
 			for _, m := range c.Months {
 				fmt.Fprintf(w, "%d-%02d", m.Year, m.Month) // date
 				for _, n := range group.Names[start:end] {
-					fmt.Fprintf(w, " |   %+9.2f /%+9.2f  %+10.2f", float64(m.add[n])/100, -float64(m.sub[n])/100, float64(m.sum[n])/100)
+					fmt.Fprintf(w, " |   %+11.2f /%+11.2f  %+10.2f", float64(m.add[n])/100, -float64(m.sub[n])/100, float64(m.sum[n])/100)
 				}
 				fmt.Fprintln(w)
 			}

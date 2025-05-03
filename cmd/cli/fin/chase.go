@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
 	"io"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -54,9 +57,62 @@ func (c *Convert) chase(stdout, stderr io.Writer) error {
 			return fmt.Errorf("unhandled transaction type: %s", tx)
 		}
 
-		fmt.Printf(`[%s, %s, %d, %q],`+"\n", src, dst, value, desc)
+		fmt.Fprintf(stdout, `[%s, %s, %d, %q],`+"\n", src, dst, value, desc)
 
 	}
 
+	return nil
+}
+
+func (c *Convert) chasetxt(stdout, stderr io.Writer) error {
+	if c.filepath == "" {
+		return fmt.Errorf("no file given")
+	}
+	b, err := os.ReadFile(c.filepath)
+	if err != nil {
+		return fmt.Errorf("read file: %w", err)
+	}
+	sc := bufio.NewScanner(bytes.NewReader(b))
+	for sc.Scan() {
+		// dd Mmm Yyyy <name>
+		s := sc.Text()
+		date := s[:11]
+		name := strings.TrimSpace(s[12:])
+		dst := categorize(name, "")
+
+		ok := sc.Scan()
+		if !ok {
+			return fmt.Errorf("expected transaction details after: %q", s)
+		}
+		s = sc.Text()
+		act, det, ok := strings.Cut(s, " ")
+		if !ok {
+			return fmt.Errorf("expected category [details] amount in: %q", s)
+		}
+		src := ""
+		switch act {
+		case "Purchase":
+			src = "CSC"
+		default:
+			return fmt.Errorf("unhandled action: %q", act)
+		}
+
+		delim := "£"
+		i := strings.LastIndex(det, delim)
+		extra, vals := det[:i], det[i+len(delim):]
+		vals = strings.ReplaceAll(vals, ".", "")
+		val, err := strconv.Atoi(vals)
+		if err != nil {
+			return fmt.Errorf("convert amount %q: %w", vals, err)
+		}
+
+		desc := date + " " + name
+		extra = strings.Trim(extra, "| ")
+		if extra != "" {
+			desc += " | " + extra
+		}
+
+		fmt.Fprintf(stdout, `[%s, %s, %d, %q],`+"\n", src, dst, val, desc)
+	}
 	return nil
 }

@@ -13,10 +13,6 @@ func (c *Convert) hsbc(stdout, stderr io.Writer) error {
 	}
 
 	card := "HSB"
-	if c.hsbcCard == "credit" {
-		card = "HSC"
-	}
-
 	for i := len(records) - 1; i >= 0; i-- {
 		rec := records[i]
 		date, desc_, val := rec[0], rec[1], rec[2]

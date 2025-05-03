@@ -66,10 +66,10 @@ func ConvertCommand() ycli.Command {
 			c.trading,
 		),
 		ycli.New(
-			"yonder",
-			"convert yonder statements",
+			"chasetxt",
+			"convert copied chase pdf statements",
 			nil,
-			c.yonder,
+			c.chasetxt,
 		),
 	)
 }
