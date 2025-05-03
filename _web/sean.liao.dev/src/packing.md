@@ -13,6 +13,7 @@
   - [ ] Credit/Debit Cards
   - [ ] Cash
   - [ ] Travel Bag
+  - [ ] Water bottle
 - Clothes
   - [ ] Shirts
   - [ ] Trousers
@@ -29,7 +30,7 @@
   - [ ] Hat
   - [ ] Sunglasses
   - [ ] Sunscreen
-  - [ ] Swim wear
+  - [ ] Swimwear
 - Tech
   - [ ] Wall Wart
   - [ ] Adapter plug
