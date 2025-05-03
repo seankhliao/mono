@@ -24,8 +24,24 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-04_ Nessa Barrett
 - _12025-05-30_ Babymetal
 - _12025-05-03_ Aurora
-- _12025-05-01_ ARTMS
-- _12024-04-25_ RedHook
+
+##### _12025-05-01_ ARTMS
+
+[_ARTMS_], a kpop group.
+We open with a bunch of solos, leaving me wondering if it is a group at all.
+The latter parts were fine,
+though it felt like a very formulaic kpop show (which is mostly dancing...)
+and padded out by long video interludes.
+
+##### _12024-04-25_ RedHook
+
+With [_Eville_], and  [_Defences_]
+
+I thought [_Eville_] was pretty good,
+[_Defences_] didn't really strike a chord with me.
+[_RedHook_] was decent? it did feel pretty wild
+with a mosh pit taking up most of the room,
+and the singer dancing on the bar top.
 
 ##### _12025-04-17_ The Warning
 
@@ -1298,6 +1314,7 @@ the energy levels are high.
 for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Chrissy Costanza_] is a bundle of energy bouncing around the front of the stage.
 
+
 [_Ad Infinitum_]: https://www.youtube.com/@AdInfinitumOfficial
 [_Against the Current_]: https://www.youtube.com/@againstthecurrent
 [_Air Drawn Dagger_]: https://www.youtube.com/@AirDrawnDagger
@@ -1310,6 +1327,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Anna of the North_]: https://www.youtube.com/@annaofthenorthforreal
 [_Annika Bennett_]: https://www.youtube.com/@AnnikaBennett
 [_ari abdul_]: https://www.youtube.com/@AriAbdul
+[_ARTMS_]: https://www.youtube.com/@official_artms
 [_Ashnikko_]: https://www.youtube.com/@Ashnikko
 [_ASP_]: https://www.youtube.com/@ASPOfficialChannel
 [_ATARASHII GAKKO_]: https://www.youtube.com/@ATARASHIIGAKKO
@@ -1350,6 +1368,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Conquer Divide_]: https://www.youtube.com/@conquerdividemusic
 [_Deadbeat girl_]: https://www.youtube.com/@deadbeatgirl.mp3
 [_Dead Pony_]: https://www.youtube.com/@deadponyband
+[_Defences_]: https://www.youtube.com/@Defences
 [_Delain_]: https://www.youtube.com/@delainofficial
 [_Detweiler_]: https://www.youtube.com/@detweiler5838
 [_Deyyess_]: https://www.youtube.com/@deyyess
@@ -1365,6 +1384,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Emlyn_]: https://www.youtube.com/@emlynmusicofficial
 [_eundohee_]: https://www.youtube.com/@eundohee
 [_Eva Under Fire_]: https://www.youtube.com/@EvaUnderFire
+[_Eville_]: https://www.youtube.com/@Evilleband
 [_ExWHYZ_]: https://www.youtube.com/@ExWHYZ
 [_Eyelar_]: https://www.youtube.com/@eyelar1201
 [_Fall Out Boy_]: https://www.youtube.com/@falloutboy
@@ -1456,6 +1476,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Radio Wolf_]: https://www.youtube.com/@RadioWolfMusic
 [_Rebecca Black_]: https://www.youtube.com/@rebecca
 [_Rebmoe_]: https://www.youtube.com/@TheMoestyle
+[_RedHook_]: https://www.youtube.com/@weareredhook
 [_renforshort_]: https://www.youtube.com/@renforshortofficial
 [_RØRY_]: https://www.youtube.com/@its_r_o_r_y
 [_Sabrina Carpenter_]: https://www.youtube.com/@sabrinacarpenter
