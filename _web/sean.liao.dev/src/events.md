@@ -23,7 +23,21 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-05_ Wack in the UK vol 6
 - _12025-06-04_ Nessa Barrett
 - _12025-05-30_ Babymetal
-- _12025-05-03_ Aurora
+
+##### _12025-05-03_ Aurora
+
+With [_Fredrik Svabø_] and [_Pomme_]
+
+Can't say I really understood [_Fredrik Svabø_] much,
+[_Pomme_] was interesting, some dreamy french songs.
+[_Aurora_] was amazing,
+with quite a dynamic range between the ethereal and vigorous tunes.
+Choreography and lighting design were impressive too,
+maybe it was the use of way larger than life image projections as backdrops,
+but it had a bit of modern art feel,
+and her presence on the stage seemed to emphasize the grandness rather than be swallowed up by it.
+Her chats are also interesting,
+meandering, and quirky, but unforced.
 
 ##### _12025-05-01_ ARTMS
 
@@ -35,7 +49,7 @@ and padded out by long video interludes.
 
 ##### _12024-04-25_ RedHook
 
-With [_Eville_], and  [_Defences_]
+With [_Eville_], and [_Defences_]
 
 I thought [_Eville_] was pretty good,
 [_Defences_] didn't really strike a chord with me.
@@ -192,7 +206,7 @@ I liked the aerial acrobatics the best.
 
 ##### _12025-02-20_ Deyyess
 
-With [bluegirl]
+With [_bluegirl_]
 
 Fine?
 
@@ -219,8 +233,8 @@ It was only when [_ANKOR_] described themselves that I learned I was listening t
 
 ##### _12025-02-12_ Kikuo
 
-I guess when their social handles are kikuo*sound,
-it's not unexpected for [\_kikuo*] be more like sounds in a modern art exhibition.
+I guess when their social handles are "kikuo sound",
+it's not unexpected for [_kikuo_] be more like sounds in a modern art exhibition.
 That's not to say it wasn't good,
 just less... melodic?
 They're certainly proud of their work,
@@ -366,7 +380,7 @@ celebration of... something.
 
 With [_Nieve Ella_]
 
-I forgot to review [_gitl in red_]'s music before the show,
+I forgot to review [_girl in red_]'s music before the show,
 but that didn't really take away from the experience.
 What sort of experience was it?
 It felt slightly less scripted than usual for an event this size,
@@ -1314,8 +1328,8 @@ the energy levels are high.
 for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Chrissy Costanza_] is a bundle of energy bouncing around the front of the stage.
 
-
 [_Ad Infinitum_]: https://www.youtube.com/@AdInfinitumOfficial
+[_Ado_]: https://www.youtube.com/@Ado1024
 [_Against the Current_]: https://www.youtube.com/@againstthecurrent
 [_Air Drawn Dagger_]: https://www.youtube.com/@AirDrawnDagger
 [_Aisling McGlynn_]: https://www.anuna.ie/aisling-mcglynn
@@ -1390,6 +1404,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Fall Out Boy_]: https://www.youtube.com/@falloutboy
 [_FEMM_]: https://www.youtube.com/@FEMM____
 [_Fletcher_]: https://www.youtube.com/@fletcher
+[_Fredrik Svabø_]: https://www.youtube.com/@fredriksvabo
 [_Frozen Crown_]: https://www.youtube.com/@FrozenCrown
 [_galacticbpd_]: https://www.instagram.com/galacticbpd_
 [_Gang Parade_]: https://www.youtube.com/@gangparade
@@ -1470,6 +1485,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Phantom Siita_]: https://www.youtube.com/@PhantomSiita
 [_phem_]: https://www.youtube.com/@phem4evr
 [_Pierce the Veil_]: https://www.youtube.com/@piercetheveil
+[_Pomme_]: https://www.youtube.com/@PommeMusic
 [_Poppy_]: https://www.youtube.com/@poppy
 [_Pretty Guardian Sailor Moon: The Super Live_]: https://sailormoonsuperliveuk.com/
 [_PVRIS_]: https://www.youtube.com/@PVRIS
