@@ -113,6 +113,9 @@ func (a *App) run(stdout, stderr io.Writer) error {
 		}
 	}
 
+	os.Setenv("GOENV", "off")
+	os.Setenv("GOFLAGS", "-trimpath")
+
 	// download versions
 	sem := make(chan struct{}, a.parallel)
 	for _, sdk := range append(keepVer, "gotip") {
