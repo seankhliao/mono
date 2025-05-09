@@ -144,6 +144,9 @@ func (a *App) run(stdout, stderr io.Writer) error {
 		return nil
 	}
 
+	os.Unsetenv("GOENV")
+	os.Unsetenv("GOFLAGS")
+
 	des, err = os.ReadDir(gobin)
 	if err != nil {
 		return fmt.Errorf("list installed go tools: %w", err)
