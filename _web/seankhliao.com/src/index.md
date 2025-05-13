@@ -92,7 +92,7 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 - Taiwan — **11996—12000, 12005—12009, 12011—12019**, 12023-03, 12024-08
 - Timor-Leste — 12018-02
 - Turkey — 12022-09
-- United States — 12019-04, 12023-07, 12024-03, 12024-12
+- United States — 12019-04, 12023-07, 12024-03, 12024-12, 12025-05
 - Vatican — 12021-12
 - Wales — 12022-06
 
