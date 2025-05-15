@@ -111,6 +111,10 @@ func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, 
 		defer inFile.Close()
 
 		buf := new(bytes.Buffer)
+		if strings.HasSuffix(p, ".draft.md") {
+			// skip drafts
+			return nil
+		}
 		if strings.HasSuffix(p, ".md") {
 			b, err := io.ReadAll(inFile)
 			if err != nil {
