@@ -67,6 +67,12 @@ func main() {
 			nil,
 			a.showWrapper,
 		),
+		ycli.New(
+			"clear-cache",
+			"clear the namespace cache",
+			nil,
+			a.clearCache,
+		),
 	))
 }
 
@@ -381,6 +387,20 @@ func (a *App) currentConfig() (confPath string, conf *clientcmdapi.Config, manag
 
 	a.context = conf.CurrentContext
 	return confPath, conf, managed
+}
+
+func (a *App) clearCache(stdout, _ io.Writer) error {
+	cacheDir, err := os.UserCacheDir()
+	if err != nil {
+		cacheDir = os.TempDir()
+	}
+	cacheFile := filepath.Join(cacheDir, "kswitch-ns-cache.json")
+	err = os.Remove(cacheFile)
+	if err != nil {
+		return fmt.Errorf("remove cache file %v: %w", cacheFile, err)
+	}
+	fmt.Fprintln(stdout, "removed", cacheFile)
+	return nil
 }
 
 func mergeConfig(all, conf *clientcmdapi.Config) {
