@@ -7,13 +7,13 @@ Subtitle: "binge watch record"
 
 PageTitle: "anime"
 Description: """
-	> If I were to utter those words and realize I was in fact lying... 
+	> If I were to utter those words and realize I was in fact lying...
 	> The thought of it scares me.
 	>
 	> — _Hoshino Ai_, Oshi no Ko, Season 1 Episode 1
 
-	Boredom strikes, 
-	and I aim to binge watch an entire series per day. 
+	Boredom strikes,
+	and I aim to binge watch an entire series per day.
 	"""
 
 LinkFormat: "https://myanimelist.net/anime/%d"
@@ -35,6 +35,7 @@ _data: [
 	["2024-05-27", 6, 52081, ["Edomae Elf", "Otaku Elf"]],
 	["2024-10-08", 6, 51212, ["Futoku no Guild", "Immoral Guild"]],
 	["2024-12-24", 8, 54968, ["Giji Harem", "Pseudo Harem"]],
+	["2025-05-22", 7, 52481, ["Gimai Seikatsu", "Days with My Stepsister"]],
 	["2024-08-13", 8, 55102, ["Girls Band Cry", "Girls Band Cry"]],
 	["2024-08-26", 7, 17729, ["Grisaia no Kajitsu", "The Fruit of Grisaia"]],
 	["2024-05-27", 5, 51265, ["Inu ni Nattara Suki na Hito ni Hirowareta", "My Life as Inukai-san's Dog"]],
@@ -91,6 +92,7 @@ _data: [
 	["2024-10-12", 5, 40436, ["Peter Grill to Kenja no Jikan", "Peter Grill and the Philosopher's Time"]],
 	["2024-12-11", 5, 50348, ["Peter Grill to Kenja no Jikan: Super Extra", "Peter Grill and the Philosopher's Time: Super Extra"]],
 	["2024-04-06", 7, 51403, ["Renai Flops", "Love Flops"]],
+	["2025-05-18", 7, 32951, ["Rokudenashi Majutsu Koushi to Akashic Records", "Akashic Records of Bastard Magic Instructor"]],
 	["2024-09-09", 7, 48363, ["RPG Fudousan", "RPG Real Estate"]],
 	["2024-07-07", 8, 37450, ["Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai", "Rascal Does Not Dream of Bunny Girl Senpai"]],
 	["2024-07-08", 8, 38329, ["Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai", "Rascal Does Not Dream of a Dreaming Girl"]],
