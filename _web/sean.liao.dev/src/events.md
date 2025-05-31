@@ -10,8 +10,10 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
+- _12025-11-16_ Lorde
 - _12025-11-15_ Billie Marten
 - _12025-11-07_ HANABIE
+- _12025-10-28_ Blackbriar
 - _12025-10-15_ Sumo
 - _12025-09-16_ Au/Ra
 - _12025-07-17_ Billie Eilish
@@ -19,11 +21,28 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-28_ BROKEN BY THE SCREAM
 - _12025-06-19_ Ado
 - _12025-06-16_ Mothica
+- _12025-06-14_ Ado
 - _12025-06-08_ YOASOBI
 - _12025-06-06_ Wack in the UK vol 6
 - _12025-06-05_ Wack in the UK vol 6
 - _12025-06-04_ Nessa Barrett
-- _12025-05-30_ Babymetal
+
+##### _12025-05-30_ Babymetal
+
+With [_Bambie Thug_], and [_Poppy_]
+
+[_Bambie Thug_] was kind of interesting,
+visually it was certainly quite unique,
+though kind of hard to see in a big arena...
+[_Poppy_] was pretty good,
+I think the music changed to mix in more metal elements.
+It was quite fun to see how adaptable she is.
+[_BABYMETAL_] was quite unique,
+the serious, fierce look of cute perfection.
+Fully choreographed in between all the flamethrowers and sparklers.
+Their sparkly but pointy clothes reminded me of Star Trek Romulans...
+I think they were aiming for the contrast in kawaii metal,
+and hit it well.
 
 ##### _12025-05-03_ Aurora
 
@@ -1350,6 +1369,8 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Ava Max_]: https://www.youtube.com/@avamax
 [_AViVA_]: https://www.youtube.com/@thisisaviva
 [_Avril Lavigne_]: https://www.youtube.com/@AvrilLavigne
+[_BABYMETAL_]: https://www.youtube.com/@BABYMETAL
+[_Bambie Thug_]: https://www.youtube.com/@bambiethug
 [_Band of Silver_]: https://www.youtube.com/@officialbandofsilver
 [_BANKS_]: https://www.youtube.com/@banks
 [_Bear’s Den_]: https://www.youtube.com/@bearsdenmusic
