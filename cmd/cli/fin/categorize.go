@@ -22,10 +22,21 @@ var categories = []struct {
 		nil,
 	},
 	{
+		"CSC",
+		[]string{"to credit card"},
+		nil,
+	},
+	{
 		"CSE",
 		[]string{
 			"kuan-hsuan liao chase", "sean chase chase",
+			"me chase current",
 		},
+		nil,
+	},
+	{
+		"CSS",
+		[]string{"chase saver"},
 		nil,
 	},
 	{
@@ -99,7 +110,7 @@ var categories = []struct {
 	{
 		"HOS",
 		[]string{
-			"chesterton global f17 36", "chestertons rent", "r.b.k.c", "thames water", "e.on",
+			"chesterton uk", "chestertons rent", "r.b.k.c", "thames water", "e.on",
 			"ikea",
 		},
 		nil,

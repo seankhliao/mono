@@ -53,6 +53,10 @@ func (c *Convert) chase(stdout, stderr io.Writer) error {
 			src, dst = dst, src
 		case "Transfer":
 			src, dst = dst, src
+			if value < 0 {
+				value *= -1
+				src, dst = dst, src
+			}
 		default:
 			return fmt.Errorf("unhandled transaction type: %s", tx)
 		}
