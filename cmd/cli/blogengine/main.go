@@ -7,12 +7,14 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log/slog"
 	"net"
 	"net/http"
 	"os"
 	"time"
 
 	"go.seankhliao.com/mono/cueconf"
+	"go.seankhliao.com/mono/jsonlog"
 	"go.seankhliao.com/mono/ycli"
 	"go.seankhliao.com/mono/yhttp"
 )
@@ -122,6 +124,7 @@ func run(stdout io.Writer, conf Config, preview bool) error {
 	}
 
 	if preview {
+		lg := slog.New(jsonlog.New(slog.LevelInfo, stdout))
 		lookup := make(map[string]string)
 		for p := range rendered {
 			lookup[canonicalPathFromRelPath(p)] = p
@@ -130,6 +133,7 @@ func run(stdout io.Writer, conf Config, preview bool) error {
 		mux := yhttp.New()
 		mux.Handle("GET /", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			p, ok := lookup[r.URL.Path]
+			lg.LogAttrs(r.Context(), slog.LevelInfo, "serve page", slog.String("path", r.URL.Path), slog.String("lookup", p))
 			if !ok {
 				http.Error(w, "not found", http.StatusNotFound)
 				return

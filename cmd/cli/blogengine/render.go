@@ -222,6 +222,8 @@ func canonicalPathFromRelPath(in string) string {
 		return "/"
 	} else if in[len(in)-1] == '/' {
 		return "/" + in
+	} else if strings.HasPrefix(in, "static/") {
+		return "/" + in
 	}
 	return "/" + in + "/"
 }
