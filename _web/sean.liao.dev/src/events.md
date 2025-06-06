@@ -23,9 +23,45 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-16_ Mothica
 - _12025-06-14_ Ado
 - _12025-06-08_ YOASOBI
-- _12025-06-06_ Wack in the UK vol 6
-- _12025-06-05_ Wack in the UK vol 6
-- _12025-06-04_ Nessa Barrett
+
+##### _12025-06-06_ Wack in the UK vol 6
+
+With [_MAPA_], [_PIGGS_], and [_ZOCX_]
+
+[_MAPA_] had the most traditionally cute songs,
+though maybe they had a harder time getting people excited.
+Their dance style felt way more modern,
+something to look at but not imitate.
+When [_PIGGS_] came on stage,
+it felt like someone flipped a switch in the audience,
+with everyone becoming much more active and dancing along.
+Even on the edge it was hard not to get swept up in it all.
+[_ZOCX_] rounded out the night,
+quite sparkly and also raspy singing?
+
+##### _12025-06-05_ Wack in the UK vol 6
+
+With [_MAMESHiBA NO TAiGUN ], [_ASP_], and [_ExWHYZ_]
+
+So this is the same lineup as Vol 4.
+[_MAMESHiBA NO TAiGUN ] (previously as [_MONSTERIDOL_]) was up first,
+I feel like they get better every time?
+[_ASP_] was definitely my favourite of this group,
+more alt? louder, more active / hyped(?),
+they sound quite different than on spotify.
+I'd forgotten I'd seen [_ExWHYZ_] before,
+they felt like the more elegant of the set.
+
+##### _12025-06-04_ Nessa Barrett
+
+With [_sombr_]
+
+I thought [_sombr_] was quite forgettable.
+[_Nessa Barrett_] was amazing as before,
+with a lot of songs I liked.
+Hot girl sad songs but in a sort of upbeat vibe?
+The audience sing-a-long was strong...
+maybe a bit too strong that it masked Nessa's voice.
 
 ##### _12025-05-30_ Babymetal
 
@@ -116,7 +152,7 @@ A fine evening.
 I think I knew more of [_NERIAH_]'s songs than I realized,
 though I wonder how much of it was spotify's related songs.
 
-##### _12025-03-26_ WACK in the UK vol 5: Gang Parade, ASP, Kiss Kiss
+##### _12025-03-26_ WACK in the UK vol 5
 
 With [_KiSS KiSS_], [_ASP_], and [_Gang Parade_]
 
@@ -1483,6 +1519,8 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Maeve_]: https://www.youtube.com/@internetmaeve
 [_Maggie Lindemann_]: https://www.youtube.com/@maggielindemann
 [_Maisie Peters_]: https://www.youtube.com/@MaisieHPeters
+[_MAMESHiBA NO TAiGUN ]: https://www.youtube.com/@MAMESHiBANOTAiGUN96
+[_MAPA_]: https://www.youtube.com/@mapa8234
 [_Marisa Rodriguez_]: https://www.instagram.com/marisasingsalot/?hl=en
 [_McKenna Michels_]: https://www.youtube.com/@mckennamichelsmusic
 [_Melanie Martinez_]: https://www.youtube.com/@MelanieMartinez
@@ -1507,6 +1545,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Phantom Siita_]: https://www.youtube.com/@PhantomSiita
 [_phem_]: https://www.youtube.com/@phem4evr
 [_Pierce the Veil_]: https://www.youtube.com/@piercetheveil
+[_PIGGS_]: https://www.youtube.com/@PIGGS_idol
 [_Pomme_]: https://www.youtube.com/@PommeMusic
 [_Poppy_]: https://www.youtube.com/@poppy
 [_Pretty Guardian Sailor Moon: The Super Live_]: https://sailormoonsuperliveuk.com/
@@ -1524,6 +1563,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_SERAINA TELLI_]: https://www.youtube.com/@serainatelli
 [_Seven Blood_]: https://www.youtube.com/@SevenBloodOfficial
 [_Skillet_]: https://www.youtube.com/@skilletband
+[_sombr_]: https://www.youtube.com/channel/UCXlqFQmZZOb78teSnAqhuwA
 [_Sonia Stein_]: https://www.youtube.com/@SoniaStein
 [_Sophia Alexa_]: https://www.youtube.com/@SophiaAlexa
 [_Sophie Lloyd_]: https://www.youtube.com/@SophieLloyd
@@ -1549,4 +1589,5 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Yeule_]: https://www.youtube.com/@yeule
 [_Yours Truly_]: https://www.youtube.com/@yourstrulyofficialband6610
 [_Zara Larsson_]: https://www.youtube.com/@ZaraLarssonOfficial
+[_ZOCX_]: https://www.youtube.com/@ZOC_ZOC_ZOC
 [_Zoey Lily_]: https://www.youtube.com/@ZoeyLily
