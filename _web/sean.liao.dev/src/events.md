@@ -10,6 +10,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 ##### _upcoming_ plans
 
+- _12026-03-17_ KESHA
 - _12025-11-16_ Lorde
 - _12025-11-15_ Billie Marten
 - _12025-11-07_ HANABIE
