@@ -23,7 +23,21 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-19_ Ado
 - _12025-06-16_ Mothica
 - _12025-06-14_ Ado
-- _12025-06-08_ YOASOBI
+- _12025-06-09_ YOASOBI
+
+##### _12025-06-08_ YOASOBI
+
+I was was quite excited to see [_YOASOBI_],
+especially since they were number two on my spotify artists list last year.
+The instrumentals were surprisingly loud,
+maybe not as intricately balanced as the studio versions,
+more about putting out raw power to hype up the crowd,
+and I think the audio mixing wasn't the greatest (low frequency saturation...),
+but the performance was still great.
+I knew every song that came out,
+even the most recent ones.
+Ayase mostly stuck around his console,
+while [_Lilas Ikuta_] moved around a lot more.
 
 ##### _12025-06-06_ Wack in the UK vol 6
 
@@ -1507,6 +1521,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_LEAP_]: https://www.youtube.com/@leap_the_band
 [_Lekna_]: https://www.youtube.com/@leknamusic
 [_Like a Storm_]: https://www.youtube.com/@officiallikeastorm
+[_Lilas Ikuta_]: https://www.youtube.com/@Lilas_Ikuta
 [_Lizzie Esau_]: https://www.youtube.com/@lizzieesau
 [_lleo_]: https://www.instagram.com/lleoworld
 [_LØLØ_]: https://www.youtube.com/@lolopopgurl
@@ -1588,6 +1603,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_XYLO_]: https://www.youtube.com/@xylo
 [_Yaeger_]: https://www.youtube.com/@yaegerofficial
 [_Yeule_]: https://www.youtube.com/@yeule
+[_YOASOBI_]: https://www.youtube.com/@Ayase_YOASOBI
 [_Yours Truly_]: https://www.youtube.com/@yourstrulyofficialband6610
 [_Zara Larsson_]: https://www.youtube.com/@ZaraLarssonOfficial
 [_ZOCX_]: https://www.youtube.com/@ZOC_ZOC_ZOC
