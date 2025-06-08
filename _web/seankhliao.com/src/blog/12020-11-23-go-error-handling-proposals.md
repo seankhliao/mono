@@ -2,7 +2,7 @@
 
 ## overview of error handling proposals in go
 
-_note:_ updated 12025-06.07
+_note:_ updated 12025-06-07
 
 ### _error_ handling
 
