@@ -23,7 +23,19 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-19_ Ado
 - _12025-06-16_ Mothica
 - _12025-06-14_ Ado
-- _12025-06-09_ YOASOBI
+
+##### _12025-06-09_ YOASOBI
+
+How could I miss [_YOASOBI_]'s second night in London.
+This time it felt like they fixed the audio issues,
+mostly by toning down the loud live band and experimental noises.
+It felt like a closer rendition of the recorded version,
+and here it's [_Lilas Ikuta_] that stands out.
+I loved the clarity with which we could hear her this time round.
+Also, being pretty close to the barriers felt quite different,
+seeing them up close,
+Ikura really exuded a mix of bubbly, cute yet cool superstar vibe
+where a full arena is her natural habitat.
 
 ##### _12025-06-08_ YOASOBI
 
@@ -61,9 +73,12 @@ With [_MAMESHiBA NO TAiGUN ], [_ASP_], and [_ExWHYZ_]
 So this is the same lineup as Vol 4.
 [_MAMESHiBA NO TAiGUN ] (previously as [_MONSTERIDOL_]) was up first,
 I feel like they get better every time?
+It did feel like they relied more on 2 members for most fo the singing.
 [_ASP_] was definitely my favourite of this group,
 more alt? louder, more active / hyped(?),
 they sound quite different than on spotify.
+It felt like a well balanced group,
+with everyone constantly taking turns to take center stage.
 I'd forgotten I'd seen [_ExWHYZ_] before,
 they felt like the more elegant of the set.
 
