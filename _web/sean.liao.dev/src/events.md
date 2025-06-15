@@ -22,7 +22,37 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-06-28_ BROKEN BY THE SCREAM
 - _12025-06-19_ Ado
 - _12025-06-16_ Mothica
-- _12025-06-14_ Ado
+
+##### _12025-06-14_ Ado
+
+On a whim, I bought tickets for [_Ado_]'s Copenhagen show,
+even though I already had tickets for the same show in London in a few days.
+Well, anything to show support for my favourite singer.
+The stage was one massive screen as a backgrop,
+with a raised stage wrapped in screens as well,
+and a cage on top.
+The cage appeared to be covered in a sheer material that could act as a display,
+but also meant we could only see a silhouette of [_Ado_].
+
+For the performance,
+it was banger after banger,
+but no talking or chatter of any kind,
+other than a "Hi I'm Ado" between two songs,
+until the very end where there was a speech before the "last" song,
+and a longer speech before the real last song.
+Compared to studio versions,
+Ado felt more aggressive, with more growls and screams,
+but also more dynamic in terms on tonal variation.
+The dancing was quite dramatic as well,
+I was thinking how impressive she was to not be out of breath.
+For the bass did feel somewhat... missing though.
+
+With a strict no phones policy,
+I felt more in touch with the entire performance,
+which went by way too fast.
+It felt highly produced, but at the same time,
+quite raw in the emotions that Ado conveyed through her songs.
+Definitely worth the flight over.
 
 ##### _12025-06-09_ YOASOBI
 

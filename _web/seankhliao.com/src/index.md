@@ -63,10 +63,10 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 - Belgium — 12019-10
 - Canada — 12019-04
 - Czechia — 12019-12
-- Denmark — 12023-07
+- Denmark — 12023-07, 12025-06
 - England — **12009—12011**, 12019-10, 12020-02, 12021-11, _12022-present_
 - France — 12021-11, 12023-08
-- Germany — 12019-12, 12023-12, 12024-09
+- Germany — 12019-12, 12023-12, 12024-09, 12025-06
 - Greece — 12022-10
 - Hong Kong — 12017-08
 - India — 12015-08
