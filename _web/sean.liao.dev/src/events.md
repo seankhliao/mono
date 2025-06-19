@@ -21,7 +21,23 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-07-06_ Sabrina Carpenter
 - _12025-06-28_ BROKEN BY THE SCREAM
 - _12025-06-19_ Ado
-- _12025-06-16_ Mothica
+
+##### _12025-06-16_ Mothica
+
+With [_Nxdia_]: https://www.youtube.com/@nxdiamusic
+
+The person next to me was very excited about [_Nxdia_],
+I could see why, but personally not quite my style.
+As for [_Mothica_],
+this time I got to see her up close (barriers...).
+It was an interesting experience,
+I mean I like Mothica's songs,
+but as for the delivery this time,
+I don't know if it was because I was overpowered by standing right next to the speakers,
+but it felt just a little bit empty?
+Not to say it didn't convey emotion,
+or sadness in prticular,
+it just felt a bit off...
 
 ##### _12025-06-14_ Ado
 
@@ -1598,6 +1614,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_NINA_]: https://www.youtube.com/@iloveninamusic
 [_Nina Nesbitt_]: https://www.youtube.com/@ninanesbitt
 [_Nothing, Nowhere_]: https://www.youtube.com/@nothingnowheremusic
+[_Nxdia_]: https://www.youtube.com/@nxdiamusic
 [_Oliver Cronin_]: https://www.youtube.com/@OliverCronin
 [_ONE OK ROCK_]: https://www.youtube.com/@ONEOKROCK
 [_Overlaps_]: https://www.youtube.com/@Overlaps
