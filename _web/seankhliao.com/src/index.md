@@ -73,7 +73,7 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 - Indonesia — 12017-02, 12017-08, 12018-02, 12018-12
 - Ireland — 12023-06
 - Italy — 12021-12, 12024-09, 12024-11
-- Japan — 12018-03, 12023-02, 12024-12
+- Japan — 12018-03, 12023-02, 12024-12, 12025-07
 - Lithuania — 12022-12, 12024-05
 - Luxembourg — 12019-10
 - Malta — 12024-02
@@ -89,7 +89,7 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 - Spain — 12023-09
 - Sweden — 12018-01, 12024-09
 - Switzerland — 12023-10
-- Taiwan — **11996—12000, 12005—12009, 12011—12019**, 12023-03, 12024-08
+- Taiwan — **11996—12000, 12005—12009, 12011—12019**, 12023-03, 12024-08, 12025-07
 - Timor-Leste — 12018-02
 - Turkey — 12022-09
 - United States — 12019-04, 12023-07, 12024-03, 12024-12, 12025-05
