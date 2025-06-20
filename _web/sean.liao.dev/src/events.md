@@ -20,7 +20,40 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-07-17_ Billie Eilish
 - _12025-07-06_ Sabrina Carpenter
 - _12025-06-28_ BROKEN BY THE SCREAM
-- _12025-06-19_ Ado
+
+##### _12025-06-19_ Ado
+
+How could I not see [_Ado_] twice?
+This was even better than the show in Copenhagen a few days ago.
+
+The setting: the O2 felt like a much niver arena,
+the view felt better,
+and it had more of an everyone watching feel.
+The stage setup was as before,
+a veiled box on a raised stage.
+As you only see Ado's silhouette,
+the background visuals were very important,
+and it had some of the best integration with the actual performance,
+and often times using visuals form the music video,
+compared to other shows where it's just vaguely related imagery.
+The lighting was also different,
+as all the lights beam out towards the crowd,
+rather than focus on the stage.
+
+As for audio,
+there was actually bass this time.
+[_Ado_]'s performance felt raw and intense,
+a gloomy personality with so much to say that you can't be helped but pulled along.
+The dance movements were big,
+and one a raised stage, we can see here when she drops to the floor,
+which is quite often.
+Her stamina and breath control is very impressive,
+never sounding out of breath,
+and so many growls and screams.
+We even got a long speech in English towards the end,
+plus more in Japanese.
+Playing a sold out show at the O2 definitely felt like a milestone,
+and I was really glad I could see it.
 
 ##### _12025-06-16_ Mothica
 
