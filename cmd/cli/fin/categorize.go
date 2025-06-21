@@ -54,7 +54,7 @@ var categories = []struct {
 			"ticketmaster", "axslonvenuegbpecomm", "adyen n.v.", "dice.fm",
 			"www.wegottickets.com", "tcktweb", "tickets", "inflight services",
 			"fotografiska", "youtube", "museum", "megacon", "axslon", "breakingsounduk",
-			"royal albert hall", "axs",
+			"royal albert hall", "axs", "muzeum",
 		},
 		[]string{
 			"entertainment",
@@ -88,6 +88,7 @@ var categories = []struct {
 			"kuba cabana", "taco stand", "ole & steen", "soderberg", "coffe",
 			"the lower third", "eventim", "misato", "o2 academy islington",
 			"waitrose", "paul", "marks & spencer", "koffee", "sainsbury",
+			"whole foods market", "k. minamoto",
 		},
 		[]string{
 			"restaurants", "retail_stores",
@@ -161,7 +162,9 @@ var categories = []struct {
 			"autolinee", "editerraneo grand hot", "trenitalia", "fiumicino aeroporto",
 			"sorrento", "ferryhopper", "funicolare", "lbergo excelsior",
 			"eav", "smartrip", "shinkansen", "seven bank", "jr west", "uber",
-			"vaa mobile app", "uscustoms", "öbb", "booking",
+			"vaa mobile app", "uscustoms", "öbb", "booking", "lufthansa",
+			"premier inn", "mta nyct paygo", "hilton hotels",
+			"marriott",
 		},
 		[]string{
 			"hotels", "automobile",

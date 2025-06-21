@@ -97,6 +97,9 @@ func (c *Convert) chasetxt(stdout, stderr io.Writer) error {
 		switch act {
 		case "Purchase":
 			src = "CSC"
+		case "Repayment":
+			src = "CSE"
+			dst = "CSC"
 		default:
 			return fmt.Errorf("unhandled action: %q", act)
 		}
