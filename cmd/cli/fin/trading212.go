@@ -129,6 +129,8 @@ func (c *Convert) trading(stdout, stderr io.Writer) error {
 		case "Lending interest":
 			desc := strings.Join([]string{rec[idxs["Time"]], "Share lending interest"}, " ")
 			fmt.Fprintf(buf, "[FIN, TOC, %d, %q],\n", value, desc)
+		case "Stock split open", "Stock split close":
+			continue
 		default:
 			panic("unhandled action " + action)
 		}
