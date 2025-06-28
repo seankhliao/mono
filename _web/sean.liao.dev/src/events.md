@@ -20,7 +20,16 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-09-16_ Au/Ra
 - _12025-07-17_ Billie Eilish
 - _12025-07-06_ Sabrina Carpenter
-- _12025-06-28_ BROKEN BY THE SCREAM
+
+##### _12025-06-28_ Broken by the Scream
+
+A kawaii screaming metal idol group.
+I feel like they fall in a similar category as [_BABYMETAL_],
+but I liked [_Broken by the Scream_] much more.
+At a smaller venue you can see them up close,
+and their music style had more of a contrast,
+with two members singing most of the melodies,
+and two doing most of the screams and growls.
 
 ##### _12025-06-19_ Ado
 
@@ -1527,6 +1536,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Blackbriar_]: https://www.youtube.com/@blackbriarmusic
 [_Blackpink_]: https://www.youtube.com/@BLACKPINK
 [_Black Veil Brides_]: https://www.youtube.com/@blackveilbrides
+[_Broken by the Scream_]: https://www.youtube.com/@BrokenByTheScream
 [_bluegirl_]: https://www.instagram.com/bluegirl
 [_briskin_]: https://www.youtube.com/@briskin01
 [_Caity Baser_]: https://www.youtube.com/@caitybaser
