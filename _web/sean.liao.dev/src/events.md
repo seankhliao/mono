@@ -18,6 +18,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-28_ Blackbriar
 - _12025-10-15_ Sumo
 - _12025-09-16_ Au/Ra
+- _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
 
 ##### _12025-07-17_ Billie Eilish
 
