@@ -18,8 +18,51 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-28_ Blackbriar
 - _12025-10-15_ Sumo
 - _12025-09-16_ Au/Ra
-- _12025-07-17_ Billie Eilish
-- _12025-07-06_ Sabrina Carpenter
+
+##### _12025-07-17_ Billie Eilish
+
+With [_Magdalena Bay_]
+
+[_Magdalena Bay_] was fine,
+but just didn't grab my attention.
+[_Billie Eilish_] felt more mature,
+but also less unique this time round,
+as if this was all so normal.
+I felt like the crowd was older too,
+or at least less screaming teens,
+more girls in their 20s?
+
+##### _12025-07-16_ Rokusan Angel
+
+Rokusan Angel (63 Angel, Burlesque Tokyo),
+was quite the interesting experience.
+While the night was maid themed,
+I think that just covered their initial and final costumes,
+with various other costumes in between.
+There was a pretty big cast,
+with different groups doing dances for just over an hour.
+The final half hour was the girls going around,
+taking tips (paper tokens exchanged bought with real money),
+and chatting / taking pictures.
+
+I think it was a relatively small venue,
+and even with many of the cast on stage,
+there were more still that came through the crowd,
+and danced right in front of you taking your whole attention.
+
+##### _12025-07-15_ Aurora supported by 脱却
+
+With [_猫の眼に宇宙_], [_may in film_], [_ シンダーエラ_], [_finally_], [_月刊PAM_]
+
+On a whim, I decided to see what was playing at Shelter Shimokitazawa,
+maybe better known as the live house Starry from Bocchi the Rock.
+What was on was a series of idol groups:
+we opened with [_猫の眼に宇宙_] which was perhaps my favourite of the set,
+I think it was cuteness and the joy they spread.
+[_may in film_] was good, but maybe with a hint of tense desperation?
+[_ シンダーエラ_] (cinder-ella) had a more distant, dance heavy performance.
+[_finally_] was very intense, getting the whole room to join in with dances.
+[_月刊PAM_] was fine, but didn't quite hook me.
 
 ##### _12025-06-28_ Broken by the Scream
 
@@ -1536,9 +1579,9 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Blackbriar_]: https://www.youtube.com/@blackbriarmusic
 [_Blackpink_]: https://www.youtube.com/@BLACKPINK
 [_Black Veil Brides_]: https://www.youtube.com/@blackveilbrides
-[_Broken by the Scream_]: https://www.youtube.com/@BrokenByTheScream
 [_bluegirl_]: https://www.instagram.com/bluegirl
 [_briskin_]: https://www.youtube.com/@briskin01
+[_Broken by the Scream_]: https://www.youtube.com/@BrokenByTheScream
 [_Caity Baser_]: https://www.youtube.com/@caitybaser
 [_Call Me Amour_]: https://www.youtube.com/@CALLMEAMOUR
 [_Cannons_]: https://www.youtube.com/@CannonsTheBand
@@ -1581,6 +1624,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Eyelar_]: https://www.youtube.com/@eyelar1201
 [_Fall Out Boy_]: https://www.youtube.com/@falloutboy
 [_FEMM_]: https://www.youtube.com/@FEMM____
+[_finally_]: https://www.youtube.com/@finallyofficial1713
 [_Fletcher_]: https://www.youtube.com/@fletcher
 [_Fredrik Svabø_]: https://www.youtube.com/@fredriksvabo
 [_Frozen Crown_]: https://www.youtube.com/@FrozenCrown
@@ -1638,11 +1682,13 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Madison Beer_]: https://www.youtube.com/@MadisonBeer
 [_Mae Stephens_]: https://www.youtube.com/@MaeStephensOfficial
 [_Maeve_]: https://www.youtube.com/@internetmaeve
+[_Magdalena Bay_]: https://www.youtube.com/@MagdalenaBay
 [_Maggie Lindemann_]: https://www.youtube.com/@maggielindemann
 [_Maisie Peters_]: https://www.youtube.com/@MaisieHPeters
 [_MAMESHiBA NO TAiGUN ]: https://www.youtube.com/@MAMESHiBANOTAiGUN96
 [_MAPA_]: https://www.youtube.com/@mapa8234
 [_Marisa Rodriguez_]: https://www.instagram.com/marisasingsalot/?hl=en
+[_may in film_]: https://www.youtube.com/@mayinfilm
 [_McKenna Michels_]: https://www.youtube.com/@mckennamichelsmusic
 [_Melanie Martinez_]: https://www.youtube.com/@MelanieMartinez
 [_Mone Kamishiraishi_]: https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p
@@ -1714,3 +1760,6 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Zara Larsson_]: https://www.youtube.com/@ZaraLarssonOfficial
 [_ZOCX_]: https://www.youtube.com/@ZOC_ZOC_ZOC
 [_Zoey Lily_]: https://www.youtube.com/@ZoeyLily
+[_ シンダーエラ_]: https://www.youtube.com/@cinder_ella_
+[_月刊PAM_]: https://www.youtube.com/@gekkanpam
+[_猫の眼に宇宙_]: http://www.youtube.com/@%E7%8C%AB%E3%81%AE%E7%9C%BC%E3%81%AB%E5%AE%87%E5%AE%99
