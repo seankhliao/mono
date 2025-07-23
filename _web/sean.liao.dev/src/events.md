@@ -20,6 +20,23 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-09-16_ Au/Ra
 - _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
 
+##### _12025-07-22_ The Empire Strips Back: A Burlesque Parody
+
+[_The Empire Strips Back: A Burlesque Parody_]
+was certainly interesting.
+As a burlesque show,
+it centered more around the dances.
+The costimes an set pieces were on point,
+but using modern pop songs, there was quite a bit of disconnect for me...
+It ended up being each character coming out to do one dance.
+The audience was much more diverse than I expected,
+but I guess that's what you get for a more tame show?
+
+##### _12025-07-20_ Isiliel
+
+[_Isiliel_] was good metal I think.
+Nothing revolutionary... just good.
+
 ##### _12025-07-17_ Billie Eilish
 
 With [_Magdalena Bay_]
@@ -1649,6 +1666,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_ili_]: https://www.youtube.com/@thisisili
 [_ILLUMISHADE_]: https://www.youtube.com/@ILLUMISHADE
 [_Isabel LaRosa_]: https://www.youtube.com/@isabellarosa5800
+[_Isiliel_]: https://www.youtube.com/@IMPERIETIV
 [_IVE_]: https://www.youtube.com/@IVEstarship
 [_Izza_]: https://www.youtube.com/@izzaroze
 [_Jack Garratt_]: https://www.youtube.com/@JackGarratt
@@ -1741,6 +1759,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Tate McRae_]: https://www.youtube.com/@TateMcRae
 [_Taylor Acorn_]: https://www.youtube.com/@TaylorAcorn
 [_The Cruel Knives_]: https://www.youtube.com/@TheCruelKnives
+[_The Empire Strips Back: A Burlesque Parody_]: https://www.youtube.com/@Empirestripsbackburlesqueshow
 [_The Pretty Reckless_]: https://www.youtube.com/@tprofficial
 [_The Rose_]: https://www.youtube.com/@theroseofficial
 [_The Staves_]: https://www.youtube.com/@thestaves
