@@ -20,6 +20,14 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-09-16_ Au/Ra
 - _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
 
+##### _12025-07-23_ Pure Chlorine
+
+With _Anti Virus_, _Taurus Trakker_
+
+_Taurus Trakker_ were a couple of old guys,
+_Anti Virus_ was metal(?) in Portuguese,
+[_Pure Chlorine_] was decent for a small band.
+
 ##### _12025-07-22_ The Empire Strips Back: A Burlesque Parody
 
 [_The Empire Strips Back: A Burlesque Parody_]
@@ -1736,6 +1744,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Pomme_]: https://www.youtube.com/@PommeMusic
 [_Poppy_]: https://www.youtube.com/@poppy
 [_Pretty Guardian Sailor Moon: The Super Live_]: https://sailormoonsuperliveuk.com/
+[_Pure Chlorine_]: https://www.youtube.com/@purechlorine8272
 [_PVRIS_]: https://www.youtube.com/@PVRIS
 [_Radio Wolf_]: https://www.youtube.com/@RadioWolfMusic
 [_Rebecca Black_]: https://www.youtube.com/@rebecca
