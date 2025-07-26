@@ -88,7 +88,7 @@ var categories = []struct {
 			"kuba cabana", "taco stand", "ole & steen", "soderberg", "coffe",
 			"the lower third", "eventim", "misato", "o2 academy islington",
 			"waitrose", "paul", "marks & spencer", "koffee", "sainsbury",
-			"whole foods market", "k. minamoto",
+			"whole foods market", "k. minamoto", "7-eleven",
 		},
 		[]string{
 			"restaurants", "retail_stores",
