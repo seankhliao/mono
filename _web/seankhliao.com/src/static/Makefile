@@ -1,4 +1,4 @@
-CONVERT_SVG := convert -background none -density 150
+CONVERT_SVG := magick -background none -density 150
 
 .PHONY: map
 map: map.png map.avif
@@ -15,7 +15,7 @@ icon-512.png: icon.svg
 	$(CONVERT_SVG) -resize 512x512 $? $@
 
 .PHONY: go-list
-go-list: go-list-all.avif go-list-all115.avif go-list-base.avif go-list-dotdotdot.avif go-list-dotdotdotdeps.avif go-list-dotdotdotdepstest.avif go-list-m.avif go-list-mall.avif 
+go-list: go-list-all.avif go-list-all115.avif go-list-base.avif go-list-dotdotdot.avif go-list-dotdotdotdeps.avif go-list-dotdotdotdepstest.avif go-list-m.avif go-list-mall.avif
 go-list-all.png go-list-all.avif: go-list-all.svg
 	$(CONVERT_SVG) -resize 1920x1080 $? -write go-list-all.avif go-list-all.png
 go-list-all115.png go-list-all115.avif: go-list-all115.svg

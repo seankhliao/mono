@@ -65,6 +65,7 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 - Czechia — 12019-12
 - Denmark — 12023-07, 12025-06
 - England — **12009—12011**, 12019-10, 12020-02, 12021-11, _12022-present_
+- Estonia — 12025-08
 - France — 12021-11, 12023-08
 - Germany — 12019-12, 12023-12, 12024-09, 12025-06
 - Greece — 12022-10
@@ -81,6 +82,7 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 - Northern Ireland — 12023-06
 - Norway — 12023-07, 12024-09
 - Philippines — 12017-08
+- Poland — 12025-08
 - Portugal — 12024-03
 - Russia — **12000—12005**
 - Scotland — 12022-06
