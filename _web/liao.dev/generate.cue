@@ -15,6 +15,6 @@ Links: {
 	// "oftc":           "ircs://irc.oftc.net:6697/seankhliao,isuser"
 	"seankhliao.com": "https://seankhliao.com/"
 	"sean.liao.dev":  "https://sean.liao.dev/"
-	"signal":         "https://signal.me/#eu/5Emkydcfrt7b8b9QYS6l0YCI5Pf_1yzxKG67GX0aT4roLrprO5pPjK7IFo6_0v6H"
+	"signal":         "https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE"
 	"twitter":        "https://twitter.com/seankhliao"
 }
