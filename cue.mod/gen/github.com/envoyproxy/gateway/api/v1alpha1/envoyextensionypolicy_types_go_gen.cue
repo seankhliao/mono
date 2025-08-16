@@ -56,7 +56,6 @@ import (
 	//
 	// +kubebuilder:validation:MaxItems=16
 	// +optional
-	// +notImplementedHide
 	lua?: [...#Lua] @go(Lua,[]Lua)
 }
 

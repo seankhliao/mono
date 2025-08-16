@@ -4,6 +4,8 @@
 
 package v1alpha1
 
+import gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
+
 // Authorization defines the authorization configuration.
 //
 // Note: if neither `Rules` nor `DefaultAction` is specified, the default action is to deny all requests.
@@ -37,6 +39,12 @@ package v1alpha1
 	// Action defines the action to be taken if the rule matches.
 	action: #AuthorizationAction @go(Action)
 
+	// Operation specifies the operation of a request, such as HTTP methods.
+	// If not specified, all operations are matched on.
+	//
+	// +optional
+	operation?: null | #Operation @go(Operation,*Operation)
+
 	// Principal specifies the client identity of a request.
 	// If there are multiple principal types, all principals must match for the rule to match.
 	// For example, if there are two principals: one for client IP and one for JWT claim,
@@ -44,9 +52,22 @@ package v1alpha1
 	principal: #Principal @go(Principal)
 }
 
+// Operation specifies the operation of a request.
+#Operation: {
+	// Methods are the HTTP methods of the request.
+	// If multiple methods are specified, all specified methods are allowed or denied, based on the action of the rule.
+	//
+	// +kubebuilder:validation:MinItems=1
+	// +kubebuilder:validation:MaxItems=16
+	methods: [...gwapiv1.#HTTPMethod] @go(Methods,[]gwapiv1.HTTPMethod)
+}
+
+// Principal specifies the client identity of a request.
+// A client identity can be a client IP, a JWT claim, username from the Authorization header,
+// or any other identity that can be extracted from a custom header.
 // If there are multiple principal types, all principals must match for the rule to match.
 //
-// +kubebuilder:validation:XValidation:rule="(has(self.clientCIDRs) || has(self.jwt))",message="at least one of clientCIDRs or jwt must be specified"
+// +kubebuilder:validation:XValidation:rule="(has(self.clientCIDRs) || has(self.jwt) || has(self.headers))",message="at least one of clientCIDRs, jwt, or headers must be specified"
 #Principal: {
 	// ClientCIDRs are the IP CIDR ranges of the client.
 	// Valid examples are "192.168.1.0/24" or "2001:db8::/64"
@@ -58,6 +79,7 @@ package v1alpha1
 	// or the proxy protocol.
 	// You can use the `ClientIPDetection` or the `EnableProxyProtocol` field in
 	// the `ClientTrafficPolicy` to configure how the client IP is detected.
+	//
 	// +optional
 	// +kubebuilder:validation:MinItems=1
 	clientCIDRs?: [...#CIDR] @go(ClientCIDRs,[]CIDR)
@@ -67,6 +89,32 @@ package v1alpha1
 	// JWT authentication in the same `SecurityPolicy`.
 	// +optional
 	jwt?: null | #JWTPrincipal @go(JWT,*JWTPrincipal)
+
+	// Headers authorize the request based on user identity extracted from custom headers.
+	// If multiple headers are specified, all headers must match for the rule to match.
+	//
+	// +optional
+	// +kubebuilder:validation:MinItems=1
+	// +kubebuilder:validation:MaxItems=256
+	headers?: [...#AuthorizationHeaderMatch] @go(Headers,[]AuthorizationHeaderMatch)
+}
+
+// AuthorizationHeaderMatch specifies how to match against the value of an HTTP header within a authorization rule.
+#AuthorizationHeaderMatch: {
+	// Name of the HTTP header.
+	// The header name is case-insensitive unless PreserveHeaderCase is set to true.
+	// For example, "Foo" and "foo" are considered the same header.
+	//
+	// +kubebuilder:validation:MinLength=1
+	// +kubebuilder:validation:MaxLength=256
+	name: string @go(Name)
+
+	// Values are the values that the header must match.
+	// If multiple values are specified, the rule will match if any of the values match.
+	//
+	// +kubebuilder:validation:MinItems=1
+	// +kubebuilder:validation:MaxItems=256
+	values: [...string] @go(Values,[]string)
 }
 
 // JWTPrincipal specifies the client identity of a request based on the JWT claims and scopes.

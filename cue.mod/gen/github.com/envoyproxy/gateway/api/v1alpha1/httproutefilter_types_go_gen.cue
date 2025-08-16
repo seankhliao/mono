@@ -4,10 +4,16 @@
 
 package v1alpha1
 
-import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
+)
 
 // KindHTTPRouteFilter is the name of the HTTPRouteFilter kind.
 #KindHTTPRouteFilter: "HTTPRouteFilter"
+
+// InjectedCredentialKey is the key in the secret where the injected credential is stored.
+#InjectedCredentialKey: "credential"
 
 // HTTPRouteFilter is a custom Envoy Gateway HTTPRouteFilter which provides extended
 // traffic processing options such as path regex rewrite, direct response and more.
@@ -27,6 +33,9 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	// +optional
 	directResponse?: null | #HTTPDirectResponseFilter @go(DirectResponse,*HTTPDirectResponseFilter)
+
+	// +optional
+	credentialInjection?: null | #HTTPCredentialInjectionFilter @go(CredentialInjection,*HTTPCredentialInjectionFilter)
 }
 
 // HTTPURLRewriteFilter define rewrites of HTTP URL components such as path and host
@@ -137,6 +146,38 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Header is the name of the header whose value would be used to rewrite the Host header
 	// +optional
 	header?: null | string @go(Header,*string)
+}
+
+// HTTPCredentialInjectionFilter defines the configuration to inject credentials into the request.
+// This is useful when the backend service requires credentials in the request, and the original
+// request does not contain them. The filter can inject credentials into the request before forwarding
+// it to the backend service.
+// +notImplementedHide
+#HTTPCredentialInjectionFilter: {
+	// Header is the name of the header where the credentials are injected.
+	// If not specified, the credentials are injected into the Authorization header.
+	// +optional
+	header?: null | string @go(Header,*string)
+
+	// Whether to overwrite the value or not if the injected headers already exist.
+	// If not specified, the default value is false.
+	// +optional
+	overwrite?: null | bool @go(Overwrite,*bool)
+
+	// Credential is the credential to be injected.
+	credential: #InjectedCredential @go(Credential)
+}
+
+// InjectedCredential defines the credential to be injected.
+// +notImplementedHide
+#InjectedCredential: {
+	// ValueRef is a reference to the secret containing the credentials to be injected.
+	// This is an Opaque secret. The credential should be stored in the key
+	// "credential", and the value should be the credential to be injected.
+	// For example, for basic authentication, the value should be "Basic <base64 encoded username:password>".
+	// for bearer token, the value should be "Bearer <token>".
+	// Note: The secret must be in the same namespace as the HTTPRouteFilter.
+	valueRef: gwapiv1.#SecretObjectReference @go(ValueRef)
 }
 
 // HTTPRouteFilterList contains a list of HTTPRouteFilter resources.

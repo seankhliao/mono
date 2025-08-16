@@ -5,8 +5,10 @@
 package v1alpha1
 
 import (
+	gwapiv1a2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	autoscalingv2 "k8s.io/api/autoscaling/v2"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
@@ -23,7 +25,7 @@ import (
 #DefaultDeploymentMemoryResourceRequests: "512Mi"
 
 // DefaultEnvoyProxyImage is the default image used by envoyproxy
-#DefaultEnvoyProxyImage: "docker.io/envoyproxy/envoy:distroless-v1.33.1"
+#DefaultEnvoyProxyImage: "docker.io/envoyproxy/envoy:distroless-v1.34.4"
 
 // DefaultShutdownManagerCPUResourceRequests for shutdown manager cpu resource
 #DefaultShutdownManagerCPUResourceRequests: "10m"
@@ -35,13 +37,34 @@ import (
 #DefaultShutdownManagerImage: "docker.io/envoyproxy/gateway-dev:latest"
 
 // DefaultRateLimitImage is the default image used by ratelimit.
-#DefaultRateLimitImage: "docker.io/envoyproxy/ratelimit:0141a24f"
+#DefaultRateLimitImage: "docker.io/envoyproxy/ratelimit:bb4dae24"
 
 // HTTPProtocol is the common-used http protocol.
 #HTTPProtocol: "http"
 
 // GRPCProtocol is the common-used grpc protocol.
 #GRPCProtocol: "grpc"
+
+// PolicyConditionOverridden indicates whether the policy has
+// completely attached to all the sections within the target or not.
+//
+// Possible reasons for this condition to be True are:
+//
+// * "Overridden"
+//
+#PolicyConditionOverridden: gwapiv1a2.#PolicyConditionType & "Overridden"
+
+// PolicyReasonOverridden is used with the "Overridden" condition when the policy
+// has been overridden by another policy targeting a section within the same target.
+#PolicyReasonOverridden: gwapiv1a2.#PolicyConditionReason & "Overridden"
+
+// PolicyConditionMerged indicates whether the policy has
+// been merged with another policy targeting the parent(e.g. Gateway).
+#PolicyConditionMerged: gwapiv1a2.#PolicyConditionType & "Merged"
+
+// PolicyReasonMerged is used with the "Merged" condition when the policy
+// has been merged with another policy targeting the parent(e.g. Gateway).
+#PolicyReasonMerged: gwapiv1a2.#PolicyConditionReason & "Merged"
 
 // GroupVersionKind unambiguously identifies a Kind.
 // It can be converted to k8s.io/apimachinery/pkg/runtime/schema.GroupVersionKind
@@ -339,14 +362,18 @@ import (
 }
 
 // LogLevel defines a log level for Envoy Gateway and EnvoyProxy system logs.
-// +kubebuilder:validation:Enum=debug;info;error;warn
+// +kubebuilder:validation:Enum=trace;debug;info;warn;error
 #LogLevel: string // #enumLogLevel
 
 #enumLogLevel:
+	#LogLevelTrace |
 	#LogLevelDebug |
 	#LogLevelInfo |
 	#LogLevelWarn |
 	#LogLevelError
+
+// LogLevelTrace defines the "Trace" logging level.
+#LogLevelTrace: #LogLevel & "trace"
 
 // LogLevelDebug defines the "debug" logging level.
 #LogLevelDebug: #LogLevel & "debug"
@@ -422,12 +449,20 @@ import (
 #StringMatchRegularExpression: #StringMatchType & "RegularExpression"
 
 // KubernetesPodDisruptionBudgetSpec defines Kubernetes PodDisruptionBudget settings of Envoy Proxy Deployment.
+//
+// +kubebuilder:validation:XValidation:rule="(has(self.minAvailable) && !has(self.maxUnavailable)) || (!has(self.minAvailable) && has(self.maxUnavailable))",message="only one of minAvailable or maxUnavailable can be specified"
 #KubernetesPodDisruptionBudgetSpec: {
-	// MinAvailable specifies the minimum number of pods that must be available at all times during voluntary disruptions,
+	// MinAvailable specifies the minimum amount of pods (can be expressed as integers or as a percentage) that must be available at all times during voluntary disruptions,
 	// such as node drains or updates. This setting ensures that your envoy proxy maintains a certain level of availability
-	// and resilience during maintenance operations.
+	// and resilience during maintenance operations. Cannot be combined with maxUnavailable.
 	// +optional
-	minAvailable?: null | int32 @go(MinAvailable,*int32)
+	minAvailable?: null | intstr.#IntOrString @go(MinAvailable,*intstr.IntOrString)
+
+	// MaxUnavailable specifies the maximum amount of pods (can be expressed as integers or as a percentage) that can be unavailable at all times during voluntary disruptions,
+	// such as node drains or updates. This setting ensures that your envoy proxy maintains a certain level of availability
+	// and resilience during maintenance operations. Cannot be combined with minAvailable.
+	// +optional
+	maxUnavailable?: null | intstr.#IntOrString @go(MaxUnavailable,*intstr.IntOrString)
 
 	// Patch defines how to perform the patch operation to the PodDisruptionBudget
 	//
@@ -776,4 +811,22 @@ import (
 	//
 	// +optional
 	valueRef?: null | gwapiv1.#LocalObjectReference @go(ValueRef,*gwapiv1.LocalObjectReference)
+}
+
+// Tracing defines the configuration for tracing.
+// TODO: we'd better deprecate SamplingRate in the EnvoyProxy spec, so that we can reuse the struct.
+#Tracing: {
+	// SamplingFraction represents the fraction of requests that should be
+	// selected for tracing if no prior sampling decision has been made.
+	//
+	// This will take precedence over sampling fraction on EnvoyProxy if set.
+	//
+	// +optional
+	samplingFraction?: null | gwapiv1.#Fraction @go(SamplingFraction,*gwapiv1.Fraction)
+
+	// CustomTags defines the custom tags to add to each span.
+	// If provider is kubernetes, pod name and namespace are added by default.
+	//
+	// +optional
+	customTags?: {[string]: #CustomTag} @go(CustomTags,map[string]CustomTag)
 }

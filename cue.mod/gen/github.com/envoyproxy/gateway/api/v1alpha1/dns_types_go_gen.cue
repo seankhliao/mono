@@ -6,6 +6,36 @@ package v1alpha1
 
 import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+// DNSLookupFamily defines the behavior of Envoy when resolving DNS for hostnames
+// +enum
+// +kubebuilder:validation:Enum=IPv4;IPv6;IPv4Preferred;IPv6Preferred;IPv4AndIPv6
+#DNSLookupFamily: string // #enumDNSLookupFamily
+
+#enumDNSLookupFamily:
+	#IPv4DNSLookupFamily |
+	#IPv6DNSLookupFamily |
+	#IPv4PreferredDNSLookupFamily |
+	#IPv6PreferredDNSLookupFamily |
+	#IPv4AndIPv6DNSLookupFamily
+
+// IPv4DNSLookupFamily means the DNS resolver will first perform a lookup for addresses in the IPv4 family.
+#IPv4DNSLookupFamily: #DNSLookupFamily & "IPv4"
+
+// IPv6DNSLookupFamily means the DNS resolver will first perform a lookup for addresses in the IPv6 family.
+#IPv6DNSLookupFamily: #DNSLookupFamily & "IPv6"
+
+// IPv4PreferredDNSLookupFamily means the DNS resolver will first perform a lookup for addresses in the IPv4 family and fallback
+// to a lookup for addresses in the IPv6 family.
+#IPv4PreferredDNSLookupFamily: #DNSLookupFamily & "IPv4Preferred"
+
+// IPv6PreferredDNSLookupFamily means the DNS resolver will first perform a lookup for addresses in the IPv6 family and fallback
+// to a lookup for addresses in the IPv4 family.
+#IPv6PreferredDNSLookupFamily: #DNSLookupFamily & "IPv6Preferred"
+
+// IPv4AndIPv6DNSLookupFamily mean the DNS resolver will perform a lookup for both IPv4 and IPv6 families, and return all resolved
+// addresses. When this is used, Happy Eyeballs will be enabled for upstream connections.
+#IPv4AndIPv6DNSLookupFamily: #DNSLookupFamily & "IPv4AndIPv6"
+
 #DNS: {
 	// DNSRefreshRate specifies the rate at which DNS records should be refreshed.
 	// Defaults to 30 seconds.
@@ -15,4 +45,9 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// If the value is set to true, the DNS refresh rate will be set to the resource record’s TTL.
 	// Defaults to true.
 	respectDnsTtl?: null | bool @go(RespectDNSTTL,*bool)
+
+	// LookupFamily determines how Envoy would resolve DNS for Routes where the backend is specified as a fully qualified domain name (FQDN).
+	// If set, this configuration overrides other defaults.
+	// +optional
+	lookupFamily?: null | #DNSLookupFamily @go(LookupFamily,*DNSLookupFamily)
 }

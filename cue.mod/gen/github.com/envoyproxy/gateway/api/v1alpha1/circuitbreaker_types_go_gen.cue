@@ -45,4 +45,20 @@ package v1alpha1
 	// +kubebuilder:validation:Maximum=4294967295
 	// +optional
 	maxRequestsPerConnection?: null | int64 @go(MaxRequestsPerConnection,*int64)
+
+	// PerEndpoint defines Circuit Breakers that will apply per-endpoint for an upstream cluster
+	//
+	// +optional
+	perEndpoint?: null | #PerEndpointCircuitBreakers @go(PerEndpoint,*PerEndpointCircuitBreakers)
+}
+
+// PerEndpointCircuitBreakers defines Circuit Breakers that will apply per-endpoint for an upstream cluster
+#PerEndpointCircuitBreakers: {
+	// MaxConnections configures the maximum number of connections that Envoy will establish per-endpoint to the referenced backend defined within a xRoute rule.
+	//
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=4294967295
+	// +kubebuilder:default=1024
+	// +optional
+	maxConnections?: null | int64 @go(MaxConnections,*int64)
 }

@@ -104,6 +104,8 @@ import (
 }
 
 // HeaderSettings provides configuration options for headers on the listener.
+//
+// +kubebuilder:validation:XValidation:rule="!(has(self.preserveXRequestID) && has(self.requestID))",message="preserveXRequestID and requestID cannot both be set."
 #HeaderSettings: {
 	// EnableEnvoyHeaders configures Envoy Proxy to add the "X-Envoy-" headers to requests
 	// and responses.
@@ -134,10 +136,18 @@ import (
 
 	// PreserveXRequestID configures Envoy to keep the X-Request-ID header if passed for a request that is edge
 	// (Edge request is the request from external clients to front Envoy) and not reset it, which is the current Envoy behaviour.
-	// It defaults to false.
+	// Defaults to false and cannot be combined with RequestID.
+	// Deprecated: use RequestID=Preserve instead
 	//
 	// +optional
 	preserveXRequestID?: null | bool @go(PreserveXRequestID,*bool)
+
+	// RequestID configures Envoy's behavior for handling the `X-Request-ID` header.
+	// Defaults to `Generate` and builds the `X-Request-ID` for every request and ignores pre-existing values from the edge.
+	// (An "edge request" refers to a request from an external client to the Envoy entrypoint.)
+	//
+	// +optional
+	requestID?: null | #RequestIDAction @go(RequestID,*RequestIDAction)
 
 	// EarlyRequestHeaders defines settings for early request header modification, before envoy performs
 	// routing, tracing and built-in header manipulation.
@@ -167,6 +177,30 @@ import (
 // is dropped before the filter chain is invoked and as such filters will not see
 // dropped headers.
 #WithUnderscoresActionDropHeader: #WithUnderscoresAction & "DropHeader"
+
+// RequestIDAction configures Envoy's behavior for handling the `X-Request-ID` header.
+//
+// +kubebuilder:validation:Enum=PreserveOrGenerate;Preserve;Generate;Disable
+#RequestIDAction: string // #enumRequestIDAction
+
+#enumRequestIDAction:
+	#RequestIDActionPreserveOrGenerate |
+	#RequestIDActionPreserve |
+	#RequestIDActionGenerate |
+	#RequestIDActionDisable
+
+// Preserve `X-Request-ID` if already present or generate if empty
+#RequestIDActionPreserveOrGenerate: #RequestIDAction & "PreserveOrGenerate"
+
+// Preserve `X-Request-ID` if already present, do not generate when empty
+#RequestIDActionPreserve: #RequestIDAction & "Preserve"
+
+// Always generate `X-Request-ID` header, do not preserve `X-Request-ID`
+// header if it exists. This is the default behavior.
+#RequestIDActionGenerate: #RequestIDAction & "Generate"
+
+// Do not preserve or generate `X-Request-ID` header
+#RequestIDActionDisable: #RequestIDAction & "Disable"
 
 // XForwardedClientCert configures how Envoy Proxy handle the x-forwarded-client-cert (XFCC) HTTP header.
 // +kubebuilder:validation:XValidation:rule="(has(self.certDetailsToAdd) && self.certDetailsToAdd.size() > 0) ? (self.mode == 'AppendForward' || self.mode == 'SanitizeSet') : true",message="certDetailsToAdd can only be set when mode is AppendForward or SanitizeSet"
@@ -342,19 +376,6 @@ import (
 	// +kubebuilder:validation:MaxLength=1024
 	path: string @go(Path)
 }
-
-// PolicyConditionOverridden indicates whether the policy has
-// completely attached to all the sections within the target or not.
-//
-// Possible reasons for this condition to be True are:
-//
-// * "Overridden"
-//
-#PolicyConditionOverridden: gwapiv1a2.#PolicyConditionType & "Overridden"
-
-// PolicyReasonOverridden is used with the "Overridden" condition when the policy
-// has been overridden by another policy targeting a section within the same target.
-#PolicyReasonOverridden: gwapiv1a2.#PolicyConditionReason & "Overridden"
 
 // ClientTrafficPolicyList contains a list of ClientTrafficPolicy resources.
 #ClientTrafficPolicyList: {

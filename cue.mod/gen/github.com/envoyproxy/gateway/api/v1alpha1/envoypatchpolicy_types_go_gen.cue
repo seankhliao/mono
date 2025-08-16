@@ -90,7 +90,8 @@ import (
 	#ListenerEnvoyResourceType |
 	#RouteConfigurationEnvoyResourceType |
 	#ClusterEnvoyResourceType |
-	#ClusterLoadAssignmentEnvoyResourceType
+	#ClusterLoadAssignmentEnvoyResourceType |
+	#SecretEnvoyResourceType
 
 // ListenerEnvoyResourceType defines the Type URL of the Listener resource
 #ListenerEnvoyResourceType: #EnvoyResourceType & "type.googleapis.com/envoy.config.listener.v3.Listener"
@@ -103,6 +104,9 @@ import (
 
 // ClusterLoadAssignmentEnvoyResourceType defines the Type URL of the ClusterLoadAssignment resource
 #ClusterLoadAssignmentEnvoyResourceType: #EnvoyResourceType & "type.googleapis.com/envoy.config.endpoint.v3.ClusterLoadAssignment"
+
+// SecretEnvoyResourceType defines the Type URL of the Secret resource
+#SecretEnvoyResourceType: #EnvoyResourceType & "type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.Secret"
 
 // JSONPatchOperationType specifies the JSON Patch operations that can be performed.
 // +kubebuilder:validation:Enum=add;remove;replace;move;copy;test

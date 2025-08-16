@@ -7,6 +7,7 @@ package v1alpha1
 import (
 	gwapiv1a2 "sigs.k8s.io/gateway-api/apis/v1alpha2"
 	gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 #PolicyTargetReferences: {
@@ -36,5 +37,12 @@ import (
 	kind: gwapiv1.#Kind @go(Kind)
 
 	// MatchLabels are the set of label selectors for identifying the targeted resource
-	matchLabels: {[string]: string} @go(MatchLabels,map[string]string)
+	// +optional
+	matchLabels?: {[string]: string} @go(MatchLabels,map[string]string)
+
+	// MatchExpressions is a list of label selector requirements. The requirements are ANDed.
+	//
+	// +optional
+	// +listType=atomic
+	matchExpressions?: [...metav1.#LabelSelectorRequirement] @go(MatchExpressions,[]metav1.LabelSelectorRequirement)
 }

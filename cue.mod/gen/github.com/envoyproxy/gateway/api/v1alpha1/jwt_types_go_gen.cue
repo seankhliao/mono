@@ -4,6 +4,8 @@
 
 package v1alpha1
 
+import gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
+
 // JWT defines the configuration for JSON Web Token (JWT) authentication.
 #JWT: {
 	// Optional determines whether a missing JWT is acceptable, defaulting to false if not specified.
@@ -21,7 +23,9 @@ package v1alpha1
 }
 
 // JWTProvider defines how a JSON Web Token (JWT) can be verified.
-// +kubebuilder:validation:XValidation:rule="(has(self.recomputeRoute) && self.recomputeRoute) ? size(self.claimToHeaders) > 0 : true", message="claimToHeaders must be specified if recomputeRoute is enabled"
+// +kubebuilder:validation:XValidation:rule="(has(self.recomputeRoute) && self.recomputeRoute) ? size(self.claimToHeaders) > 0 : true", message="claimToHeaders must be specified if recomputeRoute is enabled."
+// +kubebuilder:validation:XValidation:rule="has(self.remoteJWKS) || has(self.localJWKS)", message="either remoteJWKS or localJWKS must be specified."
+// +kubebuilder:validation:XValidation:rule="!(has(self.remoteJWKS) && has(self.localJWKS))", message="remoteJWKS and localJWKS cannot both be specified."
 #JWTProvider: {
 	// Name defines a unique name for the JWT provider. A name can have a variety of forms,
 	// including RFC1123 subdomains, RFC 1123 labels, or RFC 1035 labels.
@@ -49,7 +53,14 @@ package v1alpha1
 
 	// RemoteJWKS defines how to fetch and cache JSON Web Key Sets (JWKS) from a remote
 	// HTTP/HTTPS endpoint.
-	remoteJWKS: #RemoteJWKS @go(RemoteJWKS)
+	//
+	// +optional
+	remoteJWKS?: null | #RemoteJWKS @go(RemoteJWKS,*RemoteJWKS)
+
+	// LocalJWKS defines how to get the JSON Web Key Sets (JWKS) from a local source.
+	//
+	// +optional
+	localJWKS?: null | #LocalJWKS @go(LocalJWKS,*LocalJWKS)
 
 	// ClaimToHeaders is a list of JWT claims that must be extracted into HTTP request headers
 	// For examples, following config:
@@ -87,6 +98,45 @@ package v1alpha1
 	// +kubebuilder:validation:MinLength=1
 	// +kubebuilder:validation:MaxLength=253
 	uri: string @go(URI)
+}
+
+// LocalJWKSType defines the types of values for Local JWKS.
+#LocalJWKSType: string // #enumLocalJWKSType
+
+#enumLocalJWKSType:
+	#LocalJWKSTypeInline |
+	#LocalJWKSTypeValueRef
+
+// LocalJWKSTypeInline defines the "Inline" LocalJWKS type.
+#LocalJWKSTypeInline: #LocalJWKSType & "Inline"
+
+// LocalJWKSTypeValueRef defines the "ValueRef" LocalJWKS type.
+#LocalJWKSTypeValueRef: #LocalJWKSType & "ValueRef"
+
+// LocalJWKS defines how to load a JSON Web Key Sets (JWKS) from a local source, either inline or from a reference to a ConfigMap.
+//
+// +kubebuilder:validation:XValidation:rule="(self.type == 'Inline' && has(self.inline) && !has(self.valueRef)) || (self.type == 'ValueRef' && !has(self.inline) && has(self.valueRef))",message="Exactly one of inline or valueRef must be set with correct type."
+#LocalJWKS: {
+	// Type is the type of method to use to read the body value.
+	// Valid values are Inline and ValueRef, default is Inline.
+	//
+	// +kubebuilder:default=Inline
+	// +kubebuilder:validation:Enum=Inline;ValueRef
+	// +unionDiscriminator
+	type?: null | #LocalJWKSType @go(Type,*LocalJWKSType)
+
+	// Inline contains the value as an inline string.
+	//
+	// +optional
+	inline?: null | string @go(Inline,*string)
+
+	// ValueRef is a reference to a local ConfigMap that contains the JSON Web Key Sets (JWKS).
+	//
+	// The value of key `jwks` in the ConfigMap will be used.
+	// If the key is not found, the first value in the ConfigMap will be used.
+	//
+	// +optional
+	valueRef?: null | gwapiv1.#LocalObjectReference @go(ValueRef,*gwapiv1.LocalObjectReference)
 }
 
 // ClaimToHeader defines a configuration to convert JWT claims into HTTP headers

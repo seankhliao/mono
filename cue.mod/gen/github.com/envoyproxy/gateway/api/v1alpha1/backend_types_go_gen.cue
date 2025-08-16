@@ -4,7 +4,11 @@
 
 package v1alpha1
 
-import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
+	gwapiv1a3 "sigs.k8s.io/gateway-api/apis/v1alpha3"
+)
 
 // KindBackend is the name of the Backend kind.
 #KindBackend: "Backend"
@@ -112,7 +116,16 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 }
 
 // BackendSpec describes the desired state of BackendSpec.
+// +kubebuilder:validation:XValidation:rule="self.type != 'DynamicResolver' || !has(self.endpoints) && !has(self.appProtocols)",message="DynamicResolver type cannot have endpoints and appProtocols specified"
+// +kubebuilder:validation:XValidation:rule="has(self.tls) ? self.type == 'DynamicResolver' : true",message="TLS settings can only be specified for DynamicResolver backends"
 #BackendSpec: {
+	// Type defines the type of the backend. Defaults to "Endpoints"
+	//
+	// +kubebuilder:validation:Enum=Endpoints;DynamicResolver
+	// +kubebuilder:default=Endpoints
+	// +optional
+	type?: null | #BackendType @go(Type,*BackendType)
+
 	// Endpoints defines the endpoints to be used when connecting to the backend.
 	//
 	// +kubebuilder:validation:MinItems=1
@@ -133,7 +146,63 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	//
 	// +optional
 	fallback?: null | bool @go(Fallback,*bool)
+
+	// TLS defines the TLS settings for the backend.
+	// Only supported for DynamicResolver backends.
+	//
+	// +optional
+	tls?: null | #BackendTLSSettings @go(TLS,*BackendTLSSettings)
 }
+
+// BackendTLSSettings holds the TLS settings for the backend.
+// Only used for DynamicResolver backends.
+// +kubebuilder:validation:XValidation:message="must not contain both CACertificateRefs and WellKnownCACertificates",rule="!(has(self.caCertificateRefs) && size(self.caCertificateRefs) > 0 && has(self.wellKnownCACertificates) && self.wellKnownCACertificates != \"\")"
+// +kubebuilder:validation:XValidation:message="must specify either CACertificateRefs or WellKnownCACertificates",rule="(has(self.caCertificateRefs) && size(self.caCertificateRefs) > 0 || has(self.wellKnownCACertificates) && self.wellKnownCACertificates != \"\")"
+#BackendTLSSettings: {
+	// CACertificateRefs contains one or more references to Kubernetes objects that
+	// contain TLS certificates of the Certificate Authorities that can be used
+	// as a trust anchor to validate the certificates presented by the backend.
+	//
+	// A single reference to a Kubernetes ConfigMap or a Kubernetes Secret,
+	// with the CA certificate in a key named `ca.crt` is currently supported.
+	//
+	// If CACertificateRefs is empty or unspecified, then WellKnownCACertificates must be
+	// specified. Only one of CACertificateRefs or WellKnownCACertificates may be specified,
+	// not both.
+	//
+	// +kubebuilder:validation:MaxItems=8
+	// +optional
+	caCertificateRefs?: [...gwapiv1.#LocalObjectReference] @go(CACertificateRefs,[]gwapiv1.LocalObjectReference)
+
+	// WellKnownCACertificates specifies whether system CA certificates may be used in
+	// the TLS handshake between the gateway and backend pod.
+	//
+	// If WellKnownCACertificates is unspecified or empty (""), then CACertificateRefs
+	// must be specified with at least one entry for a valid configuration. Only one of
+	// CACertificateRefs or WellKnownCACertificates may be specified, not both.
+	//
+	// +optional
+	wellKnownCACertificates?: null | gwapiv1a3.#WellKnownCACertificatesType @go(WellKnownCACertificates,*gwapiv1a3.WellKnownCACertificatesType)
+}
+
+// BackendType defines the type of the Backend.
+#BackendType: string // #enumBackendType
+
+#enumBackendType:
+	#BackendTypeEndpoints |
+	#BackendTypeDynamicResolver
+
+// BackendTypeEndpoints defines the type of the backend as Endpoints.
+#BackendTypeEndpoints: #BackendType & "Endpoints"
+
+// BackendTypeDynamicResolver defines the type of the backend as DynamicResolver.
+//
+// When a backend is of type DynamicResolver, the Envoy will resolve the upstream
+// ip address and port from the host header of the incoming request. If the ip address
+// is directly set in the host header, the Envoy will use the ip address and port as the
+// upstream address. If the hostname is set in the host header, the Envoy will resolve the
+// ip address and port from the hostname using the DNS resolver.
+#BackendTypeDynamicResolver: #BackendType & "DynamicResolver"
 
 // BackendConditionType is a type of condition for a backend. This type should be
 // used with a Backend resource Status.Conditions field.

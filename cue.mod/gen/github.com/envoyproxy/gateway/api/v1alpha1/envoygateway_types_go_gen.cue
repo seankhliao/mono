@@ -28,6 +28,12 @@ import (
 // GatewayMetricsHost is the host of envoy gateway metrics server.
 #GatewayMetricsHost: "0.0.0.0"
 
+// DefaultKubernetesClientQPS defines the default QPS limit for the Kubernetes client.
+#DefaultKubernetesClientQPS: int32 & 50
+
+// DefaultKubernetesClientBurst defines the default Burst limit for the Kubernetes client.
+#DefaultKubernetesClientBurst: int32 & 100
+
 // EnvoyGateway is the schema for the envoygateways API.
 #EnvoyGateway: {
 	metav1.#TypeMeta
@@ -88,6 +94,26 @@ import (
 	//
 	// +optional
 	extensionApis?: null | #ExtensionAPISettings @go(ExtensionAPIs,*ExtensionAPISettings)
+}
+
+#KubernetesClient: {
+	// RateLimit defines the rate limit settings for the Kubernetes client.
+	rateLimit?: null | #KubernetesClientRateLimit @go(RateLimit,*KubernetesClientRateLimit)
+}
+
+// KubernetesClientRateLimit defines the rate limit settings for the Kubernetes client.
+#KubernetesClientRateLimit: {
+	// QPS defines the queries per second limit for the Kubernetes client.
+	// +optional
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:default=50
+	qps?: null | int32 @go(QPS,*int32)
+
+	// Burst defines the maximum burst of requests allowed when tokens have accumulated.
+	// +optional
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:default=100
+	burst?: null | int32 @go(Burst,*int32)
 }
 
 // LeaderElection defines the desired leader election settings.
@@ -237,6 +263,13 @@ import (
 	// ShutdownManager defines the configuration for the shutdown manager.
 	// +optional
 	shutdownManager?: null | #ShutdownManager @go(ShutdownManager,*ShutdownManager)
+
+	// Client holds the configuration for the Kubernetes client.
+	client?: null | #KubernetesClient @go(Client,*KubernetesClient)
+
+	// TopologyInjector defines the configuration for topology injector MutatatingWebhookConfiguration
+	// +optional
+	proxyTopologyInjector?: null | #EnvoyGatewayTopologyInjector @go(TopologyInjector,*EnvoyGatewayTopologyInjector)
 }
 
 // KubernetesWatchModeTypeNamespaces indicates that the namespace watch mode is used.
@@ -512,13 +545,15 @@ import (
 	service?: null | #ExtensionService @go(Service,*ExtensionService)
 
 	// FailOpen defines if Envoy Gateway should ignore errors returned from the Extension Service hooks.
-	// The default is false, which means Envoy Gateway will fail closed if the Extension Service returns an error.
 	//
-	// Fail-close means that if the Extension Service hooks return an error, the relevant route/listener/resource
-	// will be replaced with a default configuration returning Internal Server Error (HTTP 500).
+	// When set to false, Envoy Gateway does not ignore extension Service hook errors. As a result,
+	// xDS updates are skipped for the relevant envoy proxy fleet and the previous state is preserved.
 	//
-	// Fail-open means that if the Extension Service hooks return an error, no changes will be applied to the
-	// source of the configuration which was sent to the extension server.
+	// When set to true, if the Extension Service hooks return an error, no changes will be applied to the
+	// source of the configuration which was sent to the extension server. The errors are ignored and the resulting
+	// xDS configuration is updated in the xDS snapshot.
+	//
+	// Default: false
 	//
 	// +optional
 	failOpen?: bool @go(FailOpen)
@@ -568,18 +603,60 @@ import (
 	//
 	// +optional
 	tls?: null | #ExtensionTLS @go(TLS,*ExtensionTLS)
+
+	// Retry defines the retry policy for to use when errors are encountered in communication with
+	// the extension service.
+	//
+	// +optional
+	retry?: null | #ExtensionServiceRetry @go(Retry,*ExtensionServiceRetry)
 }
 
-// ExtensionTLS defines the TLS configuration when connecting to an extension service
+// ExtensionTLS defines the TLS configuration when connecting to an extension service.
 #ExtensionTLS: {
-	// CertificateRef contains a references to objects (Kubernetes objects or otherwise) that
-	// contains a TLS certificate and private keys. These certificates are used to
-	// establish a TLS handshake to the extension server.
+	// CertificateRef is a reference to a Kubernetes Secret with a CA certificate in a key named "tls.crt".
 	//
-	// CertificateRef can only reference a Kubernetes Secret at this time.
+	// The CA certificate is used by Envoy Gateway the verify the server certificate presented by the extension server.
+	// At this time, Envoy Gateway does not support Client Certificate authentication of Envoy Gateway towards the extension server (mTLS).
 	//
 	// +kubebuilder:validation:Required
 	certificateRef: gwapiv1.#SecretObjectReference @go(CertificateRef)
+}
+
+// GRPCStatus defines grpc status codes as defined in https://github.com/grpc/grpc/blob/master/doc/statuscodes.md.
+// +kubebuilder:validation:Enum=CANCELLED;UNKNOWN;INVALID_ARGUMENT;DEADLINE_EXCEEDED;NOT_FOUND;ALREADY_EXISTS;PERMISSION_DENIED;RESOURCE_EXHAUSTED;FAILED_PRECONDITION;ABORTED;OUT_OF_RANGE;UNIMPLEMENTED;INTERNAL;UNAVAILABLE;DATA_LOSS;UNAUTHENTICATED
+#RetryableGRPCStatusCode: string
+
+// ExtensionServiceRetry defines the retry policy for to use when errors are encountered in communication with the extension service.
+#ExtensionServiceRetry: {
+	// MaxAttempts defines the maximum number of retry attempts.
+	// Default: 4
+	//
+	// +optional
+	maxAttempts?: null | int @go(MaxAttempts,*int)
+
+	// InitialBackoff defines the initial backoff in seconds for retries, details: https://github.com/grpc/proposal/blob/master/A6-client-retries.md#integration-with-service-config.
+	// Default: 0.1s
+	//
+	// +optional
+	initialBackoff?: null | gwapiv1.#Duration @go(InitialBackoff,*gwapiv1.Duration)
+
+	// MaxBackoff defines the maximum backoff in seconds for retries.
+	// Default: 1s
+	//
+	// +optional
+	maxBackoff?: null | gwapiv1.#Duration @go(MaxBackoff,*gwapiv1.Duration)
+
+	// BackoffMultiplier defines the multiplier to use for exponential backoff for retries.
+	// Default: 2.0
+	//
+	// +optional
+	backoffMultiplier?: null | gwapiv1.#Fraction @go(BackoffMultiplier,*gwapiv1.Fraction)
+
+	// RetryableStatusCodes defines the grpc status code for which retries will be attempted.
+	// Default: [ "UNAVAILABLE" ]
+	//
+	// +optional
+	RetryableStatusCodes?: [...#RetryableGRPCStatusCode] @go(,[]RetryableGRPCStatusCode)
 }
 
 // EnvoyGatewayAdmin defines the Envoy Gateway Admin configuration.
@@ -620,4 +697,10 @@ import (
 #ShutdownManager: {
 	// Image specifies the ShutdownManager container image to be used, instead of the default image.
 	image?: null | string @go(Image,*string)
+}
+
+// EnvoyGatewayTopologyInjector defines the configuration for topology injector MutatatingWebhookConfiguration
+#EnvoyGatewayTopologyInjector: {
+	// +optional
+	disabled?: null | bool @go(Disable,*bool)
 }

@@ -90,7 +90,7 @@ import (
 	name?: null | v1.#SectionName @go(Name,*SectionName)
 
 	// BackendRefs defines the backend(s) where matching requests should be
-	// sent. If unspecified or invalid (refers to a non-existent resource or
+	// sent. If unspecified or invalid (refers to a nonexistent resource or
 	// a Service with no endpoints), the rule performs no forwarding; if no
 	// filters are specified that would result in a response being sent, the
 	// underlying implementation must actively reject request attempts to this

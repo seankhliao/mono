@@ -8,11 +8,6 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 // HealthCheck configuration to decide which endpoints
 // are healthy and can be used for routing.
-//
-// Note: Once the overall health of the backendRef drops below 50% (e.g. a backendRef having 10 endpoints
-// with more than 5 unhealthy endpoints), Envoy will disregard health status and balance across all endpoints.
-// This is called "panic mode". It's designed to prevent a situation in which host failures cascade throughout the cluster
-// as load increases.
 #HealthCheck: {
 	// Active health check configuration
 	// +optional
@@ -21,6 +16,15 @@ import metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	// Passive passive check configuration
 	// +optional
 	passive?: null | #PassiveHealthCheck @go(Passive,*PassiveHealthCheck)
+
+	// When number of unhealthy endpoints for a backend reaches this threshold
+	// Envoy will disregard health status and balance across all endpoints.
+	// It's designed to prevent a situation in which host failures cascade throughout the cluster
+	// as load increases. If not set, the default value is 50%. To disable panic mode, set value to `0`.
+	// +kubebuilder:validation:Minimum=0
+	// +kubebuilder:validation:Maximum=100
+	// +optional
+	panicThreshold?: null | uint32 @go(PanicThreshold,*uint32)
 }
 
 // PassiveHealthCheck defines the configuration for passive health checks in the context of Envoy's Outlier Detection,

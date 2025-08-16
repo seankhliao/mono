@@ -108,6 +108,8 @@ import (
 	//
 	// - envoy.filters.http.stateful_session
 	//
+	// - envoy.filters.http.lua
+	//
 	// - envoy.filters.http.ext_proc
 	//
 	// - envoy.filters.http.wasm
@@ -194,7 +196,7 @@ import (
 }
 
 // EnvoyFilter defines the type of Envoy HTTP filter.
-// +kubebuilder:validation:Enum=envoy.filters.http.health_check;envoy.filters.http.fault;envoy.filters.http.cors;envoy.filters.http.ext_authz;envoy.filters.http.api_key_auth;envoy.filters.http.basic_auth;envoy.filters.http.oauth2;envoy.filters.http.jwt_authn;envoy.filters.http.stateful_session;envoy.filters.http.ext_proc;envoy.filters.http.wasm;envoy.filters.http.rbac;envoy.filters.http.local_ratelimit;envoy.filters.http.ratelimit;envoy.filters.http.custom_response;envoy.filters.http.compressor
+// +kubebuilder:validation:Enum=envoy.filters.http.health_check;envoy.filters.http.fault;envoy.filters.http.cors;envoy.filters.http.ext_authz;envoy.filters.http.api_key_auth;envoy.filters.http.basic_auth;envoy.filters.http.oauth2;envoy.filters.http.jwt_authn;envoy.filters.http.stateful_session;envoy.filters.http.lua;envoy.filters.http.ext_proc;envoy.filters.http.wasm;envoy.filters.http.rbac;envoy.filters.http.local_ratelimit;envoy.filters.http.ratelimit;envoy.filters.http.custom_response;envoy.filters.http.compressor
 #EnvoyFilter: string // #enumEnvoyFilter
 
 #enumEnvoyFilter:
@@ -209,12 +211,15 @@ import (
 	#EnvoyFilterSessionPersistence |
 	#EnvoyFilterExtProc |
 	#EnvoyFilterWasm |
+	#EnvoyFilterLua |
 	#EnvoyFilterRBAC |
 	#EnvoyFilterLocalRateLimit |
 	#EnvoyFilterRateLimit |
 	#EnvoyFilterCustomResponse |
+	#EnvoyFilterCredentialInjector |
 	#EnvoyFilterCompressor |
-	#EnvoyFilterRouter
+	#EnvoyFilterRouter |
+	#EnvoyFilterBuffer
 
 // EnvoyFilterHealthCheck defines the Envoy HTTP health check filter.
 #EnvoyFilterHealthCheck: #EnvoyFilter & "envoy.filters.http.health_check"
@@ -250,6 +255,9 @@ import (
 // EnvoyFilterWasm defines the Envoy HTTP WebAssembly filter.
 #EnvoyFilterWasm: #EnvoyFilter & "envoy.filters.http.wasm"
 
+// EnvoyFilterLua defines the Envoy HTTP Lua filter.
+#EnvoyFilterLua: #EnvoyFilter & "envoy.filters.http.lua"
+
 // EnvoyFilterRBAC defines the Envoy RBAC filter.
 #EnvoyFilterRBAC: #EnvoyFilter & "envoy.filters.http.rbac"
 
@@ -262,11 +270,17 @@ import (
 // EnvoyFilterCustomResponse defines the Envoy HTTP custom response filter.
 #EnvoyFilterCustomResponse: #EnvoyFilter & "envoy.filters.http.custom_response"
 
+// EnvoyFilterCredentialInjector defines the Envoy HTTP credential injector filter.
+#EnvoyFilterCredentialInjector: #EnvoyFilter & "envoy.filters.http.credential_injector"
+
 // EnvoyFilterCompressor defines the Envoy HTTP compressor filter.
 #EnvoyFilterCompressor: #EnvoyFilter & "envoy.filters.http.compressor"
 
 // EnvoyFilterRouter defines the Envoy HTTP router filter.
 #EnvoyFilterRouter: #EnvoyFilter & "envoy.filters.http.router"
+
+// EnvoyFilterBuffer defines the Envoy HTTP buffer filter
+#EnvoyFilterBuffer: #EnvoyFilter & "envoy.filters.http.buffer"
 
 #ProxyTelemetry: {
 	// AccessLogs defines accesslog parameters for managed proxies.
@@ -344,7 +358,6 @@ import (
 	envoyService?: null | #KubernetesServiceSpec @go(EnvoyService,*KubernetesServiceSpec)
 
 	// EnvoyHpa defines the Horizontal Pod Autoscaler settings for Envoy Proxy Deployment.
-	// Once the HPA is being set, Replicas field from EnvoyDeployment will be ignored.
 	//
 	// +optional
 	envoyHpa?: null | #KubernetesHorizontalPodAutoscalerSpec @go(EnvoyHpa,*KubernetesHorizontalPodAutoscalerSpec)
@@ -421,7 +434,7 @@ import (
 // +union
 // +kubebuilder:validation:XValidation:rule="self.type == 'JSONPatch' ? self.jsonPatches.size() > 0 : has(self.value)", message="provided bootstrap patch doesn't match the configured patch type"
 #ProxyBootstrap: {
-	// Type is the type of the bootstrap configuration, it should be either Replace,  Merge, or JSONPatch.
+	// Type is the type of the bootstrap configuration, it should be either **Replace**,  **Merge**, or **JSONPatch**.
 	// If unspecified, it defaults to Replace.
 	// +optional
 	// +kubebuilder:default=Replace

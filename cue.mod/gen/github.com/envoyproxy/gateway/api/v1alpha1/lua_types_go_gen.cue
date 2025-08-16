@@ -44,7 +44,7 @@ import gwapiv1 "sigs.k8s.io/gateway-api/apis/v1"
 	// The value of key `lua` in the ConfigMap will be used.
 	// If the key is not found, the first value in the ConfigMap will be used.
 	//
-	// +kubebuilder:validation:XValidation:rule="self.kind == 'ConfigMap' && (!has(self.group) || self.group == '')",message="Only a reference to an object of kind ConfigMap belonging to default core API group is supported."
+	// +kubebuilder:validation:XValidation:rule="self.kind == 'ConfigMap' && (self.group == 'v1' || self.group == '')",message="Only a reference to an object of kind ConfigMap belonging to default v1 API group is supported."
 	// +optional
 	// +unionMember
 	valueRef?: null | gwapiv1.#LocalObjectReference @go(ValueRef,*gwapiv1.LocalObjectReference)
