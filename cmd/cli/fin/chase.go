@@ -81,7 +81,7 @@ func (c *Convert) chasetxt(stdout, stderr io.Writer) error {
 		// dd Mmm Yyyy <name>
 		s := sc.Text()
 		date := s[:11]
-		name := strings.TrimSpace(s[12:])
+		name := strings.TrimSpace(s[11:])
 		dst := categorize(name, "")
 
 		ok := sc.Scan()

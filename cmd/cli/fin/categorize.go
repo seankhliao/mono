@@ -43,6 +43,7 @@ var categories = []struct {
 		"CLT",
 		[]string{
 			"lululemon", "ryohin keikaku", "h&m", "dusk.com", "etsy",
+			"muji", "uniqlo",
 		},
 		[]string{
 			"clothing_stores",
@@ -89,6 +90,7 @@ var categories = []struct {
 			"the lower third", "eventim", "misato", "o2 academy islington",
 			"waitrose", "paul", "marks & spencer", "koffee", "sainsbury",
 			"whole foods market", "k. minamoto", "7-eleven",
+			"coca-cola",
 		},
 		[]string{
 			"restaurants", "retail_stores",
@@ -105,6 +107,7 @@ var categories = []struct {
 		"HLT",
 		[]string{
 			"boots", "baroque hair and nails", "pharmacie", "stylevana",
+			"Tomod",
 		},
 		nil,
 	},
@@ -145,6 +148,7 @@ var categories = []struct {
 			"my o2 bill payment", "o2 balanceweb", "amznmktplace", "aliexpress", "h3g dd",
 			"gsuite", "o2 online", "amazon", "hutchison 3g", "google", "bic camera",
 			"framework", "hetzner", "viasat", "sp arace tech", "anker", "three", "o2",
+			"spotify", "tailscale",
 		},
 		nil,
 	},
@@ -164,7 +168,7 @@ var categories = []struct {
 			"eav", "smartrip", "shinkansen", "seven bank", "jr west", "uber",
 			"vaa mobile app", "uscustoms", "öbb", "booking", "lufthansa",
 			"premier inn", "mta nyct paygo", "hilton hotels",
-			"marriott",
+			"marriott", "jakdojade", "hotel", "bolt",
 		},
 		[]string{
 			"hotels", "automobile",
