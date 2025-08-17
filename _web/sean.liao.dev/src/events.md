@@ -21,6 +21,15 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-09-16_ Au/Ra
 - _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
 
+##### _12025-08-16_ Blackpink
+
+[_Blackpink_], this time in Wembley Stadium.
+They felt... tired,
+perhaps they've been doing so many big shows that it no longer feels all that special?
+The opening and closing songs were solid,
+but not amazing.
+The solos felt comparatively weak.
+
 ##### _12025-07-23_ Pure Chlorine
 
 With _Anti Virus_, _Taurus Trakker_
