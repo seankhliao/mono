@@ -70,6 +70,7 @@ _data: [
 	["2024-07-27", 8, 49458, ["Kono Subarashii Sekai ni Shukufuku wo! 3", "KonoSuba: God's Blessing on This Wonderful World! 3"]],
 	["2025-08-11", 8, 59833, ["Kono Subarashii Sekai ni Shukufuku wo! 3: Bonus Stage", "KonoSuba: God's Blessing on This Wonderful World! 3 OVA"]],
 	["2024-05-19", 9, 54492, ["Kusuriya no Hitorigoto", "The Apothecary Diaries"], "Maomao feels... down to earth"],
+	["2025-08-17", 9, 58514, ["Kusuriya no Hitorigoto 2nd Season", "The Apothecary Diaries Season 2"]],
 	["2025-02-06", 9, 58125, ["Look Back", "Look Back"]],
 	["2024-08-14", 8, 56352, ["Loop 7-kaime no Akuyaku Reijou wa, Moto Tekikoku de Jiyuu Kimama na Hanayome Seikatsu wo Mankitsu suru", "7th Time Loop: The Villainess Enjoys a Carefree Life Married to Her Worst Enemy!"]],
 	["2024-05-20", 7, 50380, ["Paripi Koumei", "Ya Boy Kongming!"]],
