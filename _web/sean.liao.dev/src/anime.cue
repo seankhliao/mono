@@ -97,6 +97,7 @@ _data: [
 	["2024-10-12", 5, 40436, ["Peter Grill to Kenja no Jikan", "Peter Grill and the Philosopher's Time"]],
 	["2024-12-11", 5, 50348, ["Peter Grill to Kenja no Jikan: Super Extra", "Peter Grill and the Philosopher's Time: Super Extra"]],
 	["2024-04-06", 7, 51403, ["Renai Flops", "Love Flops"]],
+	["2025-08-19", 8, 59360, ["Rock wa Lady no Tashinami deshite", "Rock Is a Lady's Modesty"]],
 	["2025-05-18", 7, 32951, ["Rokudenashi Majutsu Koushi to Akashic Records", "Akashic Records of Bastard Magic Instructor"]],
 	["2024-09-09", 7, 48363, ["RPG Fudousan", "RPG Real Estate"]],
 	["2024-07-07", 8, 37450, ["Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai", "Rascal Does Not Dream of Bunny Girl Senpai"]],
