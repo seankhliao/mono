@@ -29,7 +29,9 @@ Table: [for row in _data {
 
 _data: [
 	["2024-09-11", 7, 54837, ["Akuyaku Reijou Level 99: Watashi wa Ura-Boss desu ga Maou dewa Arimasen", "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord"]],
+	["2025-08-21", 7, 59169, ["Aru Majo ga Shinu Made", "Once Upon a Witch's Death"]],
 	["2024-05-13", 10, 47917, ["Bocchi the Rock!", "Bocchi the Rock!"], "**Bocchi** is relatable"],
+	["2025-08-25", 8, 37435, ["Carole & Tuesday", "Carole & Tuesday"]],
 	["2024-06-20", 8, 44511, ["Chainsaw Man", "Chainsaw Man"], "**Makima** dominates, **Power** is playfully wild"],
 	["2024-09-27", 8, 52701, ["Dungeon Meshi", "Delicious in Dungeon"]],
 	["2024-05-27", 6, 52081, ["Edomae Elf", "Otaku Elf"]],
