@@ -19,7 +19,62 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-24_ Hitsujibungaku
 - _12025-10-15_ Sumo
 - _12025-09-16_ Au/Ra
-- _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
+
+##### _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
+
+With
+[Mori Calliope], [Takanashi Kiara], [Ninomae Ina’nis], [IRyS],
+[Ouro Kronii], [Hakos Baelz], [Shiori Novella], [Koseki Bijou],
+[Nerissa Ravencroft], [Fuwawa Abyssgard], [Mococo Abyssgard],
+[Elizabeth Rose Bloodflame], [Gigi Murin], [Cecilia Immergreen],
+[Raora Panthera], [Oozora Subaru], [Tokoyami Towa], [Ayunda Risu],
+[Kureiji Ollie],
+
+So what happens in a vtuber concert?
+There's a big main screen with a fixed camera showing the satge.
+There's some on stage decoration to blend in better with the virtual environment.
+Lights shine outwards, and two side screens for lights,
+mostly fixed elements, just changing color for each song.
+There were also two smaller side screens showing a moving camera view,
+which was also streamed.
+
+With such a large cast,
+each song felt a bit disconnected,
+usually 1-3 members would appear in a flash, sing their song,
+and disappear in another flash.
+The MC sections served to provide some entertainment,
+and that was obviously live (as seen by technical issues...),
+but the actual songs...
+it felt like it was missing something about a live concert,
+like the usual imperfections, the more raw live versions,
+or the audience interaction.
+This performance felt almost like a stage perfect reproduction of an online release.
+
+The fans though,
+they were super enthusiastic,
+with unending waves of chants before it began,
+with the highest rate of light stick shaking I've ever seen
+(it felt like 99%...).
+
+[Mori Calliope]: https://www.youtube.com/@MoriCalliope
+[Takanashi Kiara]: https://www.youtube.com/@TakanashiKiara
+[Ninomae Ina’nis]: https://www.youtube.com/@NinomaeInanis
+[IRyS]: https://www.youtube.com/@IRyS
+[Ouro Kronii]: https://www.youtube.com/@OuroKronii
+[Hakos Baelz]: https://www.youtube.com/@HakosBaelz
+[Shiori Novella]: https://www.youtube.com/@ShioriNovella
+[Koseki Bijou]: https://www.youtube.com/@KosekiBijou
+[Nerissa Ravencroft]: https://www.youtube.com/@NerissaRavencroft
+[Fuwawa Abyssgard]: https://www.youtube.com/@FUWAMOCOch
+[Mococo Abyssgard]: https://www.youtube.com/@FUWAMOCOch
+[Elizabeth Rose Bloodflame]: https://www.youtube.com/@holoen_erbloodflame
+[Gigi Murin]: https://www.youtube.com/@holoen_gigimurin
+[Cecilia Immergreen]: https://www.youtube.com/@holoen_ceciliaimmergreen
+[Raora Panthera]: https://www.youtube.com/@holoen_raorapanthera
+[Oozora Subaru]: https://www.youtube.com/@OozoraSubaru
+[Tokoyami Towa]: https://www.youtube.com/@TokoyamiTowa
+[Ayunda Risu]: https://www.youtube.com/@AyundaRisu
+[Kureiji Ollie]: https://www.youtube.com/@KureijiOllie
 
 ##### _12025-08-16_ Blackpink
 
