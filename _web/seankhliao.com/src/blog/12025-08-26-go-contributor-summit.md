@@ -14,10 +14,12 @@ and some external contributors too
 The morning was a slightly more structured discussion
 of various topics people wanted to talk about.
 There are meeting notes somewhere...
-For me, the more interesting ones were around external contributor process,
-and the proposal process.
+For me,
+the more interesting ones were around external contributor friction,
+and the proposal process, which is a known bottleneck.
 
 From lunch bleeding into the afternoon,
 it was just unstructured chatting with various people about the parts that they work on.
 As I kind of fall into the general purpose pool...
 I was listening more of the time I think?
+I tocuhed on security, cmd/go, and maybe a bit more into general project health.
