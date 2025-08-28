@@ -133,6 +133,7 @@ _data: [
 	["2024-06-05", 8, 35968, ["Wotaku ni Koi wa Muzukashii OVA", "Wotakoi: Love is Hard for Otaku OVA"]],
 	["2025-08-27", 8, 32615, ["Youjo Senki", "Saga of Tanya the Evil"]],
 	["2025-08-28", 8, 49236, ["Youjo Senki: Sabaku no Pasta Daisakusen", "Saga of Tanya the Evil: Operation Desert Pasta"]],
+	["2025-08-28", 8, 37055, ["Youjo Senki Movie", "Saga of Tanya the Evil: The Movie"]],
 	["2024-07-06", 9, 54839, ["Yoru no Kurage wa Oyogenai", "Jellyfish Can't Swim in the Night"]],
 	["2025-08-18", 7, 55514, ["Zatsu Tabi: That's Journey", "Zatsu Tabi: That's Journey"]],
 ]
