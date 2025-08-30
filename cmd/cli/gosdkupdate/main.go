@@ -42,7 +42,7 @@ type Config struct {
 		Overrides map[string]struct {
 			Version string `json:"version"`
 			Cgo     bool   `json:"cgo"`
-		} `json:"overrides`
+		} `json:"overrides"`
 	} `json:"tools"`
 }
 

@@ -14,7 +14,7 @@ tools: {
 	overrides: [string]: #override
 }
 
-#override {
+#override: {
 	version: string | *"latest"
-	cgo: bool | *false
+	cgo:     bool | *false
 }
