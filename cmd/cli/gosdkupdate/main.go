@@ -38,7 +38,11 @@ type Config struct {
 		} `json:"tip"`
 	}
 	Tools struct {
-		Update bool `json:"update"`
+		Update    bool `json:"update"`
+		Overrides map[string]struct {
+			Version string `json:"version"`
+			Cgo     bool   `json:"cgo"`
+		} `json:"overrides`
 	} `json:"tools"`
 }
 
@@ -250,7 +254,29 @@ func updateTools(c Config, stdout io.Writer) error {
 	for i, tool := range toUpdate {
 		spin.Suffix = fmt.Sprintf("%3d/%3d installing %s", i+1, len(toUpdate), tool)
 
-		cmd := exec.CommandContext(ctx, "go", "install", fmt.Sprintf("%s@latest", tool))
+		baseEnv := os.Environ()
+
+		targetVer := "latest"
+		override, ok := c.Tools.Overrides[tool]
+		if ok {
+			targetVer = override.Version
+			if override.Cgo {
+				var found bool
+				for idx := range baseEnv {
+					if strings.HasPrefix(baseEnv[i], "CGO_ENABLED=") {
+						found = true
+						baseEnv[idx] = "CGO_ENABLED=1"
+						break
+					}
+				}
+				if !found {
+					baseEnv = append(baseEnv, "CGO_ENABLED=1")
+				}
+			}
+		}
+
+		cmd := exec.CommandContext(ctx, "go", "install", fmt.Sprintf("%s@%s", tool, targetVer))
+		cmd.Env = baseEnv
 		out, err := cmd.CombinedOutput()
 		if err != nil {
 			errs = append(errs, fmt.Errorf("%s: %w\n\t%s", tool, err, out))

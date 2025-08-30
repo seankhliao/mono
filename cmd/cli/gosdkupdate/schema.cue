@@ -11,4 +11,10 @@ go: {
 
 tools: {
 	update: bool | *true
+	overrides: [string]: #override
+}
+
+#override {
+	version: string | *"latest"
+	cgo: bool | *false
 }
