@@ -1,7 +1,0 @@
-apiVersion: kpt.dev/v1alpha1
-kind: ResourceGroup
-metadata:
-  name: inventory-31255887
-  namespace: prometheus
-  labels:
-    cli-utils.sigs.k8s.io/inventory-id: ead09bd57342301c980d97510213485399bf508c-1732488048144714272

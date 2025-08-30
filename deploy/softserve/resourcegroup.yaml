@@ -1,7 +1,0 @@
-apiVersion: kpt.dev/v1alpha1
-kind: ResourceGroup
-metadata:
-  name: inventory-73388087
-  namespace: softserve
-  labels:
-    cli-utils.sigs.k8s.io/inventory-id: d9a402c3c1c3b39a5c1a77dc741defb8c7b8ae90-1714941848233955179

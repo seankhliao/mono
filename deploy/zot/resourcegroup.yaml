@@ -1,7 +1,0 @@
-apiVersion: kpt.dev/v1alpha1
-kind: ResourceGroup
-metadata:
-  name: inventory-22195576
-  namespace: zot
-  labels:
-    cli-utils.sigs.k8s.io/inventory-id: ae48c3da22bf2250fe68f0a478f8e13edb4de291-1730753664013643052
