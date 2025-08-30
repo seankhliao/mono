@@ -1,7 +1,9 @@
 package cueconf
 
 import (
+	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 
 	"cuelang.org/go/cue"
@@ -26,9 +28,9 @@ func ForBytes[T any](schema string, config []byte) (conf T, err error) {
 	return conf, nil
 }
 
-func ForFile[T any](schema, fpath string) (conf T, err error) {
+func ForFile[T any](schema, fpath string, optional bool) (conf T, err error) {
 	b, err := os.ReadFile(fpath)
-	if err != nil {
+	if err != nil && !(optional && errors.Is(err, fs.ErrNotExist)) {
 		return conf, fmt.Errorf("read config file: %w", err)
 	}
 	return ForBytes[T](schema, b)

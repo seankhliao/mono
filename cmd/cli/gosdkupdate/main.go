@@ -64,7 +64,7 @@ func main() {
 			fs.StringVar(&confFile, "config", confFile, "path to config file")
 		},
 		func(stdout, _ io.Writer) error {
-			conf, err := cueconf.ForFile[Config](configSchema, confFile)
+			conf, err := cueconf.ForFile[Config](configSchema, confFile, true)
 			if err != nil {
 				return fmt.Errorf("gosdkupdate: decode config: %w", err)
 			}

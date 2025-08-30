@@ -79,7 +79,7 @@ func TestForFile(t *testing.T) {
 		t.Fatal("write config to file:", err)
 	}
 
-	gotConf, err := ForFile[TestConfig](testSchema, tmpFile)
+	gotConf, err := ForFile[TestConfig](testSchema, tmpFile, false)
 	if err != nil {
 		t.Error("ForFile:", err)
 	}
