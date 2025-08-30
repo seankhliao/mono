@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"debug/buildinfo"
+	_ "embed"
 	"flag"
 	"fmt"
 	"go/version"
@@ -16,195 +17,260 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"sync"
+	"time"
 
+	"github.com/briandowns/spinner"
+	"go.seankhliao.com/mono/cueconf"
 	"go.seankhliao.com/mono/goreleases"
 	"go.seankhliao.com/mono/ycli"
 )
 
+//go:embed schema.cue
+var configSchema string
+
+type Config struct {
+	Go struct {
+		Bootstrap string `json:"bootstrap"`
+		Releases  int    `json:"releases"`
+		Pre       bool   `json:"pre"`
+		Tip       struct {
+			Update bool `json:"update"`
+		} `json:"tip"`
+	}
+	Tools struct {
+		Update bool `json:"update"`
+	} `json:"tools"`
+}
+
 func main() {
-	var a App
+	confDir, err := os.UserConfigDir()
+	if err != nil {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "get user home dir", err)
+			os.Exit(1)
+		}
+		confDir = filepath.Join(homeDir, ".config")
+	}
+	confFile := filepath.Join(confDir, "gosdkupdate.cue")
 	ycli.OSExec(ycli.New(
 		"gosdkupdate",
 		"keep up to date go toolchains",
-		a.register,
-		a.run,
+		func(fs *flag.FlagSet) {
+			fs.StringVar(&confFile, "config", confFile, "path to config file")
+		},
+		func(stdout, _ io.Writer) error {
+			conf, err := cueconf.ForFile[Config](configSchema, confFile)
+			if err != nil {
+				return fmt.Errorf("gosdkupdate: decode config: %w", err)
+			}
+
+			tmpDir, err := os.MkdirTemp("", "gosdkupdate.*")
+			if err != nil {
+				return fmt.Errorf("gosdkupdate: prepare temp dir: %w", err)
+			}
+			err = os.Chdir(tmpDir)
+			if err != nil {
+				return fmt.Errorf("gosdkupdate: switch to temp dir: %w", err)
+			}
+
+			err = updateGo(conf, stdout)
+			if err != nil {
+				return fmt.Errorf("gosdkupdate: update go installations: %w", err)
+			}
+
+			err = updateTools(conf, stdout)
+			if err != nil {
+				return fmt.Errorf("gosdkupdate: update tools: %w", err)
+			}
+			return nil
+		},
 	))
 }
 
-type App struct {
-	keepMinor int
-	parallel  int
-	bootstrap string
-
-	updateTip   bool
-	updateGo    bool
-	updateTools bool
-}
-
-func (a *App) register(fset *flag.FlagSet) {
-	fset.IntVar(&a.keepMinor, "keep-minor", 3, "number of released minor versions to keep")
-	fset.IntVar(&a.parallel, "parallel", 4, "parallel downloads")
-	fset.StringVar(&a.bootstrap, "bootstrap", "/usr/bin/go", "path to bootstrap go")
-	fset.BoolVar(&a.updateTip, "tip", true, "install tip (dev) go version")
-	fset.BoolVar(&a.updateGo, "go", true, "update go sdks")
-	fset.BoolVar(&a.updateTools, "tools", true, "update tools in GOBIN")
-}
-
-func (a *App) run(stdout, stderr io.Writer) error {
+func updateGo(c Config, stdout io.Writer) error {
 	ctx := context.Background()
 
-	gobin := os.Getenv("GOBIN")
-	if gobin == "" {
-		gobin = filepath.Join(os.Getenv("GOPATH"), "bin")
+	toUpdate := c.Go.Releases
+	if c.Go.Tip.Update {
+		toUpdate++
 	}
-	if gobin == "" {
-		return fmt.Errorf("can't deduce GOBIN")
+
+	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond, spinner.WithWriter(stdout))
+	spin.FinalMSG = fmt.Sprintf("%2d/%2d Go installations updated\n", toUpdate, toUpdate)
+	spin.Start()
+	defer spin.Stop()
+
+	spin.Suffix = "checking for latest releases"
+
+	baseEnv := os.Environ()
+	baseEnv = append(baseEnv, "GOENV=off")
+	gopath := os.Getenv("GOPATH")
+	if gopath == "" {
+		return fmt.Errorf("GOPATH not set in env")
 	}
-	if a.updateTip || a.updateGo {
-		des, err := os.ReadDir(gobin)
-		if err != nil {
-			return fmt.Errorf("dead dir %s: %w", gobin, err)
-		}
+	gobin := filepath.Join(gopath, "bin")
+	des, err := os.ReadDir(gobin)
+	if err == nil {
 		for _, de := range des {
-			if a.downloadTip && de.Name() == "go" {
-				os.RemoveAll(filepath.Join(gobin, "go"))
-			}
-			if a.downloadGo && strings.HasPrefix(de.Name(), "go1") {
-				os.RemoveAll(filepath.Join(gobin, de.Name()))
+			if strings.HasPrefix(de.Name(), "go1.") || de.Name() == "go" {
+				os.Remove(filepath.Join(gobin, de.Name()))
 			}
 		}
 	}
 
-	var wg sync.WaitGroup
-	if a.updateTip {
-		wg.Go(func() {
-			err := a.downloadTip(ctx)
-			if err != nil {
-					fmt.Fprintln(stderr, "download go", ver, err)
-			}
-
-		})
-	}
-	if a.updateGo {
+	if c.Go.Releases > 0 || c.Go.Pre {
+		// find the current releases
 		rels, err := goreleases.Releases(http.DefaultClient, ctx, "", true)
 		if err != nil {
 			return fmt.Errorf("get go releases: %w", err)
 		}
 
-		// map release versions to language versions
-		keepVer := make([]string, 0, a.keepMinor)
-		lastLang := ""
-		for _, rel := range rels {
-			if lang := version.Lang(rel.Version); lang != lastLang {
-				lastLang = lang
-				keepVer = append(keepVer, rel.Version)
+		need := c.Go.Releases
+		var toKeep []string
+		var lastLang string
+		for i, rel := range rels {
+			if !rel.Stable {
+				if i == 0 && c.Go.Pre {
+					toKeep = append(toKeep, rel.Version)
+				}
+				continue
 			}
-			if len(keepVer) >= a.keepMinor {
+			if need == 0 {
 				break
 			}
+			lang := version.Lang(rel.Version)
+			if lang != lastLang {
+				lastLang = lang
+				toKeep = append(toKeep, rel.Version)
+				need--
+			}
 		}
 
+		toUpdate = len(toKeep)
+		if c.Go.Tip.Update {
+			toUpdate++
+		}
+		spin.FinalMSG = fmt.Sprintf("%2d/%2d Go installations updated\n", toUpdate, toUpdate)
 
-		for _, ver := range keepVer {
-			wg.Go(func() {
-				err := a.downloadGo(ctx, ver)
-				if err != nil {
-					fmt.Fprintln(stderr, "download go", ver, err)
-				}
-			})
+		for i, rel := range toKeep {
+			spin.Suffix = fmt.Sprintf("%2d/%2d installing %s", i+1, toUpdate, rel)
+
+			cmd := exec.CommandContext(ctx, c.Go.Bootstrap, "env", "GOROOT")
+			cmd.Env = append(baseEnv,
+				"GOTOOLCHAIN="+rel,
+			)
+			out, err := cmd.CombinedOutput()
+			if err != nil {
+				return fmt.Errorf("download %s: %w\n%s", rel, err, out)
+			}
+			p := filepath.Join(string(bytes.TrimSpace(out)), "bin/go")
+			np := filepath.Join(gobin, rel)
+			err = os.Symlink(p, np)
+			if err != nil {
+				return fmt.Errorf("symlink %s => %s: %w", np, p, err)
+			}
 		}
 	}
 
-	wg.Wait()
+	if c.Go.Tip.Update {
+		spin.Suffix = fmt.Sprintf("%2d/%2d installing tip", toUpdate, toUpdate)
 
-	if !a.updateTools {
-		return nil
+		cmd := exec.CommandContext(ctx, c.Go.Bootstrap, "install", "golang.org/dl/gotip@latest")
+		cmd.Env = baseEnv
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			return fmt.Errorf("download gotip: %w\n%s", err, out)
+		}
+
+		gotip := filepath.Join(gobin, "gotip")
+		cmd = exec.CommandContext(ctx, gotip, "download")
+		cmd.Env = baseEnv
+		out, err = cmd.CombinedOutput()
+		if err != nil {
+			return fmt.Errorf("gotip download: %w\n%s", err, out)
+		}
+
+		cmd = exec.CommandContext(ctx, gotip, "env", "GOROOT")
+		cmd.Env = baseEnv
+		out, err = cmd.CombinedOutput()
+		if err != nil {
+			return fmt.Errorf("gotip env GOROOT: %w\n%s", err, out)
+		}
+		p := filepath.Join(string(bytes.TrimSpace(out)), "bin/go")
+		np := filepath.Join(gobin, "go")
+		err = os.Symlink(p, np)
+		if err != nil {
+			return fmt.Errorf("symlink %s => %s: %w", np, p, err)
+		}
 	}
+
+	return nil
+}
+
+func updateTools(c Config, stdout io.Writer) error {
+	ctx := context.Background()
+
+	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond, spinner.WithWriter(stdout))
+	spin.Start()
+	defer spin.Stop()
+
+	gopath := os.Getenv("GOPATH")
+	if gopath == "" {
+		return fmt.Errorf("GOPATH not set in env")
+	}
+	gobin := filepath.Join(gopath, "bin")
+
+	spin.Suffix = fmt.Sprintf("checking for tools in %s", gobin)
+
+	var toUpdate []string
+	var skipped []error
 
 	des, err := os.ReadDir(gobin)
 	if err != nil {
 		return fmt.Errorf("list installed go tools: %w", err)
 	}
 	for _, de := range des {
-		if de.Name() == "gotip" || strings.HasPrefix(de.Name(), "go1") {
+		if de.Name() == "gotip" || de.Name() == "go" || strings.HasPrefix(de.Name(), "go1") {
 			// shims we just installed
 			continue
 		}
 		fp := filepath.Join(gobin, de.Name())
 		bi, err := buildinfo.ReadFile(fp)
 		if err != nil {
-			//
+			skipped = append(skipped, fmt.Errorf("%s: %s", de.Name(), err))
+			continue
 		}
-
-		tool := bi.Path
-
-		sem <- struct{}{}
-		go func() {
-			defer func() { <-sem }()
-			errInstall := a.installTool(ctx, tool)
-			if errInstall != nil {
-				fmt.Fprintln(stderr, "update tool", tool, errInstall)
-				return
-			}
-			fmt.Fprintln(stdout, "updated", tool)
-		}()
+		toUpdate = append(toUpdate, bi.Path)
 	}
 
-	// wait
-	for range a.parallel {
-		sem <- struct{}{}
+	spin.FinalMSG = fmt.Sprintf("%d tools updated", len(toUpdate))
+
+	var errs []error
+	for i, tool := range toUpdate {
+		spin.Suffix = fmt.Sprintf("%3d/%3d installing %s", i+1, len(toUpdate), tool)
+
+		cmd := exec.CommandContext(ctx, "go", "install", fmt.Sprintf("%s@latest", tool))
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			errs = append(errs, fmt.Errorf("%s: %w\n\t%s", tool, err, out))
+		}
 	}
 
-	return nil
-}
+	spin.Stop()
 
-func (a *App) installSDK(ctx context.Context, gobin, sdk string) error {
-	cmd := exec.CommandContext(ctx, a.bootstrap, "install", fmt.Sprintf("golang.org/dl/%s@latest", sdk))
-	_, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("download shim: %w", err)
+	fmt.Fprintln(stdout, "Updated:")
+	for _, tool := range toUpdate {
+		fmt.Fprintln(stdout, "\t", tool)
+	}
+	fmt.Fprintln(stdout, "Errored:")
+	for _, err := range errs {
+		fmt.Fprintln(stdout, "\t", err, err)
+	}
+	fmt.Fprintln(stdout, "Skipped:")
+	for _, err := range skipped {
+		fmt.Fprintln(stdout, "\t", err, err)
 	}
 
-	cmd = exec.CommandContext(ctx, sdk, "download")
-	_, err = cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("download sdk: %w", err)
-	}
-
-	err = os.Symlink(filepath.Join(gobin, "gotip"), filepath.Join(gobin, "go"))
-	if err != nil {
-		return fmt.Errorf("set gotip as default go: %w", err)
-	}
-	return nil
-}
-
-func (a *App) installVersioned(ctx context.Context, gobin, ver string) error {
-	cmd := exec.CommandContext(ctx, a.bootstrap, "version")
-	cmd.Env = append(cmd.Env, fmt.Sprintf("GOTOOLCHAIN=%s", ver))
-	_, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("download toolchain: %w", err)
-	}
-	cmd = exec.CommandContext(ctx, a.bootstrap, "env", "GOROOT")
-	cmd.Env = append(cmd.Env, fmt.Sprintf("GOTOOLCHAIN=%s", ver))
-	b, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("get downloaded goroot: %w", err)
-	}
-	b = bytes.TrimSpace(b)
-	err = os.Symlink(filepath.Join(string(b), "bin/go"), filepath.Join(gobin, "go"+ver))
-	if err != nil {
-		return fmt.Errorf("link to downloaded: %w", err)
-	}
-	return nil
-}
-
-func (a *App) installTool(ctx context.Context, tool string) error {
-	cmd := exec.CommandContext(ctx, "go", "install", fmt.Sprintf("%s@latest", tool))
-	_, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("install: %w", err)
-	}
 	return nil
 }
