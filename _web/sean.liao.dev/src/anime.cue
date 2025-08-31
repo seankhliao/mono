@@ -126,6 +126,7 @@ _data: [
 	["2024-06-28", 6, 38573, ["Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?", "Do You Love Your Mom and Her Two-Hit Multi-Target Attacks?"]],
 	["2024-06-28", 6, 40102, ["Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka? Namiuchigiwa no Okaasan wa Suki desu ka?", "Do You Love Your Mom and Her Two-Hit Multi-Target Attacks? Do You Love Your Mom on the Shore?"]],
 	["2024-12-24", 7, 53379, ["Uchi no Kaisha no Chiisai Senpai no Hanashi", "My Tiny Senpai"]],
+	["2025-08-31", 7, 35249, ["Uma Musume: Pretty Derby", "Uma Musume: Pretty Derby"]],
 	["2025-08-27", 7, 37916, ["Uma Musume: Pretty Derby - BNW no Chikai", "Uma Musume: Pretty Derby - BNW no Chikai"]],
 	["2025-03-18", 5, 57031, ["Vampire Dormitory", "Vampire Dormitory"]],
 	["2025-08-17", 7, 53833, ["Watashi no Oshi wa Akuyaku Reijou", "I'm in Love with the Villainess"]],
