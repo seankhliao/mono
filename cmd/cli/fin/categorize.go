@@ -90,7 +90,7 @@ var categories = []struct {
 			"the lower third", "eventim", "misato", "o2 academy islington",
 			"waitrose", "paul", "marks & spencer", "koffee", "sainsbury",
 			"whole foods market", "k. minamoto", "7-eleven",
-			"coca-cola",
+			"coca-cola", "wholefds", "food",
 		},
 		[]string{
 			"restaurants", "retail_stores",
@@ -168,7 +168,8 @@ var categories = []struct {
 			"eav", "smartrip", "shinkansen", "seven bank", "jr west", "uber",
 			"vaa mobile app", "uscustoms", "öbb", "booking", "lufthansa",
 			"premier inn", "mta nyct paygo", "hilton hotels",
-			"marriott", "jakdojade", "hotel", "bolt",
+			"marriott", "jakdojade", "hotel", "bolt", "mta*nyct",
+			"fairfield inn",
 		},
 		[]string{
 			"hotels", "automobile",

@@ -68,6 +68,51 @@ func (c *Convert) chase(stdout, stderr io.Writer) error {
 	return nil
 }
 
+func (c *Convert) chasesave(stdout, stderr io.Writer) error {
+	records, err := c.reader()
+	if err != nil {
+		return fmt.Errorf("read input: %w", err)
+	}
+
+	records = records[2:] // skip title + header
+	for _, rec := range records {
+		date := rec[0]
+		ts := rec[1]
+		trtype := rec[2]
+		desc := rec[3]
+		val := rec[4]
+		pound, pence, ok := strings.Cut(val, ".")
+		if !ok {
+			pence = "00"
+		} else if len(pence) == 1 {
+			pence += "0"
+		}
+		val = pound + pence
+		value, err := strconv.Atoi(val)
+		if err != nil {
+			return fmt.Errorf("convert %s into int: %v", rec[4], err)
+		}
+
+		src, dst := "_", "_"
+
+		switch trtype {
+		case "Payment":
+			src, dst = "_", "CSS"
+			if value < 0 {
+				value *= -1
+				src, dst = dst, src
+			}
+		case "Interest":
+			src, dst = "FIN", "CSS"
+		}
+
+		desc = fmt.Sprintf("%s %s %s", date, ts, desc)
+
+		fmt.Fprintf(stdout, "[%s, %s, %d, %q],\n", src, dst, value, desc)
+	}
+	return nil
+}
+
 func (c *Convert) chasetxt(stdout, stderr io.Writer) error {
 	if c.filepath == "" {
 		return fmt.Errorf("no file given")

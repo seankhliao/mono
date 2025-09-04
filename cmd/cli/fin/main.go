@@ -71,6 +71,18 @@ func ConvertCommand() ycli.Command {
 			nil,
 			c.chasetxt,
 		),
+		ycli.New(
+			"chasesave",
+			"convert chase saver statements",
+			nil,
+			c.chasesave,
+		),
+		ycli.New(
+			"virgin",
+			"convert virgin credit card transactions",
+			nil,
+			c.virgin,
+		),
 	)
 }
 
