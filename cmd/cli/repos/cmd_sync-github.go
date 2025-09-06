@@ -13,7 +13,7 @@ import (
 
 	"cuelang.org/go/cue"
 	"github.com/briandowns/spinner"
-	"github.com/google/go-github/v60/github"
+	"github.com/google/go-github/v74/github"
 	"go.seankhliao.com/mono/ycli"
 	"golang.org/x/oauth2"
 )

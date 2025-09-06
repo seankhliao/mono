@@ -11,7 +11,7 @@ require (
 	github.com/cockroachdb/pebble v1.1.5
 	github.com/go-webauthn/webauthn v0.13.4
 	github.com/google/cel-go v0.26.1
-	github.com/google/go-github/v60 v60.0.0
+	github.com/google/go-github/v74 v74.0.0
 	github.com/junegunn/fzf v0.65.1
 	github.com/klauspost/compress v1.18.0
 	github.com/tdewolff/minify/v2 v2.24.2
@@ -38,7 +38,6 @@ require (
 	google.golang.org/api v0.248.0
 	google.golang.org/grpc v1.75.0
 	google.golang.org/protobuf v1.36.8
-	k8s.io/api v0.34.0
 	k8s.io/apimachinery v0.34.0
 	k8s.io/client-go v0.34.0
 	maragu.dev/gomponents v1.2.0
@@ -242,6 +241,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gotest.tools/v3 v3.5.2 // indirect
 	honnef.co/go/tools v0.6.1 // indirect
+	k8s.io/api v0.34.0 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20250710124328-f3f2b991d03b // indirect
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397 // indirect
