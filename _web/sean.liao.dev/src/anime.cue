@@ -99,6 +99,7 @@ _data: [
 	["2024-06-02", 8, 50739, ["Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken", "The Angel Next Door Spoils Me Rotten"]],
 	["2024-10-12", 5, 40436, ["Peter Grill to Kenja no Jikan", "Peter Grill and the Philosopher's Time"]],
 	["2024-12-11", 5, 50348, ["Peter Grill to Kenja no Jikan: Super Extra", "Peter Grill and the Philosopher's Time: Super Extra"]],
+	["2025-09-01", 8, 59419, ["Project Sekai Movie: Kowareta Sekai to Utaenai Miku", "Colorful Stage! The Movie: A Miku Who Can't Sing"]],
 	["2024-04-06", 7, 51403, ["Renai Flops", "Love Flops"]],
 	["2025-08-19", 8, 59360, ["Rock wa Lady no Tashinami deshite", "Rock Is a Lady's Modesty"]],
 	["2025-05-18", 7, 32951, ["Rokudenashi Majutsu Koushi to Akashic Records", "Akashic Records of Bastard Magic Instructor"]],
