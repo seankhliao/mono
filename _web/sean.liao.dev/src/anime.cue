@@ -130,6 +130,7 @@ _data: [
 	["2025-08-31", 7, 35249, ["Uma Musume: Pretty Derby", "Uma Musume: Pretty Derby"]],
 	["2025-08-27", 7, 37916, ["Uma Musume: Pretty Derby - BNW no Chikai", "Uma Musume: Pretty Derby - BNW no Chikai"]],
 	["2025-09-04", 8, 42941, ["Uma Musume: Pretty Derby Season 2", "Uma Musume: Pretty Derby Season 2"]],
+	["2025-09-08", 8, 53526, ["Uma Musume: Pretty Derby Season 3", "Uma Musume: Pretty Derby Season 3"]],
 	["2025-03-18", 5, 57031, ["Vampire Dormitory", "Vampire Dormitory"]],
 	["2025-08-17", 7, 53833, ["Watashi no Oshi wa Akuyaku Reijou", "I'm in Love with the Villainess"]],
 	["2024-06-16", 8, 35968, ["Wotaku ni Koi wa Wotaku", "Wotakoi: Love is Hard for Otaku"]],
