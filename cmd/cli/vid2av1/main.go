@@ -1,7 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"bytes"
+	"errors"
+	"io"
 	"io/fs"
 	"log/slog"
 	"os"
@@ -14,59 +16,91 @@ func main() {
 	in := os.Args[1]
 	out := os.Args[2]
 
-	fsys := os.DirFS(in)
-	des, err := fs.ReadDir(fsys, ".")
+	done := make(map[string]struct{})
+
+	des, err := os.ReadDir(out)
+	if err == nil {
+		for _, de := range des {
+			if de.IsDir() || strings.HasSuffix(de.Name(), ".jpg") {
+				continue
+			}
+			done[de.Name()] = struct{}{}
+
+			if strings.HasPrefix(de.Name(), ".") {
+				os.Remove(filepath.Join(out, de.Name()))
+			}
+		}
+	} else if !errors.Is(err, fs.ErrNotExist) {
+		slog.Error("list dst", "err", err)
+		os.Exit(1)
+	}
+
+	des, err = os.ReadDir(in)
 	if err != nil {
 		slog.Error("list src", "err", err)
 		os.Exit(1)
 	}
-	var total int
+
+	todo := make(map[string]struct{})
+
 	for _, de := range des {
 		if de.IsDir() || strings.HasSuffix(de.Name(), ".jpg") {
 			continue
 		}
-		total++
+		if _, ok := done[de.Name()]; ok {
+			continue
+		}
+		todo[de.Name()] = struct{}{}
 	}
 
-	slog.Info("src total", "total", total)
+	slog.Info("starting", "total", len(des), "todo", len(todo))
 
-	errf, err := os.Create("errors.log")
-	if err != nil {
-		slog.Error("create error log", "err", err)
-		os.Exit(1)
-	}
-	defer errf.Close()
+	stdout := &prefixer{w: os.Stdout, p: "\t[out] "}
+	stderr := &prefixer{w: os.Stdout, p: "\t[err] "}
 
-	var progress int
-	err = fs.WalkDir(os.DirFS(in), ".", func(p string, d fs.DirEntry, err error) error {
-		if err != nil || d.IsDir() || strings.HasSuffix(d.Name(), ".jpg") {
-			return err
-		}
-		progress++
-		fullname := filepath.Join(in, p)
-		name := d.Name()
-		outname := filepath.Join(out, name)
-		_, err = os.Stat(outname)
-		if err == nil {
-			slog.Info("already exists, skipping", "src", fullname, "dst", outname, "progress", progress, "total", total)
-			return nil
-		}
+	var i int
+	for name := range todo {
+		i++
+		slog.Info("staring", "name", name, "idx", i, "total_todo", len(todo))
+
+		fullname := filepath.Join(in, name)
 		tmpout := filepath.Join(out, ".tmp."+name)
 		cmd := exec.Command("ffmpeg", "-i", fullname, "-c:v", "libsvtav1", "-cpu-used", "8", "-c:a", "copy", tmpout)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
+		cmd.Stdout = stdout
+		cmd.Stderr = stderr
 		err = cmd.Run()
 		if err != nil {
-			slog.Error("run ffmpeg", "err", err, "progress", progress, "total", total)
-			fmt.Fprintln(errf, name, "err", err)
-			return nil
+			slog.Error("run ffmpeg", "name", name, "err", err)
+			continue
 		}
+		outname := filepath.Join(out, name)
 		os.Rename(tmpout, outname)
-		slog.Info("done, renamed", "out", outname, "progress", progress, "total", total)
-		return nil
-	})
-	if err != nil {
-		slog.Error("walk", "err", err)
-		os.Exit(1)
+		slog.Info("done, renamed", "name", name, "idx", i, "total_todo", len(todo))
 	}
+}
+
+type prefixer struct {
+	w io.Writer
+	p string
+	u bool
+
+	buf bytes.Buffer
+}
+
+func (p prefixer) Write(b []byte) (int, error) {
+	if !p.u {
+		p.u = true
+		p.buf.WriteString(p.p)
+	}
+	bbb := bytes.Split(b, []byte("\n"))
+	for i, bb := range bbb {
+		p.buf.Write(bb)
+		if i != len(bbb)-1 {
+			p.buf.WriteRune('\n')
+			p.buf.WriteString(p.p)
+		}
+	}
+	p.buf.WriteTo(p.w)
+	p.buf.Reset()
+	return len(b), nil
 }
