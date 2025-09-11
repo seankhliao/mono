@@ -129,6 +129,7 @@ _data: [
 	["2024-12-24", 7, 53379, ["Uchi no Kaisha no Chiisai Senpai no Hanashi", "My Tiny Senpai"]],
 	["2025-08-31", 7, 35249, ["Uma Musume: Pretty Derby", "Uma Musume: Pretty Derby"]],
 	["2025-08-27", 7, 37916, ["Uma Musume: Pretty Derby - BNW no Chikai", "Uma Musume: Pretty Derby - BNW no Chikai"]],
+	["2025-09-11", 9, 57647, ["Uma Musume: Pretty Derby - Shin Jidai no Tobira", "Uma Musume: Pretty Derby - Beginning of a New Era"]],
 	["2025-09-04", 8, 42941, ["Uma Musume: Pretty Derby Season 2", "Uma Musume: Pretty Derby Season 2"]],
 	["2025-09-08", 8, 53526, ["Uma Musume: Pretty Derby Season 3", "Uma Musume: Pretty Derby Season 3"]],
 	["2025-03-18", 5, 57031, ["Vampire Dormitory", "Vampire Dormitory"]],
