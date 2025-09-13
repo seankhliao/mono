@@ -11,6 +11,8 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 ##### _upcoming_ plans
 
 - _12026-03-17_ KESHA
+- _12026-02-20_ Ashnikko
+- _12025-11-19_ 6arelyhuman
 - _12025-11-16_ Lorde
 - _12025-11-15_ Billie Marten
 - _12025-11-07_ HANABIE
@@ -18,8 +20,10 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-28_ Blackbriar
 - _12025-10-24_ Hitsujibungaku
 - _12025-10-15_ Sumo
+- _12025-10-04_ Mae Muller
 - _12025-09-27_ Margins United Festival
 - _12025-09-16_ Au/Ra
+- _12025-09-15_ MARiMARi
 
 ##### _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
 
