@@ -164,7 +164,7 @@ func updateGo(c Config, stdout io.Writer) error {
 			cmd.Env = append(baseEnv,
 				"GOTOOLCHAIN="+rel,
 			)
-			out, err := cmd.CombinedOutput()
+			out, err := cmd.Output()
 			if err != nil {
 				return fmt.Errorf("download %s: %w\n%s", rel, err, out)
 			}
