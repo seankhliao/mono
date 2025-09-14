@@ -25,6 +25,17 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-09-16_ Au/Ra
 - _12025-09-15_ MARiMARi
 
+##### _12025-09-13_ Sabrage
+
+[Sabrage at Layafette](https://sabrageshow.com/london/)
+is a cabaret show,
+describing itself as a dazzling spectable.
+Thematically, and tonally, it felt a bit all over the place,
+with more serious performances punctuated by long comedy(?) interludes.
+The second half did try to be a bit more sexy
+with more implied nudity,
+though I doubt if anyone was in the mood.
+
 ##### _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
 
 With
