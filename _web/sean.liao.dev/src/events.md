@@ -45,12 +45,12 @@ though I doubt if anyone was in the mood.
 ##### _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
 
 With
-[__Mori Calliope_], [_Takanashi Kiara_], [_Ninomae Ina’nis_], [_IRyS_],
-[__Ouro Kronii_], [_Hakos Baelz_], [_Shiori Novella_], [_Koseki Bijou_],
-[__Nerissa Ravencroft_], [_Fuwawa Abyssgard_], [_Mococo Abyssgard_],
-[__Elizabeth Rose Bloodflame_], [_Gigi Murin_], [_Cecilia Immergreen_],
-[__Raora Panthera_], [_Oozora Subaru_], [_Tokoyami Towa_], [_Ayunda Risu_],
-[__Kureiji Ollie_],
+[_Mori Calliope_], [_Takanashi Kiara_], [_Ninomae Ina’nis_], [_IRyS_],
+[_Ouro Kronii_], [_Hakos Baelz_], [_Shiori Novella_], [_Koseki Bijou_],
+[_Nerissa Ravencroft_], [_Fuwawa Abyssgard_], [_Mococo Abyssgard_],
+[_Elizabeth Rose Bloodflame_], [_Gigi Murin_], [_Cecilia Immergreen_],
+[_Raora Panthera_], [_Oozora Subaru_], [_Tokoyami Towa_], [_Ayunda Risu_],
+[_Kureiji Ollie_],
 
 So what happens in a vtuber concert?
 There's a big main screen with a fixed camera showing the satge.
