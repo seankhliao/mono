@@ -23,11 +23,17 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-04_ Mae Muller
 - _12025-09-27_ Margins United Festival
 - _12025-09-16_ Au/Ra
-- _12025-09-15_ MARiMARi
+
+##### _12025-09-15_ MARiMARi
+
+With _moreofthem_, and _Maisi_
+
+With [_MARiMARi_], a night of electronic pop music?
+there was a voice modulator so I wasn't quite sure what the real voice sounded like.
 
 ##### _12025-09-13_ Sabrage
 
-[Sabrage at Layafette](https://sabrageshow.com/london/)
+[_Sabrage at Layafette_](https://sabrageshow.com/london/)
 is a cabaret show,
 describing itself as a dazzling spectable.
 Thematically, and tonally, it felt a bit all over the place,
@@ -39,12 +45,12 @@ though I doubt if anyone was in the mood.
 ##### _12025-08-24_ "ALL FOR ONE" hololive English 3rd Concert
 
 With
-[Mori Calliope], [Takanashi Kiara], [Ninomae Ina’nis], [IRyS],
-[Ouro Kronii], [Hakos Baelz], [Shiori Novella], [Koseki Bijou],
-[Nerissa Ravencroft], [Fuwawa Abyssgard], [Mococo Abyssgard],
-[Elizabeth Rose Bloodflame], [Gigi Murin], [Cecilia Immergreen],
-[Raora Panthera], [Oozora Subaru], [Tokoyami Towa], [Ayunda Risu],
-[Kureiji Ollie],
+[__Mori Calliope_], [_Takanashi Kiara_], [_Ninomae Ina’nis_], [_IRyS_],
+[__Ouro Kronii_], [_Hakos Baelz_], [_Shiori Novella_], [_Koseki Bijou_],
+[__Nerissa Ravencroft_], [_Fuwawa Abyssgard_], [_Mococo Abyssgard_],
+[__Elizabeth Rose Bloodflame_], [_Gigi Murin_], [_Cecilia Immergreen_],
+[__Raora Panthera_], [_Oozora Subaru_], [_Tokoyami Towa_], [_Ayunda Risu_],
+[__Kureiji Ollie_],
 
 So what happens in a vtuber concert?
 There's a big main screen with a fixed camera showing the satge.
@@ -71,26 +77,6 @@ they were super enthusiastic,
 with unending waves of chants before it began,
 with the highest rate of light stick shaking I've ever seen
 (it felt like 99%...).
-
-[Mori Calliope]: https://www.youtube.com/@MoriCalliope
-[Takanashi Kiara]: https://www.youtube.com/@TakanashiKiara
-[Ninomae Ina’nis]: https://www.youtube.com/@NinomaeInanis
-[IRyS]: https://www.youtube.com/@IRyS
-[Ouro Kronii]: https://www.youtube.com/@OuroKronii
-[Hakos Baelz]: https://www.youtube.com/@HakosBaelz
-[Shiori Novella]: https://www.youtube.com/@ShioriNovella
-[Koseki Bijou]: https://www.youtube.com/@KosekiBijou
-[Nerissa Ravencroft]: https://www.youtube.com/@NerissaRavencroft
-[Fuwawa Abyssgard]: https://www.youtube.com/@FUWAMOCOch
-[Mococo Abyssgard]: https://www.youtube.com/@FUWAMOCOch
-[Elizabeth Rose Bloodflame]: https://www.youtube.com/@holoen_erbloodflame
-[Gigi Murin]: https://www.youtube.com/@holoen_gigimurin
-[Cecilia Immergreen]: https://www.youtube.com/@holoen_ceciliaimmergreen
-[Raora Panthera]: https://www.youtube.com/@holoen_raorapanthera
-[Oozora Subaru]: https://www.youtube.com/@OozoraSubaru
-[Tokoyami Towa]: https://www.youtube.com/@TokoyamiTowa
-[Ayunda Risu]: https://www.youtube.com/@AyundaRisu
-[Kureiji Ollie]: https://www.youtube.com/@KureijiOllie
 
 ##### _12025-08-16_ Blackpink
 
@@ -1674,6 +1660,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Ava Max_]: https://www.youtube.com/@avamax
 [_AViVA_]: https://www.youtube.com/@thisisaviva
 [_Avril Lavigne_]: https://www.youtube.com/@AvrilLavigne
+[_Ayunda Risu_]: https://www.youtube.com/@AyundaRisu
 [_BABYMETAL_]: https://www.youtube.com/@BABYMETAL
 [_Bambie Thug_]: https://www.youtube.com/@bambiethug
 [_Band of Silver_]: https://www.youtube.com/@officialbandofsilver
@@ -1694,6 +1681,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Cannons_]: https://www.youtube.com/@CannonsTheBand
 [_Caroline Polachek_]: https://www.youtube.com/@CarolinePolachek
 [_carpark_]: https://www.youtube.com/@carparkband
+[_Cecilia Immergreen_]: https://www.youtube.com/@holoen_ceciliaimmergreen
 [_charlieonnafriday_]: https://www.youtube.com/@charlieonnafriday111
 [_Charli XCX_]: https://www.youtube.com/@officialcharlixcx
 [_Charlotte Sands_]: https://www.youtube.com/@charlottesands
@@ -1719,6 +1707,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Eden Hunter_]: https://www.youtube.com/@edenhunter_
 [_Ed Sheeran_]: https://www.youtube.com/@EdSheeran
 [_Elena Flury_]: https://www.youtube.com/@elenaflury
+[_Elizabeth Rose Bloodflame_]: https://www.youtube.com/@holoen_erbloodflame
 [_Ellie Dixon_]: https://www.youtube.com/@EllieDixonMusic
 [_Emei_]: https://www.youtube.com/@its_emei
 [_Emi Jeen_]: https://www.youtube.com/@emijeenofficial
@@ -1735,9 +1724,11 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Fletcher_]: https://www.youtube.com/@fletcher
 [_Fredrik Svabø_]: https://www.youtube.com/@fredriksvabo
 [_Frozen Crown_]: https://www.youtube.com/@FrozenCrown
+[_Fuwawa Abyssgard_]: https://www.youtube.com/@FUWAMOCOch
 [_galacticbpd_]: https://www.instagram.com/galacticbpd_
 [_Gang Parade_]: https://www.youtube.com/@gangparade
 [_Gia Lily_]: https://www.youtube.com/@GiaLily
+[_Gigi Murin_]: https://www.youtube.com/@holoen_gigimurin
 [_girli_]: https://www.youtube.com/@girlimusic
 [_girl in red_]: https://www.youtube.com/@girlinred
 [_Gracey_]: https://www.youtube.com/@gracey
@@ -1745,6 +1736,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Griff_]: https://www.youtube.com/@wiffygriffy
 [_Haiden Henderson_]: https://www.youtube.com/@haidenhenderson
 [_HAIM_]: https://www.youtube.com/@HaimTheBand
+[_Hakos Baelz_]: https://www.youtube.com/@HakosBaelz
 [_Halestorm_]: https://www.youtube.com/@HalestormRocks
 [_Halflives_]: https://www.youtube.com/@wehavehalflives
 [_Halocene_]: https://www.youtube.com/@Halocene
@@ -1754,6 +1746,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_ICHIKO AOBA_]: https://www.youtube.com/@ichikoaoba-hermine
 [_ili_]: https://www.youtube.com/@thisisili
 [_ILLUMISHADE_]: https://www.youtube.com/@ILLUMISHADE
+[_IRyS_]: https://www.youtube.com/@IRyS
 [_Isabel LaRosa_]: https://www.youtube.com/@isabellarosa5800
 [_Isiliel_]: https://www.youtube.com/@IMPERIETIV
 [_IVE_]: https://www.youtube.com/@IVEstarship
@@ -1773,7 +1766,9 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_King Mala_]: https://www.youtube.com/@KiNGMALA
 [_Kings Elliot_]: https://www.youtube.com/@KingsElliot
 [_KiSS KiSS_]: https://www.youtube.com/@KiSSKiSSOFFiCiALCHANNEL
+[_Koseki Bijou_]: https://www.youtube.com/@KosekiBijou
 [_Kotaro Daigo_]: https://www.instagram.com/daigo_kotaro
+[_Kureiji Ollie_]: https://www.youtube.com/@KureijiOllie
 [_Larkins_]: https://www.youtube.com/@Larkinsband
 [_LEAP_]: https://www.youtube.com/@leap_the_band
 [_Lekna_]: https://www.youtube.com/@leknamusic
@@ -1795,26 +1790,33 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Maisie Peters_]: https://www.youtube.com/@MaisieHPeters
 [_MAMESHiBA NO TAiGUN ]: https://www.youtube.com/@MAMESHiBANOTAiGUN96
 [_MAPA_]: https://www.youtube.com/@mapa8234
+[_MARiMARi_]: https://www.youtube.com/@xomarimari
 [_Marisa Rodriguez_]: https://www.instagram.com/marisasingsalot/?hl=en
 [_may in film_]: https://www.youtube.com/@mayinfilm
 [_McKenna Michels_]: https://www.youtube.com/@mckennamichelsmusic
 [_Melanie Martinez_]: https://www.youtube.com/@MelanieMartinez
+[_Mococo Abyssgard_]: https://www.youtube.com/@FUWAMOCOch
 [_Mone Kamishiraishi_]: https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p
 [_MONSTERIDOL_]: https://www.youtube.com/@MONSTERIDOL
+[_Mori Calliope_]: https://www.youtube.com/@MoriCalliope
 [_Mothica_]: https://www.youtube.com/@Mothica
 [_My Neighbour Totoro_]: https://totoroshow.com/
 [_Natalie Jane_]: https://www.youtube.com/@nataliejane
 [_National Children's Orchestra_]: https://www.youtube.com/@ncogb
 [_Nectar Woode_]: https://www.youtube.com/@NectarWoode
 [_NERIAH_]: https://www.youtube.com/@thisisneriah
+[_Nerissa Ravencroft_]: https://www.youtube.com/@NerissaRavencroft
 [_Nessa Barrett_]: https://www.youtube.com/@NessaBarrett
 [_Nieve Ella_]: https://www.youtube.com/@nieveella
 [_NINA_]: https://www.youtube.com/@iloveninamusic
 [_Nina Nesbitt_]: https://www.youtube.com/@ninanesbitt
+[_Ninomae Ina’nis_]: https://www.youtube.com/@NinomaeInanis
 [_Nothing, Nowhere_]: https://www.youtube.com/@nothingnowheremusic
 [_Nxdia_]: https://www.youtube.com/@nxdiamusic
 [_Oliver Cronin_]: https://www.youtube.com/@OliverCronin
 [_ONE OK ROCK_]: https://www.youtube.com/@ONEOKROCK
+[_Oozora Subaru_]: https://www.youtube.com/@OozoraSubaru
+[_Ouro Kronii_]: https://www.youtube.com/@OuroKronii
 [_Overlaps_]: https://www.youtube.com/@Overlaps
 [_Paris Paloma_]: https://www.youtube.com/@parispaloma
 [_Peach PRC_]: https://www.youtube.com/@PeachPrc
@@ -1828,6 +1830,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Pure Chlorine_]: https://www.youtube.com/@purechlorine8272
 [_PVRIS_]: https://www.youtube.com/@PVRIS
 [_Radio Wolf_]: https://www.youtube.com/@RadioWolfMusic
+[_Raora Panthera_]: https://www.youtube.com/@holoen_raorapanthera
 [_Rebecca Black_]: https://www.youtube.com/@rebecca
 [_Rebmoe_]: https://www.youtube.com/@TheMoestyle
 [_RedHook_]: https://www.youtube.com/@weareredhook
@@ -1839,6 +1842,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Scene Queen_]: https://www.youtube.com/@scenequeenrocks
 [_SERAINA TELLI_]: https://www.youtube.com/@serainatelli
 [_Seven Blood_]: https://www.youtube.com/@SevenBloodOfficial
+[_Shiori Novella_]: https://www.youtube.com/@ShioriNovella
 [_Skillet_]: https://www.youtube.com/@skilletband
 [_sombr_]: https://www.youtube.com/channel/UCXlqFQmZZOb78teSnAqhuwA
 [_Sonia Stein_]: https://www.youtube.com/@SoniaStein
@@ -1846,6 +1850,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Sophie Lloyd_]: https://www.youtube.com/@SophieLloyd
 [_South Arcade_]: https://www.youtube.com/@southarcadeuk
 [_Spirited Away_]: https://www.youtube.com/@SpiritedAwayLDN
+[_Takanashi Kiara_]: https://www.youtube.com/@TakanashiKiara
 [_Tate McRae_]: https://www.youtube.com/@TateMcRae
 [_Taylor Acorn_]: https://www.youtube.com/@TaylorAcorn
 [_The Cruel Knives_]: https://www.youtube.com/@TheCruelKnives
@@ -1855,6 +1860,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_The Staves_]: https://www.youtube.com/@thestaves
 [_The Warning_]: https://www.youtube.com/@TheWarning
 [_tiLLie_]: https://www.youtube.com/@whoistiLLie
+[_Tokoyami Towa_]: https://www.youtube.com/@TokoyamiTowa
 [_Unflirt_]: https://www.youtube.com/@unflirt
 [_Uninvited_]: https://www.youtube.com/@uninvitedmusicuk
 [_UPSAHL_]: https://www.youtube.com/@UPSAHL
