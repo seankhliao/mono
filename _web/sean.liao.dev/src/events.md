@@ -22,7 +22,18 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-15_ Sumo
 - _12025-10-04_ Mae Muller
 - _12025-09-27_ Margins United Festival
-- _12025-09-16_ Au/Ra
+
+##### _12025-09-16_ Au/Ra
+
+With [_dariasirene_]
+
+[_dariasirene_] had a pretty cute set,
+the excitement and joy felt infectious.
+I really wasn't expecting to be able to see [_Au/Ra_] perform live,
+and I'm so happy that I did.
+the music definitely sounded different in person,
+and I felt like there were quite a few songs I hadn't heard before,
+but it just sounded so good.
 
 ##### _12025-09-15_ MARiMARi
 
@@ -1656,6 +1667,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Ashnikko_]: https://www.youtube.com/@Ashnikko
 [_ASP_]: https://www.youtube.com/@ASPOfficialChannel
 [_ATARASHII GAKKO_]: https://www.youtube.com/@ATARASHIIGAKKO
+[_Au/Ra_]: http://www.youtube.com/@HeyItsAuRa
 [_AURORA_]: https://www.youtube.com/@AuroraMusic
 [_Ava Max_]: https://www.youtube.com/@avamax
 [_AViVA_]: https://www.youtube.com/@thisisaviva
@@ -1696,6 +1708,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Clean Bandit_]: https://www.youtube.com/@cleanbandit
 [_Cloudy June_]: https://www.youtube.com/@CloudyJune
 [_Conquer Divide_]: https://www.youtube.com/@conquerdividemusic
+[_dariasirene_]: https://www.youtube.com/@Dariasirene
 [_Deadbeat girl_]: https://www.youtube.com/@deadbeatgirl.mp3
 [_Dead Pony_]: https://www.youtube.com/@deadponyband
 [_Defences_]: https://www.youtube.com/@Defences
