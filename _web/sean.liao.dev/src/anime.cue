@@ -127,6 +127,7 @@ _data: [
 	["2024-06-28", 6, 38573, ["Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?", "Do You Love Your Mom and Her Two-Hit Multi-Target Attacks?"]],
 	["2024-06-28", 6, 40102, ["Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka? Namiuchigiwa no Okaasan wa Suki desu ka?", "Do You Love Your Mom and Her Two-Hit Multi-Target Attacks? Do You Love Your Mom on the Shore?"]],
 	["2024-12-24", 7, 53379, ["Uchi no Kaisha no Chiisai Senpai no Hanashi", "My Tiny Senpai"]],
+	["2025-09-17", 8, 59636, ["Uma Musume: Cinderella Gray", "Uma Musume: Cinderella Gray"]],
 	["2025-08-31", 7, 35249, ["Uma Musume: Pretty Derby", "Uma Musume: Pretty Derby"]],
 	["2025-08-27", 7, 37916, ["Uma Musume: Pretty Derby - BNW no Chikai", "Uma Musume: Pretty Derby - BNW no Chikai"]],
 	["2025-09-12", 7, 51761, ["Uma Musume: Pretty Derby - Road to the Top", "Uma Musume: Pretty Derby - Road to the Top"]],
