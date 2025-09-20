@@ -34,7 +34,6 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	tracenoop "go.opentelemetry.io/otel/trace/noop"
 	"go.seankhliao.com/mono/jsonlog"
-	"go.seankhliao.com/mono/multilog"
 )
 
 // const defaultServiceConfig = `{"loadBalancingConfig":[{"round_robin":{}}]}`
@@ -206,7 +205,7 @@ func NewLog(ctx context.Context, res *resource.Resource, c Config) (*slog.Logger
 	global.SetLoggerProvider(lp)
 
 	oh := otelslog.NewHandler("")
-	handler = multilog.Handler(oh, handler)
+	handler = slog.NewMultiHandler(oh, handler)
 
 	logger := slog.New(handler)
 	return logger, handler, zpage, nil
