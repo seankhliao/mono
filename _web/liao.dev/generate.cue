@@ -1,5 +1,4 @@
 Title:  "liao.dev"
-Text:   "Hi, I'm <em>sean</em>khliao"
 GTM:    "G-9GLEE4YLNC"
 Repeat: 5
 Links: {

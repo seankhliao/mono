@@ -1,224 +1,207 @@
-<!DOCTYPE html>
-<html lang="en">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"
-  />
-  <title>liao.dev</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"><meta name="theme-color" content="#000"><title>liao.dev</title><script async src="https://www.googletagmanager.com/gtag/js?id=G-9GLEE4YLNC"></script><script>
+window.dataLayer = window.dataLayer || [];
+function gtag() {
+  dataLayer.push(arguments);
+}
+gtag("js", new Date());
+gtag('config', 'G-9GLEE4YLNC');</script><link rel="icon" href="https://seankhliao.com/favicon.ico"><link rel="icon" href="https://seankhliao.com/static/icon.svg" type="image/svg+xml" sizes="any"><link rel="apple-touch-icon" href="https://seankhliao.com/static/icon-192.png"><style>* {
+  box-sizing: border-box;
+}
+:root {
+  --background: #000000;
+  --background-light: #303030;
+  --primary: #a06be0;
+  --text: #eceff1;
+  --text-dark: #999999;
+  --decoration: #707070;
 
-  
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9GLEE4YLNC"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  background: var(--background);
+  color: var(--text);
+  font:
+    20px "Inconsolata",
+    monospace;
+}
 
-    gtag('config', 'G-9GLEE4YLNC');
-  </script>
-  
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("Inconsolata"),
+    local("Inconsolata-Regular"),
+    url(/static/inconsolata-var.woff2) format("woff2-variations"),
+    url(/static/inconsolata-400.woff2) format("woff2"),
+    url(https://seankhliao.com/static/inconsolata-var.woff2)
+      format("woff2-variations"),
+    url(https://seankhliao.com/static/inconsolata-400.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Inconsolata";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local("Inconsolata Bold"),
+    local("Inconsolata-Bold"),
+    url(/static/inconsolata-var.woff2) format("woff2-variations"),
+    url(/static/inconsolata-700.woff2) format("woff2"),
+    url(https://seankhliao.com/static/inconsolata-var.woff2)
+      format("woff2-variations"),
+    url(https://seankhliao.com/static/inconsolata-700.woff2) format("woff2");
+}
 
-  <meta name="theme-color" content="#000000">
-  <link rel="icon" href="https://seankhliao.com/favicon.ico">
-  <link rel="icon" href="https://seankhliao.com/static/icon.svg" type="image/svg+xml" sizes="any">
-  <link rel="apple-touch-icon" href="https://seankhliao.com/static/icon-192.png">
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    :root {
-      --background: #000000;
-      --background-light: #303030;
-      --primary: #a06be0;
-      --text: #eceff1;
-      --text-dark: #999999;
-      --decoration: #707070;
-
-      background: var(--background);
-      color: var(--text);
-      font: 20px "Inconsolata", monospace;
-    }
-
-    @font-face {
-      font-family: "Inconsolata";
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: local("Inconsolata"), local("Inconsolata-Regular"),
-        url(/static/inconsolata-var.woff2) format("woff2-variations"),
-        url(/static/inconsolata-400.woff2) format("woff2"),
-        url(https://seankhliao.com/static/inconsolata-var.woff2) format("woff2-variations"),
-        url(https://seankhliao.com/static/inconsolata-400.woff2) format("woff2");
-    }
-    @font-face {
-      font-family: "Inconsolata";
-      font-style: normal;
-      font-weight: 700;
-      font-display: swap;
-      src: local("Inconsolata Bold"), local("Inconsolata-Bold"),
-        url(/static/inconsolata-var.woff2) format("woff2-variations"),
-        url(/static/inconsolata-700.woff2) format("woff2"),
-        url(https://seankhliao.com/static/inconsolata-var.woff2) format("woff2-variations"),
-        url(https://seankhliao.com/static/inconsolata-700.woff2) format("woff2");
-    }
-  
-    body {
-      display: grid;
-      place-items: center;
-      width: 100vw;
-      height: 100vh;
-      margin: 0;
-      overflow-y: hidden;
-    }
-    main {
-      text-align: center;
-      max-height: 100vh;
-    }
-    span {
-      font-style: normal;
-      font-weight: 700;
-    }
-    em {
-      color: var(--primary);
-      background-color: unset;
-      font-style: normal;
-      font-weight: 700;
-    }
-    a, a:visited {
-      color: var(--text-dark);
-      font-weight: 400;
-      text-decoration: none;
-    }
-    
-    main:has(> .email:hover) > .email,main:has(> .liao-dev:hover) > .liao-dev,main:has(> .linkedin:hover) > .linkedin,main:has(> .sean-liao-dev:hover) > .sean-liao-dev,main:has(> .signal:hover) > .signal,main:has(> .blog:hover) > .blog,main:has(> .github:hover) > .github,main:has(> .instagram:hover) > .instagram,main:has(> .mastodon:hover) > .mastodon,main:has(> .seankhliao-com:hover) > .seankhliao-com,main:has(> .twitter:hover) > .twitter,main:has(> .bluesky:hover) > .bluesky {
-      color: var(--primary);
-      transition: color 0.16s;
-      text-decoration: underline 1px var(--primary);
-    }
-  </style>
-
-  <main>
-  <a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+body {
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  overflow-y: hidden;
+}
+main {
+  text-align: center;
+  max-height: 100vh;
+}
+span {
+  font-style: normal;
+  font-weight: 700;
+}
+em {
+  color: var(--primary);
+  background-color: unset;
+  font-style: normal;
+  font-weight: 700;
+}
+a,
+a:visited {
+  color: var(--text-dark);
+  font-weight: 400;
+  text-decoration: none;
+}
+</style><style>main:has(> .bluesky:hover) > .bluesky,main:has(> .github:hover) > .github,main:has(> .instagram:hover) > .instagram,main:has(> .liao-dev:hover) > .liao-dev,main:has(> .seankhliao-com:hover) > .seankhliao-com,main:has(> .sean-liao-dev:hover) > .sean-liao-dev,main:has(> .signal:hover) > .signal,main:has(> .twitter:hover) > .twitter,main:has(> .blog:hover) > .blog,main:has(> .email:hover) > .email,main:has(> .linkedin:hover) > .linkedin,main:has(> .mastodon:hover) > .mastodon {
+  color: var(--primary);
+  transition: color 0.16s;
+  text-decoration: underline 1px var(--primary);
+}</style></head><body><main><a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
 <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
 <a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
 <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
-<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
-<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
-<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
-<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
 <a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
-<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
-<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
 <a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
-<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
 <a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
 <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
-<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
 <a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
 <a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
 <a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
-<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
-<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
 <a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
-<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
-<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
-<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
-<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
-<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
 <a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
-<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
-<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
-<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-<span>Hi, I'm <em>sean</em>khliao</span>
-<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
-<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
-<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
-<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
-<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
-<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
-<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
-<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
-<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
-<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
-<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
-<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
-<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
-<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
-<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
-<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
-<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
-<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
-<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
-<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
-<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
-<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
-<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
-<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
-<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
-<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
-<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
-<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
 <a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
 <a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
 <a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
-
-  </main>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<span>Hi, I&#39;m<em>sean</em>khliao</span>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="twitter" rel="me" href="https://twitter.com/seankhliao">twitter</a>
+<a class="mastodon" rel="me" href="https://hachyderm.io/@seankhliao">mastodon</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="github" rel="me" href="https://github.com/seankhliao">github</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="blog" rel="me" href="https://seankhliao.com/blog/">blog</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="instagram" rel="me" href="https://instagram.com/seankhliao">instagram</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="liao-dev" rel="me" href="https://liao.dev/">liao.dev</a>
+<a class="signal" rel="me" href="https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE">signal</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="sean-liao-dev" rel="me" href="https://sean.liao.dev/">sean.liao.dev</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="email" rel="me" href="mailto:sean+wordwall@liao.dev">email</a>
+<a class="seankhliao-com" rel="me" href="https://seankhliao.com/">seankhliao.com</a>
+<a class="bluesky" rel="me" href="https://bsky.app/profile/seankhliao.com">bluesky</a>
+<a class="linkedin" rel="me" href="https://linkedin.com/in/seankhliao">linkedin</a></main></body></html>
