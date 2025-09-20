@@ -79,7 +79,7 @@ comfy until i wore down the heels.
 
 _Dr Martens 2976 Bex Smooth Leather Chelsea Boots_
 platform shoes that do take some getting used to.
-I think they loosed up more than i expected.
+I think they loosed up more than I expected.
 
 #### Underwear
 

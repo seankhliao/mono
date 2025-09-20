@@ -14,7 +14,7 @@ that I could use to name things.
 | Dani               | [That Which Flows By][dani]                             | ... retired ...  |
 | Hwaryun            | [Tower of God][hwaryun]                                 | framework laptop |
 | Ihwa               | [Hero Killer][ihwa]                                     | ... retired ...  |
-| Justia             | [Brown Dust II][justia]                                 | arm64 server     |
+| Justia             | [Brown Dust II][justia]                                 | ... retired ...  |
 | Lapis              | [The Dark Lord's Confession][lapis]                     | pixel 8 pro      |
 | Layla              | [Cry, or Better Yet, Beg][layla]                        | lichee pi 4a     |
 | Lucid              | [Lucid][lucid]                                          | ... retired ...  |
