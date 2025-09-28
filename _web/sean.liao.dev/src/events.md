@@ -21,7 +21,18 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-24_ Hitsujibungaku
 - _12025-10-15_ Sumo
 - _12025-10-04_ Mae Muller
-- _12025-09-27_ Margins United Festival
+
+##### _12025-09-27_ Margins United Festival
+
+With [_Emei_] and [_Kyary Pamyu Pamyu_]
+
+[_Emei_] gives off the postively American vibe...
+with good songs for venting some of your inner feelings.
+[_Kyary Pamyu Pamyu_] was quite different.
+Cute electronic?
+The music was repetitive, as modern dance party music goes.
+The dance was slightly robotic, but I think that was the intended effect.
+What I can't forget were the cuteness(?) in her eyes...
 
 ##### _12025-09-16_ Au/Ra
 
@@ -1782,6 +1793,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Koseki Bijou_]: https://www.youtube.com/@KosekiBijou
 [_Kotaro Daigo_]: https://www.instagram.com/daigo_kotaro
 [_Kureiji Ollie_]: https://www.youtube.com/@KureijiOllie
+[_Kyary Pamyu Pamyu_]: https://www.youtube.com/@kyarypamyupamyuTV
 [_Larkins_]: https://www.youtube.com/@Larkinsband
 [_LEAP_]: https://www.youtube.com/@leap_the_band
 [_Lekna_]: https://www.youtube.com/@leknamusic
