@@ -38,7 +38,7 @@ func stripTitles(src []byte) (page []byte, title, subtitle string) {
 		}
 	}
 	page = buf.Bytes()
-	return
+	return page, title, subtitle
 }
 
 func renderSingle(in string, compact bool) (map[string]*bytes.Buffer, error) {
@@ -65,7 +65,7 @@ func renderSingle(in string, compact bool) (map[string]*bytes.Buffer, error) {
 	return map[string]*bytes.Buffer{singleKey: buf}, nil
 }
 
-func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffer, error) {
+func renderMulti(in, gtm, baseURL string, compact bool) (map[string]*bytes.Buffer, error) {
 	var countFiles int
 	fsys := os.DirFS(in)
 	err := fs.WalkDir(fsys, ".", func(p string, d fs.DirEntry, err error) error {
@@ -84,7 +84,7 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 
 	rendered := make(map[string]*bytes.Buffer)
 	rendered["sitemap.txt"] = new(bytes.Buffer)
-	err = fs.WalkDir(fsys, ".", walk(fsys, spin, rendered, gtm, baseUrl, compact))
+	err = fs.WalkDir(fsys, ".", walk(fsys, spin, rendered, gtm, baseURL, compact))
 	if err != nil {
 		return nil, fmt.Errorf("process source: %w", err)
 	}
@@ -94,7 +94,7 @@ func renderMulti(in, gtm, baseUrl string, compact bool) (map[string]*bytes.Buffe
 	return rendered, nil
 }
 
-func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, gtm, baseUrl string, compact bool) fs.WalkDirFunc {
+func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, gtm, baseURL string, compact bool) fs.WalkDirFunc {
 	var idx int
 	return func(p string, d fs.DirEntry, openErr error) error {
 		if openErr != nil || d.IsDir() {
@@ -126,7 +126,7 @@ func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, 
 				return fmt.Errorf("render markdown: %w", err)
 			}
 
-			u := baseUrl + canonicalPathFromRelPath(p)
+			u := baseURL + canonicalPathFromRelPath(p)
 			o := webstyle.NewOptions(
 				subtitle,
 				title,
@@ -159,7 +159,7 @@ func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, 
 			fmt.Fprintf(rendered["sitemap.txt"], "%s\n", u)
 			p = p[:len(p)-3] + ".html"
 		} else if strings.HasSuffix(p, ".cue") {
-			u := baseUrl + canonicalPathFromRelPath(p)
+			u := baseURL + canonicalPathFromRelPath(p)
 			openErr = processTable(buf, inFile, u, gtm)
 			if openErr != nil {
 				return fmt.Errorf("process table: %w", openErr)

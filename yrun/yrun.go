@@ -72,7 +72,7 @@ func Run[C, A any](r Config[C, A]) (exitCode int) {
 		fmt.Fprintln(os.Stderr, err)
 		exitCode = 1
 	}
-	return
+	return exitCode
 }
 
 func run[AppConfig, App any](runConfig Config[AppConfig, App]) error {
