@@ -37,6 +37,7 @@ _data: [
 	["2024-06-20", 8, 44511, ["Chainsaw Man", "Chainsaw Man"], "**Makima** dominates, **Power** is playfully wild"],
 	["2024-09-27", 8, 52701, ["Dungeon Meshi", "Delicious in Dungeon"]],
 	["2024-05-27", 6, 52081, ["Edomae Elf", "Otaku Elf"]],
+	["2025-10-01", 8, 60508, ["Food Court de, Mata Ashita", "See You Tomorrow at the Food Court"]],
 	["2024-10-08", 6, 51212, ["Futoku no Guild", "Immoral Guild"]],
 	["2024-12-24", 8, 54968, ["Giji Harem", "Pseudo Harem"]],
 	["2025-05-22", 7, 52481, ["Gimai Seikatsu", "Days with My Stepsister"]],
