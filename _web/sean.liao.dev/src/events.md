@@ -8,6 +8,8 @@ Mostly music gigs, occasionally something else to spice things up.
 
 _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 
+#### _event_ list
+
 ##### _upcoming_ plans
 
 - _12026-03-17_ KESHA
@@ -27,7 +29,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-14_ Katy Perry
 - _12025-10-04_ Mae Muller
 
-#### _past_ events
+##### _past_ events
 
 - [12025-09-27 Margins United Festival](#-12025-09-27--margins-united-festival)
 - [12025-09-16 Au/Ra](#-12025-09-16--aura)
@@ -167,6 +169,8 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - [12022-04-10 Against the Current](#-12022-04-10--against-the-current)
 - [12019-12-08 Against the Current](#-12019-12-08--against-the-current)
 - [12019-03-19 Against the Current](#-12019-03-19--against-the-current)
+
+#### _event_ thoughts & feels
 
 ##### _12025-10-02_ MØ
 
