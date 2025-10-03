@@ -107,6 +107,7 @@ _data: [
 	["2025-08-19", 8, 59360, ["Rock wa Lady no Tashinami deshite", "Rock Is a Lady's Modesty"]],
 	["2025-05-18", 7, 32951, ["Rokudenashi Majutsu Koushi to Akashic Records", "Akashic Records of Bastard Magic Instructor"]],
 	["2024-09-09", 7, 48363, ["RPG Fudousan", "RPG Real Estate"]],
+	["2025-10-03", 8, 59791, ["Ruri no Houseki", "Ruri Rocks"]],
 	["2024-07-07", 8, 37450, ["Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai", "Rascal Does Not Dream of Bunny Girl Senpai"]],
 	["2024-07-08", 8, 38329, ["Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai", "Rascal Does Not Dream of a Dreaming Girl"]],
 	["2024-07-10", 7, 53129, ["Seishun Buta Yarou wa Odekake Sister no Yume wo Minai", "Rascal Does Not Dream of a Sister Venturing Out"]],
