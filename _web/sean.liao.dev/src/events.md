@@ -22,6 +22,19 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-15_ Sumo
 - _12025-10-04_ Mae Muller
 
+##### _12025-10-02_ MØ
+
+We open with [_Margo Raats_],
+pretty pleasant, and hitting the right spots.
+[_snuggle_] was on next,
+though I don't know if I heard anything properly....
+it felt more like a few friends just having fun on stage
+and not really caring for the audience.
+Then we have [_MØ_],
+with so much strobe lighting.
+It's the party that doesn't tip over into crazy,
+but still fun.
+
 ##### _12025-09-27_ Margins United Festival
 
 With [_Emei_] and [_Kyary Pamyu Pamyu_]
@@ -1815,12 +1828,14 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Maisie Peters_]: https://www.youtube.com/@MaisieHPeters
 [_MAMESHiBA NO TAiGUN ]: https://www.youtube.com/@MAMESHiBANOTAiGUN96
 [_MAPA_]: https://www.youtube.com/@mapa8234
+[_Margo Raats_]: https://www.youtube.com/@margoraatsmusic
 [_MARiMARi_]: https://www.youtube.com/@xomarimari
 [_Marisa Rodriguez_]: https://www.instagram.com/marisasingsalot/?hl=en
 [_may in film_]: https://www.youtube.com/@mayinfilm
 [_McKenna Michels_]: https://www.youtube.com/@mckennamichelsmusic
 [_Melanie Martinez_]: https://www.youtube.com/@MelanieMartinez
 [_Mococo Abyssgard_]: https://www.youtube.com/@FUWAMOCOch
+[_MØ_]: https://www.youtube.com/@MOMOMOYOUTH
 [_Mone Kamishiraishi_]: https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p
 [_MONSTERIDOL_]: https://www.youtube.com/@MONSTERIDOL
 [_Mori Calliope_]: https://www.youtube.com/@MoriCalliope
@@ -1869,6 +1884,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Seven Blood_]: https://www.youtube.com/@SevenBloodOfficial
 [_Shiori Novella_]: https://www.youtube.com/@ShioriNovella
 [_Skillet_]: https://www.youtube.com/@skilletband
+[_snuggle_]: https://www.youtube.com/@snuggleblog
 [_sombr_]: https://www.youtube.com/channel/UCXlqFQmZZOb78teSnAqhuwA
 [_Sonia Stein_]: https://www.youtube.com/@SoniaStein
 [_Sophia Alexa_]: https://www.youtube.com/@SophiaAlexa
