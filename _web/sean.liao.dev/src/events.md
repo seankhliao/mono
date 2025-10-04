@@ -14,6 +14,7 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 - _12026-03-17_ KESHA
 - _12026-02-20_ Ashnikko
+- _12026-02-03_ Halsey
 - _12025-11-19_ 6arelyhuman
 - _12025-11-16_ Lorde
 - _12025-11-15_ Billie Marten
@@ -27,10 +28,11 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-16_ Marie Kondo
 - _12025-10-15_ Sumo
 - _12025-10-14_ Katy Perry
-- _12025-10-04_ Mae Muller
 
 ##### _past_ events
 
+- [_12025-10-04_ Mae Muller](#-12025-10-04--mae-muller)
+- [_12025-10-02_ MØ](#-12025-10-02--m)
 - [_12025-09-27_ Margins United Festival](#-12025-09-27--margins-united-festival)
 - [_12025-09-16_ Au/Ra](#-12025-09-16--aura)
 - [_12025-09-15_ MARiMARi](#-12025-09-15--marimari)
@@ -172,7 +174,24 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 
 #### _event_ thoughts & feels
 
+##### _12025-10-04_ Mae Muller
+
+With [_Maisi_]
+
+I only caught the tail end of [_Maisi_]'s performance,
+it had a strangely faminilar feel
+(turns out I saw her open for another show 3 weeks ago).
+As for [_Mae Muller_],
+as she said herself,
+the setlist was a bit all over the place as a grab bag of her hit songs
+and some new ones.
+It had a bit of a generic pop feel...
+good to go along with,
+but nothing that shakes you to your core.
+
 ##### _12025-10-02_ MØ
+
+With [_Margo Raats_] and [_snuggle_]
 
 We open with [_Margo Raats_],
 pretty pleasant, and hitting the right spots.
@@ -189,7 +208,7 @@ but still fun.
 
 With [_Emei_] and [_Kyary Pamyu Pamyu_]
 
-[_Emei_] gives off the postively American vibe...
+[_Emei_] gives off the positively American vibe...
 with good songs for venting some of your inner feelings.
 [_Kyary Pamyu Pamyu_] was quite different.
 Cute electronic?
@@ -483,7 +502,7 @@ With [_MAMESHiBA NO TAiGUN ], [_ASP_], and [_ExWHYZ_]
 So this is the same lineup as Vol 4.
 [_MAMESHiBA NO TAiGUN ] (previously as [_MONSTERIDOL_]) was up first,
 I feel like they get better every time?
-It did feel like they relied more on 2 members for most fo the singing.
+It did feel like they relied more on 2 members for most of the singing.
 [_ASP_] was definitely my favourite of this group,
 more alt? louder, more active / hyped(?),
 they sound quite different than on spotify.
@@ -1016,7 +1035,7 @@ Even though it had been forever since I'd seen the original animation,
 this brought back so many memories.
 The set design was wonderful,
 as was the masterful use of the rotating set piece,
-who knew that a single odly shaped half building could turn into so many locations.
+who knew that a single oddly shaped half building could turn into so many locations.
 I cannot sing enough praises for the actors,
 there was so much emotion,
 that even though it was all in japanese and I kept having to glance at the subtitles on the side,
@@ -1971,6 +1990,7 @@ for this show I sat on the upper floot and mostly just enjoyed the music.
 [_Lucia_]: https://www.instagram.com/lucifer_fearfull
 [_Lucia & the Best Boys_]: https://www.youtube.com/@luciabestboys
 [_Madison Beer_]: https://www.youtube.com/@MadisonBeer
+[_Mae Muller_]: https://www.youtube.com/@maemuller
 [_Mae Stephens_]: https://www.youtube.com/@MaeStephensOfficial
 [_Maeve_]: https://www.youtube.com/@internetmaeve
 [_Magdalena Bay_]: https://www.youtube.com/@MagdalenaBay
