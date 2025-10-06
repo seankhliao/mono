@@ -147,4 +147,5 @@ _data: [
 	["2025-08-28", 8, 37055, ["Youjo Senki Movie", "Saga of Tanya the Evil: The Movie"]],
 	["2024-07-06", 9, 54839, ["Yoru no Kurage wa Oyogenai", "Jellyfish Can't Swim in the Night"]],
 	["2025-08-18", 7, 55514, ["Zatsu Tabi: That's Journey", "Zatsu Tabi: That's Journey"]],
+	["2025-10-06", 8, 58502, ["Zenshuu", "Zenshu"]],
 ]
