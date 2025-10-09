@@ -66,6 +66,7 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 - Denmark — 12023-07, 12025-06
 - England — **12009—12011**, 12019-10, 12020-02, 12021-11, _12022-present_
 - Estonia — 12025-08
+- Finland — 12025-10
 - France — 12021-11, 12023-08
 - Germany — 12019-12, 12023-12, 12024-09, 12025-06
 - Greece — 12022-10
