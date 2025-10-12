@@ -55,7 +55,7 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 - [email](mailto:sean+hello@liao.dev) — for me?
   <a rel="me" href="https://hachyderm.io/@seankhliao"></a>
 
-![map of countries I've visited](/static/map.webp)
+![map of countries I've visited](/static/map.svg)
 
 #### _Travel_ Log
 

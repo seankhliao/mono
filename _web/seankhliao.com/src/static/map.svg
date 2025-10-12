@@ -1,5 +1,5 @@
 <svg
-  viewbox="0 0 1050 675"
+  viewBox="0 0 1050 675"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   version="1.1"
@@ -7,6 +7,7 @@
 <style>
   .land {
     fill: #999999;
+    fill-opacity: 1;
     stroke: #eceff1;
     stroke-opacity: 1;
     stroke-width: 0.3;
