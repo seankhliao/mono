@@ -124,7 +124,7 @@ _data: [
 	["2024-08-08", 7, 50602, ["Spy x Family Part 2", "SPY×FAMILY"]],
 	["2025-02-02", 7, 53887, ["Spy x Family Season 2", "SPY×FAMILY Season 2"]],
 	["2024-11-28", 8, 52736, ["Tensei Oujo to Tensai Reijou no Mahou Kakumei", "The Magical Revolution of the Reincarnated Princess and the Genius Young Lady"], "Anis's cheery side is warming"],
-	["2025-02-16", 8, 54744, ["Tokidoki Bosotto Russia-go de Dereru Tonari no Alya-san", "Alya Sometimes Hides Her Feelings in Russian"]],
+	["2025-02-16", 8, 54744, ["Tokidoki Bosotto Russia-go de Dereru Tonari no Alya-san", "Alya Sometimes Hides Her Feelings in Russian"], "**Yuki** is the best sister"],
 	["2024-06-23", 7, 52305, ["Tomo-chan wa Onnanoko!", "Tomo-chan Is a Girl!"]],
 	["2025-04-27", 8, 4224, ["Toradora!", "Toradora!"]],
 	["2025-04-27", 7, 11553, ["Toradora!: Bentou no Gokui", "Toradora! Special"]],
