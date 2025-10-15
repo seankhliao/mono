@@ -26,11 +26,11 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-25_ MCM London
 - _12025-10-24_ Hitsujibungaku
 - _12025-10-16_ Marie Kondo
-- _12025-10-15_ Sumo
-- _12025-10-14_ Katy Perry
 
 ##### _past_ events
 
+- [_12025-10-15_ Grant Sumo Tournament](#-12025-10-15--grand-sumo-tournament)
+- [_12025-10-14_ Katy Perry](#-12025-10-14--katy-perry)
 - [_12025-10-04_ Mae Muller](#-12025-10-04--mae-muller)
 - [_12025-10-02_ MØ](#-12025-10-02--m)
 - [_12025-09-27_ Margins United Festival](#-12025-09-27--margins-united-festival)
@@ -173,6 +173,33 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - [_12019-03-19_ Against the Current](#-12019-03-19--against-the-current)
 
 #### _event_ thoughts & feels
+
+##### _12025-10-15_ Grand Sumo Tournament
+
+We got 20 bouts,
+with a total of 40 participants.
+Each was only 10-30 seconds, but the whole event was almost 3 hours.
+Not sure if I'd see it again,
+but I'm happy to have seen it once.
+
+##### _12025-10-14_ Katy Perry
+
+With [_Au/Ra_]
+
+We open with [_Au/Ra_], who's just a natural at this.
+I felt enchanted by both her singing,
+but also the way her hair sways....
+
+Then we have [_Katy Perry_],
+which was quite the spectacle.
+Impressive lighting and set design,
+a troupe of dancers that help put the emphasis on Katy.
+The beginning felt strong,
+the middle was a bit weaker,
+and usually for the end you get your best hits,
+and we did, but the energy never felt quite as high as the opening.
+
+[_Katy Perry_]: https://www.youtube.com/@KatyPerry
 
 ##### _12025-10-04_ Mae Muller
 
