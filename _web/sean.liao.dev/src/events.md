@@ -181,6 +181,11 @@ with a total of 40 participants.
 Each was only 10-30 seconds, but the whole event was almost 3 hours.
 Not sure if I'd see it again,
 but I'm happy to have seen it once.
+I can see why it can be exciting:
+the struggle, the stalemate, and the unexpected flip.
+But it can also be a bit stale?
+Or maybe it was just over too quickly,
+compared to how much ceremony was in the build up.
 
 ##### _12025-10-14_ Katy Perry
 
