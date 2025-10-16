@@ -25,10 +25,10 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - _12025-10-27_ From Fall to Spring
 - _12025-10-25_ MCM London
 - _12025-10-24_ Hitsujibungaku
-- _12025-10-16_ Marie Kondo
 
 ##### _past_ events
 
+- [_12025-10-16_ Marie Kondo](#-12025-10-16--marie-kondo)
 - [_12025-10-15_ Grant Sumo Tournament](#-12025-10-15--grand-sumo-tournament)
 - [_12025-10-14_ Katy Perry](#-12025-10-14--katy-perry)
 - [_12025-10-04_ Mae Muller](#-12025-10-04--mae-muller)
@@ -173,6 +173,16 @@ _note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holoce
 - [_12019-03-19_ Against the Current](#-12019-03-19--against-the-current)
 
 #### _event_ thoughts & feels
+
+##### _12025-10-16_ Marie Kondo
+
+This was more of a chat / interview with [_Marie Kondo_],
+with a translator.
+Perhaps nothing really enlightening came out of it,
+but it was a chance to see her talk in person,
+see what excites her, and how she carries herself (quite gracefully).
+
+[_Marie Kondo_]: https://www.youtube.com/@MarieKondoTV
 
 ##### _12025-10-15_ Grand Sumo Tournament
 
