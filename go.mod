@@ -12,6 +12,7 @@ require (
 	github.com/go-webauthn/webauthn v0.14.0
 	github.com/google/cel-go v0.26.1
 	github.com/google/go-github/v74 v74.0.0
+	github.com/google/licensecheck v0.3.1
 	github.com/junegunn/fzf v0.65.2
 	github.com/klauspost/compress v1.18.0
 	github.com/tdewolff/minify/v2 v2.24.3

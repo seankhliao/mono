@@ -101,6 +101,8 @@ _data: [
 	["2024-06-19", 9, 52034, ["Oshi no Ko", "Oshi no Ko"], "**Hoshino Ai** is the embodiment of the perfect lie we want to believe in"],
 	["2024-12-23", 8, 55791, ["[Oshi No Ko] Season 2", "Oshi no Ko 2nd Season"]],
 	["2024-06-02", 8, 50739, ["Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken", "The Angel Next Door Spoils Me Rotten"]],
+	["2025-10-18", 7, 8795, ["Panty & Stocking with Garterbelt", "Panty & Stocking with Garterbelt"]],
+	["2025-10-18", 6, 10739, ["Panty & Stocking in Sanitarybox", "Panty & Stocking in Sanitarybox"]],
 	["2024-10-12", 5, 40436, ["Peter Grill to Kenja no Jikan", "Peter Grill and the Philosopher's Time"]],
 	["2024-12-11", 5, 50348, ["Peter Grill to Kenja no Jikan: Super Extra", "Peter Grill and the Philosopher's Time: Super Extra"]],
 	["2025-09-01", 8, 59419, ["Project Sekai Movie: Kowareta Sekai to Utaenai Miku", "Colorful Stage! The Movie: A Miku Who Can't Sing"]],
