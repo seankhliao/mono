@@ -158,14 +158,22 @@ func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, 
 
 			fmt.Fprintf(rendered["sitemap.txt"], "%s\n", u)
 			p = p[:len(p)-3] + ".html"
-		} else if strings.HasSuffix(p, ".cue") {
+		} else if strings.HasSuffix(p, ".table.cue") {
 			u := baseURL + canonicalPathFromRelPath(p)
 			openErr = processTable(buf, inFile, u, gtm)
 			if openErr != nil {
 				return fmt.Errorf("process table: %w", openErr)
 			}
 			fmt.Fprintf(rendered["sitemap.txt"], "%s\n", u)
-			p = p[:len(p)-4] + ".html"
+			p = p[:len(p)-len(".table.cue")] + ".html"
+		} else if strings.HasSuffix(p, ".events.cue") {
+			u := baseURL + canonicalPathFromRelPath(p)
+			openErr = processEvents(buf, inFile, u, gtm)
+			if openErr != nil {
+				return fmt.Errorf("process events: %w", openErr)
+			}
+			fmt.Fprintf(rendered["sitemap.txt"], "%s\n", u)
+			p = p[:len(p)-len(".events.cue")] + ".html"
 		} else {
 			_, openErr = io.Copy(buf, inFile)
 			if openErr != nil {
@@ -216,7 +224,8 @@ func directoryList(fsys fs.FS, p string) (gomponents.Node, error) {
 func canonicalPathFromRelPath(in string) string {
 	in = strings.TrimSuffix(in, ".md")
 	in = strings.TrimSuffix(in, ".html")
-	in = strings.TrimSuffix(in, ".cue")
+	in = strings.TrimSuffix(in, ".table.cue")
+	in = strings.TrimSuffix(in, ".events.cue")
 	in = strings.TrimSuffix(in, "index")
 	if in == "" {
 		return "/"
