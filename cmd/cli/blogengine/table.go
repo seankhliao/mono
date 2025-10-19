@@ -86,14 +86,20 @@ func processTable(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 
 		note, _, _ := webstyle.Markdown([]byte(row.Note))
 
-		tbody = append(tbody, html.Tr(
-			gomponents.If(hasDate, html.Td(
-				html.Time(html.DateTime(row.Date.Format(time.DateOnly))),
-				gomponents.Text("1"+row.Date.Format(time.DateOnly)))),
+		var tr []gomponents.Node
+		if hasDate {
+			tr = append(tr, html.Td(html.Time(
+				html.DateTime(row.Date.Format(time.DateOnly)),
+				gomponents.Text("1"+row.Date.Format(time.DateOnly)),
+			)))
+		}
+		tr = append(tr,
 			html.Td(rating),
 			html.Td(titles...),
 			html.Td(gomponents.Raw(string(note))),
-		))
+		)
+
+		tbody = append(tbody, html.Tr(gomponents.Group(tr)))
 	}
 
 	pageTitle0, pageTitle1, ok := strings.Cut(data.PageTitle, " ")
@@ -105,7 +111,12 @@ func processTable(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 		Description:  data.Description,
 		Gtag:         gtm,
 		CanonicalURL: canonicalURL,
-		Minify:       true,
+		CustomCSS: `
+td:nth-child(1) {
+  min-width: 14ch;
+}
+`,
+		Minify: true,
 
 		Content: []gomponents.Node{
 			html.H3(html.Em(gomponents.Text(pageTitle0)), gomponents.If(ok, gomponents.Text(pageTitle1))),
