@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -15,8 +16,17 @@ func main() {
 }
 
 func run() error {
+	var rows []string
 	for i := range 128 {
-		fmt.Printf("%d\t%0.2X\t%0.3O\t%0.8b\t%q\t%s\n", i, i, i, i, i, names[i])
+		rows = append(rows, fmt.Sprintf("% 3d\t%0.2X\t%6q\t%s", i, i, i, names[i]))
+	}
+	var longest int
+	for _, row := range rows {
+		longest = max(longest, len(row))
+		fmt.Println(len(row))
+	}
+	for i := range 64 {
+		fmt.Print(rows[i], strings.Repeat(" ", longest-len(rows[i])), " |  ", rows[i+64], "\n")
 	}
 
 	return nil
