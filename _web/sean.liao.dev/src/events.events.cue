@@ -11,6 +11,9 @@ Description: """
 	"""
 
 Future: [{
+	_date:    "2026-04-20"
+	headline: "Maggie Lindemann"
+}, {
 	_date:    "2026-03-17"
 	headline: "KESHA"
 }, {
@@ -34,6 +37,9 @@ Future: [{
 }, {
 	_date:    "2025-11-05"
 	headline: "Zara Larsson"
+}, {
+	_date: "2025-10-31"
+	name:  "Pop Crypt London"
 }, {
 	_date:    "2025-10-30"
 	headline: "As December Falls"
