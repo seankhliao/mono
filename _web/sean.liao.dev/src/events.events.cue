@@ -49,15 +49,38 @@ Future: [{
 }, {
 	_date:    "2025-10-27"
 	headline: "From Fall to Spring"
-}, {
-	_date: "2025-10-25"
-	name:  "MCM London"
-}, {
-	_date:    "2025-10-24"
-	headline: "Hitsujibungaku"
 }]
 
 Past: [{
+	_date: "2025-10-25"
+	name:  "MCM London Comic Con"
+	text: """
+		This time I decided to only attend a single day.
+		It was super crowded around lunch time,
+		like barely moving packed.
+		I felt like that was enough to go around most of the stalls,
+		which felt pretty similar to last time.
+		I did see a few artists with good art styles that I liked,
+		but otherwise nothing felt stand out amazing.
+
+		As for the cosplays, there seemed to be a bit more variety,
+		but nothing that really screamed 2025.
+		Well I guess Uma Musume cosplays count.
+		"""
+}, {
+	_date:    "2025-10-24"
+	headline: "Hitsujibungaku"
+	support: ["Ben Kidson"]
+	text: """
+		[Ben Kidson] was kind of forgettable.
+		and it didn't seem like the rest of the audience were all that excited either.
+
+		It took a whole hour to get in the doors, and by then the room was almost full...
+		Seems like everyone was ready for [Hitsujibungaku].
+		I did recognize a few of their songs,
+		but it felt like it was more for the vibe.
+		"""
+}, {
 	_date:    "2025-10-16"
 	headline: "Marie Kondo"
 	text: """
@@ -1994,6 +2017,7 @@ Links: {
 		"Band of Silver":                              "https://www.youtube.com/@officialbandofsilver"
 		"BANKS":                                       "https://www.youtube.com/@banks"
 		"Bear’s Den":                                  "https://www.youtube.com/@bearsdenmusic"
+		"Ben Kidson":                                  "https://www.youtube.com/@benkidson5142"
 		"Beth McCarthy":                               "https://www.youtube.com/@BethMcCarthy"
 		"BEX":                                         "https://www.youtube.com/@BEXBEXMUSIC"
 		"Billie Eilish":                               "https://www.youtube.com/@BillieEilish"
@@ -2073,6 +2097,7 @@ Links: {
 		"Hannah Grae":                                 "https://www.youtube.com/@hannahgrae"
 		"Hatsune Miku":                                "https://www.youtube.com/@HatsuneMiku"
 		"Hemlocke Springs":                            "https://www.youtube.com/@hemlockespringsmusic"
+		"Hitsujibungaku":                              "https://www.youtube.com/@hitsujibungaku_official"
 		"Ichiko Aoba":                                 "https://www.youtube.com/@ichikoaoba-hermine"
 		"ili":                                         "https://www.youtube.com/@thisisili"
 		"ILLUMISHADE":                                 "https://www.youtube.com/@ILLUMISHADE"
