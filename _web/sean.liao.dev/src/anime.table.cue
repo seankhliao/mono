@@ -176,5 +176,7 @@ _completed: [
 ]
 
 _dropped: [
-	["2025-10-26", 7, 59597, ["Witch Watch", "Witch Watch"], "2/25, just not hooked"],
+	["2025-10-26", 7, 37171, ["Asobi Asobase", "Asobi Asobase - workshop of fun -"], "2/12"],
+	["2025-10-17", 7, 55887, ["Kekkon suru tte, Hontou desu ka", "365 Days to the Wedding"], "1/12"],
+	["2025-10-26", 7, 59597, ["Witch Watch", "Witch Watch"], "2/25"],
 ]
