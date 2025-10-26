@@ -44,6 +44,7 @@ has a soft cotton(?) feel that makes it feel a bit more delicate.
 
 _lululemon ABC Slim-Fit Trouser 30"L Warpstreme_
 decently comfy, feels stiffer than the MoS Velocity.
+Surprisingly more fragile than the Ministry of Supply one...
 
 #### Socks
 

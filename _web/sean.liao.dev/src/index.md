@@ -18,5 +18,7 @@ Notes on media and culture:
 Notes on other things in life:
 
 - [clothes](/clothes/): notes on clothes I've bought (and if I should buy again)
-- [packing](/packing/): checklist for my one bag travelling
+- [petnames](/petnames/): list of names to use
 - [style](/style/): for reference, html elements with the current stylesheet
+- [tea](/tea/): notes on tea
+- [travel-todo](/travel-todo/): travel checklist
