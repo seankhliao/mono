@@ -8,8 +8,15 @@ Subtitle: string
 PageTitle:   string
 Description: string
 
-LinkFormat: string
-Table: [...#TableRow]
+Tables: [...#Table]
+
+#Table: {
+	Heading:     string
+	Description: string
+	LinkFormat:  string
+	Rows: [...#TableRow]
+}
+
 #TableRow: {
 	Date?:  time.Format(time.RFC3339)
 	Rating: int & >=0 & <=10

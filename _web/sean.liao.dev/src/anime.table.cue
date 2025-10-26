@@ -16,18 +16,35 @@ Description: """
 	and I aim to binge watch an entire series per day.
 	"""
 
-LinkFormat: "https://myanimelist.net/anime/%d"
-Table: [for row in _data {
-	Date:   time.Parse(time.RFC3339Date, row[0])
-	Rating: row[1]
-	ID:     row[2]
-	Title:  row[3]
-	if len(row) > 4 {
-		Note: row[4]
-	}
+Tables: [{
+	Heading:     "Completed"
+	Description: "Series that I've watched to completion"
+	LinkFormat:  "https://myanimelist.net/anime/%d"
+	Rows: [for row in _completed {
+		Date:   time.Parse(time.RFC3339Date, row[0])
+		Rating: row[1]
+		ID:     row[2]
+		Title:  row[3]
+		if len(row) > 4 {
+			Note: row[4]
+		}
+	}]
+}, {
+	Heading:     "Dropped"
+	Description: "Series that I didn't complete"
+	LinkFormat:  "https://myanimelist.net/anime/%d"
+	Rows: [for row in _dropped {
+		Date:   time.Parse(time.RFC3339Date, row[0])
+		Rating: row[1]
+		ID:     row[2]
+		Title:  row[3]
+		if len(row) > 4 {
+			Note: row[4]
+		}
+	}]
 }]
 
-_data: [
+_completed: [
 	["2024-09-11", 7, 54837, ["Akuyaku Reijou Level 99: Watashi wa Ura-Boss desu ga Maou dewa Arimasen", "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord"]],
 	["2025-08-21", 7, 59169, ["Aru Majo ga Shinu Made", "Once Upon a Witch's Death"]],
 	["2025-10-12", 7, 59161, ["Bad Girl", "Bad Girl"]],
@@ -156,4 +173,8 @@ _data: [
 	["2024-07-06", 9, 54839, ["Yoru no Kurage wa Oyogenai", "Jellyfish Can't Swim in the Night"]],
 	["2025-08-18", 7, 55514, ["Zatsu Tabi: That's Journey", "Zatsu Tabi: That's Journey"]],
 	["2025-10-06", 7, 58502, ["Zenshuu", "Zenshu"]],
+]
+
+_dropped: [
+	["2025-10-26", 7, 59597, ["Witch Watch", "Witch Watch"], "2/25, just not hooked"],
 ]
