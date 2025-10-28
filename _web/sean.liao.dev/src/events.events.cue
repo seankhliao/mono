@@ -46,12 +46,30 @@ Future: [{
 }, {
 	_date:    "2025-10-28"
 	headline: "Blackbriar"
-}, {
+}]
+Past: [{
 	_date:    "2025-10-27"
 	headline: "From Fall to Spring"
-}]
+	support: ["Letters Sent Home", "Cyan Kicks"]
+	text: """
+		We open with [Letters Sent Home],
+		a pretty standard rock band, but it felt good.
+		It seriously felt like a long time since I've gotten to experience
+		these smaller intimate shows that are a purer expression of music
+		Next up was [Cyan Kicks],
+		the entire reason I was here.
+		I guess I knew them more from their older music which they didn't play much of,
+		but it was still wild.
+		They managed to fill up the stage,
+		and the strobe lights made everything felt more intense.
 
-Past: [{
+		Finally, [From Fall to Spring].
+		Rock metal core?
+		I felt I enjoyed the first third,
+		and then it tapered off as i started to feel a bit numb to the music...
+		They weren't bad, just didn't get me to stay hooked.
+		"""
+}, {
 	_date: "2025-10-25"
 	name:  "MCM London Comic Con"
 	text: """
@@ -2015,6 +2033,7 @@ Links: {
 		"BABYMETAL":                                   "https://www.youtube.com/@BABYMETAL"
 		"Bambie Thug":                                 "https://www.youtube.com/@bambiethug"
 		"Band of Silver":                              "https://www.youtube.com/@officialbandofsilver"
+		"Band Of Silver":                              "https://www.youtube.com/@officialbandofsilver"
 		"BANKS":                                       "https://www.youtube.com/@banks"
 		"Bear’s Den":                                  "https://www.youtube.com/@bearsdenmusic"
 		"Ben Kidson":                                  "https://www.youtube.com/@benkidson5142"
@@ -2048,6 +2067,7 @@ Links: {
 		"Clean Bandit":                                "https://www.youtube.com/@cleanbandit"
 		"Cloudy June":                                 "https://www.youtube.com/@CloudyJune"
 		"Conquer Divide":                              "https://www.youtube.com/@conquerdividemusic"
+		"Cyan Kicks":                                  "https://www.youtube.com/@CyanKicks"
 		"dariasirene":                                 "https://www.youtube.com/@Dariasirene"
 		"Deadbeat girl":                               "https://www.youtube.com/@deadbeatgirl.mp3"
 		"Dead Pony":                                   "https://www.youtube.com/@deadponyband"
@@ -2076,7 +2096,9 @@ Links: {
 		"FEMM":                                        "https://www.youtube.com/@FEMM____"
 		"finally":                                     "https://www.youtube.com/@finallyofficial1713"
 		"Fletcher":                                    "https://www.youtube.com/@fletcher"
+		"Frayle":                                      "https://www.youtube.com/@frayleband"
 		"Fredrik Svabø":                               "https://www.youtube.com/@fredriksvabo"
+		"From Fall to Spring":                         "https://www.youtube.com/@FromFallToSpring"
 		"Frozen Crown":                                "https://www.youtube.com/@FrozenCrown"
 		"Fuwawa Abyssgard":                            "https://www.youtube.com/@FUWAMOCOch"
 		"galacticbpd":                                 "https://www.instagram.com/galacticbpd_"
@@ -2104,6 +2126,7 @@ Links: {
 		"IRyS":                                        "https://www.youtube.com/@IRyS"
 		"Isabel LaRosa":                               "https://www.youtube.com/@isabellarosa5800"
 		"Isiliel":                                     "https://www.youtube.com/@IMPERIETIV"
+		"ITZY":                                        "https://www.youtube.com/@ITZY"
 		"IVE":                                         "https://www.youtube.com/@IVEstarship"
 		"Izza":                                        "https://www.youtube.com/@izzaroze"
 		"Jack Garratt":                                "https://www.youtube.com/@JackGarratt"
@@ -2129,6 +2152,7 @@ Links: {
 		"Larkins":                                     "https://www.youtube.com/@Larkinsband"
 		"LEAP":                                        "https://www.youtube.com/@leap_the_band"
 		"Lekna":                                       "https://www.youtube.com/@leknamusic"
+		"Letters Sent Home":                           "https://www.youtube.com/@letterssenthome4016"
 		"Like a Storm":                                "https://www.youtube.com/@officiallikeastorm"
 		"Lilas Ikuta":                                 "https://www.youtube.com/@Lilas_Ikuta"
 		"Lizzie Esau":                                 "https://www.youtube.com/@lizzieesau"
@@ -2146,6 +2170,7 @@ Links: {
 		"Magdalena Bay":                               "https://www.youtube.com/@MagdalenaBay"
 		"Maggie Lindemann":                            "https://www.youtube.com/@maggielindemann"
 		"Maisie Peters":                               "https://www.youtube.com/@MaisieHPeters"
+		"Maisi":                                       "https://www.youtube.com/@maisimaisimaisi"
 		"MAMESHiBA NO TAiGUN":                         "https://www.youtube.com/@MAMESHiBANOTAiGUN96"
 		"MAPA":                                        "https://www.youtube.com/@mapa8234"
 		"Margo Raats":                                 "https://www.youtube.com/@margoraatsmusic"
@@ -2159,9 +2184,11 @@ Links: {
 		"MØ":                                          "https://www.youtube.com/@MOMOMOYOUTH"
 		"Mone Kamishiraishi":                          "https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p"
 		"MONSTERIDOL":                                 "https://www.youtube.com/@MONSTERIDOL"
+		"moreofthem":                                  "https://www.youtube.com/@moreofthem."
 		"Mori Calliope":                               "https://www.youtube.com/@MoriCalliope"
 		"Mothica":                                     "https://www.youtube.com/@Mothica"
 		"My Neighbour Totoro":                         "https://totoroshow.com/"
+		"Nadeah":                                      "https://www.youtube.com/@Nadeahmusic"
 		"Natalie Jane":                                "https://www.youtube.com/@nataliejane"
 		"National Children's Orchestra":               "https://www.youtube.com/@ncogb"
 		"Nectar Woode":                                "https://www.youtube.com/@NectarWoode"
@@ -2188,6 +2215,7 @@ Links: {
 		"Pomme":                                       "https://www.youtube.com/@PommeMusic"
 		"Poppy":                                       "https://www.youtube.com/@poppy"
 		"Pretty Guardian Sailor Moon: The Super Live": "https://sailormoonsuperliveuk.com/"
+		"PRINS":                                       "https://www.youtube.com/@prinsmusic"
 		"Pure Chlorine":                               "https://www.youtube.com/@purechlorine8272"
 		"PVRIS":                                       "https://www.youtube.com/@PVRIS"
 		"Radio Wolf":                                  "https://www.youtube.com/@RadioWolfMusic"
@@ -2197,6 +2225,7 @@ Links: {
 		"RedHook":                                     "https://www.youtube.com/@weareredhook"
 		"renforshort":                                 "https://www.youtube.com/@renforshortofficial"
 		"RØRY":                                        "https://www.youtube.com/@its_r_o_r_y"
+		"Royal Philharmonic Orchestra":                "https://www.youtube.com/@royalphilorchestra"
 		"Sabrina Carpenter":                           "https://www.youtube.com/@sabrinacarpenter"
 		"Sadie Fine":                                  "https://www.youtube.com/@SadieFineSingsFine"
 		"Saint Clair":                                 "https://www.instagram.com/thisissaintclair/"
@@ -2214,10 +2243,12 @@ Links: {
 		"Spirited Away":                               "https://www.youtube.com/@SpiritedAwayLDN"
 		"Takanashi Kiara":                             "https://www.youtube.com/@TakanashiKiara"
 		"Tate McRae":                                  "https://www.youtube.com/@TateMcRae"
+		"Taurus Trakker":                              "https://www.youtube.com/@taurustrakker"
 		"Taylor Acorn":                                "https://www.youtube.com/@TaylorAcorn"
 		"The Cruel Knives":                            "https://www.youtube.com/@TheCruelKnives"
 		"The Empire Strips Back: A Burlesque Parody":  "https://www.youtube.com/@Empirestripsbackburlesqueshow"
 		"The Pretty Reckless":                         "https://www.youtube.com/@tprofficial"
+		"The Rasmus":                                  "https://www.youtube.com/@TheRasmusOfficial"
 		"The Rose":                                    "https://www.youtube.com/@theroseofficial"
 		"The Staves":                                  "https://www.youtube.com/@thestaves"
 		"The Warning":                                 "https://www.youtube.com/@TheWarning"
@@ -2241,15 +2272,5 @@ Links: {
 		" シンダーエラ":                                     "https://www.youtube.com/@cinder_ella_"
 		"月刊PAM":                                       "https://www.youtube.com/@gekkanpam"
 		"猫の眼に宇宙":                                      "http://www.youtube.com/@%E7%8C%AB%E3%81%AE%E7%9C%BC%E3%81%AB%E5%AE%87%E5%AE%99"
-		"The Rasmus":                                  "https://www.youtube.com/@TheRasmusOfficial"
-		"ITZY":                                        "https://www.youtube.com/@ITZY"
-		"Maisi":                                       "https://www.youtube.com/@maisimaisimaisi"
-		"Nadeah":                                      "https://www.youtube.com/@Nadeahmusic"
-		"Royal Philharmonic Orchestra":                "https://www.youtube.com/@royalphilorchestra"
-		"Band Of Silver":                              "https://www.youtube.com/@officialbandofsilver"
-		"Taurus Trakker":                              "https://www.youtube.com/@taurustrakker"
-		"moreofthem":                                  "https://www.youtube.com/@moreofthem."
-		"PRINS":                                       "https://www.youtube.com/@prinsmusic"
-		"Frayle":                                      "https://www.youtube.com/@frayleband"
 	}
 }
