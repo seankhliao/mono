@@ -74,6 +74,8 @@ func processEvents(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 			gomponents.Text(f.Name),
 		))
 	}
+
+	var artistCount int
 	listPast := make([]gomponents.Node, 0, len(data.Past))
 	contentPast := make([]gomponents.Node, 0, 3*len(data.Past))
 	for _, p := range data.Past {
@@ -112,6 +114,7 @@ func processEvents(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 			}
 			n = html.A(html.Href(link), n)
 			acts = append(acts, gomponents.Text("Headline "), n)
+			artistCount++
 		}
 		for i, s := range p.Support {
 			n := html.Em(gomponents.Text(s))
@@ -133,6 +136,7 @@ func processEvents(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 			} else {
 				acts = append(acts, gomponents.Text(", "), n)
 			}
+			artistCount++
 		}
 		if len(acts) > 0 {
 			contentPast = append(contentPast, html.P(acts...))
@@ -190,8 +194,10 @@ func processEvents(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 
 			html.H4(html.Em(gomponents.Text("List")), gomponents.Text(" of events")),
 			html.H5(html.Em(gomponents.Text("Future"))),
+			html.P(gomponents.Textf("%d events planned.", len(data.Future))),
 			html.Ul(listFuture...),
 			html.H5(html.Em(gomponents.Text("Past"))),
+			html.P(gomponents.Textf("%d artists over %d events.", artistCount, len(data.Past))),
 			html.Ul(listPast...),
 			html.H4(html.Em(gomponents.Text("Thoughts")), gomponents.Text(" on events")),
 			gomponents.Group(contentPast),
