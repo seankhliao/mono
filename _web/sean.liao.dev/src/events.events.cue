@@ -43,11 +43,26 @@ Future: [{
 }, {
 	_date:    "2025-10-30"
 	headline: "As December Falls"
-}, {
-	_date:    "2025-10-28"
-	headline: "Blackbriar"
 }]
 Past: [{
+	_date:    "2025-10-28"
+	headline: "Blackbriar"
+	support: ["Forever Still"]
+	text: """
+		We open with [Forever Still],
+		which sounded like quite a bit of screaming....
+		I'm not sure if it was easy to catch the lyrics.
+
+		Then we have [Blackbriar],
+		as hauntingly beautiful as I remembered.
+		Zora's singing voice definitely carried the set,
+		so powerful yet melodic,
+		it felt like I was in a dream.
+		The visuals were also pretty great,
+		beard and hair swinging(?)
+		And I might want red/pink hair again...
+		"""
+}, {
 	_date:    "2025-10-27"
 	headline: "From Fall to Spring"
 	support: ["Letters Sent Home", "Cyan Kicks"]
@@ -2096,6 +2111,7 @@ Links: {
 		"FEMM":                                        "https://www.youtube.com/@FEMM____"
 		"finally":                                     "https://www.youtube.com/@finallyofficial1713"
 		"Fletcher":                                    "https://www.youtube.com/@fletcher"
+		"Forever Still":                               "https://www.youtube.com/@ForeverStill"
 		"Frayle":                                      "https://www.youtube.com/@frayleband"
 		"Fredrik Svabø":                               "https://www.youtube.com/@fredriksvabo"
 		"From Fall to Spring":                         "https://www.youtube.com/@FromFallToSpring"
