@@ -26,8 +26,14 @@ Events: [{
 	_date:    "2026-02-03"
 	headline: "Halsey"
 }, {
+	_date:    "2026-01-11"
+	headline: "Tokino Sora"
+}, {
 	_date: "2025-12-31"
 	name:  "The Mayor of London's New Year's Eve Fireworks"
+}, {
+	_date: "2025-11-25"
+	name:  "Uzumaki J-Pop Idol Night 2025"
 }, {
 	_date:    "2025-11-19"
 	headline: "6arelyhuman"
