@@ -85,6 +85,18 @@ which match on url prefixes.
   helper = "!echo \"protocol=https\nhost=github.com\nusername=user2\npassword=$(gh auth token --user user2)\n\""
 ```
 
+An alternative approach would be to put the rules into a script or some other function,
+making use of `credential.useHttpPath` to pass along an additional `path=` parameter
+for it to decide on the credential to use.
+[git-credential docs](https://git-scm.com/docs/git-credential)
+
+```gitconfig
+[credential "https://github.com/"]
+  useHttpPath = true
+  helper =
+  helper = "/path/to/script.sh"
+```
+
 #### _jj_ config
 
 When using [jj](https://jj-vcs.github.io/jj/latest/),
