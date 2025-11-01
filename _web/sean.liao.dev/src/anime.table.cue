@@ -133,6 +133,8 @@ _completed: [
 	["2024-07-07", 8, 37450, ["Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai", "Rascal Does Not Dream of Bunny Girl Senpai"]],
 	["2024-07-08", 8, 38329, ["Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai", "Rascal Does Not Dream of a Dreaming Girl"]],
 	["2024-07-10", 7, 53129, ["Seishun Buta Yarou wa Odekake Sister no Yume wo Minai", "Rascal Does Not Dream of a Sister Venturing Out"]],
+	["2025-11-01", 7, 8675, ["Seitokai Yakuindomo", "Student Council Staff Members"]],
+	["2025-11-01", 7, 10119, ["Seitokai Yakuindomo OVA", "Seitokai Yakuindomo OVA"]],
 	["2024-08-26", 8, 53912, ["Seiyuu Radio no Uraomote", "The Many Sides of Voice Actor Radio"]],
 	["2024-05-23", 8, 199, ["Sen to Chihiro no Kamikakushi", "Spirited Away"]],
 	["2024-06-13", 7, 42351, ["Senpai ga Uzai Kouhai no Hanashi", "My Senpai is Annoying"]],
