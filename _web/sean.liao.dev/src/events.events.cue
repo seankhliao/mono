@@ -10,7 +10,7 @@ Description: """
 	_Note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
 	"""
 
-Future: [{
+Events: [{
 	_date:    "2026-04-20"
 	headline: "Maggie Lindemann"
 }, {
@@ -25,6 +25,9 @@ Future: [{
 }, {
 	_date:    "2026-02-03"
 	headline: "Halsey"
+}, {
+	_date: "2025-12-31"
+	name:  "The Mayor of London's New Year's Eve Fireworks"
 }, {
 	_date:    "2025-11-19"
 	headline: "6arelyhuman"
@@ -43,11 +46,26 @@ Future: [{
 }, {
 	_date: "2025-10-31"
 	name:  "Pop Crypt London"
+	support: ["Yuele"]
+	text: """
+		I didn't quite know what to expect from a night of DJ,
+		but I guess it's electronicish music where you try to move around?
+		"""
 }, {
 	_date:    "2025-10-30"
 	headline: "As December Falls"
-}]
-Past: [{
+	support: ["RedHook", "The Hara"]
+	text: """
+		We open with [RedHook],
+		somehow I feel they're less refined, more raw than last time.
+		Pretty wild and good at getting the crowd hyped up.
+		[The Hara] seemed to struggle a bit more in getting the crowd excited,
+		I guess it was surprising to them sandwich a different style between the other acts.
+		[As December Falls] reminded me quite a bit of [Against the Current],
+		both the music style and visuals as well.
+		Also, the insane rate of crowdsurfing was something I'd never seen before.
+		"""
+}, {
 	_date:    "2025-10-28"
 	headline: "Blackbriar"
 	support: ["Forever Still"]
@@ -2039,6 +2057,7 @@ Links: {
 		"Annika Bennett":                              "https://www.youtube.com/@AnnikaBennett"
 		"ari abdul":                                   "https://www.youtube.com/@AriAbdul"
 		"ARTMS":                                       "https://www.youtube.com/@official_artms"
+		"As December Falls":                           "https://www.youtube.com/@AsDecemberFalls"
 		"Ashnikko":                                    "https://www.youtube.com/@Ashnikko"
 		"ASP":                                         "https://www.youtube.com/@ASPOfficialChannel"
 		"ATARASHII GAKKO!":                            "https://www.youtube.com/@ATARASHIIGAKKO"
@@ -2266,6 +2285,7 @@ Links: {
 		"Taylor Acorn":                                "https://www.youtube.com/@TaylorAcorn"
 		"The Cruel Knives":                            "https://www.youtube.com/@TheCruelKnives"
 		"The Empire Strips Back: A Burlesque Parody":  "https://www.youtube.com/@Empirestripsbackburlesqueshow"
+		"The Hara":                                    "https://www.youtube.com/@TheHara"
 		"The Pretty Reckless":                         "https://www.youtube.com/@tprofficial"
 		"The Rasmus":                                  "https://www.youtube.com/@TheRasmusOfficial"
 		"The Rose":                                    "https://www.youtube.com/@theroseofficial"
@@ -2285,6 +2305,7 @@ Links: {
 		"Yeule":                                       "https://www.youtube.com/@yeule"
 		"YOASOBI":                                     "https://www.youtube.com/@Ayase_YOASOBI"
 		"Yours Truly":                                 "https://www.youtube.com/@yourstrulyofficialband6610"
+		"Yuele":                                       "https://www.youtube.com/@yeule"
 		"Zara Larsson":                                "https://www.youtube.com/@ZaraLarssonOfficial"
 		"ZOCX":                                        "https://www.youtube.com/@ZOC_ZOC_ZOC"
 		"Zoey Lily":                                   "https://www.youtube.com/@ZoeyLily"

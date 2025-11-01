@@ -8,8 +8,7 @@ Subtitle: string
 PageTitle:   string
 Description: string
 
-Future: [...#Event]
-Past: [...#Event]
+Events: [...#Event]
 
 #Event: {
 	_date:     string
