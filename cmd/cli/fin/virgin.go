@@ -34,6 +34,8 @@ func (c *Convert) virgin(stdout, stderr io.Writer) error {
 		switch dir {
 		case "DBIT":
 		// noop
+		case "CRDT":
+			src, dst = dst, src
 
 		default:
 			return fmt.Errorf("unknown debit/credit: %s", dir)
