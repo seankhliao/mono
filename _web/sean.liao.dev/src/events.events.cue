@@ -49,6 +49,17 @@ Events: [{
 }, {
 	_date:    "2025-11-05"
 	headline: "Zara Larsson"
+	support: ["Omar Rudberg"]
+	text: """
+		[Omar Rudberg] felt like eye candy for all the girls?
+		Like the sort of hot mens show you might go to see.
+
+		The show by [Zara Larsson] was quite a dance heavy show.
+		It's pop songs that you might hear in a club to get you moving,
+		so that's pretty much what happened all night.
+		Her vocal range was impressive...
+		but a bit lacking in something to hook you.
+		"""
 }, {
 	_date: "2025-10-31"
 	name:  "Pop Crypt London"
@@ -2246,6 +2257,7 @@ Links: {
 		"Nothing, Nowhere":                            "https://www.youtube.com/@nothingnowheremusic"
 		"Nxdia":                                       "https://www.youtube.com/@nxdiamusic"
 		"Oliver Cronin":                               "https://www.youtube.com/@OliverCronin"
+		"Omar Rudberg":                                "https://www.youtube.com/@OmarRudbergOfficial"
 		"ONE OK ROCK":                                 "https://www.youtube.com/@ONEOKROCK"
 		"Oozora Subaru":                               "https://www.youtube.com/@OozoraSubaru"
 		"Ouro Kronii":                                 "https://www.youtube.com/@OuroKronii"
