@@ -46,6 +46,19 @@ Events: [{
 }, {
 	_date:    "2025-11-07"
 	headline: "HANABIE"
+	support: ["Lake Malice"]
+	text: """
+		[Lake Malice] wasn't bad,
+		but at the same time it didn't really feel like anything in particular for me.
+
+		As for [HANABIE],
+		to be honest I wasn't quite sure what I was in for.
+		Most of the ground floor turned into a lot of squishing/pushing
+		in addition to the massive mosh pit.
+		Standing still wasn't an option,
+		it was hot and sweaty.
+		Music wise, it was fun, though honestly difficult to focus or hear clearly.
+		"""
 }, {
 	_date:    "2025-11-05"
 	headline: "Zara Larsson"
@@ -2171,6 +2184,7 @@ Links: {
 		"Halestorm":                                   "https://www.youtube.com/@HalestormRocks"
 		"Halflives":                                   "https://www.youtube.com/@wehavehalflives"
 		"Halocene":                                    "https://www.youtube.com/@Halocene"
+		"HANABIE":                                     "https://www.youtube.com/@HANABIE_official"
 		"Hannah Grae":                                 "https://www.youtube.com/@hannahgrae"
 		"Hatsune Miku":                                "https://www.youtube.com/@HatsuneMiku"
 		"Hemlocke Springs":                            "https://www.youtube.com/@hemlockespringsmusic"
@@ -2204,6 +2218,7 @@ Links: {
 		"Kotaro Daigo":                                "https://www.instagram.com/daigo_kotaro"
 		"Kureiji Ollie":                               "https://www.youtube.com/@KureijiOllie"
 		"Kyary Pamyu Pamyu":                           "https://www.youtube.com/@kyarypamyupamyuTV"
+		"Lake Malice":                                 "https://www.youtube.com/@lakemalice"
 		"Larkins":                                     "https://www.youtube.com/@Larkinsband"
 		"LEAP":                                        "https://www.youtube.com/@leap_the_band"
 		"Lekna":                                       "https://www.youtube.com/@leknamusic"
