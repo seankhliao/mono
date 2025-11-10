@@ -23,7 +23,6 @@ func run() error {
 	var longest int
 	for _, row := range rows {
 		longest = max(longest, len(row))
-		fmt.Println(len(row))
 	}
 	for i := range 64 {
 		fmt.Print(rows[i], strings.Repeat(" ", longest-len(rows[i])), " |  ", rows[i+64], "\n")

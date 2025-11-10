@@ -135,6 +135,7 @@ _completed: [
 	["2024-07-10", 7, 53129, ["Seishun Buta Yarou wa Odekake Sister no Yume wo Minai", "Rascal Does Not Dream of a Sister Venturing Out"]],
 	["2025-11-01", 7, 8675, ["Seitokai Yakuindomo", "Student Council Staff Members"]],
 	["2025-11-01", 7, 10119, ["Seitokai Yakuindomo OVA", "Seitokai Yakuindomo OVA"]],
+	["2025-11-10", 7, 20847, ["Seitokai Yakuindomo*", "Seitokai Yakuindomo*"]],
 	["2025-11-02", 7, 34504, ["Seitokai Yakuindomo Movie", "Seitokai Yakuindomo Movie"]],
 	["2024-08-26", 8, 53912, ["Seiyuu Radio no Uraomote", "The Many Sides of Voice Actor Radio"]],
 	["2024-05-23", 8, 199, ["Sen to Chihiro no Kamikakushi", "Spirited Away"]],
