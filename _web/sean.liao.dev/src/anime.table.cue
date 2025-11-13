@@ -138,6 +138,7 @@ _completed: [
 	["2025-11-10", 7, 20847, ["Seitokai Yakuindomo*", "Seitokai Yakuindomo*"]],
 	["2025-11-12", 7, 26123, ["Seitokai Yakuindomo* OVA", "Seitokai Yakuindomo* OVA"]],
 	["2025-11-02", 7, 34504, ["Seitokai Yakuindomo Movie", "Seitokai Yakuindomo Movie"]],
+	["2025-11-13", 7, 40814, ["Seitokai Yakuindomo Movie 2", "Seitokai Yakuindomo Movie 2"]],
 	["2024-08-26", 8, 53912, ["Seiyuu Radio no Uraomote", "The Many Sides of Voice Actor Radio"]],
 	["2024-05-23", 8, 199, ["Sen to Chihiro no Kamikakushi", "Spirited Away"]],
 	["2024-06-13", 7, 42351, ["Senpai ga Uzai Kouhai no Hanashi", "My Senpai is Annoying"]],
