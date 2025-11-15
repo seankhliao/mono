@@ -87,7 +87,7 @@ func indexPage(host string) ([]byte, error) {
 					html.Href("https://pkg.go.dev/cmd/go#hdr-Remote_import_paths"),
 					gomponents.Text("remote import path"),
 				),
-				gomponents.Text("redirector for Go."),
+				gomponents.Text(" redirector for Go."),
 			),
 			html.P(gomponents.Text("All requests are redirected to a github repo matching the first path element.")),
 		},

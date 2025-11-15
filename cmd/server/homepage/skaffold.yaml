@@ -1,4 +1,4 @@
-apiVersion: skaffold/v4beta11
+apiVersion: skaffold/v4beta13
 kind: Config
 metadata:
   name: homepage
@@ -7,7 +7,7 @@ build:
     - image: registry.liao.dev/homepage
       ko:
         main: .
-        fromImage: gcr.io/distroless/static-debian12:nonroot@sha256:3a03fc0826340c7deb82d4755ca391bef5adcedb8892e58412e1a6008199fa91
+        fromImage: gcr.io/distroless/static-debian13:nonroot@sha256:fedcacdbe5eb1b1ec2ab5f2e7bf2eed246eb371505c43b3c2682ff0c3870e7c3
         env:
           - CGO_ENABLED=0
         flags:

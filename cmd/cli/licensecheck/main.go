@@ -19,7 +19,7 @@ func main() {
 func run() error {
 	b, err := os.ReadFile(os.Args[1])
 	if err != nil {
-		return fmt.Errorf("read file", os.Args[1])
+		return fmt.Errorf("read file %v: %w", os.Args[1], err)
 	}
 
 	cov := licensecheck.Scan(b)

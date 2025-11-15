@@ -1,4 +1,4 @@
-apiVersion: skaffold/v4beta5
+apiVersion: skaffold/v4beta13
 kind: Config
 metadata:
   name: vanity
@@ -7,7 +7,7 @@ build:
     - image: us-central1-docker.pkg.dev/com-seankhliao/run/vanity
       ko:
         main: .
-        fromImage: gcr.io/distroless/static-debian12:nonroot@sha256:c0f429e16b13e583da7e5a6ec20dd656d325d88e6819cafe0adb0828976529dc
+        fromImage: gcr.io/distroless/static-debian13:nonroot@sha256:fedcacdbe5eb1b1ec2ab5f2e7bf2eed246eb371505c43b3c2682ff0c3870e7c3
         env:
           - CGO_ENABLED=0
         flags:
