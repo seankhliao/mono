@@ -43,6 +43,12 @@ Events: [{
 }, {
 	_date:    "2025-11-15"
 	headline: "Billie Marten"
+	support: ["Le Ren"]
+	text: """
+		To me, both [Le Ren] and [Billie Marten] sounded pretty similar:
+		calm, laid back chill music.
+		Not exciting, just something nice to relax to for the evening.
+		"""
 }, {
 	_date:    "2025-11-07"
 	headline: "HANABIE"
@@ -2107,6 +2113,7 @@ Links: {
 		"Beth McCarthy":                               "https://www.youtube.com/@BethMcCarthy"
 		"BEX":                                         "https://www.youtube.com/@BEXBEXMUSIC"
 		"Billie Eilish":                               "https://www.youtube.com/@BillieEilish"
+		"Billie Marten":                               "https://www.youtube.com/@billiemarten"
 		"BiS":                                         "https://www.youtube.com/@BiS_official"
 		"Blackbriar":                                  "https://www.youtube.com/@blackbriarmusic"
 		"Blackpink":                                   "https://www.youtube.com/@BLACKPINK"
@@ -2222,6 +2229,7 @@ Links: {
 		"Larkins":                                     "https://www.youtube.com/@Larkinsband"
 		"LEAP":                                        "https://www.youtube.com/@leap_the_band"
 		"Lekna":                                       "https://www.youtube.com/@leknamusic"
+		"Le Ren":                                      "https://www.youtube.com/@leren6819"
 		"Letters Sent Home":                           "https://www.youtube.com/@letterssenthome4016"
 		"Like a Storm":                                "https://www.youtube.com/@officiallikeastorm"
 		"Lilas Ikuta":                                 "https://www.youtube.com/@Lilas_Ikuta"
