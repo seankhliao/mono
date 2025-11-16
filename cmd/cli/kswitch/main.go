@@ -293,6 +293,7 @@ func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, 
 			fzfOpts.Input <- ns
 		}
 
+		var updatedNamespaces []string
 		go func() {
 			restConf, errK := clientcmd.NewDefaultClientConfig(*conf, nil).ClientConfig()
 			if errK != nil {
@@ -315,6 +316,7 @@ func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, 
 				if _, ok := nsSet[ns.Name]; !ok {
 					fzfOpts.Input <- ns.Name
 					namespaces = append(namespaces, ns.Name)
+					updatedNamespaces = append(updatedNamespaces, ns.Name)
 				}
 			}
 			close(fzfOpts.Input)
@@ -332,7 +334,7 @@ func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, 
 			return nil, fmt.Errorf("no context selected")
 		}
 
-		nsCache[a.context] = namespaces
+		nsCache[a.context] = updatedNamespaces
 		b, err = json.Marshal(nsCache)
 		if err != nil {
 			a.lg.Debug("marshal ns cache file", slog.String("err", err.Error()))
