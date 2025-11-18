@@ -32,14 +32,34 @@ Events: [{
 	_date: "2025-12-31"
 	name:  "The Mayor of London's New Year's Eve Fireworks"
 }, {
+    _date: "2025-12-02"
+	headline: "Isabel LaRosa"
+}, {
 	_date: "2025-11-25"
 	name:  "Uzumaki J-Pop Idol Night 2025"
 }, {
 	_date:    "2025-11-19"
 	headline: "6arelyhuman"
 }, {
+    _date: "2025-11-18"
+    headline: "Bastille"
+}, {
 	_date:    "2025-11-16"
 	headline: "Lorde"
+	support: ["Jim-E Stack", "Nilufer Yanya", "The Japanese House"]
+	text: """
+	    [Jim-E Stack] sounded a bit a like a DJ set that was way too loud.
+	    [Nilufer Yanya] was fine, more alt pop I think though I didn't quite pay attention.
+
+	    [Lorde], was pretty good,
+	    a mix of the older popular songs, and some newer ones as well.
+	    Her alt pop still coneys that feel of a coming from a small time far out town
+	    into the wider world.
+	    It had a very cinematic feel with the giant screen at the back
+	    but ever only using a small window.
+	    The stage was also minimalist and modern, bringing the light fixtures front and center.
+	    It felt as if it was saying you didn't need anything else, just [Lorde] was enough.
+        """
 }, {
 	_date:    "2025-11-15"
 	headline: "Billie Marten"
@@ -2208,6 +2228,7 @@ Links: {
 		"Jack Garratt":                                "https://www.youtube.com/@JackGarratt"
 		"Jasmine Jethwa":                              "https://www.youtube.com/@jasminejethwa7269"
 		"Jayd Marie":                                  "https://www.youtube.com/@Jayd_Marie"
+		"Jim-E Stack":                                 "https://www.youtube.com/@jimestack"
 		"July Jones":                                  "https://www.youtube.com/@JulyJones"
 		"June McDoom":                                 "https://www.youtube.com/@JuneMcDoom"
 		"Kaeto":                                       "https://www.youtube.com/@KaetoEYO"
@@ -2238,6 +2259,7 @@ Links: {
 		"LØLØ":                                        "https://www.youtube.com/@lolopopgurl"
 		"London Grammar":                              "https://www.youtube.com/@LondonGrammar"
 		"LonelyTwin":                                  "https://www.youtube.com/@lonelytwin5291"
+		"Lorde":                                       "https://www.youtube.com/@Lorde"
 		"Louis III":                                   "https://www.youtube.com/@louisiiiofficial"
 		"Lucia":                                       "https://www.instagram.com/lucifer_fearfull"
 		"Lucia & the Best Boys":                       "https://www.youtube.com/@luciabestboys"
@@ -2274,6 +2296,7 @@ Links: {
 		"Nerissa Ravencroft":                          "https://www.youtube.com/@NerissaRavencroft"
 		"Nessa Barrett":                               "https://www.youtube.com/@NessaBarrett"
 		"Nieve Ella":                                  "https://www.youtube.com/@nieveella"
+		"Nilufer Yanya":                               "https://www.youtube.com/@niluferyanya748"
 		"NINA":                                        "https://www.youtube.com/@iloveninamusic"
 		"Nina Nesbitt":                                "https://www.youtube.com/@ninanesbitt"
 		"Ninomae Ina’nis":                             "https://www.youtube.com/@NinomaeInanis"
