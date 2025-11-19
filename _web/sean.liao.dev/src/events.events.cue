@@ -43,23 +43,31 @@ Events: [{
 }, {
 	_date:    "2025-11-18"
 	headline: "Bastille"
+	support: ["Bradley Simpson", "Sofia Camara"]
+	text: """
+		Music by [Bradley Simpson] and [Sofia Camara] both sounded fine but nothing special.
+		The forced interaction did feel a bit awkward.
+
+		[Bastille] was decent, though I realized I only knew like 2 songs of theirs.
+		They were much more instrumental(?) than I remembered or usually go for.
+		"""
 }, {
 	_date:    "2025-11-16"
 	headline: "Lorde"
-	support: ["Jim-E Stack", "Nilufer Yanya", "The Japanese House"]
+	support: ["Jim-E Stack", "Nilufer Yanya"]
 	text: """
-        [Jim-E Stack] sounded a bit a like a DJ set that was way too loud.
-        [Nilufer Yanya] was fine, more alt pop I think though I didn't quite pay attention.
+		[Jim-E Stack] sounded a bit a like a DJ set that was way too loud.
+		[Nilufer Yanya] was fine, more alt pop I think though I didn't quite pay attention.
 
-        [Lorde], was pretty good,
-        a mix of the older popular songs, and some newer ones as well.
-        Her alt pop still coneys that feel of a coming from a small time far out town
-        into the wider world.
-        It had a very cinematic feel with the giant screen at the back
-        but ever only using a small window.
-        The stage was also minimalist and modern, bringing the light fixtures front and center.
-        It felt as if it was saying you didn't need anything else, just [Lorde] was enough.
-        """
+		[Lorde], was pretty good,
+		a mix of the older popular songs, and some newer ones as well.
+		Her alt pop still coneys that feel of a coming from a small time far out town
+		into the wider world.
+		It had a very cinematic feel with the giant screen at the back
+		but ever only using a small window.
+		The stage was also minimalist and modern, bringing the light fixtures front and center.
+		It felt as if it was saying you didn't need anything else, just [Lorde] was enough.
+		"""
 }, {
 	_date:    "2025-11-15"
 	headline: "Billie Marten"
@@ -2123,11 +2131,13 @@ Links: {
 		"AViVA":                                       "https://www.youtube.com/@thisisaviva"
 		"Avril Lavigne":                               "https://www.youtube.com/@AvrilLavigne"
 		"Ayunda Risu":                                 "https://www.youtube.com/@AyundaRisu"
+		"6arelyhuman":                                 "https://www.youtube.com/@6arelyhuman"
 		"BABYMETAL":                                   "https://www.youtube.com/@BABYMETAL"
 		"Bambie Thug":                                 "https://www.youtube.com/@bambiethug"
 		"Band of Silver":                              "https://www.youtube.com/@officialbandofsilver"
 		"Band Of Silver":                              "https://www.youtube.com/@officialbandofsilver"
 		"BANKS":                                       "https://www.youtube.com/@banks"
+		"Bastille":                                    "https://www.youtube.com/@BASTILLEvideos"
 		"Bear’s Den":                                  "https://www.youtube.com/@bearsdenmusic"
 		"Ben Kidson":                                  "https://www.youtube.com/@benkidson5142"
 		"Beth McCarthy":                               "https://www.youtube.com/@BethMcCarthy"
@@ -2139,6 +2149,7 @@ Links: {
 		"Blackpink":                                   "https://www.youtube.com/@BLACKPINK"
 		"Black Veil Brides":                           "https://www.youtube.com/@blackveilbrides"
 		"bluegirl":                                    "https://www.instagram.com/bluegirl"
+		"Bradley Simpson":                             "https://www.youtube.com/@BradleySimpsonOfficial"
 		"briskin":                                     "https://www.youtube.com/@briskin01"
 		"Broken by the Scream":                        "https://www.youtube.com/@BrokenByTheScream"
 		"Caity Baser":                                 "https://www.youtube.com/@caitybaser"
@@ -2337,6 +2348,7 @@ Links: {
 		"Shiori Novella":                              "https://www.youtube.com/@ShioriNovella"
 		"Skillet":                                     "https://www.youtube.com/@skilletband"
 		"snuggle":                                     "https://www.youtube.com/@snuggleblog"
+		"Sofia Camara":                                "https://www.youtube.com/@SofiaCamara"
 		"sombr":                                       "https://www.youtube.com/channel/UCXlqFQmZZOb78teSnAqhuwA"
 		"Sonia Stein":                                 "https://www.youtube.com/@SoniaStein"
 		"Sophia Alexa":                                "https://www.youtube.com/@SophiaAlexa"
