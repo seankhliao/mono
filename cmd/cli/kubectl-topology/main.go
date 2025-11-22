@@ -123,10 +123,10 @@ func setup() *cobra.Command {
 					zone = node.Labels[zoneLabel]
 				}
 
-				fmt.Fprintf(outw, tmpl, pod.Namespace, pod.Name, status, pod.Status.PodIP, &pod.Spec.NodeName, region, zone)
+				fmt.Fprintf(outw, tmpl, pod.Namespace, pod.Name, status, pod.Status.PodIP, pod.Spec.NodeName, region, zone)
 			}
 
-			return nil
+			return outw.Flush()
 		},
 	}
 
@@ -166,7 +166,7 @@ func setup() *cobra.Command {
 				fmt.Fprintf(outw, tmpl, node.Name, status, addr, node.Labels[regionLabel], node.Labels[zoneLabel])
 			}
 
-			return nil
+			return outw.Flush()
 		},
 	}
 
