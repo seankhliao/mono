@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cmp"
 	"context"
 	"fmt"
 	"os"
@@ -17,8 +18,9 @@ import (
 )
 
 const (
-	regionLabel = "topology.kubernetes.io/region"
-	zoneLabel   = "topology.kubernetes.io/zone"
+	zoneLabel          = "topology.kubernetes.io/zone"
+	nodeTypeLabel      = "node.kubernetes.io/instance-type"
+	karpenterPoolLabel = "karpenter.sh/nodepool"
 )
 
 func main() {
@@ -62,7 +64,7 @@ func setup() *cobra.Command {
 	ctx := context.Background()
 	ctx, _ = signal.NotifyContext(ctx, os.Interrupt)
 
-	outw := tabwriter.NewWriter(os.Stdout, 0, 8, 0, ' ', tabwriter.AlignRight)
+	outw := tabwriter.NewWriter(os.Stdout, 6, 4, 3, ' ', 0)
 
 	pods := &cobra.Command{
 		Use:     "pod [flags]",
@@ -90,8 +92,8 @@ func setup() *cobra.Command {
 				return fmt.Errorf("list pods: %w", err)
 			}
 
-			const tmpl = "%s\t%s\t%s\t%s\t%s\t%s\t%s"
-			fmt.Fprintf(outw, tmpl, "NAMESPACE", "NAME", "STATUS", "ADDRESS", "NODE", "REGION", "ZONE")
+			const tmpl = "%s\t%s\t%s\t%s\t%s\t%s\n"
+			fmt.Fprintf(outw, tmpl, "NAMESPACE", "NAME", "STATUS", "ADDRESS", "NODE", "ZONE")
 
 			if len(podList.Items) == 0 {
 				return nil
@@ -116,14 +118,13 @@ func setup() *cobra.Command {
 					}
 				}
 
-				var region, zone string
+				var zone string
 				node, ok := nodeMap[pod.Spec.NodeName]
 				if ok {
-					region = node.Labels[regionLabel]
 					zone = node.Labels[zoneLabel]
 				}
 
-				fmt.Fprintf(outw, tmpl, pod.Namespace, pod.Name, status, pod.Status.PodIP, pod.Spec.NodeName, region, zone)
+				fmt.Fprintf(outw, tmpl, pod.Namespace, pod.Name, status, pod.Status.PodIP, pod.Spec.NodeName, zone)
 			}
 
 			return outw.Flush()
@@ -149,13 +150,17 @@ func setup() *cobra.Command {
 				return fmt.Errorf("list nodes: %w", err)
 			}
 
-			const tmpl = "%s\t%s\t%s\t%s\t%s"
-			fmt.Fprintf(outw, tmpl, "NAME", "STATUS", "ADDRESS", "REGION", "ZONE")
+			const tmpl = "%s\t%s\t%s\t%s\t%s\t%s\n"
+			fmt.Fprintf(outw, tmpl, "NAME", "STATUS", "ADDRESS", "ZONE", "TYPE", "POOL")
 			for _, node := range nodeList.Items {
-				status := corev1.ConditionUnknown
+				status := ""
 				for _, cond := range node.Status.Conditions {
 					if cond.Type == corev1.NodeReady {
-						status = cond.Status
+						if cond.Status == corev1.ConditionTrue {
+							status = string(corev1.NodeReady)
+						} else {
+							status = cond.Reason
+						}
 						break
 					}
 				}
@@ -163,7 +168,7 @@ func setup() *cobra.Command {
 				if len(node.Status.Addresses) > 0 {
 					addr = node.Status.Addresses[0].Address
 				}
-				fmt.Fprintf(outw, tmpl, node.Name, status, addr, node.Labels[regionLabel], node.Labels[zoneLabel])
+				fmt.Fprintf(outw, tmpl, node.Name, status, addr, node.Labels[zoneLabel], node.Labels[nodeTypeLabel], cmp.Or(node.Labels[karpenterPoolLabel]))
 			}
 
 			return outw.Flush()
