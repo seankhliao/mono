@@ -24,6 +24,7 @@ const (
 	zoneLabel          = "topology.kubernetes.io/zone"
 	nodeTypeLabel      = "node.kubernetes.io/instance-type"
 	karpenterPoolLabel = "karpenter.sh/nodepool"
+	eksPoolLabel       = "eks.amazonaws.com/nodegroup"
 )
 
 func main() {
@@ -256,7 +257,7 @@ func fromNode(node corev1.Node) nodeRow {
 		name:  node.Name,
 		zone:  node.Labels[zoneLabel],
 		ntype: node.Labels[nodeTypeLabel],
-		pool:  cmp.Or(node.Labels[karpenterPoolLabel]),
+		pool:  cmp.Or(node.Labels[karpenterPoolLabel], node.Labels[eksPoolLabel]),
 	}
 	for _, cond := range node.Status.Conditions {
 		if cond.Type == corev1.NodeReady {
