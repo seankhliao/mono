@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"slices"
+	"strings"
 	"text/tabwriter"
 
 	"github.com/spf13/cobra"
@@ -50,7 +52,7 @@ func setup() *cobra.Command {
 	}
 
 	root := &cobra.Command{
-		Use:          "kubectl-topology",
+		Use:          "kubectl-topology (pod|node) [flags]",
 		Args:         cobra.NoArgs,
 		SilenceUsage: true,
 		Short:        "show the zones pods/nodes are deployed to",
@@ -72,11 +74,14 @@ func setup() *cobra.Command {
 	ctx := context.Background()
 	ctx, _ = signal.NotifyContext(ctx, os.Interrupt)
 
+	var sortBy string
 	outw := tabwriter.NewWriter(os.Stdout, 6, 4, 3, ' ', 0)
 
 	pods := &cobra.Command{
 		Use:     "pod [flags]",
 		Aliases: []string{"pods"},
+		Args:    cobra.NoArgs,
+		Short:   "show the zone distribution of pods",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			podList := &corev1.PodList{}
 			listOpts := &client.ListOptions{}
@@ -100,8 +105,12 @@ func setup() *cobra.Command {
 				return fmt.Errorf("list pods: %w", err)
 			}
 
-			const tmpl = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"
-			fmt.Fprintf(outw, tmpl, "NAMESPACE", "NAME", "STATUS", "ADDRESS", "NODE", "ZONE", "TYPE", "POOL")
+			var hdr []string
+			if listOpts.Namespace == "" {
+				hdr = append(hdr, "NAMESPACE")
+			}
+			hdr = append(hdr, "NAME", "STATUS", "ZONE", "NODE", "TYPE", "POOL")
+			fmt.Println(outw, strings.Join(hdr, "\t"))
 
 			if len(podList.Items) == 0 {
 				return nil
@@ -112,40 +121,52 @@ func setup() *cobra.Command {
 			if err != nil {
 				return fmt.Errorf("list nodes: %w", err)
 			}
-			nodeMap := make(map[string]corev1.Node)
+			nodeMap := make(map[string]nodeRow)
 			for _, node := range nodeList.Items {
-				nodeMap[node.Name] = node
+				nodeMap[node.Name] = fromNode(node)
 			}
 
+			var list []podRow
 			for _, pod := range podList.Items {
-				status := ""
-				for _, cond := range pod.Status.Conditions {
-					if cond.Type == corev1.PodReady {
-						if cond.Status == corev1.ConditionTrue {
-							status = string(corev1.PodReady)
-						} else {
-							status = cond.Reason
-						}
-						break
-					}
+				list = append(list, fromPod(pod, nodeMap))
+			}
+
+			switch sortBy {
+			case "name":
+				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.name, b.name) })
+			case "status":
+				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.status, b.status) })
+			case "zone":
+				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.nodeRow.zone, b.nodeRow.zone) })
+			case "nodename":
+				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.nodeRow.name, b.nodeRow.name) })
+			case "nodetype":
+				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.nodeRow.ntype, b.nodeRow.ntype) })
+			case "pool":
+				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.nodeRow.pool, b.nodeRow.pool) })
+			}
+
+			for _, row := range list {
+				outrow := []string{}
+				if listOpts.Namespace == "" {
+					outrow = append(outrow, row.namespace)
 				}
 
-				var zone string
-				node, ok := nodeMap[pod.Spec.NodeName]
-				if ok {
-					zone = node.Labels[zoneLabel]
-				}
-
-				fmt.Fprintf(outw, tmpl, pod.Namespace, pod.Name, status, pod.Status.PodIP, pod.Spec.NodeName, zone, node.Labels[nodeTypeLabel], cmp.Or(node.Labels[karpenterPoolLabel]))
+				outrow = append(outrow, row.name, row.status, row.nodeRow.zone, row.nodeRow.name, row.nodeRow.ntype, row.nodeRow.pool)
+				fmt.Fprintln(outw, strings.Join(outrow, "\t"))
 			}
 
 			return outw.Flush()
 		},
 	}
 
+	pods.Flags().StringVar(&sortBy, "sort-by", "", "sort by the given field: name|status|zone|nodename|nodetype|pool")
+
 	nodes := &cobra.Command{
 		Use:     "node [flags]",
 		Aliases: []string{"nodes"},
+		Args:    cobra.NoArgs,
+		Short:   "show the zone distribution of nodes",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			listOpts := &client.ListOptions{}
 			if lconfig.FieldSelector != nil && *lconfig.FieldSelector != "" {
@@ -162,31 +183,90 @@ func setup() *cobra.Command {
 				return fmt.Errorf("list nodes: %w", err)
 			}
 
-			const tmpl = "%s\t%s\t%s\t%s\t%s\t%s\n"
-			fmt.Fprintf(outw, tmpl, "NAME", "STATUS", "ADDRESS", "ZONE", "TYPE", "POOL")
+			var list []nodeRow
 			for _, node := range nodeList.Items {
-				status := ""
-				for _, cond := range node.Status.Conditions {
-					if cond.Type == corev1.NodeReady {
-						if cond.Status == corev1.ConditionTrue {
-							status = string(corev1.NodeReady)
-						} else {
-							status = cond.Reason
-						}
-						break
-					}
-				}
-				addr := ""
-				if len(node.Status.Addresses) > 0 {
-					addr = node.Status.Addresses[0].Address
-				}
-				fmt.Fprintf(outw, tmpl, node.Name, status, addr, node.Labels[zoneLabel], node.Labels[nodeTypeLabel], cmp.Or(node.Labels[karpenterPoolLabel]))
+				list = append(list, fromNode(node))
+			}
+
+			switch sortBy {
+			case "name":
+				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.name, b.name) })
+			case "status":
+				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.status, b.status) })
+			case "zone":
+				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.zone, b.zone) })
+			case "nodetype":
+				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.ntype, b.ntype) })
+			case "pool":
+				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.name, b.name) })
+			}
+
+			hdr := []string{"NAME", "STATUS", "ZONE", "TYPE", "POOL"}
+			fmt.Fprintln(outw, strings.Join(hdr, "\t"))
+			for _, row := range list {
+				fmt.Fprintln(outw, strings.Join([]string{row.name, row.status, row.zone, row.ntype, row.pool}, "\t"))
 			}
 
 			return outw.Flush()
 		},
 	}
 
+	nodes.Flags().StringVar(&sortBy, "sort-by", "", "sort by the given field: ")
+
 	root.AddCommand(pods, nodes)
 	return root
+}
+
+type podRow struct {
+	namespace string
+	name      string
+	status    string
+	nodeRow   nodeRow
+}
+
+func fromPod(pod corev1.Pod, nodes map[string]nodeRow) podRow {
+	row := podRow{
+		namespace: pod.Namespace,
+		name:      pod.Name,
+	}
+	for _, cond := range pod.Status.Conditions {
+		if cond.Type == corev1.PodReady {
+			if cond.Status == corev1.ConditionTrue {
+				row.status = string(corev1.PodReady)
+			} else {
+				row.status = cond.Reason
+			}
+			break
+		}
+	}
+	row.nodeRow = nodes[pod.Spec.NodeName]
+	return row
+}
+
+type nodeRow struct {
+	name   string
+	status string
+	zone   string
+	ntype  string
+	pool   string
+}
+
+func fromNode(node corev1.Node) nodeRow {
+	row := nodeRow{
+		name:  node.Name,
+		zone:  node.Labels[zoneLabel],
+		ntype: node.Labels[nodeTypeLabel],
+		pool:  cmp.Or(node.Labels[karpenterPoolLabel]),
+	}
+	for _, cond := range node.Status.Conditions {
+		if cond.Type == corev1.NodeReady {
+			if cond.Status == corev1.ConditionTrue {
+				row.status = string(corev1.NodeReady)
+			} else {
+				row.status = cond.Reason
+			}
+			break
+		}
+	}
+	return row
 }
