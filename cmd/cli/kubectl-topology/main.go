@@ -110,7 +110,7 @@ func setup() *cobra.Command {
 				hdr = append(hdr, "NAMESPACE")
 			}
 			hdr = append(hdr, "NAME", "STATUS", "ZONE", "NODE", "TYPE", "POOL")
-			fmt.Println(outw, strings.Join(hdr, "\t"))
+			fmt.Fprintln(outw, strings.Join(hdr, "\t"))
 
 			if len(podList.Items) == 0 {
 				return nil
