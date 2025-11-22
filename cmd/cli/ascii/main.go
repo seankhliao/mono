@@ -18,7 +18,7 @@ func main() {
 func run() error {
 	var rows []string
 	for i := range 128 {
-		rows = append(rows, fmt.Sprintf("% 3d\t%0.2X\t%6q\t%s", i, i, i, names[i]))
+		rows = append(rows, fmt.Sprintf("% 3d\t%0.2X\t%6q\t%s", i, i, rune(i), names[i]))
 	}
 	var longest int
 	for _, row := range rows {
