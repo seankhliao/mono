@@ -139,11 +139,11 @@ func setup() *cobra.Command {
 				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.status, b.status) })
 			case "zone":
 				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.nodeRow.zone, b.nodeRow.zone) })
-			case "nodename":
+			case "node", "nodename":
 				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.nodeRow.name, b.nodeRow.name) })
-			case "nodetype":
+			case "type", "nodetype":
 				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.nodeRow.ntype, b.nodeRow.ntype) })
-			case "pool":
+			case "pool", "nodepool":
 				slices.SortFunc(list, func(a, b podRow) int { return cmp.Compare(a.nodeRow.pool, b.nodeRow.pool) })
 			}
 
@@ -196,10 +196,10 @@ func setup() *cobra.Command {
 				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.status, b.status) })
 			case "zone":
 				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.zone, b.zone) })
-			case "nodetype":
+			case "nodetype", "type":
 				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.ntype, b.ntype) })
-			case "pool":
-				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.name, b.name) })
+			case "nodepool", "pool":
+				slices.SortFunc(list, func(a, b nodeRow) int { return cmp.Compare(a.pool, b.pool) })
 			}
 
 			hdr := []string{"NAME", "STATUS", "ZONE", "TYPE", "POOL"}
