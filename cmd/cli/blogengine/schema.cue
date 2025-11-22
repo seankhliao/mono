@@ -13,7 +13,7 @@ import "time"
 		site: string
 		redirects?: [...{
 			glob:    string
-			locaton: string
+			location: string
 			code:    int
 		}]
 		headers?: [...{
