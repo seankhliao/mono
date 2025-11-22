@@ -1,3 +1,5 @@
+// httpencoding does on-the-fly zstd or gzip compression of the responses of the wrapped handlers.
+// The handlers it wraps should not do their own compression.
 package httpencoding
 
 import (

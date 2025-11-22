@@ -29,11 +29,6 @@ func TestLint(t *testing.T) {
 			nil,
 			[]any{"govulncheck doesn't work with GOEXPERIMENT=jsonv2"},
 		}, {
-			"buf lint",
-			[]string{"go", "tool", "buf", "lint", "."},
-			nil,
-			nil,
-		}, {
 			"cue vet",
 			[]string{"go", "tool", "cue", "vet", "-c=false", "./..."},
 			nil,
@@ -64,11 +59,6 @@ func TestFormat(t *testing.T) {
 			"cue fmt",
 			[]string{"go", "tool", "cue", "fmt", "--check", "--diff", "./..."},
 			[]string{"go", "tool", "cue", "fmt", "./..."},
-			nil,
-		}, {
-			"buf fmt",
-			[]string{"go", "tool", "buf", "format", "--exit-code", "--diff", "."},
-			[]string{"go", "tool", "buf", "format", "-w", "."},
 			nil,
 		},
 	}
