@@ -9,14 +9,12 @@ import (
 	"strings"
 	"time"
 
+	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/cuecontext"
 	"go.seankhliao.com/mono/webstyle"
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
 )
-
-//go:embed events.cue
-var eventsSchema []byte
 
 type eventsData struct {
 	Title    string
@@ -49,9 +47,12 @@ func processEvents(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 		return fmt.Errorf("read content: %w", err)
 	}
 
+	p := cue.ParsePath("out")
 	cuectx := cuecontext.New()
-	val := cuectx.CompileBytes(eventsSchema)
-	val = val.Unify(cuectx.CompileBytes(b))
+	val := cuectx.CompileString(configSchema)
+	val = val.Unify(cuectx.CompileString("out: #EventPage", cue.Scope(val)))
+	val = val.FillPath(p, cuectx.CompileBytes(b))
+	val = val.LookupPath(p)
 	err = val.Validate()
 	if err != nil {
 		return fmt.Errorf("validate content: %w", err)

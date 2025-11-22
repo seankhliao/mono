@@ -1,5 +1,3 @@
-package Events
-
 Title:    "events"
 Subtitle: "shows, concerts, gigs, and other events"
 

@@ -38,7 +38,7 @@ func main() {
 				return fmt.Errorf("blogengine: %w", err)
 			}
 
-			config, err := cueconf.ForFile[Config](configSchema, configFile, false)
+			config, err := cueconf.ForFile[Config](configSchema, "#BlogengineConfig", configFile, false)
 			if err != nil {
 				return fmt.Errorf("blogengine: decode config: %w", err)
 			}
