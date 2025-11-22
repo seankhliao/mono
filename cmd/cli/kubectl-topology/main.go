@@ -13,6 +13,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
+	"k8s.io/client-go/tools/clientcmd"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -40,6 +41,13 @@ func setup() *cobra.Command {
 	lconfig := genericclioptions.NewResourceBuilderFlags()
 	lconfig = lconfig.WithAllNamespaces(false)
 	lconfig = lconfig.WithLabelSelector("")
+
+	loaodingRules := clientcmd.NewDefaultClientConfigLoadingRules()
+	kubeConf := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loaodingRules, nil)
+	defaultNS, _, err := kubeConf.Namespace()
+	if err == nil {
+		kconfig.Namespace = &defaultNS
+	}
 
 	root := &cobra.Command{
 		Use:          "kubectl-topology",
@@ -92,8 +100,8 @@ func setup() *cobra.Command {
 				return fmt.Errorf("list pods: %w", err)
 			}
 
-			const tmpl = "%s\t%s\t%s\t%s\t%s\t%s\n"
-			fmt.Fprintf(outw, tmpl, "NAMESPACE", "NAME", "STATUS", "ADDRESS", "NODE", "ZONE")
+			const tmpl = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"
+			fmt.Fprintf(outw, tmpl, "NAMESPACE", "NAME", "STATUS", "ADDRESS", "NODE", "ZONE", "TYPE", "POOL")
 
 			if len(podList.Items) == 0 {
 				return nil
@@ -110,10 +118,14 @@ func setup() *cobra.Command {
 			}
 
 			for _, pod := range podList.Items {
-				status := corev1.ConditionUnknown
+				status := ""
 				for _, cond := range pod.Status.Conditions {
 					if cond.Type == corev1.PodReady {
-						status = cond.Status
+						if cond.Status == corev1.ConditionTrue {
+							status = string(corev1.PodReady)
+						} else {
+							status = cond.Reason
+						}
 						break
 					}
 				}
@@ -124,7 +136,7 @@ func setup() *cobra.Command {
 					zone = node.Labels[zoneLabel]
 				}
 
-				fmt.Fprintf(outw, tmpl, pod.Namespace, pod.Name, status, pod.Status.PodIP, pod.Spec.NodeName, zone)
+				fmt.Fprintf(outw, tmpl, pod.Namespace, pod.Name, status, pod.Status.PodIP, pod.Spec.NodeName, zone, node.Labels[nodeTypeLabel], cmp.Or(node.Labels[karpenterPoolLabel]))
 			}
 
 			return outw.Flush()
