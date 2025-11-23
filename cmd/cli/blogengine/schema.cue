@@ -12,9 +12,9 @@ import "time"
 	firebase?: {
 		site: string
 		redirects?: [...{
-			glob:    string
+			glob:     string
 			location: string
-			code:    int
+			code:     int
 		}]
 		headers?: [...{
 			glob: string

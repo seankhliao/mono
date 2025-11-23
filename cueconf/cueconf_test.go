@@ -21,13 +21,15 @@ type TestConfig struct {
 }
 
 var testSchema = `
-S: string
-B: bool
-I: int
-M: [string]: string
-L: [...string]
-E: S: string
-E: B: bool
+#Conf: {
+	S: string
+	B: bool
+	I: int
+	M: [string]: string
+	L: [...string]
+	E: S: string
+	E: B: bool
+}
 `
 
 func TestForBytes(t *testing.T) {
@@ -46,7 +48,7 @@ func TestForBytes(t *testing.T) {
 	if err != nil {
 		t.Fatal("marshal config as json:", err)
 	}
-	gotConf, err := ForBytes[TestConfig](testSchema, ".", wantConfJSON)
+	gotConf, err := ForBytes[TestConfig](testSchema, "#Conf", wantConfJSON)
 	if err != nil {
 		t.Error("ForBytes:", err)
 	}
@@ -79,7 +81,7 @@ func TestForFile(t *testing.T) {
 		t.Fatal("write config to file:", err)
 	}
 
-	gotConf, err := ForFile[TestConfig](testSchema, ".", tmpFile, false)
+	gotConf, err := ForFile[TestConfig](testSchema, "#Conf", tmpFile, false)
 	if err != nil {
 		t.Error("ForFile:", err)
 	}
