@@ -50,7 +50,7 @@ func processEvents(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 	p := cue.ParsePath("out")
 	cuectx := cuecontext.New()
 	val := cuectx.CompileString(configSchema)
-	val = val.Unify(cuectx.CompileString("out: #EventPage", cue.Scope(val)))
+	val = val.FillPath(p, val.LookupPath(cue.MakePath(cue.Def("#EventPage"))))
 	val = val.FillPath(p, cuectx.CompileBytes(b))
 	val = val.LookupPath(p)
 	err = val.Validate()

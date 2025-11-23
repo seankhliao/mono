@@ -14,7 +14,7 @@ func ForBytes[T any](schema, spec string, config []byte) (conf T, err error) {
 	p := cue.ParsePath("out")
 	ctx := cuecontext.New()
 	val := ctx.CompileString(schema)
-	val = val.Unify(ctx.CompileString("out: "+spec, cue.Scope(val)))
+	val = val.FillPath(p, val.LookupPath(cue.MakePath(cue.Def(spec))))
 	val = val.FillPath(p, ctx.CompileBytes(config))
 	val = val.LookupPath(p)
 	err = val.Validate(cue.Final())

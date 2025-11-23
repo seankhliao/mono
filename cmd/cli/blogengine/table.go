@@ -48,7 +48,7 @@ func processTable(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 	p := cue.ParsePath("out")
 	cuectx := cuecontext.New()
 	val := cuectx.CompileString(configSchema)
-	val = val.Unify(cuectx.CompileString("out: #TablePage", cue.Scope(val)))
+	val = val.FillPath(p, val.LookupPath(cue.MakePath(cue.Def("#TablePage"))))
 	val = val.FillPath(p, cuectx.CompileBytes(b))
 	val = val.LookupPath(p)
 	err = val.Validate()
