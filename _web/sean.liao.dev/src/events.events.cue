@@ -12,6 +12,9 @@ Events: [{
 	_date:    "2026-04-20"
 	headline: "Maggie Lindemann"
 }, {
+	_date:    "2026-03-22"
+	headline: "Ari Abdul"
+}, {
 	_date:    "2026-03-17"
 	headline: "KESHA"
 }, {
@@ -23,6 +26,12 @@ Events: [{
 }, {
 	_date:    "2026-02-03"
 	headline: "Halsey"
+}, {
+	_date:    "2026-02-01"
+	headline: "ExWHYZ"
+}, {
+	_date: "2026-01-18"
+	name:  "hololive 3rd Generation Live #OperationHeartfulCuties"
 }, {
 	_date:    "2026-01-11"
 	headline: "Tokino Sora"
@@ -38,6 +47,12 @@ Events: [{
 }, {
 	_date:    "2025-11-19"
 	headline: "6arelyhuman"
+	support: ["asteria"]
+	text: """
+		Certainly an experience by both [asteria] and [6arelyhuman].
+		Jump with the music and blend in?
+		Looks alt, but the music wasn't revolutionary.
+		"""
 }, {
 	_date:    "2025-11-18"
 	headline: "Bastille"
@@ -2105,6 +2120,7 @@ Links: {
 		"Anti Virus",
 	]
 	known: {
+		"6arelyhuman":                                 "https://www.youtube.com/@6arelyhuman"
 		"Ad Infinitum":                                "https://www.youtube.com/@AdInfinitumOfficial"
 		"Ado":                                         "https://www.youtube.com/@Ado1024"
 		"Against the Current":                         "https://www.youtube.com/@againstthecurrent"
@@ -2122,6 +2138,7 @@ Links: {
 		"As December Falls":                           "https://www.youtube.com/@AsDecemberFalls"
 		"Ashnikko":                                    "https://www.youtube.com/@Ashnikko"
 		"ASP":                                         "https://www.youtube.com/@ASPOfficialChannel"
+		"asteria":                                     "https://www.youtube.com/@asteriasdeath"
 		"ATARASHII GAKKO!":                            "https://www.youtube.com/@ATARASHIIGAKKO"
 		"Au/Ra":                                       "http://www.youtube.com/@HeyItsAuRa"
 		"Aurora":                                      "https://www.youtube.com/@AuroraMusic"
@@ -2129,7 +2146,6 @@ Links: {
 		"AViVA":                                       "https://www.youtube.com/@thisisaviva"
 		"Avril Lavigne":                               "https://www.youtube.com/@AvrilLavigne"
 		"Ayunda Risu":                                 "https://www.youtube.com/@AyundaRisu"
-		"6arelyhuman":                                 "https://www.youtube.com/@6arelyhuman"
 		"BABYMETAL":                                   "https://www.youtube.com/@BABYMETAL"
 		"Bambie Thug":                                 "https://www.youtube.com/@bambiethug"
 		"Band of Silver":                              "https://www.youtube.com/@officialbandofsilver"
