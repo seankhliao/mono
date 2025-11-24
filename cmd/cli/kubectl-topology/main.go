@@ -15,7 +15,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
-	"k8s.io/client-go/tools/clientcmd"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -45,9 +44,7 @@ func setup() *cobra.Command {
 	lconfig = lconfig.WithAllNamespaces(false)
 	lconfig = lconfig.WithLabelSelector("")
 
-	loaodingRules := clientcmd.NewDefaultClientConfigLoadingRules()
-	kubeConf := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loaodingRules, nil)
-	defaultNS, _, err := kubeConf.Namespace()
+	defaultNS, _, err := kconfig.ToRawKubeConfigLoader().Namespace()
 	if err == nil {
 		kconfig.Namespace = &defaultNS
 	}
