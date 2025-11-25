@@ -43,7 +43,13 @@ Events: [{
 	headline: "Isabel LaRosa"
 }, {
 	_date: "2025-11-25"
-	name:  "Uzumaki J-Pop Idol Night 2025"
+	name: ["MION"]
+	support: ["Runo Tauchi", "Shinno Juna"]
+	text: """
+		[Runo Tauchi], [Shinno Juna], and [MION] were all pretty cute(?)
+		Music wise, it felt like a mix of the more touching original songs
+		and rowdy covers of anime songs...
+		"""
 }, {
 	_date:    "2025-11-19"
 	headline: "6arelyhuman"
@@ -2305,6 +2311,7 @@ Links: {
 		"may in film":                                 "https://www.youtube.com/@mayinfilm"
 		"McKenna Michels":                             "https://www.youtube.com/@mckennamichelsmusic"
 		"Melanie Martinez":                            "https://www.youtube.com/@MelanieMartinez"
+		"MION":                                        "https://www.youtube.com/@MION-JP-official"
 		"Mococo Abyssgard":                            "https://www.youtube.com/@FUWAMOCOch"
 		"MØ":                                          "https://www.youtube.com/@MOMOMOYOUTH"
 		"Mone Kamishiraishi":                          "https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p"
@@ -2353,12 +2360,14 @@ Links: {
 		"renforshort":                                 "https://www.youtube.com/@renforshortofficial"
 		"RØRY":                                        "https://www.youtube.com/@its_r_o_r_y"
 		"Royal Philharmonic Orchestra":                "https://www.youtube.com/@royalphilorchestra"
+		"Runo Tauchi":                                 "https://www.youtube.com/@tauchirunostaff"
 		"Sabrina Carpenter":                           "https://www.youtube.com/@sabrinacarpenter"
 		"Sadie Fine":                                  "https://www.youtube.com/@SadieFineSingsFine"
 		"Saint Clair":                                 "https://www.instagram.com/thisissaintclair/"
 		"Scene Queen":                                 "https://www.youtube.com/@scenequeenrocks"
 		"SERAINA TELLI":                               "https://www.youtube.com/@serainatelli"
 		"Seven Blood":                                 "https://www.youtube.com/@SevenBloodOfficial"
+		"Shinno Juna":                                 "https://www.youtube.com/channel/UCYzCnI0-AkmR-S-Uaz_ZhxA"
 		"Shiori Novella":                              "https://www.youtube.com/@ShioriNovella"
 		"Skillet":                                     "https://www.youtube.com/@skilletband"
 		"snuggle":                                     "https://www.youtube.com/@snuggleblog"
