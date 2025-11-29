@@ -2,26 +2,27 @@
 
 ## mostly matcha
 
-### tea i drank
+### _tea_ i drank
 
 Mostly matcha these days.
 
-#### matcha
+#### _matcha_
 
 These are the matcha I got from [Ippodo Tea](https://global.ippodo-tea.co.jp/).
 
-##### bought
+##### _bought_
 
 - 明昔 Sayaka no Mukashi
-- 久遠 Kuon
 
-##### current
+##### _current_
+
+- 久遠 Kuon
+  - not as smooth, a touch of bitterness?
+
+##### _drank_
 
 - 閑坐 Kanza
-  - smooth
-
-##### drank
-
+  - favorite, super smooth, mildly sweet
 - 巳の昔(みのむかし) Mi no Mukashi
 - 雲門の昔(うんもんのむかし) Ummon no Mukashi
 - 松韻の昔(しょういんのむかし) Shōin no Mukashi
