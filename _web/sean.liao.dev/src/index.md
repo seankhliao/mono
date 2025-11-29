@@ -21,4 +21,4 @@ Notes on other things in life:
 - [petnames](/petnames/): list of names to use
 - [style](/style/): for reference, html elements with the current stylesheet
 - [tea](/tea/): notes on tea
-- [travel-todo](/travel-todo/): travel checklist
+- [todo, travel](/todo-travel/): travel checklist
