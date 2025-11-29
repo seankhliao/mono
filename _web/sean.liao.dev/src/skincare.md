@@ -10,6 +10,12 @@ Notes on skincare products I tried.
 
 People keep commenting on my dry lips
 
+<!--
+##### Curel
+
+###### Curel Intensive Moisture Care Moisture Lip Care Cream
+-->
+
 ##### Eucerin
 
 Easily available in Europe.
@@ -45,6 +51,11 @@ This works pretty well for a solid lip balm.
 
 This one feels ok at first but its effect doesn't last that long.
 Lips still end up dry after a few hours.
+
+###### Rohto Mentholatum Medicated Lip Stick
+
+It's really stiff? and hard to get it to rub off on my lips.
+It also has that intense cooling feeling when you put it on.
 
 #### moisturizers
 
