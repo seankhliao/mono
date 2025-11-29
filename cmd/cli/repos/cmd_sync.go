@@ -27,7 +27,7 @@ const (
 	GithubTokenEnv = "GH_TOKEN"
 )
 
-//go:emebed schema.cue
+//go:embed schema.cue
 var configSchema string
 
 type Config struct {
