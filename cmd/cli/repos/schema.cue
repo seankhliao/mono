@@ -1,5 +1,3 @@
-Sync: #SyncConfig
-
 #SyncConfig: {
 	Parallel: int & >0 | *5
 
