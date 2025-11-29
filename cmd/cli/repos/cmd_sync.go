@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	_ "embed"
 	"flag"
 	"fmt"
 	"io"
@@ -12,21 +11,10 @@ import (
 	"path/filepath"
 	"sync"
 	"text/tabwriter"
-	"text/template"
 	"time"
 
 	"github.com/briandowns/spinner"
 	"go.seankhliao.com/mono/ycli"
-)
-
-var (
-	//go:embed template/LICENSE.gotmpl
-	licenseRaw string
-	licenseTpl = template.Must(template.New("license").Parse(licenseRaw))
-
-	//go:embed template/README.md.gotmpl
-	readmeRaw string
-	readmeTpl = template.Must(template.New("readme").Parse(readmeRaw))
 )
 
 func cmdSync() ycli.Command {
