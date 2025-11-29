@@ -4,9 +4,11 @@ import (
 	"cmp"
 	"context"
 	_ "embed"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"net/url"
 	"os"
 	"os/exec"
@@ -96,14 +98,14 @@ func runSync(stdout io.Writer, conf Config) error {
 
 	var wg sync.WaitGroup
 	limiter := make(chan struct{}, conf.Parallel)
-	errc := make(chan error)
+	resc := make(chan syncResult)
 
 	for _, repo := range download {
 		wg.Go(func() {
 			limiter <- struct{}{}
 			defer func() { <-limiter }()
 
-			errc <- downloadRemote(ctx, conf.Upstream, conf.Origin, repo)
+			resc <- syncResult{"download", repo, downloadRemote(ctx, conf.Upstream, conf.Origin, repo)}
 		})
 	}
 	for _, repo := range update {
@@ -111,7 +113,7 @@ func runSync(stdout io.Writer, conf Config) error {
 			limiter <- struct{}{}
 			defer func() { <-limiter }()
 
-			errc <- updateRemote(ctx, repo)
+			resc <- syncResult{"update", repo, updateRemote(ctx, conf.Upstream, conf.Origin, repo)}
 		})
 	}
 	for _, repo := range prune {
@@ -119,16 +121,17 @@ func runSync(stdout io.Writer, conf Config) error {
 			limiter <- struct{}{}
 			defer func() { <-limiter }()
 
-			errc <- removeLocal(ctx, repo)
+			resc <- syncResult{"prune", repo, removeLocal(ctx, repo)}
 		})
 	}
 
 	var errs []error
 	for i := range totalWork {
-		spin.Suffix = fmt.Sprintf("% 4d/% 4d working on repos...", i, totalWork)
-		gerr := <-errc
-		if gerr != nil {
-			errs = append(errs, gerr)
+		res := <-resc
+		spin.Suffix = fmt.Sprintf("% 4d/% 4d Working... %d errored, %s done",
+			i, totalWork, len(errs), res.name)
+		if res.err != nil {
+			errs = append(errs, res.err)
 		}
 	}
 	spin.FinalMSG = fmt.Sprintf("% 4d/% 4d Downloaded: %d, Updated: %d, Pruned: %d, Errors: %d",
@@ -142,6 +145,12 @@ func runSync(stdout io.Writer, conf Config) error {
 	}
 
 	return nil
+}
+
+type syncResult struct {
+	action string
+	name   string
+	err    error
 }
 
 func allRemoteRepos(client *github.Client, ctx context.Context, org string, excludes []string) ([]string, error) {
@@ -273,8 +282,17 @@ func downloadRemote(ctx context.Context, upstream, origin, name string) error {
 	return nil
 }
 
-func updateRemote(ctx context.Context, name string) error {
+func updateRemote(ctx context.Context, upstream, origin, name string) error {
 	dir := path.Join(name, "default")
+
+	_, err := os.Stat(dir)
+	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return downloadRemote(ctx, upstream, origin, name)
+		}
+		return fmt.Errorf("checking %s: %w", dir, err)
+	}
+
 	cmd := exec.CommandContext(ctx, "jj", "git", "fetch")
 	cmd.Dir = dir
 	err := cmd.Run()
