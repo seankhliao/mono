@@ -57,6 +57,12 @@ _Icebreaker Merino Hike+ Medium Crew Socks_
 I don't really like that they have left/right socks
 and they can be pretty thin in some places (around the ball of the foot).
 
+_Uniqlo Colour Socks_
+Cheap, but somehow a pair of them developed a hole in just a few months.
+
+_Uniqlo HEATTECH Socks (Pile)_
+Seems decent so far.
+
 #### Shoes
 
 _Timberland Premium 6-Inch Lace-Up Waterproof Boot_
@@ -85,11 +91,11 @@ I think they loosed up more than I expected.
 #### Underwear
 
 _Uniqlo Airism Boxer Briefs_
-go to.
+Very comfortable.
 
 _Uniqlo Airism Mesh Ultra Seamless Boxer Briefs_
 they feel really smooth...
-but less comfortable around the crotch.
+takes some getting used to, but pretty comfortable as well.
 
 #### Pillows
 
