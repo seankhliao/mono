@@ -29,7 +29,6 @@ func main() {
 			})
 		},
 		cmdSync(),
-		cmdSyncGithub(conf),
 		cmdLast(conf),
 		cmdNew(conf),
 		cmdClean(),

@@ -1,32 +1,61 @@
 package main
 
 import (
-	"bytes"
+	"cmp"
+	"context"
+	_ "embed"
 	"flag"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
 	"path"
-	"path/filepath"
+	"regexp"
+	"slices"
+	"strings"
 	"sync"
-	"text/tabwriter"
 	"time"
 
 	"github.com/briandowns/spinner"
+	"github.com/google/go-github/v74/github"
+	"go.seankhliao.com/mono/cueconf"
 	"go.seankhliao.com/mono/ycli"
+	"golang.org/x/oauth2"
 )
 
+const (
+	GithubTokenEnv = "GH_TOKEN"
+)
+
+//go:emebed schema.cue
+var configSchema string
+
+type Config struct {
+	Parallel int
+
+	Upstream string
+	Origin   string
+
+	ExcludeRegexes []string
+}
+
+type ConfigRemote struct{}
+
 func cmdSync() ycli.Command {
-	var parallel int
+	var configFile string
 	return ycli.New(
 		"sync",
 		"sync repositories with upstream origins",
 		func(fs *flag.FlagSet) {
-			fs.IntVar(&parallel, "parallel", 5, "max parallel git operations")
+			fs.StringVar(&configFile, "config", "repos.cue", "path to config file")
 		},
 		func(stdout, _ io.Writer) error {
-			err := runSync(stdout, parallel)
+			config, err := cueconf.ForFile[Config](configSchema, "#SyncConfig", configFile, false)
+			if err != nil {
+				return fmt.Errorf("repos: decode config: %w", err)
+			}
+
+			err = runSync(stdout, config)
 			if err != nil {
 				return fmt.Errorf("repos sync: %w", err)
 			}
@@ -35,152 +64,235 @@ func cmdSync() ycli.Command {
 	)
 }
 
-func runSync(stdout io.Writer, parallel int) error {
-	baseDir := "."
-	des, err := os.ReadDir(baseDir)
-	if err != nil {
-		return fmt.Errorf("sync: read %s: %w", baseDir, err)
-	}
-	dirs := make([]string, 0, len(des))
-	for _, de := range des {
-		if de.IsDir() {
-			dirs = append(dirs, filepath.Join(baseDir, de.Name()))
-		}
-	}
+func runSync(stdout io.Writer, conf Config) error {
+	ctx := context.Background()
+
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: os.Getenv(GithubTokenEnv)},
+	)
+	tc := oauth2.NewClient(ctx, ts)
+	client := github.NewClient(tc)
 
 	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
 	spin.Start()
 
-	results := make(chan syncResult, len(dirs))
-	parallelToken := make(chan struct{}, parallel)
-	go func() {
-		var wg sync.WaitGroup
-
-		for _, repo := range dirs {
-			parallelToken <- struct{}{}
-			wg.Add(1)
-			go func() {
-				defer func() { <-parallelToken }()
-				defer wg.Done()
-				results <- syncRepo(repo)
-			}()
-		}
-
-		wg.Wait()
-		close(results)
-	}()
-
-	var errs []syncResult
-	for res := range results {
-		if res.err == nil {
-			spin.Suffix = fmt.Sprintf("Synced %s to %s", filepath.Base(res.dir), res.newRef)
-		} else {
-			spin.Suffix = fmt.Sprintf("Error syncing %s", filepath.Base(res.dir))
-			errs = append(errs, res)
-		}
+	remoteURL := cmp.Or(conf.Upstream, conf.Origin)
+	org := path.Base(remoteURL)
+	spin.Suffix = "listing repos from org " + org
+	remoteRepos, err := allRemoteRepos(client, ctx, org, conf.ExcludeRegexes)
+	if err != nil {
+		return fmt.Errorf("get remote repos: %w", err)
 	}
 
-	spin.Stop()
-	fmt.Fprintln(stdout)
-	fmt.Fprintf(stdout, "Synced %d repos\n\n", len(dirs)-len(errs))
+	localRepos, err := allLocalRepos()
+	if err != nil {
+		return fmt.Errorf("get local repos: %w", err)
+	}
+
+	download, update, prune := splitRepos(remoteRepos, localRepos)
+	totalWork := len(download) + len(update) + len(prune)
+	spin.Suffix = fmt.Sprintf("% 4d/% 4d working on repos...", 0, totalWork)
+
+	var wg sync.WaitGroup
+	limiter := make(chan struct{}, conf.Parallel)
+	errc := make(chan error)
+
+	for _, repo := range download {
+		wg.Go(func() {
+			limiter <- struct{}{}
+			defer func() { <-limiter }()
+
+			errc <- downloadRemote(ctx, conf.Upstream, conf.Origin, repo)
+		})
+	}
+	for _, repo := range update {
+		wg.Go(func() {
+			limiter <- struct{}{}
+			defer func() { <-limiter }()
+
+			errc <- updateRemote(ctx, repo)
+		})
+	}
+	for _, repo := range prune {
+		wg.Go(func() {
+			limiter <- struct{}{}
+			defer func() { <-limiter }()
+
+			errc <- removeLocal(ctx, repo)
+		})
+	}
+
+	var errs []error
+	for i := range totalWork {
+		spin.Suffix = fmt.Sprintf("% 4d/% 4d working on repos...", i, totalWork)
+		err := <-errc
+		if err != nil {
+			errs = append(errs, err)
+		}
+	}
+	spin.FinalMSG = fmt.Sprintf("% 4d/% 4d Downloaded: %d, Updated: %d, Pruned: %d, Errors: %d",
+		totalWork, totalWork, len(download), len(update), len(prune), len(errs))
 
 	if len(errs) > 0 {
-		fmt.Fprintln(stdout, "Errors with the following repos:")
-		w := tabwriter.NewWriter(stdout, 0, 8, 1, ' ', 0)
-
-		for _, res := range errs {
-			fmt.Fprintf(w, "%s\t%v\n", res.dir, res.err)
-		}
-		w.Flush()
+		fmt.Fprintln(stdout, "Errors:", len(errs))
+		fmt.Fprintln(stdout, "\t", err)
 	}
 
 	return nil
 }
 
-type syncResult struct {
-	dir    string
-	err    error
-	oldRef string
-	newRef string
-}
-
-func syncRepo(dir string) syncResult {
-	res := syncResult{
-		dir: filepath.Base(dir),
+func allRemoteRepos(client *github.Client, ctx context.Context, org string, excludes []string) ([]string, error) {
+	excludeRes := make([]*regexp.Regexp, 0, len(excludes))
+	for i, exclude := range excludes {
+		re, err := regexp.Compile(exclude)
+		if err != nil {
+			return nil, fmt.Errorf("error compiling regex %d %q: %v", i, exclude, err)
+		}
+		excludeRes = append(excludeRes, re)
 	}
 
-	wd := filepath.Join(dir, "default")
-	gitDir := filepath.Join(wd, ".git")
-	_, err := os.Stat(gitDir)
-	if err != nil {
-		wd = dir
-		gitDir = filepath.Join(wd, ".git")
-		_, err = os.Stat(gitDir)
+	var allRepos []string
+
+	pagesForOrg := 0
+	for page := 1; true; page++ {
+		repos, res, err := client.Repositories.ListByOrg(ctx, org, &github.RepositoryListByOrgOptions{
+			ListOptions: github.ListOptions{
+				Page:    page,
+				PerPage: 100,
+			},
+		})
 		if err != nil {
-			res.err = fmt.Errorf("no git dir found")
-			return res
+			return nil, fmt.Errorf("list repos page %d for %s: %v", page, org, err)
+		}
+
+		if pagesForOrg == 0 {
+			pagesForOrg = res.LastPage
+		}
+
+	nextRepo:
+		for _, repo := range repos {
+			if *repo.Archived {
+				continue
+			}
+			for _, re := range excludeRes {
+				if re.MatchString(*repo.Name) {
+					continue nextRepo
+				}
+			}
+			allRepos = append(allRepos, *repo.Name)
+		}
+
+		if page >= res.LastPage {
+			break
 		}
 	}
 
-	cmd := exec.Command("git", "rev-parse", "--short", "HEAD")
-	cmd.Dir = wd
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		res.err = fmt.Errorf("get old ref: %w", err)
-		return res
-	}
-	res.oldRef = string(bytes.TrimSpace(out))
+	return allRepos, nil
+}
 
-	// ensure we're on the default branch
-	cmd = exec.Command("git", "rev-parse", "--abbrev-ref", "origin/HEAD")
-	cmd.Dir = wd
-	out, err = cmd.CombinedOutput()
+func allLocalRepos() ([]string, error) {
+	des, err := os.ReadDir(".")
 	if err != nil {
-		res.err = fmt.Errorf("get remote default branch: %w\n%s", err, out)
-		return res
+		return nil, fmt.Errorf("read directory: %w", err)
 	}
 
-	defaultBranch := path.Base(string(bytes.TrimSpace(out)))
-
-	cmd = exec.Command("git", "checkout", defaultBranch)
-	cmd.Dir = wd
-	out, err = cmd.CombinedOutput()
-	if err != nil {
-		res.err = fmt.Errorf("switch to default branch: %w\n%s", err, out)
-		return res
+	var allRepos []string
+	for _, de := range des {
+		if !de.IsDir() {
+			continue
+		}
+		if strings.HasPrefix(de.Name(), ".") {
+			continue
+		}
+		allRepos = append(allRepos, de.Name())
 	}
 
-	cmd = exec.Command("git", "fetch", "--tags", "--prune", "--prune-tags", "--force", "--jobs=10")
-	cmd.Dir = wd
-	out, err = cmd.CombinedOutput()
-	if err != nil {
-		res.err = fmt.Errorf("fetch: %w\n%s", err, out)
-		return res
+	return allRepos, nil
+}
+
+func splitRepos(remoteRepos, localRepos []string) (download, sync, prune []string) {
+	slices.Sort(remoteRepos)
+	slices.Sort(localRepos)
+	var i, j int
+	for {
+		if i == len(remoteRepos) {
+			prune = append(prune, localRepos[j:]...)
+			break
+		}
+		if j == len(localRepos) {
+			download = append(download, remoteRepos[i:]...)
+			break
+		}
+		switch strings.Compare(remoteRepos[i], localRepos[j]) {
+		case -1:
+			download = append(download, remoteRepos[i])
+			i++
+		case 0:
+			sync = append(sync, remoteRepos[i])
+			i++
+			j++
+		case 1:
+			prune = append(prune, localRepos[j])
+			j++
+		default:
+			panic("unreachable")
+		}
 	}
-	cmd = exec.Command("git", "merge", "--ff-only", "--autostash")
-	cmd.Dir = wd
-	out, err = cmd.CombinedOutput()
+	return
+}
+
+func downloadRemote(ctx context.Context, upstream, origin, name string) error {
+	remoteName := "upstream"
+	remoteURL := path.Join(upstream, name)
+	if upstream == "" {
+		remoteName = "origin"
+		remoteURL = path.Join(origin, name)
+	}
+	dir := path.Join(name, "default")
+	cmd := exec.CommandContext(ctx, "jj", "git", "clone", "--colocate", "--remote", remoteName, remoteURL, dir)
+	err := cmd.Run()
 	if err != nil {
-		res.err = fmt.Errorf("merge: %w\n%s", err, out)
-		return res
+		return fmt.Errorf("clone %s: %w", remoteURL, err)
 	}
 
-	cmd = exec.Command("git", "worktree", "prune")
-	cmd.Dir = wd
-	out, err = cmd.CombinedOutput()
-	if err != nil {
-		res.err = fmt.Errorf("prune worktrees: %w\n%s", err, out)
-		return res
+	if remoteName == "origin" {
+		return nil
 	}
 
-	cmd = exec.Command("git", "rev-parse", "--short", "HEAD")
-	cmd.Dir = wd
-	out, err = cmd.CombinedOutput()
+	remoteURL = path.Join(origin, name)
+	cmd = exec.CommandContext(ctx, "jj", "git", "remote", "add", "origin", remoteURL)
+	cmd.Dir = dir
+	err = cmd.Run()
 	if err != nil {
-		res.err = fmt.Errorf("get new ref: %w\n%s", err, out)
-		return res
+		return fmt.Errorf("clone %s: %w", remoteURL, err)
 	}
-	res.newRef = string(bytes.TrimSpace(out))
 
-	return res
+	return nil
+}
+
+func updateRemote(ctx context.Context, name string) error {
+	dir := path.Join(name, "default")
+	cmd := exec.CommandContext(ctx, "jj", "git", "fetch")
+	cmd.Dir = dir
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("update repo %s: jj fetch: %w", name, err)
+	}
+
+	cmd = exec.CommandContext(ctx, "jj", "new", "trunk()")
+	cmd.Dir = dir
+	err = cmd.Run()
+	if err != nil {
+		return fmt.Errorf("update repo %s: jj new: %w", name, err)
+	}
+
+	return nil
+}
+
+func removeLocal(ctx context.Context, repo string) error {
+	err := os.RemoveAll(repo)
+	if err != nil {
+		return fmt.Errorf("remove local repo %s: %w", repo, err)
+	}
+	return nil
 }

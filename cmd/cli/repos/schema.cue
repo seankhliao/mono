@@ -1,13 +1,10 @@
-SyncGithub: #SyncGithubConfig
+Sync: #SyncConfig
 
-#SyncGithubConfig: {
+#SyncConfig: {
 	Parallel: int & >0 | *5
-	Archived: bool | *false
-	Worktree: bool | *true
-	JJ:       bool | *true
 
-	Users: [...string] | *[]
-	Orgs: [...string] | *[]
+	Upstream: string
+	Origin:   string
 
 	ExcludeRegexes: [...string] | *[]
 }
