@@ -291,11 +291,11 @@ func updateTools(c Config, stdout io.Writer) error {
 	}
 	fmt.Fprintln(stdout, "Errored:")
 	for _, err := range errs {
-		fmt.Fprintln(stdout, "\t", err, err)
+		fmt.Fprintln(stdout, "\t", err)
 	}
 	fmt.Fprintln(stdout, "Skipped:")
 	for _, err := range skipped {
-		fmt.Fprintln(stdout, "\t", err, err)
+		fmt.Fprintln(stdout, "\t", err)
 	}
 
 	return nil
