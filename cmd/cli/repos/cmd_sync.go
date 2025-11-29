@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"os/exec"
 	"path"
@@ -245,7 +246,7 @@ func splitRepos(remoteRepos, localRepos []string) (download, sync, prune []strin
 
 func downloadRemote(ctx context.Context, upstream, origin, name string) error {
 	remoteName := "upstream"
-	remoteURL := path.Join(upstream, name)
+	remoteURL, _ := url.JoinPath(upstream, name)
 	if upstream == "" {
 		remoteName = "origin"
 		remoteURL = path.Join(origin, name)
@@ -261,7 +262,7 @@ func downloadRemote(ctx context.Context, upstream, origin, name string) error {
 		return nil
 	}
 
-	remoteURL = path.Join(origin, name)
+	remoteURL, _ = url.JoinPath(origin, name)
 	cmd = exec.CommandContext(ctx, "jj", "git", "remote", "add", "origin", remoteURL)
 	cmd.Dir = dir
 	err = cmd.Run()
