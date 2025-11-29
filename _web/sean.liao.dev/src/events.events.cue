@@ -43,7 +43,7 @@ Events: [{
 	headline: "Isabel LaRosa"
 }, {
 	_date: "2025-11-25"
-	name: ["MION"]
+	name:  "MION"
 	support: ["Runo Tauchi", "Shinno Juna"]
 	text: """
 		[Runo Tauchi], [Shinno Juna], and [MION] were all pretty cute(?)
