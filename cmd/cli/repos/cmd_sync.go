@@ -125,9 +125,9 @@ func runSync(stdout io.Writer, conf Config) error {
 	var errs []error
 	for i := range totalWork {
 		spin.Suffix = fmt.Sprintf("% 4d/% 4d working on repos...", i, totalWork)
-		err := <-errc
-		if err != nil {
-			errs = append(errs, err)
+		gerr := <-errc
+		if gerr != nil {
+			errs = append(errs, gerr)
 		}
 	}
 	spin.FinalMSG = fmt.Sprintf("% 4d/% 4d Downloaded: %d, Updated: %d, Pruned: %d, Errors: %d",
@@ -135,7 +135,9 @@ func runSync(stdout io.Writer, conf Config) error {
 
 	if len(errs) > 0 {
 		fmt.Fprintln(stdout, "Errors:", len(errs))
-		fmt.Fprintln(stdout, "\t", err)
+		for _, gerr := range errs {
+			fmt.Fprintln(stdout, "\t", gerr)
+		}
 	}
 
 	return nil
