@@ -21,11 +21,11 @@ Which is probably fine.
 
 But like [Scrum] and [Agile] before it,
 once adopted by the corporate world,
-you get a bastardized version made by someone who read a blog post somewhere.
-There's a standard template you have to fill out,
+it's contorted into something else.
+There's usually some standard postmortem template you have to fill out,
 and it's a list (or table) of "Why" x 5.
 Choose the story you want to tell,
-and at the end pops out a singular root cause.
+and at the end pops out a root cause (usually singular).
 
 The 5 Whys model is pretty subjective,
 different people will likely end up with different results for root causes,
