@@ -4,15 +4,15 @@
 
 ### _incident_ postmortem analysis
 
-**This post mostly serves as a place to link to good posts.**
+_This post mostly serves as a place to link to good posts._
 
 Recently I've been annoyed at having to do "[Five whys]" incident postmortem analysis.
 If you just read the literature on them,
 you might think it's a decent idea:
 peel back layers of why something failed,
-and end up with _some_ root cause.
+and end up with some root cause.
 
-Note _some_ root cause.
+Note some root cause.
 The true way may have you drawing fishbones,
 or trees, or directed acyclic graphs
 (I'm not even convinced on the acyclic part),
@@ -42,7 +42,7 @@ that just feeds in to the prior point of it not being reproducible.
 
 In my opinion,
 the idea that there even is a root cause is questionable.
-Read [Root Cause Analysis? You’re Doing It Wrong].
+Read _[Root Cause Analysis? You’re Doing It Wrong]_.
 
 Rather, in the complex systems we manage,
 there's usually different safeguards built in at different layers.
@@ -56,9 +56,9 @@ for an extended period of time.
 
 Think less that there are any "root causes".
 There are only contributing factors,
-[each necessary, but only jointly sufficient]
-only immediate triggers,
-and _contributing factors_ that lead to the current state.
+_[each necessary, but only jointly sufficient]_,
+only immediate triggers
+that lead to the current state.
 
 [Root Cause Analysis? You’re Doing It Wrong]: https://entropicthoughts.com/root-cause-analysis-youre-doing-it-wrong
 [Swiss cheese model]: https://en.wikipedia.org/wiki/Swiss_cheese_model
@@ -71,7 +71,7 @@ we're usually trying to manage a complex system:
 observing a failure state,
 and introducing controls to prevent that class of error states from reoccurring.
 
-[How complex systems fail],
+_[How complex systems fail]_,
 this is probably the most accessible way to think about systems failures.
 Systems are dynamic, and probably in some kind of error state most of the time.
 
@@ -80,7 +80,7 @@ and "System Theoretic Process Analysis (STPA)"
 are some more well rounded approaches to modeling failures,
 which leads in to the [Causal Analysis based on System Theory (CAST) handbook].
 The handbook is dense though,
-so a shorter summary can be found at [Causal Analysis based on System Theory].
+so a shorter summary can be found at _[Causal Analysis based on System Theory]_.
 
 Google SRE is also shifting in this direction,
 with their 2024 post [The Evolution of SRE at Google]
