@@ -9,6 +9,9 @@ Description: """
 	"""
 
 Events: [{
+	_date:    "2026-09-13"
+	headline: "Evanescence"
+}, {
 	_date:    "2026-04-20"
 	headline: "Maggie Lindemann"
 }, {
@@ -41,6 +44,16 @@ Events: [{
 }, {
 	_date:    "2025-12-02"
 	headline: "Isabel LaRosa"
+	support: ["Snow Wife"]
+	text: """
+		A night of pop songs and covers and dancing.
+        [Snow Wife] felt mostly visual, mostly dancing.
+        A rare performance using headset mics.
+
+        [Isabel LaRosa] felt just like last time.
+        The lighting was really on point,
+        though there's certainly a gulf between the popular songs and the rest.
+		"""
 }, {
 	_date: "2025-11-25"
 	name:  "MION"
@@ -2370,6 +2383,7 @@ Links: {
 		"Shinno Juna":                                 "https://www.youtube.com/channel/UCYzCnI0-AkmR-S-Uaz_ZhxA"
 		"Shiori Novella":                              "https://www.youtube.com/@ShioriNovella"
 		"Skillet":                                     "https://www.youtube.com/@skilletband"
+		"Snow Wife":                                   "https://www.youtube.com/@ITSSNOWWIFE"
 		"snuggle":                                     "https://www.youtube.com/@snuggleblog"
 		"Sofia Camara":                                "https://www.youtube.com/@SofiaCamara"
 		"sombr":                                       "https://www.youtube.com/channel/UCXlqFQmZZOb78teSnAqhuwA"
