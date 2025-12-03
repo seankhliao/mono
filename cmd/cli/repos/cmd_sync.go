@@ -295,7 +295,7 @@ func updateRemote(ctx context.Context, upstream, origin, name string) error {
 
 	cmd := exec.CommandContext(ctx, "jj", "git", "fetch")
 	cmd.Dir = dir
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		return fmt.Errorf("update repo %s: jj fetch: %w", name, err)
 	}
