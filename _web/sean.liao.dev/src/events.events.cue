@@ -47,12 +47,12 @@ Events: [{
 	support: ["Snow Wife"]
 	text: """
 		A night of pop songs and covers and dancing.
-        [Snow Wife] felt mostly visual, mostly dancing.
-        A rare performance using headset mics.
+		[Snow Wife] felt mostly visual, mostly dancing.
+		A rare performance using headset mics.
 
-        [Isabel LaRosa] felt just like last time.
-        The lighting was really on point,
-        though there's certainly a gulf between the popular songs and the rest.
+		[Isabel LaRosa] felt just like last time.
+		The lighting was really on point,
+		though there's certainly a gulf between the popular songs and the rest.
 		"""
 }, {
 	_date: "2025-11-25"
