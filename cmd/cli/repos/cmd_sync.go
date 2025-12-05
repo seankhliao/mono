@@ -250,7 +250,7 @@ func splitRepos(remoteRepos, localRepos []string) (download, sync, prune []strin
 			panic("unreachable")
 		}
 	}
-	return
+	return download, sync, prune
 }
 
 func downloadRemote(ctx context.Context, upstream, origin, name string) error {

@@ -59,6 +59,19 @@ func TestGofumpt(t *testing.T) {
 				t.Fatal("failed to format:", err)
 			}
 			if !bytes.Equal(in, out) {
+				line, col := 1, 1
+				for i, c := range in {
+					if c == '\n' {
+						line++
+						col = 1
+					} else {
+						col++
+					}
+					if in[i] != out[i] {
+						t.Log("diff at index", i, "line", line, "col", col, "got", rune(in[i]), "want", rune(out[i]))
+						break
+					}
+				}
 				t.Fatal("file not formatted")
 			}
 		})
