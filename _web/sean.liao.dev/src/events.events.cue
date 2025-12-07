@@ -17,6 +17,10 @@ Events: [{
 	headline: "Evanescence"
 	price:    81.30
 }, {
+	_date:    "2026-05-13"
+	headline: "Au/Ra"
+	price:    27.25
+}, {
 	_date:    "2026-04-20"
 	headline: "Maggie Lindemann"
 	price:    34.60
