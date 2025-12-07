@@ -56,15 +56,15 @@ Events: [{
 		a proper show with vocal prowess.
 		Next we had [Moliy], someone trending on tiktok?
 		I'd totally missed it.
-        [Mimi Webb] was fine, but a bit on the slower side,
-        [Leigh-Anne] and [Alessi Rose] both were in the feel good territory.
-        This was the first time I've ever heard of [Sonny Fodera], [Five],
-        and [Rizzle Kicks], nothing to write home about.
-        [Raye] more or less sold out all the nights for next year's shows,
-        it was more laid back than I imagined?
-        We also got her sisters for 2 songs.
-        And now I finally see why [Ed Sheeran] was advertised as a one man band,
-        it's just him, some instruments, and a loop station.
+		[Mimi Webb] was fine, but a bit on the slower side,
+		[Leigh-Anne] and [Alessi Rose] both were in the feel good territory.
+		This was the first time I've ever heard of [Sonny Fodera], [Five],
+		and [Rizzle Kicks], nothing to write home about.
+		[Raye] more or less sold out all the nights for next year's shows,
+		it was more laid back than I imagined?
+		We also got her sisters for 2 songs.
+		And now I finally see why [Ed Sheeran] was advertised as a one man band,
+		it's just him, some instruments, and a loop station.
 		"""
 }, {
 	_date:    "2025-12-02"
