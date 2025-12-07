@@ -6,6 +6,10 @@ Description: """
 	Mostly music gigs, occasionally something else to spice things up.
 
 	_Note:_ dates using the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calendar)
+
+	For what I'm listening to now,
+	see [ListenBrainz.org/user/seankhliao](https://listenbrainz.org/user/seankhliao/)
+	or [Last.fm/user/seankhliao](https://www.last.fm/user/seankhliao).
 	"""
 
 Events: [{
