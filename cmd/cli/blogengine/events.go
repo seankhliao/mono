@@ -85,13 +85,13 @@ func processEvents(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 				),
 				gomponents.Text(" | "),
 				html.A(
-					html.Href("#"+p.Date.Format("1"+time.DateOnly)),
+					html.Href("#1"+p.Date.Format(time.DateOnly)),
 					gomponents.Text(p.Name),
 				),
 			))
 			contentPast = append(contentPast,
 				html.H5(
-					html.ID(p.Date.Format("1"+time.DateOnly)),
+					html.ID("1"+p.Date.Format(time.DateOnly)),
 					html.Time(
 						html.DateTime(p.Date.Format(time.DateOnly)),
 						gomponents.Text("1"+p.Date.Format(time.DateOnly)),
