@@ -16,4 +16,6 @@ Links: {
 	"sean.liao.dev":  "https://sean.liao.dev/"
 	"signal":         "https://signal.me/#eu/PGQuBwGfrNqgYOn-rez7rroWGe48Sxzz6LsgR8jGTWNXdDFIABFJrafsGwAvCkSE"
 	"twitter":        "https://twitter.com/seankhliao"
+	"listenbrainz":   "https://listenbrainz.org/user/seankhliao/"
+	"last.fm":        "https://www.last.fm/user/seankhliao"
 }
