@@ -42,6 +42,31 @@ Events: [{
 	_date: "2025-12-31"
 	name:  "The Mayor of London's New Year's Eve Fireworks"
 }, {
+	_date: "2025-12-06"
+	name:  "Capital's Jingle Bell Ball"
+	support: ["Anne-Marie", "Moliy", "Mimi Webb", "Leigh-Anne", "Sonny Fodera",
+		"Alessi Rose", "Five", "Rizzle Kicks", "Raye", "Ed Sheeran"]
+	text: """
+		A big christmas party?
+		For me, primarily a chance to see a few acts I wouldn't have been bothered
+		to see on their own.
+
+		We open with [Anne-Marie],
+		which honestly felt like one of the best sets of the night,
+		a proper show with vocal prowess.
+		Next we had [Moliy], someone trending on tiktok?
+		I'd totally missed it.
+        [Mimi Webb] was fine, but a bit on the slower side,
+        [Leigh-Anne] and [Alessi Rose] both were in the feel good territory.
+        This was the first time I've ever heard of [Sonny Fodera], [Five],
+        and [Rizzle Kicks], nothing to write home about.
+        [Raye] more or less sold out all the nights for next year's shows,
+        it was more laid back than I imagined?
+        We also got her sisters for 2 songs.
+        And now I finally see why [Ed Sheeran] was advertised as a one man band,
+        it's just him, some instruments, and a loop station.
+		"""
+}, {
 	_date:    "2025-12-02"
 	headline: "Isabel LaRosa"
 	support: ["Snow Wife"]
@@ -2148,9 +2173,11 @@ Links: {
 		"AJA":                                         "https://www.youtube.com/@itsAJAmusic"
 		"Akase Akari":                                 "https://www.youtube.com/@akaseakari174"
 		"Alessandra":                                  "https://www.youtube.com/@alessandrasmusic"
+		"Alessi Rose":                                 "https://www.youtube.com/@alessirose"
 		"Allie X":                                     "https://www.youtube.com/@AllieXXXXandra"
 		"ANKOR":                                       "https://www.youtube.com/@AnkorOfficial"
 		"Anna of the North":                           "https://www.youtube.com/@annaofthenorthforreal"
+		"Anne-Marie":                                  "https://www.youtube.com/@annemarie"
 		"Annika Bennett":                              "https://www.youtube.com/@AnnikaBennett"
 		"ari abdul":                                   "https://www.youtube.com/@AriAbdul"
 		"ARTMS":                                       "https://www.youtube.com/@official_artms"
@@ -2233,6 +2260,7 @@ Links: {
 		"Fall Out Boy":                                "https://www.youtube.com/@falloutboy"
 		"FEMM":                                        "https://www.youtube.com/@FEMM____"
 		"finally":                                     "https://www.youtube.com/@finallyofficial1713"
+		"Five":                                        "https://www.youtube.com/@itsfiveofficial"
 		"Fletcher":                                    "https://www.youtube.com/@fletcher"
 		"Forever Still":                               "https://www.youtube.com/@ForeverStill"
 		"Frayle":                                      "https://www.youtube.com/@frayleband"
@@ -2293,6 +2321,7 @@ Links: {
 		"Lake Malice":                                 "https://www.youtube.com/@lakemalice"
 		"Larkins":                                     "https://www.youtube.com/@Larkinsband"
 		"LEAP":                                        "https://www.youtube.com/@leap_the_band"
+		"Leigh-Anne":                                  "https://www.youtube.com/@LeighAnneOfficial"
 		"Lekna":                                       "https://www.youtube.com/@leknamusic"
 		"Le Ren":                                      "https://www.youtube.com/@leren6819"
 		"Letters Sent Home":                           "https://www.youtube.com/@letterssenthome4016"
@@ -2324,9 +2353,11 @@ Links: {
 		"may in film":                                 "https://www.youtube.com/@mayinfilm"
 		"McKenna Michels":                             "https://www.youtube.com/@mckennamichelsmusic"
 		"Melanie Martinez":                            "https://www.youtube.com/@MelanieMartinez"
+		"Mimi Webb":                                   "https://www.youtube.com/@MimiWebb"
 		"MION":                                        "https://www.youtube.com/@MION-JP-official"
 		"Mococo Abyssgard":                            "https://www.youtube.com/@FUWAMOCOch"
 		"MØ":                                          "https://www.youtube.com/@MOMOMOYOUTH"
+		"Moliy":                                       "https://www.youtube.com/@MOLIY"
 		"Mone Kamishiraishi":                          "https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p"
 		"MONSTERIDOL":                                 "https://www.youtube.com/@MONSTERIDOL"
 		"moreofthem":                                  "https://www.youtube.com/@moreofthem."
@@ -2367,10 +2398,12 @@ Links: {
 		"PVRIS":                                       "https://www.youtube.com/@PVRIS"
 		"Radio Wolf":                                  "https://www.youtube.com/@RadioWolfMusic"
 		"Raora Panthera":                              "https://www.youtube.com/@holoen_raorapanthera"
+		"Raye":                                        "https://www.youtube.com/@RAYEofficial"
 		"Rebecca Black":                               "https://www.youtube.com/@rebecca"
 		"Rebmoe":                                      "https://www.youtube.com/@TheMoestyle"
 		"RedHook":                                     "https://www.youtube.com/@weareredhook"
 		"renforshort":                                 "https://www.youtube.com/@renforshortofficial"
+		"Rizzle Kicks":                                "https://www.youtube.com/@RizzleKicks"
 		"RØRY":                                        "https://www.youtube.com/@its_r_o_r_y"
 		"Royal Philharmonic Orchestra":                "https://www.youtube.com/@royalphilorchestra"
 		"Runo Tauchi":                                 "https://www.youtube.com/@tauchirunostaff"
@@ -2388,6 +2421,7 @@ Links: {
 		"Sofia Camara":                                "https://www.youtube.com/@SofiaCamara"
 		"sombr":                                       "https://www.youtube.com/channel/UCXlqFQmZZOb78teSnAqhuwA"
 		"Sonia Stein":                                 "https://www.youtube.com/@SoniaStein"
+		"Sonny Fodera":                                "https://www.youtube.com/@sonnyfodera"
 		"Sophia Alexa":                                "https://www.youtube.com/@SophiaAlexa"
 		"Sophie Lloyd":                                "https://www.youtube.com/@SophieLloyd"
 		"South Arcade":                                "https://www.youtube.com/@southarcadeuk"
