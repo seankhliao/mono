@@ -2250,7 +2250,7 @@ Events: [{
 		the joy she shows when the crowd also forgets the lyrics to another song
 		makes it much more human.
 		"""
-	price: "58.2"
+	price: 58.2
 }, {
 	_date: "2022-07-26"
 	name:  "The Seagull"

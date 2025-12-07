@@ -36,6 +36,10 @@ import "time"
 		support?: [...string]
 		name:  string | *headline
 		text?: string
+
+		price?:     number
+		price_jpy?: number
+		price_usd?: number
 	}]
 	Links: {
 		_ignore: [...string]
