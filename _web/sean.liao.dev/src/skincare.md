@@ -54,7 +54,8 @@ Lips still end up dry after a few hours.
 
 ###### Rohto Mentholatum Medicated Lip Stick
 
-It's really stiff? and hard to get it to rub off on my lips.
+It's really stiff at first, though seems to be better after some use.
+Still hard to get it to rub off on my lips, especially when wet.
 It also has that intense cooling feeling when you put it on.
 
 #### moisturizers
@@ -71,8 +72,8 @@ Doesn't seem to do much for me.
 
 ###### The Ordinary Retinol 1% in Squalane
 
-Skin is really sensitive to this...
-Effects not clear.
+Skin is really sensitive to this,
+use too much and the skin peels.
 
 ###### The Ordinary Niacinamide 10% + Zinc 1%
 
@@ -80,7 +81,8 @@ It does give a soothing feel.
 
 ###### Rohto Mentholatum Melano CC Vitamin C Brightening Premium Essence
 
-I think it does work to a degree.
+I think it does work to a degree if used consistently.
+No immediate impact though.
 
 ###### Lion Pair Acne Cream
 
