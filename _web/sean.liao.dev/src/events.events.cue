@@ -11,36 +11,50 @@ Description: """
 Events: [{
 	_date:    "2026-09-13"
 	headline: "Evanescence"
+	price:    81.30
 }, {
 	_date:    "2026-04-20"
 	headline: "Maggie Lindemann"
+	price:    34.60
 }, {
 	_date:    "2026-03-22"
 	headline: "Ari Abdul"
+	price:    27.04
 }, {
 	_date:    "2026-03-17"
 	headline: "KESHA"
+	price:    55.30
 }, {
 	_date:    "2026-03-10"
 	headline: "Poppy"
+	price:    43.85
 }, {
 	_date:    "2026-02-20"
 	headline: "Ashnikko"
+	price:    44.55
 }, {
 	_date:    "2026-02-03"
 	headline: "Halsey"
+	price:    61.62
 }, {
 	_date:    "2026-02-01"
 	headline: "ExWHYZ"
+	price:    29.87
 }, {
-	_date: "2026-01-18"
-	name:  "hololive 3rd Generation Live #OperationHeartfulCuties"
+	_date:     "2026-01-18"
+	name:      "hololive 3rd Generation Live #OperationHeartfulCuties"
+	price_jpy: 15326
+	price:     73.95
 }, {
-	_date:    "2026-01-11"
-	headline: "Tokino Sora"
+	_date: "2026-01-11"
+	name:  "Tokino Sora New Year's Party 2026「Dreams in Motion」"
+	support: ["Tokino Sora"]
+	price_jpy: 16800
+	price:     81.06
 }, {
 	_date: "2025-12-31"
 	name:  "The Mayor of London's New Year's Eve Fireworks"
+	price: 37.66
 }, {
 	_date: "2025-12-06"
 	name:  "Capital's Jingle Bell Ball"
@@ -66,6 +80,7 @@ Events: [{
 		And now I finally see why [Ed Sheeran] was advertised as a one man band,
 		it's just him, some instruments, and a loop station.
 		"""
+	price: 114.57
 }, {
 	_date:    "2025-12-02"
 	headline: "Isabel LaRosa"
@@ -79,6 +94,7 @@ Events: [{
 		The lighting was really on point,
 		though there's certainly a gulf between the popular songs and the rest.
 		"""
+	price: 36.21
 }, {
 	_date: "2025-11-25"
 	name:  "MION"
@@ -88,6 +104,7 @@ Events: [{
 		Music wise, it felt like a mix of the more touching original songs
 		and rowdy covers of anime songs...
 		"""
+	price: 33.22
 }, {
 	_date:    "2025-11-19"
 	headline: "6arelyhuman"
@@ -97,6 +114,7 @@ Events: [{
 		Jump with the music and blend in?
 		Looks alt, but the music wasn't revolutionary.
 		"""
+	price: 30.50
 }, {
 	_date:    "2025-11-18"
 	headline: "Bastille"
@@ -108,6 +126,7 @@ Events: [{
 		[Bastille] was decent, though I realized I only knew like 2 songs of theirs.
 		They were much more instrumental(?) than I remembered or usually go for.
 		"""
+	price: 62.50
 }, {
 	_date:    "2025-11-16"
 	headline: "Lorde"
@@ -125,6 +144,7 @@ Events: [{
 		The stage was also minimalist and modern, bringing the light fixtures front and center.
 		It felt as if it was saying you didn't need anything else, just [Lorde] was enough.
 		"""
+	price: 136.00
 }, {
 	_date:    "2025-11-15"
 	headline: "Billie Marten"
@@ -134,6 +154,7 @@ Events: [{
 		calm, laid back chill music.
 		Not exciting, just something nice to relax to for the evening.
 		"""
+	price: 31.90
 }, {
 	_date:    "2025-11-07"
 	headline: "HANABIE"
@@ -150,6 +171,7 @@ Events: [{
 		it was hot and sweaty.
 		Music wise, it was fun, though honestly difficult to focus or hear clearly.
 		"""
+	price: 37.25
 }, {
 	_date:    "2025-11-05"
 	headline: "Zara Larsson"
@@ -164,6 +186,7 @@ Events: [{
 		Her vocal range was impressive...
 		but a bit lacking in something to hook you.
 		"""
+	price: 47.20
 }, {
 	_date: "2025-10-31"
 	name:  "Pop Crypt London"
@@ -172,6 +195,7 @@ Events: [{
 		I didn't quite know what to expect from a night of DJ,
 		but I guess it's electronicish music where you try to move around?
 		"""
+	price: 33.33
 }, {
 	_date:    "2025-10-30"
 	headline: "As December Falls"
@@ -186,6 +210,7 @@ Events: [{
 		both the music style and visuals as well.
 		Also, the insane rate of crowdsurfing was something I'd never seen before.
 		"""
+	price: 22.00
 }, {
 	_date:    "2025-10-28"
 	headline: "Blackbriar"
@@ -204,6 +229,7 @@ Events: [{
 		beard and hair swinging(?)
 		And I might want red/pink hair again...
 		"""
+	price: 29.57
 }, {
 	_date:    "2025-10-27"
 	headline: "From Fall to Spring"
@@ -226,6 +252,7 @@ Events: [{
 		and then it tapered off as i started to feel a bit numb to the music...
 		They weren't bad, just didn't get me to stay hooked.
 		"""
+	price: 22.00
 }, {
 	_date: "2025-10-25"
 	name:  "MCM London Comic Con"
@@ -242,6 +269,7 @@ Events: [{
 		but nothing that really screamed 2025.
 		Well I guess Uma Musume cosplays count.
 		"""
+	price: 37.00
 }, {
 	_date:    "2025-10-24"
 	headline: "Hitsujibungaku"
@@ -255,6 +283,7 @@ Events: [{
 		I did recognize a few of their songs,
 		but it felt like it was more for the vibe.
 		"""
+	price: 35.55
 }, {
 	_date:    "2025-10-16"
 	headline: "Marie Kondo"
@@ -265,6 +294,7 @@ Events: [{
 		but it was a chance to see her talk in person,
 		see what excites her, and how she carries herself (quite gracefully).
 		"""
+	price: 59.95
 }, {
 	_date: "2025-10-15"
 	name:  "Grand Sumo Tournament"
@@ -280,6 +310,7 @@ Events: [{
 		Or maybe it was just over too quickly,
 		compared to how much ceremony was in the build up.
 		"""
+	price: 207.27
 }, {
 	_date:    "2025-10-14"
 	headline: "Katy Perry"
@@ -298,6 +329,7 @@ Events: [{
 		and usually for the end you get your best hits,
 		and we did, but the energy never felt quite as high as the opening.
 		"""
+	price: 76.50
 }, {
 	_date:    "2025-10-04"
 	headline: "Mae Muller"
@@ -314,6 +346,7 @@ Events: [{
 		good to go along with,
 		but nothing that shakes you to your core.
 		"""
+	price: 25.11
 }, {
 	_date:    "2025-10-02"
 	headline: "MØ"
@@ -330,6 +363,7 @@ Events: [{
 		It's the party that doesn't tip over into crazy,
 		but still fun.
 		"""
+	price: 28.05
 }, {
 	_date: "2025-09-27"
 	name:  "Margins United Festival"
@@ -343,6 +377,7 @@ Events: [{
 		The dance was slightly robotic, but I think that was the intended effect.
 		What I can't forget were the cuteness(?) in her eyes...
 		"""
+	price: 44.06
 }, {
 	_date:    "2025-09-16"
 	headline: "Au/Ra"
@@ -356,6 +391,7 @@ Events: [{
 		and I felt like there were quite a few songs I hadn't heard before,
 		but it just sounded so good.
 		"""
+	price: 19.05
 }, {
 	_date:    "2025-09-15"
 	headline: "MARiMARi"
@@ -364,6 +400,7 @@ Events: [{
 		[MARiMARi], a night of electronic pop music?
 		there was a voice modulator so I wasn't quite sure what the real voice sounded like.
 		"""
+	price: 10.71
 }, {
 	_date: "2025-09-13"
 	name:  "Sabrage"
@@ -376,6 +413,7 @@ Events: [{
 		with more implied nudity,
 		though I doubt if anyone was in the mood.
 		"""
+	price: 45.00
 }, {
 	_date: "2025-08-24"
 	name:  "ALL FOR ONE hololive English 3rd Concert"
@@ -413,6 +451,8 @@ Events: [{
 		with the highest rate of light stick shaking I've ever seen
 		(it felt like 99%...).
 		"""
+	price_usd: 298.11
+	price:     221.43
 }, {
 	_date:    "2025-08-16"
 	headline: "Blackpink"
@@ -424,6 +464,7 @@ Events: [{
 		but not amazing.
 		The solos felt comparatively weak.
 		"""
+	price: 169.65
 }, {
 	_date:    "2025-07-23"
 	headline: "Pure Chlorine"
@@ -433,6 +474,7 @@ Events: [{
 		_Anti Virus_ was metal(?) in Portuguese,
 		[Pure Chlorine] was decent for a small band.
 		"""
+	price: 11.00
 }, {
 	_date: "2025-07-22"
 	name:  "The Empire Strips Back: A Burlesque Parody"
@@ -447,6 +489,7 @@ Events: [{
 		The audience was much more diverse than I expected,
 		but I guess that's what you get for a more tame show?
 		"""
+	price: 31.03
 }, {
 	_date:    "2025-07-20"
 	headline: "Isiliel"
@@ -454,6 +497,7 @@ Events: [{
 		[Isiliel] was good metal I think.
 		Nothing revolutionary... just good.
 		"""
+	price: 16.16
 }, {
 	_date:    "2025-07-17"
 	headline: "Billie Eilish"
@@ -468,6 +512,7 @@ Events: [{
 		or at least less screaming teens,
 		more girls in their 20s?
 		"""
+	price: 148.2
 }, {
 	_date: "2025-07-16"
 	name:  "Rokusan Angel"
@@ -488,6 +533,8 @@ Events: [{
 		there were more still that came through the crowd,
 		and danced right in front of you taking your whole attention.
 		"""
+	price_jpy: 8500
+	price:     42.76
 }, {
 	_date: "2025-07-15"
 	name:  "Aurora supported by 脱却"
@@ -503,6 +550,7 @@ Events: [{
 		[finally] was very intense, getting the whole room to join in with dances.
 		[月刊PAM] was fine, but didn't quite hook me.
 		"""
+	price: 126.25
 }, {
 	_date:    "2025-06-28"
 	headline: "Broken by the Scream"
@@ -515,6 +563,7 @@ Events: [{
 		with two members singing most of the melodies,
 		and two doing most of the screams and growls.
 		"""
+	price: 35.23
 }, {
 	_date:    "2025-06-19"
 	headline: "Ado"
@@ -551,6 +600,7 @@ Events: [{
 		Playing a sold out show at the O2 definitely felt like a milestone,
 		and I was really glad I could see it.
 		"""
+	price: 125
 }, {
 	_date:    "2025-06-16"
 	headline: "Mothica"
@@ -569,6 +619,7 @@ Events: [{
 		or sadness in prticular,
 		it just felt a bit off...
 		"""
+	price: 27.1
 }, {
 	_date:    "2025-06-14"
 	headline: "Ado"
@@ -602,6 +653,7 @@ Events: [{
 		quite raw in the emotions that Ado conveyed through her songs.
 		Definitely worth the flight over.
 		"""
+	price: 134.37
 }, {
 	_date:    "2025-06-09"
 	headline: "YOASOBI"
@@ -617,6 +669,7 @@ Events: [{
 		Ikura really exuded a mix of bubbly, cute yet cool superstar vibe
 		where a full arena is her natural habitat.
 		"""
+	price: 90.25
 }, {
 	_date:    "2025-06-08"
 	headline: "YOASOBI"
@@ -633,6 +686,7 @@ Events: [{
 		Ayase mostly stuck around his console,
 		while [Lilas Ikuta] moved around a lot more.
 		"""
+	price: 246
 }, {
 	_date: "2025-06-06"
 	name:  "Wack in the UK vol 6"
@@ -649,6 +703,7 @@ Events: [{
 		[ZOCX] rounded out the night,
 		quite sparkly and also raspy singing?
 		"""
+	price: 35.23
 }, {
 	_date: "2025-06-05"
 	name:  "Wack in the UK vol 6"
@@ -666,6 +721,7 @@ Events: [{
 		I'd forgotten I'd seen [ExWHYZ] before,
 		they felt like the more elegant of the set.
 		"""
+	price: 35.23
 }, {
 	_date:    "2025-06-04"
 	headline: "Nessa Barrett"
@@ -678,6 +734,7 @@ Events: [{
 		The audience sing-a-long was strong...
 		maybe a bit too strong that it masked Nessa's voice.
 		"""
+	price: 95.15
 }, {
 	_date:    "2025-05-30"
 	headline: "BABYMETAL"
@@ -696,6 +753,7 @@ Events: [{
 		I think they were aiming for the contrast in kawaii metal,
 		and hit it well.
 		"""
+	price: 71.35
 }, {
 	_date:    "2025-05-03"
 	headline: "Aurora"
@@ -712,6 +770,7 @@ Events: [{
 		Her chats are also interesting,
 		meandering, and quirky, but unforced.
 		"""
+	price: 44
 }, {
 	_date:    "2025-05-01"
 	headline: "ARTMS"
@@ -722,6 +781,7 @@ Events: [{
 		though it felt like a very formulaic kpop show (which is mostly dancing...)
 		and padded out by long video interludes.
 		"""
+	price: 56.57
 }, {
 	_date:    "2024-04-25"
 	headline: "RedHook"
@@ -733,6 +793,7 @@ Events: [{
 		with a mosh pit taking up most of the room,
 		and the singer dancing on the bar top.
 		"""
+	price: 19.64
 }, {
 	_date:    "2025-04-17"
 	headline: "The Warning"
@@ -746,6 +807,7 @@ Events: [{
 		the first half hour didn't sound too distinctive,
 		but they certainly got better towards the end.
 		"""
+	price: 38.1
 }, {
 	_date: "2025-04-02"
 	name:  "My Neighbour Totoro"
@@ -756,6 +818,7 @@ Events: [{
 		Compared to Spirited Away, [My Neighbour Totoro] was more lighthearted,
 		and maybe a bit too comedic.
 		"""
+	price: 113
 }, {
 	_date:    "2025-03-31"
 	headline: "Ichiko Aoba"
@@ -763,6 +826,7 @@ Events: [{
 		[Ichiko Aoba] presented us with a calming, set of sounds,
 		evoking thoughts of nature, and desires to sleep....
 		"""
+	price: 46
 }, {
 	_date: "2025-03-28"
 	name:  "Brie Larson is Elektra"
@@ -771,6 +835,7 @@ Events: [{
 		New, experimental theatre,
 		but.... very meh.
 		"""
+	price: 95
 }, {
 	_date:    "2025-03-27"
 	headline: "NERIAH"
@@ -780,6 +845,7 @@ Events: [{
 		I think I knew more of [NERIAH]'s songs than I realized,
 		though I wonder how much of it was spotify's related songs.
 		"""
+	price: 23.1
 }, {
 	_date: "2025-03-26"
 	name:  "WACK in the UK vol 5"
@@ -795,6 +861,7 @@ Events: [{
 		support: all the energetic dancing,
 		I think everyone was hot and sweaty...
 		"""
+	price: 35.23
 }, {
 	_date:    "2025-03-25"
 	headline: "tiLLie"
@@ -803,6 +870,7 @@ Events: [{
 		[BEX] sounded quite different than what I thought [tiLLie] was.
 		Both were decent small shows.
 		"""
+	price: 20.5
 }, {
 	_date:    "2025-03-14"
 	headline: "South Arcade"
@@ -819,6 +887,7 @@ Events: [{
 
 		[South Arcade]
 		"""
+	price: 21.37
 }, {
 	_date:    "2025-03-13"
 	headline: "Clairo"
@@ -832,6 +901,7 @@ Events: [{
 		It felt like a recording studio, or old jazz show?
 		Quite cozy and relaxing.
 		"""
+	price: 46.37
 }, {
 	_date: "2025-03-11"
 	name:  "Drum Tao"
@@ -843,6 +913,7 @@ Events: [{
 		2 hours of various drums, flutes, and some dancing.
 		It was energetic, and the performers genuinely looked really happy to be there.
 		"""
+	price: 45.00
 }, {
 	_date:    "2025-03-01"
 	headline: "Natalie Jane"
@@ -854,6 +925,7 @@ Events: [{
 		and I only recognized the last song,
 		repeated as the encore.
 		"""
+	price: 32.5
 }, {
 	_date:    "2025-02-28"
 	headline: "Clean Bandit"
@@ -865,6 +937,7 @@ Events: [{
 		The new songs sounded good,
 		but of course, it's the old ones that gets everyone excited.
 		"""
+	price: 40
 }, {
 	_date:    "2025-02-26"
 	headline: "Emei"
@@ -879,6 +952,7 @@ Events: [{
 		though I don't know what or why they fired something into the crowd.
 		A+ audience interaction otherwise.
 		"""
+	price: 33
 }, {
 	_date:    "2025-02-25"
 	headline: "Pretty Guardian Sailor Moon: The Super Live"
@@ -892,6 +966,7 @@ Events: [{
 		it was decently entertaining.
 		It did have a bit of an old school comic vibe...
 		"""
+	price: 52.75
 }, {
 	_date: "2025-02-23"
 	name:  "Cirque du Soleil: Corteo"
@@ -902,6 +977,7 @@ Events: [{
 		though I didn't really understand the storyline.
 		I liked the aerial acrobatics the best.
 		"""
+	price: 101
 }, {
 	_date:    "2025-02-20"
 	headline: "Deyyess"
@@ -909,6 +985,7 @@ Events: [{
 	text: """
 		Fine?
 		"""
+	price: 14.03
 }, {
 	_date:    "2025-02-19"
 	headline: "Phantom Siita"
@@ -925,6 +1002,7 @@ Events: [{
 		I remember a comment from someone next to me:
 		"their bangs don't move at all".
 		"""
+	price: 48.95
 }, {
 	_date:    "2025-02-14"
 	headline: "ANKOR"
@@ -933,6 +1011,7 @@ Events: [{
 		They're decent, though didn't leave any particularly lasting impression.
 		It was only when [ANKOR] described themselves that I learned I was listening to metal...
 		"""
+	price: 28.05
 }, {
 	_date:    "2025-02-12"
 	headline: "kikuo"
@@ -945,6 +1024,7 @@ Events: [{
 		showing off 2 of their "most unpopular, underarted" songs.
 		Towards the end, I snapped back to attention when I heard the one song that I knew.
 		"""
+	price: 30.09
 }, {
 	_date:    "2024-11-29"
 	headline: "renforshort"
@@ -958,6 +1038,7 @@ Events: [{
 		and the positivity I felt was quite energizing.
 		I think it was a wonderful show to end this year with for me.
 		"""
+	price: 17.96
 }, {
 	_date: "2024-11-27"
 	name:  "WACK in the UK Vol 4"
@@ -974,6 +1055,7 @@ Events: [{
 		The music was decent though I caught myself drifting off
 		despite how loud and energetic it was.
 		"""
+	price: 35.23
 }, {
 	_date:    "2024-11-15"
 	headline: "UPSAHL"
@@ -993,6 +1075,7 @@ Events: [{
 		Ok, she got me, the second half was a lot warmer,
 		a lot more like what I remembered.
 		"""
+	price: 22.55
 }, {
 	_date:    "2024-11-02"
 	headline: "KAMELOT"
@@ -1008,6 +1091,7 @@ Events: [{
 		but it felt like a different genre?
 		[KAMELOT] was fine, very flashy too with lots of smoke and flames.
 		"""
+	price: 44.55
 }, {
 	_date:    "2024-10-26"
 	headline: "Hatsune Miku"
@@ -1022,6 +1106,7 @@ Events: [{
 		and wouldn't be limited by real world physics.
 		As it stands, it's like a real concert, but the lead vocals is... virtual.
 		"""
+	price: 73
 }, {
 	_date: "2024-10-25"
 	name:  "MCM London Comic Con"
@@ -1048,6 +1133,7 @@ Events: [{
 		- Ciri was also quite recognizable
 		- Makima seemed difficult for a lot people to pull of properly
 		"""
+	price: 102.90
 }, {
 	_date:    "2024-10-23"
 	headline: "Isabel LaRosa"
@@ -1055,6 +1141,7 @@ Events: [{
 		[Isabel LaRosa] was a bit less dreamy than in the recordings.
 		It felt a bit like yet another pop show...
 		"""
+	price: 31.25
 }, {
 	_date:    "2024-10-11"
 	headline: "ONE OK ROCK"
@@ -1068,6 +1155,7 @@ Events: [{
 		I probably liked the guitarist more than the vocalist...
 		Plus, there was a surprise appearance from [Ed Sheeran].
 		"""
+	price: 49.8
 }, {
 	_date:    "2024-10-04"
 	headline: "Visions of Atlantis"
@@ -1081,6 +1169,7 @@ Events: [{
 		though maybe less singing and more pumping fists and shouting.
 		It was quite a melodic experience that reminded me of a turbulent ocean.
 		"""
+	price: 31.83
 }, {
 	_date:    "2024-10-02"
 	headline: "Aurora"
@@ -1093,6 +1182,7 @@ Events: [{
 		The dreamy style did fall away towards the end with a more joyous
 		celebration of... something.
 		"""
+	price: 69.95
 }, {
 	_date:    "2024-09-03"
 	headline: "girl in red"
@@ -1109,6 +1199,7 @@ Events: [{
 		and with a crowd that was majority female,
 		I could actually see the stage.
 		"""
+	price: 46.75
 }, {
 	_date: "2024-08-28"
 	name:  "WACK in the UK Vol 3"
@@ -1130,6 +1221,7 @@ Events: [{
 		and a bit hard to focus on specific people.
 		Visually, coordinated and... hardcore?
 		"""
+	price: 35.23
 }, {
 	_date: "2024-08-04"
 	name:  "Animangapop London"
@@ -1138,6 +1230,7 @@ Events: [{
 		but also with a much younger crowd of what looked like mostly teens
 		doing the cosplay?
 		"""
+	price: 22.73
 }, {
 	_date: "2024-07-21"
 	name:  "Hyper Japan Festival 2024"
@@ -1164,6 +1257,7 @@ Events: [{
 		My Dress Up Darling,
 		her cosplay skills were quite on point channelling Marin Kitagawa.
 		"""
+	price: 35.23
 }, {
 	_date:    "2024-07-03"
 	headline: "Against the Current"
@@ -1183,6 +1277,7 @@ Events: [{
 		this set drew from the best,
 		and further back in the past as well.
 		"""
+	price: 34.95
 }, {
 	_date:    "2024-06-21"
 	headline: "Charlotte Sands"
@@ -1194,6 +1289,7 @@ Events: [{
 		and [Charlotte Sands] was more heavy into rock (I think).
 		Quite the energetic night, I think I missed being on the floor in the front.
 		"""
+	price: 16.5
 }, {
 	_date:    "2024-06-18"
 	headline: "AViVA"
@@ -1204,6 +1300,7 @@ Events: [{
 		I guess I liked the studio versions better?
 		I couldn't really tell what exactly I was listening to.
 		"""
+	price: 16.75
 }, {
 	_date:    "2024-06-16"
 	headline: "IVE"
@@ -1216,6 +1313,7 @@ Events: [{
 		Of course, being kpop, the visuals were probably the important part
 		and they didn't disappoint either.
 		"""
+	price: 132.68
 }, {
 	_date:    "2024-06-10"
 	headline: "ATARASHII GAKKO!"
@@ -1227,6 +1325,7 @@ Events: [{
 		I think the visual component was a big part of it,
 		not just the sound.
 		"""
+	price: 37
 }, {
 	_date: "2024-05-29"
 	name:  "Spirited Away"
@@ -1239,6 +1338,7 @@ Events: [{
 		Still it was pretty good.
 		[Kanna Hashimoto] as Chihiro, [Kotaro Daigo] as Haku.
 		"""
+	price: 116
 }, {
 	_date:    "2024-05-28"
 	headline: "Allie X"
@@ -1246,6 +1346,7 @@ Events: [{
 		Electronic music?
 		_Allie X_ was certainly interesting.
 		"""
+	price: 29.65
 }, {
 	_date: "2024-05-01"
 	name:  "Spirited Away"
@@ -1264,6 +1365,7 @@ Events: [{
 		The fact that the puppeteers didn't hide at all were an endearing part of the show.
 		[Mone Kamishiraishi] as Chihiro, [Kotaro Daigo] as Haku.
 		"""
+	price: 124
 }, {
 	_date:    "2024-04-24"
 	headline: "ITZY"
@@ -1275,6 +1377,7 @@ Events: [{
 		The performance itself was quite glitzy,
 		with every part choreograhed with good dances.
 		"""
+	price: 78.6
 }, {
 	_date:    "2024-04-23"
 	headline: "Tate McRae"
@@ -1289,6 +1392,7 @@ Events: [{
 		It was interesting to see there was a fan in the center to make her hair flow in the wind,
 		really reinforcing the glamour look.
 		"""
+	price: 99.62
 }, {
 	_date:    "2024-03-25"
 	headline: "Madison Beer"
@@ -1300,6 +1404,7 @@ Events: [{
 		which I felt was a bit unique compared to all the other shows
 		I've recently seen.
 		"""
+	price: 55.74
 }, {
 	_date:    "2024-03-19"
 	headline: "Cannons"
@@ -1310,6 +1415,7 @@ Events: [{
 		It wasn't intense, but still had a positive, upbeat feel.
 		I was honestly surprised that not many people seemed to be dancing...
 		"""
+	price: 18.95
 }, {
 	_date:    "2024-03-09"
 	headline: "Cloudy June"
@@ -1321,6 +1427,7 @@ Events: [{
 		but this set was mostly fairly energetic.
 		Though the lighting was bad when I wanted to get pictures...
 		"""
+	price: 23.35
 }, {
 	_date:    "2024-02-29"
 	headline: "RØRY"
@@ -1329,6 +1436,7 @@ Events: [{
 		Sadcore? I guess that's the genre we're in now.
 		[RØRY] was interesting but it just never felt quite aligned to what i was feeling.
 		"""
+	price: 20.6
 }, {
 	_date:    "2024-02-22"
 	headline: "Zara Larsson"
@@ -1345,6 +1453,7 @@ Events: [{
 		both on the stage and in the crowds.
 		So fun.
 		"""
+	price: 45.35
 }, {
 	_date:    "2024-02-20"
 	headline: "Poppy"
@@ -1361,6 +1470,7 @@ Events: [{
 		The dancing felt a bit in the uncanny valley,
 		but overall a pretty good time.
 		"""
+	price: 38.75
 }, {
 	_date:    "2024-02-16"
 	headline: "Alessandra"
@@ -1370,6 +1480,7 @@ Events: [{
 		It was good, though not particularly special,
 		just an energetic night out.
 		"""
+	price: 17.85
 }, {
 	_date: "2024-01-26"
 	name:  "Mystery Ensemble"
@@ -1379,6 +1490,7 @@ Events: [{
 		most of it.
 		At least it was mostly pleasant.
 		"""
+	price: 22.38
 }, {
 	_date:    "2023-12-16"
 	headline: "FEMM"
@@ -1390,6 +1502,7 @@ Events: [{
 		support: their last show outside of Japan,
 		the crowd was a bit smaller than expected, though there was an afternoon show as well.
 		"""
+	price: 25.25
 }, {
 	_date:    "2023-12-09"
 	headline: "Halestorm"
@@ -1406,6 +1519,7 @@ Events: [{
 		no need for flashy stage props,
 		just a clean, empty stage, with lights and music.
 		"""
+	price: 47.7
 }, {
 	_date: "2023-12-08"
 	name:  "Communion Xmas Party"
@@ -1421,6 +1535,7 @@ Events: [{
 		[Maisie Peters] was awesome as always,
 		[Lucia] was someone I might consider listening to again.
 		"""
+	price: 38.5
 }, {
 	_date:    "2023-12-01"
 	headline: "Against the Current"
@@ -1439,6 +1554,7 @@ Events: [{
 		the song that made me think: "i wonder who's behind this",
 		and pick up on music as a thing.
 		"""
+	price: 32.85
 }, {
 	_date:    "2023-11-30"
 	headline: "Ashnikko"
@@ -1452,6 +1568,7 @@ Events: [{
 		and even jumped around a bit.
 		Very fun.
 		"""
+	price: 34.5
 }, {
 	_date:    "2023-11-24"
 	headline: "Chloe Adams"
@@ -1464,6 +1581,7 @@ Events: [{
 		the live version did not disappoint
 		(though the crowd was much smaller and quieter than I expected).
 		"""
+	price: 14.55
 }, {
 	_date:    "2023-11-20"
 	headline: "Echosmith"
@@ -1484,6 +1602,7 @@ Events: [{
 		Soft pop/rock, it felt like a gentle embrace,
 		and throwback to a more carefree time.
 		"""
+	price: 17.85
 }, {
 	_date:    "2023-11-09"
 	headline: "Melanie Martinez"
@@ -1505,6 +1624,7 @@ Events: [{
 		and the use of the digital backdrop in combination with physical setpieces
 		was quite impressive.
 		"""
+	price: 79.5
 }, {
 	_date:    "2023-11-03"
 	headline: "Maisie Peters"
@@ -1520,6 +1640,7 @@ Events: [{
 		but in a richer kind of way,
 		and I was pleasantly surprised by how many songs I knew.
 		"""
+	price: 37.75
 }, {
 	_date:    "2023-11-02"
 	headline: "Fall Out Boy"
@@ -1539,6 +1660,7 @@ Events: [{
 		there was quite a bit I've never hear of,
 		the ones I knew were just the popular ones that bookended the set.
 		"""
+	price: 77.05
 }, {
 	_date:    "2023-10-25"
 	headline: "DeathbyRomy"
@@ -1549,6 +1671,7 @@ Events: [{
 		I obviously hadn't gone through [DeathbyRomy]'s discography beforehand,
 		but it was still an interesting evening of loud alt music.
 		"""
+	price: 17.85
 }, {
 	_date:    "2023-10-03"
 	headline: "ari abdul"
@@ -1559,6 +1682,7 @@ Events: [{
 		There was definitely a difference between the sweet quiet parts
 		and the louder, coarser parts we don't get in the recorded version.
 		"""
+	price: 21.43
 }, {
 	_date:    "2023-09-13"
 	headline: "eundohee"
@@ -1570,6 +1694,7 @@ Events: [{
 		it felt calm and relaxing, giving off ocean or forest vibes.
 		[eundohee] was ok? It took a bit for me to catch on what language I was listening to...
 		"""
+	price: 8.80
 }, {
 	_date: "2023-09-07"
 	name:  "flamenco"
@@ -1577,6 +1702,7 @@ Events: [{
 		Lively, and loud clapping,
 		but I can't say I understood the singing parts.
 		"""
+	price: 29.98
 }, {
 	_date:    "2023-08-29"
 	headline: "UPSAHL"
@@ -1593,6 +1719,7 @@ Events: [{
 		there's definitely peer (crowd?) pressure to join in,
 		plus you get to have Taylor lean into your personal space...
 		"""
+	price: 17.96
 }, {
 	_date: "2023-08-28"
 	name:  "All Points East"
@@ -1616,6 +1743,7 @@ Events: [{
 		I didn't really know their songs,
 		but it was still enjoyable.
 		"""
+	price: 71.40
 }, {
 	_date: "2023-08-19"
 	name:  "Field Day"
@@ -1625,6 +1753,7 @@ Events: [{
 		and things I didn't,
 		but it did sort of all blur together a bit too much.
 		"""
+	price: 85.30
 }, {
 	_date: "2023-07-04"
 	name:  "Oslo Danse Ensemble"
@@ -1639,6 +1768,7 @@ Events: [{
 		with a bit more focus on expression,
 		and less on precision choreography.
 		"""
+	price: 11.09
 }, {
 	_date:    "2023-07-02"
 	headline: "Blackpink"
@@ -1665,6 +1795,7 @@ Events: [{
 		and the visuals were over the top in a good way.
 		High production at its best.
 		"""
+	price: 93.30
 }, {
 	_date:    "2023-06-20"
 	headline: "Beth McCarthy"
@@ -1673,6 +1804,7 @@ Events: [{
 		I think the music for the night was fine.
 		[Beth McCarthy] was palpably excited.
 		"""
+	price: 15.10
 }, {
 	_date:    "2023-06-13"
 	headline: "Taylor Acorn"
@@ -1682,6 +1814,7 @@ Events: [{
 		I don't think I've heard much of [Taylor Acorn] songs before then,
 		but it was good fun for the night.
 		"""
+	price: 19.86
 }, {
 	_date:    "2023-06-09"
 	headline: "PRINS"
@@ -1692,6 +1825,7 @@ Events: [{
 		Catchy and energetic,
 		with a cooperative audience that danced along.
 		"""
+	price: 13.00
 }, {
 	_date:    "2023-06-06"
 	headline: "Royal Philharmonic Orchestra"
@@ -1706,6 +1840,7 @@ Events: [{
 		To top it off was the ethereal voice of [Aisling McGlynn]
 		for some truly memorable songs.
 		"""
+	price: 21.4
 }, {
 	_date:    "2023-06-03"
 	headline: "PVRIS"
@@ -1716,6 +1851,7 @@ Events: [{
 		And the contrast between her voice in talking (soothing),
 		and singing (strong?), is just so cute.
 		"""
+	price: 14.50
 }, {
 	_date: "2023-05-27"
 	name:  "Slam Dunk Festival"
@@ -1735,6 +1871,7 @@ Events: [{
 		maybe I was too far on the edge but the crowd didn't feel as into it,
 		but I enjoyed it.
 		"""
+	price: 99.40
 }, {
 	_date:    "2023-05-25"
 	headline: "Cherry Dream"
@@ -1744,6 +1881,7 @@ Events: [{
 		or staff.
 		Slightly uncomfortable experience tbh.
 		"""
+	price: 8.00
 }, {
 	_date:    "2023-05-17"
 	headline: "Nessa Barrett"
@@ -1756,6 +1894,7 @@ Events: [{
 		and the audience sang along for almost all of it.
 		An experience for sure.
 		"""
+	price: 21.70
 }, {
 	_date:    "2023-05-09"
 	headline: "Avril Lavigne"
@@ -1774,6 +1913,7 @@ Events: [{
 		Every song was a hit,
 		and i think this ranks among the best show i've been to this year along with [PVRIS].
 		"""
+	price: 169.7
 }, {
 	_date: "2023-04-30"
 	name:  "Harvey Parker trust: love in mind"
@@ -1789,6 +1929,7 @@ Events: [{
 		It was a full, rich sound,
 		but I can't help but feel the distinctness I expected was drowned out by everything else.
 		"""
+	price: 35.00
 }, {
 	_date:    "2023-04-26"
 	headline: "girli"
@@ -1800,6 +1941,7 @@ Events: [{
 		with contrast between the quiet and loud parts.
 		It was... therapeutic.
 		"""
+	price: 20.05
 }, {
 	_date:    "2023-04-22"
 	headline: "Delain"
@@ -1814,6 +1956,7 @@ Events: [{
 		less contrasty affair.
 		Popular sounding, but less distinct.
 		"""
+	price: 20.8
 }, {
 	_date:    "2023-04-19"
 	headline: "Ava Max"
@@ -1826,6 +1969,7 @@ Events: [{
 		with a heavy mix of backing vocals.
 		Oh, and for some reason, there was a dense population of gay male couples.
 		"""
+	price: 33.95
 }, {
 	_date:    "2023-04-15"
 	headline: "Skillet"
@@ -1840,6 +1984,7 @@ Events: [{
 		but somewhere around the halfway point,
 		they lost of a bit of momentum and never quite recovered.
 		"""
+	price: 45.20
 }, {
 	_date:    "2023-03-29"
 	headline: "Emlyn"
@@ -1854,6 +1999,7 @@ Events: [{
 		It felt a bit too much for a full night,
 		but it was great for the more popular songs where the audience sang along.
 		"""
+	price: 15.10
 }, {
 	_date:    "2023-02-17"
 	headline: "Anna of the North"
@@ -1867,6 +2013,7 @@ Events: [{
 		The only reason I'm here has been Youtube's constant recommendations of her music videos,
 		I guess they were worth it.
 		"""
+	price: 17.85
 }, {
 	_date:    "2023-02-16"
 	headline: "Zoey Lily"
@@ -1877,6 +2024,7 @@ Events: [{
 		Both [Elena Flury] and [Zoey Lily] had beautiful voices,
 		makes me want to look for more acoustic sessions.
 		"""
+	price: 13.75
 }, {
 	_date:    "2023-02-14"
 	headline: "Caroline Polachek"
@@ -1888,6 +2036,7 @@ Events: [{
 		As for the main event, [Caroline Polachek]
 		it felt good, but not amazingly memorable.
 		"""
+	price: 35.45
 }, {
 	_date:    "2023-02-11"
 	headline: "XYLØ"
@@ -1900,6 +2049,7 @@ Events: [{
 		Mostly what I remember from the released versions,
 		and it didn't hurt that I was right up at the edge of the stage.
 		"""
+	price: 15.25
 }, {
 	_date:    "2023-02-09"
 	headline: "Sonia Stein"
@@ -1910,6 +2060,7 @@ Events: [{
 		And finally, the star of the show, [Sonia Stein].
 		I think it was pretty much what I heard from spotify, but live.
 		"""
+	price: 15.25
 }, {
 	_date:    "2023-01-27"
 	headline: "Kimbra"
@@ -1920,6 +2071,7 @@ Events: [{
 		Also, quite a bit of talk about inner self and reflection,
 		but I guess that's par for the course for album launch events.
 		"""
+	price: 16.88
 }, {
 	_date:    "2023-01-26"
 	headline: "PVRIS"
@@ -1936,6 +2088,7 @@ Events: [{
 		It felt like every song was a hit,
 		bringing back good memories and making new ones.
 		"""
+	price: 36.40
 }, {
 	_date:    "2023-01-24"
 	headline: "Kings Elliot"
@@ -1953,6 +2106,7 @@ Events: [{
 		It rounded off the night so well,
 		like everything before but turned up to 11.
 		"""
+	price: 15.65
 }, {
 	_date: "2023-01-17"
 	name:  "Sofar Sounds"
@@ -1967,6 +2121,7 @@ Events: [{
 		but I did wonder if the tonal variations were in there just for the sake of it.
 		Also, way too loud with the audio systems turned up.
 		"""
+	price: 21.00
 }, {
 	_date:    "2022-12-09"
 	headline: "Pierce the Veil"
@@ -1980,6 +2135,7 @@ Events: [{
 		and it detracts from the experience a bit.
 		I also felt like [Against the Current] weren't quite all in for this show...
 		"""
+	price: 31.00
 }, {
 	_date:    "2022-12-03"
 	headline: "Halocene"
@@ -1991,6 +2147,7 @@ Events: [{
 		[Halflives]'s music seemed most aligned to my taste,
 		while [Halocene] seemed a bit more all over the place.
 		"""
+	price: 22.15
 }, {
 	_date:    "2022-11-24"
 	headline: "UPSAHL"
@@ -2001,6 +2158,7 @@ Events: [{
 		The live versions don't aim to be pitch perfect recreations of the studio versions,
 		but emotion filled variants enhanced by the stage presence.
 		"""
+	price: 17.45
 }, {
 	_date:    "2022-11-15"
 	headline: "Nina Nesbitt"
@@ -2009,6 +2167,7 @@ Events: [{
 		[Nina Nesbitt] counts as pop (I think), but it's slower than I expected.
 		Not bad, but not amazing either.
 		"""
+	price: 21.10
 }, {
 	_date:    "2022-11-10"
 	headline: "renforshort"
@@ -2021,6 +2180,7 @@ Events: [{
 		Maybe a bit of it is just standing in with the crowd instead of sitting up somewhere far away,
 		but I loved it either way.
 		"""
+	price: 19.25
 }, {
 	_date:    "2022-11-06"
 	headline: "Frayle"
@@ -2031,6 +2191,7 @@ Events: [{
 		For all 3 bands, many of the songs just felt the same,
 		with no real differentiation.
 		"""
+	price: 11.50
 }, {
 	_date:    "2022-11-05"
 	headline: "The Pretty Reckless"
@@ -2043,6 +2204,7 @@ Events: [{
 		I think this is the frequency I'm on, I havent changed much since I found them.
 		O2 Academy, circle front center off right.
 		"""
+	price: 38.25
 }, {
 	_date:    "2022-11-03"
 	headline: "The Rasmus"
@@ -2052,6 +2214,7 @@ Events: [{
 		The songs sound like they should have energy,
 		but I just wasn't really in tune with them.
 		"""
+	price: 34.5
 }, {
 	_date:    "2022-09-16"
 	headline: "BANKS"
@@ -2064,6 +2227,7 @@ Events: [{
 		Alternating between high energy and slow (love?) songs,
 		overall the show by [BANKS] a bit of a throwback for me (Gemini Feed).
 		"""
+	price: 31.26
 }, {
 	_date:    "2022-08-25"
 	headline: "Nadeah"
@@ -2072,6 +2236,7 @@ Events: [{
 		a little reminiscent of times past.
 		Halfway bwteen acoustic and rock.
 		"""
+	price: 12.5
 }, {
 	_date:    "2022-07-29"
 	headline: "London Grammar"
@@ -2081,6 +2246,7 @@ Events: [{
 		the joy she shows when the crowd also forgets the lyrics to another song
 		makes it much more human.
 		"""
+	price: "58.2"
 }, {
 	_date: "2022-07-26"
 	name:  "The Seagull"
@@ -2092,6 +2258,7 @@ Events: [{
 		There are no fancy settings,
 		just a box, chairs and actors who never leave the stage.
 		"""
+	price: 81.15
 }, {
 	_date:    "2022-06-29"
 	headline: "Billie Eilish"
@@ -2105,6 +2272,7 @@ Events: [{
 		maybe except when [Billie Eilish] stands to take in the adoration showered onto her.
 		Bonus points for coming out much closer to the crowds in a swinging crane arm.
 		"""
+	price: 129.25
 }, {
 	_date:    "2022-05-19"
 	headline: "Charli XCX"
@@ -2114,6 +2282,7 @@ Events: [{
 		[Charli XCX] polished high production with more focus on the performance and spectacle,
 		less on the music and crowd.
 		"""
+	price: 35.45
 }, {
 	_date:    "2022-05-15"
 	headline: "Fletcher"
@@ -2124,6 +2293,7 @@ Events: [{
 		[Fletcher] certainly knew who her fans were,
 		addressing the crowd directly.
 		"""
+	price: 29
 }, {
 	_date:    "2022-04-10"
 	headline: "Against the Current"
