@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"net/url"
 	"os"
 	"os/exec"
 	"path"
@@ -108,7 +109,7 @@ func runNew(evalFile io.Writer, base, srcPrefix, modPrefix, name string, jj bool
 	}
 
 	modName := path.Join(modPrefix, name)
-	srcName := path.Join(srcPrefix, name)
+	srcName, _ := url.JoinPath(srcPrefix, name)
 
 	cmd := exec.Command("go", "mod", "init", modName)
 	cmd.Dir = fp
