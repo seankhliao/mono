@@ -136,6 +136,7 @@ func runSync(stdout io.Writer, conf Config) error {
 	}
 	spin.FinalMSG = fmt.Sprintf("% 4d/% 4d Downloaded: %d, Updated: %d, Pruned: %d, Errors: %d",
 		totalWork, totalWork, len(download), len(update), len(prune), len(errs))
+	spin.Stop()
 
 	if len(errs) > 0 {
 		fmt.Fprintln(stdout, "Errors:", len(errs))
