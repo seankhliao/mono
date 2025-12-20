@@ -52,6 +52,7 @@ _completed: [
 	["2025-08-25", 8, 37435, ["Carole & Tuesday", "Carole & Tuesday"]],
 	["2024-06-20", 8, 44511, ["Chainsaw Man", "Chainsaw Man"], "**Makima** dominates, **Power** is playfully wild"],
 	["2024-09-27", 8, 52701, ["Dungeon Meshi", "Delicious in Dungeon"]],
+	["2025-12-25", 8, 57334, ["Dandada", "Dandadan"]],
 	["2024-05-27", 6, 52081, ["Edomae Elf", "Otaku Elf"]],
 	["2025-10-01", 7, 60508, ["Food Court de, Mata Ashita", "See You Tomorrow at the Food Court"]],
 	["2025-10-19", 8, 39545, ["Fragtime", "Fragtime"]],
