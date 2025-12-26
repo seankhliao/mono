@@ -2,12 +2,21 @@
   box-sizing: border-box;
 }
 :root {
+  --background: oklab(0 0 0);
+  --background-light: oklab(0.31 0 0);
+  --decoration: oklab(0.55 0 0);
+  --text-dark: oklab(0.68 0 0);
+  --text: oklab(0.95 0 0);
+  --primary: oklab(0.63 0.09 -0.15);
+
+/*
   --background: #000000;
   --background-light: #303030;
-  --primary: #a06be0;
-  --text: #eceff1;
-  --text-dark: #999999;
   --decoration: #707070;
+  --text-dark: #999999;
+  --text: #eceff1;
+  --primary: #a06be0;
+*/
 
   background: var(--background);
   color: var(--text);

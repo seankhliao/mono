@@ -76,7 +76,7 @@ func (r *Renderer) renderImage(w util.BufWriter, source []byte, node ast.Node, e
 	if strings.TrimSuffix(path.Base(dst), ext) == "map" {
 		extraAttrs = `width="1639" height="1080"`
 	}
-	fmt.Fprintf(w, `<img src=%q alt=%q %s loading="lazy" fetchpriority="low" style="background-color: #000">`+"\n",
+	fmt.Fprintf(w, `<img src=%q alt=%q %s loading="lazy" fetchpriority="low" style="background-color: oklch(0 0 0 / 0)">`+"\n",
 		strings.TrimSuffix(dst, ext)+".avif",
 		util.EscapeHTML(n.Title),
 		extraAttrs,
