@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"slices"
 	"sync"
 	"time"
 
@@ -71,9 +72,8 @@ func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*
 	}
 	spin.Stop()
 
-	for _, f := range toUpload {
-		fmt.Println("\t", f)
-	}
+	fmt.Println()
+	printUploaded(pathToHash, toUpload)
 
 	return nil
 }
@@ -108,6 +108,21 @@ func hashAndGzip(rendered map[string]*bytes.Buffer) (map[string]string, map[stri
 	}
 
 	return pathToHash, hashToGzip, nil
+}
+
+func printUploaded(pathToHash map[string]string, toUpload []string) {
+	uploaded := make([]string, 0, len(toUpload))
+	hashToPath := make(map[string]string, len(pathToHash))
+	for k, v := range pathToHash {
+		hashToPath[v] = k
+	}
+	for _, hash := range toUpload {
+		uploaded = append(uploaded, hashToPath[hash])
+	}
+	slices.Sort(uploaded)
+	for _, f := range uploaded {
+		fmt.Println("\t", f)
+	}
 }
 
 func createVersion(ctx context.Context, client *firebasehosting.Service, conf ConfigFirebase) (string, string, error) {
@@ -152,7 +167,7 @@ func getRequiredUploads(ctx context.Context, client *firebasehosting.Service, ve
 }
 
 func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClient *http.Client, version string, toUpload []string, uploadURL string, hashToGzip map[string]io.Reader, spin *spinner.Spinner) error {
-	maxUploads := 5
+	maxUploads := 10
 	sem := make(chan struct{}, maxUploads)
 	errc := make(chan error, 1)
 	var wg sync.WaitGroup
