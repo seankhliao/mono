@@ -10,6 +10,21 @@
 
 ###### _h6_ an **example** **_title_**
 
+###### colors
+
+<label for="color-background">background #000000 oklab(0 0 0 / 1)</label>
+<input type="color" id="color-background" colorspace="display-p3" value="#000000" alpha>
+<label for="color-background-light">background-light #303030 oklab(0.31 0 0 / 1)</label>
+<input type="color" id="color-background-light" colorspace="display-p3" value="#303030" alpha>
+<label for="color-decoration">decoration #707070 oklab(0.55 0 0 / 1)</label>
+<input type="color" id="color-decoration" colorspace="display-p3" value="#707070" alpha>
+<label for="color-text-dark">text-dark #999999 oklab(0.68 0 0 / 1)</label>
+<input type="color" id="color-text-dark" colorspace="display-p3" value="#999999" alpha>
+<label for="color-text">text #eceff1 oklab(0.95 0 0 / 1)</label>
+<input type="color" id="color-text" colorspace="display-p3" value="#eceff1" alpha>
+<label for="color-primary">primary #a06be0 oklab(0.63 0.09 -0.15 / 1)</label>
+<input type="color" id="color-primary" colorspace="display-p3" value="#a06be0" alpha>
+
 ###### title with custom id {#custom-id}
 
 Plain text [a link](./) `inline code` ~~strike text~~
