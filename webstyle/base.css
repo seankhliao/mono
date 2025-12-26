@@ -17,10 +17,23 @@
     monospace;
 }
 
+/* ==== optional light theme ====
+@media (prefers-color-scheme: light) {
+    :root {
+        --background: #eceff1;
+        --background-light: #cacccd;
+        --text: #000000;
+        --text-dark: #303030;
+    }
+}
+*/
+
+/* ==== smooth transition between pages ==== */
 @view-transition {
   navigation: auto;
 }
 
+/* ==== fonts ==== */
 @font-face {
   font-family: "Inconsolata";
   font-style: normal;
@@ -84,7 +97,7 @@ body {
   margin: 0;
   padding: 1vmin;
 
-  /* ==override newtab page == */
+  /* == override newtab page == */
   background: var(--background);
   color: var(--text);
   font-display: block;
@@ -128,6 +141,7 @@ hgroup a {
 hgroup *:nth-child(n + 5) {
   grid-row: 2 / span 1;
 }
+
 /* ===== full bleed ===== */
 footer,
 iframe,
