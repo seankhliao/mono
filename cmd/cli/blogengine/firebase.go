@@ -18,7 +18,7 @@ import (
 	firebasehosting "google.golang.org/api/firebasehosting/v1beta1"
 )
 
-func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*bytes.Buffer) error {
+func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*bytes.Buffer, uploadPreview bool) error {
 	ctx := context.TODO()
 
 	pathToHash, hashToGzip, err := hashAndGzip(rendered)
@@ -60,12 +60,20 @@ func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*
 	}
 
 	spin.Suffix = "releasing..."
-	err = release(ctx, client, site, version)
+	u, err := release(ctx, client, site, version, uploadPreview)
 	if err != nil {
 		return err
 	}
 
 	spin.FinalMSG = fmt.Sprintf("released new version with %d changed files\n", len(toUpload))
+	if u != "" {
+		spin.FinalMSG = fmt.Sprintf("released new version with %d changed files: %s", len(toUpload), u)
+	}
+	spin.Stop()
+
+	for _, f := range toUpload {
+		fmt.Println("\t", f)
+	}
 
 	return nil
 }
@@ -205,11 +213,26 @@ func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClien
 	return nil
 }
 
-func release(ctx context.Context, client *firebasehosting.Service, site, version string) error {
-	_, err := client.Sites.Releases.Create(site, &firebasehosting.Release{}).VersionName(version).Context(ctx).Do()
+func release(ctx context.Context, client *firebasehosting.Service, site, version string, uploadPreview bool) (string, error) {
+	channel := site + "/channels/live"
+	if uploadPreview {
+		channel = site + "/channels/preview"
+	}
+	ch, err := client.Sites.Channels.Get(channel).Context(ctx).Do()
+	if uploadPreview && err != nil {
+		ch, err = client.Sites.Channels.Create(site, &firebasehosting.Channel{
+			ExpireTime: time.Now().Add(12 * time.Hour).Format(time.RFC3339),
+			Name:       channel,
+		}).ChannelId("preview").Context(ctx).Do()
+	}
 	if err != nil {
-		return fmt.Errorf("create reloease: %w", err)
+		return "", fmt.Errorf("get channel %s: %w", channel, err)
 	}
 
-	return nil
+	_, err = client.Sites.Releases.Create(channel, &firebasehosting.Release{}).VersionName(version).Context(ctx).Do()
+	if err != nil {
+		return "", fmt.Errorf("create reloease: %w", err)
+	}
+
+	return ch.Url, nil
 }

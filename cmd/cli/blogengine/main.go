@@ -24,13 +24,14 @@ var configSchema string
 
 func main() {
 	var configFile string
-	var preview bool
+	var preview, uploadPreview bool
 	ycli.OSExec(ycli.New(
 		"blogengine",
 		"markdown to html renderer, with firebase integration",
 		func(fs *flag.FlagSet) {
 			fs.StringVar(&configFile, "config", "blogengine.cue", "path to config file")
 			fs.BoolVar(&preview, "preview", false, "render in memory and serve a preview")
+			fs.BoolVar(&uploadPreview, "upload-preview", false, "upload to firebase in preview mode")
 		},
 		func(stdout, _ io.Writer) error {
 			err := chdirWebRoot(configFile)
@@ -43,7 +44,7 @@ func main() {
 				return fmt.Errorf("blogengine: decode config: %w", err)
 			}
 
-			err = run(stdout, config, preview)
+			err = run(stdout, config, preview, uploadPreview)
 			if err != nil {
 				return fmt.Errorf("blogengine: %w", err)
 			}
@@ -106,7 +107,7 @@ type ConfigFirebase struct {
 	} `json:"redirects"`
 }
 
-func run(stdout io.Writer, conf Config, preview bool) error {
+func run(stdout io.Writer, conf Config, preview, uploadPreview bool) error {
 	fi, err := os.Stat(conf.Render.Source)
 	if err != nil {
 		return fmt.Errorf("stat source: %w", err)
@@ -151,7 +152,7 @@ func run(stdout io.Writer, conf Config, preview bool) error {
 			return fmt.Errorf("listen on a port: %w", err)
 		}
 		defer lis.Close()
-		fmt.Fprintf(stdout, "listening on http://127.0.0.1:%d/\n", lis.Addr().(*net.TCPAddr).Port)
+		lg.Info("listening", "addr", fmt.Sprintf("http://127.0.0.1:%d/", lis.Addr().(*net.TCPAddr).Port))
 		err = http.Serve(lis, mux)
 		if err != nil && !errors.Is(err, http.ErrServerClosed) {
 			return fmt.Errorf("unexpected server shutdown: %w", err)
@@ -166,7 +167,7 @@ func run(stdout io.Writer, conf Config, preview bool) error {
 		}
 	}
 	if conf.Firebase.SiteID != "" {
-		err = uploadFirebase(stdout, conf.Firebase, rendered)
+		err = uploadFirebase(stdout, conf.Firebase, rendered, uploadPreview)
 		if err != nil {
 			return fmt.Errorf("upload to firebase: %w", err)
 		}
