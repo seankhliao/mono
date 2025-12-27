@@ -1,5 +1,5 @@
 render: {
-	baseUrl: "https://sean.liao.dev"
+	baseUrl: "https://seankhliao.com"
 	gtm:     "G-9GLEE4YLNC"
 	// dst:     "out"
 }
