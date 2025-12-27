@@ -28,3 +28,12 @@ I chose to set the background color explicitly to transparent
 ```html
 <img style="background-color:oklch(0 0 0/0)" src="..." />
 ```
+
+Chromium seems to add it here:
+https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/html/image_document.cc;drc=86fad4c38a31aba9334ad0d3917848510ea502f4;l=427
+
+Which was done in this change
+https://chromium-review.googlesource.com/c/chromium/src/+/2455448
+
+for this bug
+https://issues.chromium.org/issues/40577140
