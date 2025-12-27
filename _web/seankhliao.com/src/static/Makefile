@@ -1,9 +1,9 @@
 .PHONY: map
 map: map.png map.avif
 map.png: map.svg
-	magick -background none -density 150 $? -resize 1920x1080 $@
+	magick -background none -density 150 $? -resize 2256x1390 $@
 map.avif: map.svg
-	magick -background none -density 150 $? -resize 1920x1080 $@
+	magick -background none -density 150 $? -resize 2256x1390 $@
 
 .PHONY: icon
 icon: icon-192.png icon-512.png
