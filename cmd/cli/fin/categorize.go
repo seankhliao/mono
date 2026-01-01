@@ -184,6 +184,11 @@ var categories = []struct {
 		nil,
 	},
 	{
+		"VIR",
+		[]string{"virgin money dd"},
+		nil,
+	},
+	{
 		"YON",
 		[]string{
 			"yonder-autopayonly",
