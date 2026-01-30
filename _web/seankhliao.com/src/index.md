@@ -75,7 +75,7 @@ Dates use the [Holocene Calendar](https://en.wikipedia.org/wiki/Holocene_calenda
 - Indonesia — 12017-02, 12017-08, 12018-02, 12018-12
 - Ireland — 12023-06
 - Italy — 12021-12, 12024-09, 12024-11
-- Japan — 12018-03, 12023-02, 12024-12, 12025-07
+- Japan — 12018-03, 12023-02, 12024-12, 12025-07, 12026-01
 - Lithuania — 12022-12, 12024-05
 - Luxembourg — 12019-10
 - Malta — 12024-02
