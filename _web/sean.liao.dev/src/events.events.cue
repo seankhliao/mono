@@ -49,20 +49,133 @@ Events: [{
 	headline: "ExWHYZ"
 	price:    29.87
 }, {
-	_date:     "2026-01-18"
-	name:      "hololive 3rd Generation Live #OperationHeartfulCuties"
+	_date: "2026-01-28"
+	name:  "GIGA•GIGA SONIC presented by UtaTen / チェキチャ"
+	support:
+		price_jpy: 3000
+	price: 14.16
+	support: [
+		"ハレとハレ！",
+		"AISTEAL",
+		"SoRaLis",
+		"LIT MOON",
+		"SCRAMBLE SMILE",
+		"SAI²Rium",
+		"Hey!Mommy!",
+		"MOON RABBiTS",
+		"キュン!?恋落ちキューピッド",
+		"DREAMING MONSTER",
+		"BNSI",
+		"Suger Fruit",
+		"ハニースパイスRe.",
+		"オカシリゾート",
+		"HIGH SPIRITS",
+		"君と見るそら",
+		"LarmeR",
+		"ideal peco",
+		"Toi Toi Toi",
+		"Alcute！",
+		"シンデレラ宣言！",
+	]
+	text: """
+		[Giga Giga Sonic](https://tiget.net/events/455200)
+		seems to be a recurring show that is an endless stream
+		of idol perfoamces through the day.
+		This time, there were 21 groups, mostly doing 20 min sets.
+		Watching 7.5h of idol performances was certainly a choice...
+		probably not soemthing I'd repeat anytime soon.
+
+		The quality varied quite a bit,
+		from the fluent but tired,
+		to the quite fresh,
+		and to the ones that have a strong showing od dedicated fans.
+
+		Idol perfoamnces seemed quite cookie cutter...
+		each group has its own style,
+		but overall still all jpop.
+		Everyone is color coded by their dress,
+		matching the colors available for penlights,
+		sometimes more obviously than others.
+		They move as a group,
+		one person talks, the rest echo in perfect unison.
+		"""
+}, {
+	_date: "2026-01-18"
+	name:  "hololive 3rd Generation Live #OperationHeartfulCuties"
+	support: ["Houshou Marine", "Shirogane Noel", "Shiranui Flare", "Usada Pekora"]
 	price_jpy: 15326
 	price:     73.95
+	text: """
+		There was a truly impressive crowd for this show,
+		you see a lot more dedicated fans,
+		wearing a lot more swag.
+		Also impressive was what felt like the endless displays
+		of congratulatory flower stands.
+
+		There is again a big main screen.
+		This time there are additional physical pieces to the background,
+		belnded together with some virtual pieces,
+		which looks pretty real, even up close (I got first row seats).
+		It does look more real when it's darker / more dull,
+		depending on the accept coloring.
+		On the main screen, everything was sharp,
+		while on the live stream, there's fake(?) depth of field.
+
+		The venue felt a bit echoey.
+		Also, with a real band, and quite loud fan chanting,
+		sometimes you wouldn't be able to hear theier voices properly.
+		But we did get to hear their real / unamplified voices
+		at the start and end.
+		For song choice, it felt like a mix of originals vs covers.
+
+		Interestingly, there seem to be a wider variety of topics
+		for Japanese songs, not just love songs,
+		like one about gyudon.
+		[Houshou Marine] just has the best songs,
+		and they're so good live.
+		[Usada Pekora] has that cult like magnetism,
+		you can just feel the fan's dedication.
+		[Shirogane Noel] and [Shiranui Flare] felt a little less distintive
+		by comparison, though Noel did show her more quirky side.
+
+		Overall, a solidly produced live music show.
+		"""
 }, {
 	_date: "2026-01-11"
 	name:  "Tokino Sora New Year's Party 2026「Dreams in Motion」"
 	support: ["Tokino Sora"]
 	price_jpy: 16800
 	price:     81.06
+	text: """
+        A Vtuber live event in Tokyo!
+        There's a large flat screen,
+        containing the background (relatively simple/static),
+        and [Tokino Sora].
+        The background has accent lighting that changes with each song,
+        the stage has the usual lights pointing outwards,
+        and everyone has penlights for coordinated lighting.
+
+        Sora's pitch flet quite high for the songs,
+        and it really was just Sora for almost all of the show.
+        There was a single guest DJ.
+        Despite the large venue of 5k people,
+        it still felt intimate as it's just her there.
+
+        Between songs, you see her walk around,
+        go drink water, etc.
+        It's an unbroken feed for most of it,
+        and it feels much more like a live show.
+		"""
 }, {
 	_date: "2025-12-31"
 	name:  "The Mayor of London's New Year's Eve Fireworks"
 	price: 37.66
+	text: """
+        This time I had a more side view of the London Eye from a bridge.
+        Unfortunately, this meant a thicker layer of smoke
+        that sometimes obscures most of the view.
+        Sparkly, but that was about it.
+	    """
 }, {
 	_date: "2025-12-06"
 	name:  "Capital's Jingle Bell Ball"
@@ -2348,8 +2461,10 @@ Links: {
 		"Against the Current":                         "https://www.youtube.com/@againstthecurrent"
 		"Air Drawn Dagger":                            "https://www.youtube.com/@AirDrawnDagger"
 		"Aisling McGlynn":                             "https://www.anuna.ie/aisling-mcglynn"
+		"AISTEAL":                                     "https://tiget.net/performers/202972"
 		"AJA":                                         "https://www.youtube.com/@itsAJAmusic"
 		"Akase Akari":                                 "https://www.youtube.com/@akaseakari174"
+		"Alcute！":                                     "https://www.youtube.com/@project8738"
 		"Alessandra":                                  "https://www.youtube.com/@alessandrasmusic"
 		"Alessi Rose":                                 "https://www.youtube.com/@alessirose"
 		"Allie X":                                     "https://www.youtube.com/@AllieXXXXandra"
@@ -2387,6 +2502,7 @@ Links: {
 		"Blackpink":                                   "https://www.youtube.com/@BLACKPINK"
 		"Black Veil Brides":                           "https://www.youtube.com/@blackveilbrides"
 		"bluegirl":                                    "https://www.instagram.com/bluegirl"
+		"BNSI":                                        "https://tiget.net/performers/216481"
 		"Bradley Simpson":                             "https://www.youtube.com/@BradleySimpsonOfficial"
 		"briskin":                                     "https://www.youtube.com/@briskin01"
 		"Broken by the Scream":                        "https://www.youtube.com/@BrokenByTheScream"
@@ -2419,6 +2535,7 @@ Links: {
 		"Delain":                                      "https://www.youtube.com/@delainofficial"
 		"Detweiler":                                   "https://www.youtube.com/@detweiler5838"
 		"Deyyess":                                     "https://www.youtube.com/@deyyess"
+		"DREAMING MONSTER":                            "https://www.youtube.com/@dreamingmonster6105"
 		"Drum Tao":                                    "https://www.youtube.com/@DRUMTAOofficial"
 		"Echosmith":                                   "https://www.youtube.com/@echosmith"
 		"Eden Hunter":                                 "https://www.youtube.com/@edenhunter_"
@@ -2465,8 +2582,12 @@ Links: {
 		"Hannah Grae":                                 "https://www.youtube.com/@hannahgrae"
 		"Hatsune Miku":                                "https://www.youtube.com/@HatsuneMiku"
 		"Hemlocke Springs":                            "https://www.youtube.com/@hemlockespringsmusic"
+		"Hey!Mommy!":                                  "https://www.youtube.com/@heymommyofficial8970"
+		"HIGH SPIRITS":                                "https://www.youtube.com/@highspirits3964"
 		"Hitsujibungaku":                              "https://www.youtube.com/@hitsujibungaku_official"
+		"Houshou Marine":                              "https://www.youtube.com/@HoushouMarine"
 		"Ichiko Aoba":                                 "https://www.youtube.com/@ichikoaoba-hermine"
+		"ideal peco":                                  "https://www.youtube.com/@idealpeco_official"
 		"ili":                                         "https://www.youtube.com/@thisisili"
 		"ILLUMISHADE":                                 "https://www.youtube.com/@ILLUMISHADE"
 		"IRyS":                                        "https://www.youtube.com/@IRyS"
@@ -2498,6 +2619,7 @@ Links: {
 		"Kyary Pamyu Pamyu":                           "https://www.youtube.com/@kyarypamyupamyuTV"
 		"Lake Malice":                                 "https://www.youtube.com/@lakemalice"
 		"Larkins":                                     "https://www.youtube.com/@Larkinsband"
+		"LarmeR":                                      "https://www.youtube.com/@LarmeR_Sizuk"
 		"LEAP":                                        "https://www.youtube.com/@leap_the_band"
 		"Leigh-Anne":                                  "https://www.youtube.com/@LeighAnneOfficial"
 		"Lekna":                                       "https://www.youtube.com/@leknamusic"
@@ -2505,6 +2627,7 @@ Links: {
 		"Letters Sent Home":                           "https://www.youtube.com/@letterssenthome4016"
 		"Like a Storm":                                "https://www.youtube.com/@officiallikeastorm"
 		"Lilas Ikuta":                                 "https://www.youtube.com/@Lilas_Ikuta"
+		"LIT MOON":                                    "https://www.youtube.com/@LITMOON_official"
 		"Lizzie Esau":                                 "https://www.youtube.com/@lizzieesau"
 		"lleo":                                        "https://www.instagram.com/lleoworld"
 		"LØLØ":                                        "https://www.youtube.com/@lolopopgurl"
@@ -2538,6 +2661,7 @@ Links: {
 		"Moliy":                                       "https://www.youtube.com/@MOLIY"
 		"Mone Kamishiraishi":                          "https://www.youtube.com/@%E4%B8%8A%E7%99%BD%E7%9F%B3%E8%90%8C%E9%9F%B3-r5p"
 		"MONSTERIDOL":                                 "https://www.youtube.com/@MONSTERIDOL"
+		"MOON RABBiTS":                                "https://www.youtube.com/@moonrabbits2023"
 		"moreofthem":                                  "https://www.youtube.com/@moreofthem."
 		"Mori Calliope":                               "https://www.youtube.com/@MoriCalliope"
 		"Mothica":                                     "https://www.youtube.com/@Mothica"
@@ -2587,12 +2711,16 @@ Links: {
 		"Runo Tauchi":                                 "https://www.youtube.com/@tauchirunostaff"
 		"Sabrina Carpenter":                           "https://www.youtube.com/@sabrinacarpenter"
 		"Sadie Fine":                                  "https://www.youtube.com/@SadieFineSingsFine"
+		"SAI²Rium":                                    "https://www.youtube.com/@sai2rium"
 		"Saint Clair":                                 "https://www.instagram.com/thisissaintclair/"
 		"Scene Queen":                                 "https://www.youtube.com/@scenequeenrocks"
+		"SCRAMBLE SMILE":                              "https://www.youtube.com/@SCRAMBLESMILE"
 		"SERAINA TELLI":                               "https://www.youtube.com/@serainatelli"
 		"Seven Blood":                                 "https://www.youtube.com/@SevenBloodOfficial"
 		"Shinno Juna":                                 "https://www.youtube.com/channel/UCYzCnI0-AkmR-S-Uaz_ZhxA"
 		"Shiori Novella":                              "https://www.youtube.com/@ShioriNovella"
+		"Shiranui Flare":                              "https://www.youtube.com/@ShiranuiFlare"
+		"Shirogane Noel":                              "https://www.youtube.com/@ShiroganeNoel"
 		"Skillet":                                     "https://www.youtube.com/@skilletband"
 		"Snow Wife":                                   "https://www.youtube.com/@ITSSNOWWIFE"
 		"snuggle":                                     "https://www.youtube.com/@snuggleblog"
@@ -2602,8 +2730,10 @@ Links: {
 		"Sonny Fodera":                                "https://www.youtube.com/@sonnyfodera"
 		"Sophia Alexa":                                "https://www.youtube.com/@SophiaAlexa"
 		"Sophie Lloyd":                                "https://www.youtube.com/@SophieLloyd"
+		"SoRaLis":                                     "https://tiget.net/performers/209570"
 		"South Arcade":                                "https://www.youtube.com/@southarcadeuk"
 		"Spirited Away":                               "https://www.youtube.com/@SpiritedAwayLDN"
+		"Suger Fruit":                                 "https://tiget.net/performers/204665"
 		"Takanashi Kiara":                             "https://www.youtube.com/@TakanashiKiara"
 		"Tate McRae":                                  "https://www.youtube.com/@TateMcRae"
 		"Taurus Trakker":                              "https://www.youtube.com/@taurustrakker"
@@ -2617,10 +2747,13 @@ Links: {
 		"The Staves":                                  "https://www.youtube.com/@thestaves"
 		"The Warning":                                 "https://www.youtube.com/@TheWarning"
 		"tiLLie":                                      "https://www.youtube.com/@whoistiLLie"
+		"Toi Toi Toi":                                 "https://www.youtube.com/@toitoitoi__official"
+		"Tokino Sora":                                 "https://www.youtube.com/@TokinoSora"
 		"Tokoyami Towa":                               "https://www.youtube.com/@TokoyamiTowa"
 		"Unflirt":                                     "https://www.youtube.com/@unflirt"
 		"Uninvited":                                   "https://www.youtube.com/@uninvitedmusicuk"
 		"UPSAHL":                                      "https://www.youtube.com/@UPSAHL"
+		"Usada Pekora":                                "https://www.youtube.com/@usadapekora"
 		"Valencia Grace":                              "https://www.youtube.com/@valenciagrace"
 		"Visions of Atlantis":                         "https://www.youtube.com/@VisionsOfAtlantisOfficial"
 		"Wargasm":                                     "https://www.youtube.com/@wargasm135"
@@ -2634,7 +2767,13 @@ Links: {
 		"Zara Larsson":                                "https://www.youtube.com/@ZaraLarssonOfficial"
 		"ZOCX":                                        "https://www.youtube.com/@ZOC_ZOC_ZOC"
 		"Zoey Lily":                                   "https://www.youtube.com/@ZoeyLily"
+		"オカシリゾート":                                     "https://www.youtube.com/@okashi_resort"
+		"キュン!?恋落ちキューピッド":                              "https://tiget.net/performers/177245"
 		" シンダーエラ":                                     "https://www.youtube.com/@cinder_ella_"
+		"シンデレラ宣言！":                                    "https://www.youtube.com/@project8738"
+		"ハニースパイスRe.":                                  "https://www.youtube.com/@HoneySpice1004"
+		"ハレとハレ！":                                      "https://www.youtube.com/@_haretohare"
+		"君と見るそら":                                      "https://www.youtube.com/@kimitomirusora_JPN"
 		"月刊PAM":                                       "https://www.youtube.com/@gekkanpam"
 		"猫の眼に宇宙":                                      "http://www.youtube.com/@%E7%8C%AB%E3%81%AE%E7%9C%BC%E3%81%AB%E5%AE%87%E5%AE%99"
 	}
