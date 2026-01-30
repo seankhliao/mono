@@ -51,6 +51,8 @@ _completed: [
 	["2024-05-13", 10, 47917, ["Bocchi the Rock!", "Bocchi the Rock!"], "**Bocchi** is relatable"],
 	["2025-08-25", 8, 37435, ["Carole & Tuesday", "Carole & Tuesday"]],
 	["2024-06-20", 8, 44511, ["Chainsaw Man", "Chainsaw Man"], "**Makima** dominates, **Power** is playfully wild"],
+	["2026-01-09", 8, 57555, ["Chainsaw Man Movie: Reze-hen", "Chainsaw Man – The Movie: Reze Arc"]],
+	["2026-01-29", 8, 59898, ["City The Animation", "City The Animation"]],
 	["2024-09-27", 8, 52701, ["Dungeon Meshi", "Delicious in Dungeon"]],
 	["2025-12-25", 8, 57334, ["Dandada", "Dandadan"]],
 	["2024-05-27", 6, 52081, ["Edomae Elf", "Otaku Elf"]],
