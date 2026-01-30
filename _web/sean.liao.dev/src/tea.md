@@ -12,15 +12,16 @@ These are the matcha I got from [Ippodo Tea](https://global.ippodo-tea.co.jp/).
 
 ##### _bought_
 
-- 明昔 Sayaka no Mukashi
+- 閑坐 Kanza
 
 ##### _current_
 
-- 久遠 Kuon
-  - not as smooth, a touch of bitterness?
+- 明昔 Sayaka no Mukashi
 
 ##### _drank_
 
+- 久遠 Kuon
+  - not as smooth, a touch of bitterness?
 - 閑坐 Kanza
   - favorite, super smooth, mildly sweet
 - 巳の昔(みのむかし) Mi no Mukashi
