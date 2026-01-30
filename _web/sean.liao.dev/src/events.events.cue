@@ -51,9 +51,6 @@ Events: [{
 }, {
 	_date: "2026-01-28"
 	name:  "GIGA•GIGA SONIC presented by UtaTen / チェキチャ"
-	support:
-		price_jpy: 3000
-	price: 14.16
 	support: [
 		"ハレとハレ！",
 		"AISTEAL",
@@ -77,6 +74,8 @@ Events: [{
 		"Alcute！",
 		"シンデレラ宣言！",
 	]
+	price_jpy: 3000
+	price:     14.16
 	text: """
 		[Giga Giga Sonic](https://tiget.net/events/455200)
 		seems to be a recurring show that is an endless stream
@@ -147,35 +146,35 @@ Events: [{
 	price_jpy: 16800
 	price:     81.06
 	text: """
-        A Vtuber live event in Tokyo!
-        There's a large flat screen,
-        containing the background (relatively simple/static),
-        and [Tokino Sora].
-        The background has accent lighting that changes with each song,
-        the stage has the usual lights pointing outwards,
-        and everyone has penlights for coordinated lighting.
+		A Vtuber live event in Tokyo!
+		There's a large flat screen,
+		containing the background (relatively simple/static),
+		and [Tokino Sora].
+		The background has accent lighting that changes with each song,
+		the stage has the usual lights pointing outwards,
+		and everyone has penlights for coordinated lighting.
 
-        Sora's pitch flet quite high for the songs,
-        and it really was just Sora for almost all of the show.
-        There was a single guest DJ.
-        Despite the large venue of 5k people,
-        it still felt intimate as it's just her there.
+		Sora's pitch flet quite high for the songs,
+		and it really was just Sora for almost all of the show.
+		There was a single guest DJ.
+		Despite the large venue of 5k people,
+		it still felt intimate as it's just her there.
 
-        Between songs, you see her walk around,
-        go drink water, etc.
-        It's an unbroken feed for most of it,
-        and it feels much more like a live show.
+		Between songs, you see her walk around,
+		go drink water, etc.
+		It's an unbroken feed for most of it,
+		and it feels much more like a live show.
 		"""
 }, {
 	_date: "2025-12-31"
 	name:  "The Mayor of London's New Year's Eve Fireworks"
 	price: 37.66
 	text: """
-        This time I had a more side view of the London Eye from a bridge.
-        Unfortunately, this meant a thicker layer of smoke
-        that sometimes obscures most of the view.
-        Sparkly, but that was about it.
-	    """
+		This time I had a more side view of the London Eye from a bridge.
+		Unfortunately, this meant a thicker layer of smoke
+		that sometimes obscures most of the view.
+		Sparkly, but that was about it.
+		"""
 }, {
 	_date: "2025-12-06"
 	name:  "Capital's Jingle Bell Ball"
