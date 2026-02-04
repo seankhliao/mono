@@ -152,6 +152,10 @@ func processEvents(w io.Writer, r io.Reader, canonicalURL, gtm string) error {
 					}
 					linkName := p.Text[offset+start+1 : offset+end]
 					offset += end + 1
+					if len(p.Text) > offset && p.Text[offset] == '(' {
+						// inline link
+						continue
+					}
 
 					link, ok := data.Links.Known[linkName]
 					if !ok {

@@ -13,9 +13,18 @@ Description: """
 	"""
 
 Events: [{
+	_date:    "2026-09-22"
+	headline: "LiSA"
+	price:    93.69
+}, {
 	_date:    "2026-09-13"
 	headline: "Evanescence"
 	price:    81.30
+}, {
+	_date:     "2026-05-30"
+	headline:  "Shigure Ui"
+	price_jpy: 19000
+	price:     88.81
 }, {
 	_date:    "2026-05-13"
 	headline: "Au/Ra"
@@ -44,10 +53,26 @@ Events: [{
 	_date:    "2026-02-03"
 	headline: "Halsey"
 	price:    61.62
+	text: """
+		A 2.5h show, no support acts.
+		A mix of the hits,
+		and quite a few I don't remember,
+		I guess that's what you have after 10 years.
+
+		It was exciting, and the visuals looked pretty good
+		with a giant projection over a 2 level stage,
+		with more music video style displays.
+		"""
 }, {
 	_date:    "2026-02-01"
 	headline: "ExWHYZ"
 	price:    29.87
+	text: """
+		Not the usual sugary cuteness you see a lot of in Japan.
+		I thought their music exuded more coolness
+		and was much easier on the ears.
+		Their style was also more cool beauty than cute.
+		"""
 }, {
 	_date: "2026-01-28"
 	name:  "GIGA•GIGA SONIC presented by UtaTen / チェキチャ"
@@ -2577,6 +2602,7 @@ Links: {
 		"Halestorm":                                   "https://www.youtube.com/@HalestormRocks"
 		"Halflives":                                   "https://www.youtube.com/@wehavehalflives"
 		"Halocene":                                    "https://www.youtube.com/@Halocene"
+		"Halsey":                                      "https://www.youtube.com/@halsey"
 		"HANABIE":                                     "https://www.youtube.com/@HANABIE_official"
 		"Hannah Grae":                                 "https://www.youtube.com/@hannahgrae"
 		"Hatsune Miku":                                "https://www.youtube.com/@HatsuneMiku"
