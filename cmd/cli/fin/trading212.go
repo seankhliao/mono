@@ -131,6 +131,16 @@ func (c *Convert) trading(stdout, stderr io.Writer) error {
 			fmt.Fprintf(buf, "[FIN, TOC, %d, %q],\n", value, desc)
 		case "Stock split open", "Stock split close":
 			continue
+		case "Card ATM Withdrawal":
+			merchant := rec[idxs["Merchant name"]]
+			category := rec[idxs["Merchant category"]]
+			dst := "CSH"
+			resCurr := rec[idxs["Currency (Currency conversion fee)"]]
+			if resCurr != "GBP" {
+				dst = "FRX"
+			}
+			desc := strings.Join([]string{rec[idxs["Time"]], "Card ATM Withdrawal", merchant, category}, " ")
+			fmt.Fprintf(buf, "[TOC, %s, %d, %q],\n", dst, value, desc)
 		default:
 			panic("unhandled action " + action)
 		}
