@@ -44,6 +44,7 @@ Tables: [{
 
 _completed: [
 	["2024-09-11", 7, 54837, ["Akuyaku Reijou Level 99: Watashi wa Ura-Boss desu ga Maou dewa Arimasen", "Villainess Level 99: I May Be the Hidden Boss but I'm Not the Demon Lord"]],
+	["2026-02-01", 7, 50205, ["Arknights: Prelude to Dawn", "Arknights Animation: Prelude to Dawn"]],
 	["2025-08-21", 7, 59169, ["Aru Majo ga Shinu Made", "Once Upon a Witch's Death"]],
 	["2025-10-12", 7, 59161, ["Bad Girl", "Bad Girl"]],
 	["2025-09-26", 8, 54959, ["BanG Dream! It's MyGO!!!!!", "BanG Dream! It's MyGO!!!!!"]],
@@ -64,6 +65,7 @@ _completed: [
 	["2024-08-13", 8, 55102, ["Girls Band Cry", "Girls Band Cry"]],
 	["2024-08-26", 7, 17729, ["Grisaia no Kajitsu", "The Fruit of Grisaia"]],
 	["2025-08-12", 7, 55997, ["Guild no Uketsukejou desu ga, Zangyou wa Iya nanode Boss wo Solo Toubatsu Shiyou to Omoimasu", "I May Be a Guild Receptionist, but I'll Solo Any Boss to Clock Out on Time"]],
+	["2026-02-01", 7, 60658, ["Hibi wa Sugiredo Meshi Umashi", "Food for the Soul"]],
 	["2024-05-27", 5, 51265, ["Inu ni Nattara Suki na Hito ni Hirowareta", "My Life as Inukai-san's Dog"]],
 	["2024-05-27", 5, 54225, ["Inu ni Nattara Suki na Hito ni Hirowareta Special", "My Life as Inukai-sanâs Dog. OVA"]],
 	["2025-01-19", 7, 44524, ["Isekai Meikyuu de Harem wo", "Harem in the Labyrinth of Another World"]],
