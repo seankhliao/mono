@@ -3,7 +3,9 @@ package webstyle
 import (
 	"bytes"
 	_ "embed"
+	"fmt"
 	"io"
+	"net/url"
 
 	"maragu.dev/gomponents"
 	"maragu.dev/gomponents/html"
@@ -124,6 +126,17 @@ func Structured(w io.Writer, o Options) error {
 	footerLinks := defaultFooter
 	if len(o.FooterLinks) > 0 {
 		footerLinks = o.FooterLinks
+	} else {
+		u, err := url.Parse(o.CanonicalURL)
+		if err == nil {
+			vals := make(url.Values)
+			vals.Set("subject", "Comment on "+o.Title)
+			vals.Set("body", "Regarding "+o.CanonicalURL)
+			footerLinks = append(footerLinks, OptionsFooter{
+				"email me a comment",
+				fmt.Sprintf("mailto:webcomment+%s@liao.dev?%s", u.Host, vals.Encode()),
+			})
+		}
 	}
 
 	var footer []gomponents.Node
