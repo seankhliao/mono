@@ -194,7 +194,6 @@ func TestHandler(t *testing.T) {
 		},
 	}
 	for _, tc := range tcs {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			buf := new(bytes.Buffer)
@@ -290,7 +289,7 @@ func FuzzHandler(f *testing.F) {
 		buf := new(bytes.Buffer)
 		lg := slog.New(New(slog.Level(level), buf))
 		fmt.Fprintln(os.Stderr, lines, level, level2, nargs, msg)
-		for i := uint8(0); i < lines; i++ {
+		for range lines {
 			nlg := lg
 			nargs := nargs * uint64(lines)
 			var args []any

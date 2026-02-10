@@ -174,9 +174,7 @@ func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClien
 	for idx, uploadHash := range toUpload {
 		sem <- struct{}{}
 		spin.Suffix = fmt.Sprintf("%3d/%3d uploading files", idx+1, len(toUpload))
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
+		wg.Go(func() {
 			defer func() { <-sem }()
 
 			endpoint := uploadURL + "/" + uploadHash
@@ -204,7 +202,7 @@ func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClien
 				default:
 				}
 			}
-		}()
+		})
 	}
 
 	wg.Wait()

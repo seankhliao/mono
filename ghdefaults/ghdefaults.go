@@ -50,40 +50,36 @@ func New(ctx context.Context, c Config, o yo11y.O11y) (*App, error) {
 
 var defaultConfig = map[string]github.Repository{
 	"erred": {
-		AllowMergeCommit:    ptr(false),
-		AllowUpdateBranch:   ptr(true),
-		AllowAutoMerge:      ptr(true),
-		AllowSquashMerge:    ptr(true),
-		AllowRebaseMerge:    ptr(false),
-		DeleteBranchOnMerge: ptr(true),
-		HasIssues:           ptr(false),
-		HasWiki:             ptr(false),
-		HasPages:            ptr(false),
-		HasProjects:         ptr(false),
-		HasDownloads:        ptr(false),
-		HasDiscussions:      ptr(false),
-		IsTemplate:          ptr(false),
-		Archived:            ptr(true),
+		AllowMergeCommit:    new(false),
+		AllowUpdateBranch:   new(true),
+		AllowAutoMerge:      new(true),
+		AllowSquashMerge:    new(true),
+		AllowRebaseMerge:    new(false),
+		DeleteBranchOnMerge: new(true),
+		HasIssues:           new(false),
+		HasWiki:             new(false),
+		HasPages:            new(false),
+		HasProjects:         new(false),
+		HasDownloads:        new(false),
+		HasDiscussions:      new(false),
+		IsTemplate:          new(false),
+		Archived:            new(true),
 	},
 	"seankhliao": {
-		AllowMergeCommit:    ptr(false),
-		AllowUpdateBranch:   ptr(true),
-		AllowAutoMerge:      ptr(true),
-		AllowSquashMerge:    ptr(true),
-		AllowRebaseMerge:    ptr(false),
-		DeleteBranchOnMerge: ptr(true),
-		HasIssues:           ptr(false),
-		HasWiki:             ptr(false),
-		HasPages:            ptr(false),
-		HasProjects:         ptr(false),
-		HasDownloads:        ptr(false),
-		HasDiscussions:      ptr(false),
-		IsTemplate:          ptr(false),
+		AllowMergeCommit:    new(false),
+		AllowUpdateBranch:   new(true),
+		AllowAutoMerge:      new(true),
+		AllowSquashMerge:    new(true),
+		AllowRebaseMerge:    new(false),
+		DeleteBranchOnMerge: new(true),
+		HasIssues:           new(false),
+		HasWiki:             new(false),
+		HasPages:            new(false),
+		HasProjects:         new(false),
+		HasDownloads:        new(false),
+		HasDiscussions:      new(false),
+		IsTemplate:          new(false),
 	},
-}
-
-func ptr[T any](t T) *T {
-	return &t
 }
 
 var (
@@ -238,7 +234,7 @@ func (a *App) setDefaults(ctx context.Context, installID int64, owner, repo stri
 	}
 	if fork {
 		_, _, err = client.Repositories.EditActionsPermissions(ctx, owner, repo, github.ActionsPermissionsRepository{
-			Enabled: ptr(false),
+			Enabled: new(false),
 		})
 		if err != nil {
 			return fmt.Errorf("disable actions: %w", err)

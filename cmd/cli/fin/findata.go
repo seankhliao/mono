@@ -114,9 +114,7 @@ func decode[T any](b []byte, p string) (T, error) {
 func Summarize(c *Currency) {
 	for i := range c.Months {
 		if i > 0 {
-			for n, v := range c.Months[i-1].sum {
-				c.Months[i].sum[n] = v
-			}
+			maps.Copy(c.Months[i].sum, c.Months[i-1].sum)
 		}
 		for _, tr := range c.Months[i].Transactions {
 			mod := c.invert[tr.Src]

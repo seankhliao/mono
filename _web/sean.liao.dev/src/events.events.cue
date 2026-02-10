@@ -107,7 +107,7 @@ Events: [{
 		of idol perfoamces through the day.
 		This time, there were 21 groups, mostly doing 20 min sets.
 		Watching 7.5h of idol performances was certainly a choice...
-		probably not soemthing I'd repeat anytime soon.
+		probably not something I'd repeat anytime soon.
 
 		The quality varied quite a bit,
 		from the fluent but tired,

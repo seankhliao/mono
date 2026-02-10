@@ -17,7 +17,7 @@ import (
 func Handler(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		var acceptGz, acceptZstd float64
-		for _, encQ := range strings.Split(r.Header.Get("accept-encoding"), ",") {
+		for encQ := range strings.SplitSeq(r.Header.Get("accept-encoding"), ",") {
 			enc, qkv, ok := strings.Cut(encQ, ";")
 			var q float64 = 1
 			if ok {
