@@ -9,6 +9,21 @@ _console:_
 [search](https://search.google.com/search-console/)
 [tailscale](https://login.tailscale.com/admin/machines)
 
+_invest:_
+[trading212](https://app.trading212.com/)
+[interactivebrokers](https://www.interactivebrokers.co.uk/sso/Login)
+[vanguard](https://www.vanguardinvestor.co.uk/)
+[investengine](https://investengine.com/login/)
+
+_bank:_
+[hsbc](https://www.hsbc.co.uk/auth/?returnUrl=https://www.hsbc.co.uk/bin/epep/postback.html?url=/online/dashboard/)
+chase
+
+_credit:_
+[amex](https://www.americanexpress.com/en-gb/account/login?inav=iNavLnkLog)
+chase
+virgin
+
 _txt:_
 [xkcd](https://xkcd.com)
 [cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
