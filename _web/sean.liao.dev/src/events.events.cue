@@ -21,6 +21,15 @@ Events: [{
 	headline: "Evanescence"
 	price:    81.30
 }, {
+	_date:     "2026-07-05"
+	headline:  "Ado"
+	price_jpy: 130000
+	price:     623.61 // includes 2 nights hotel
+}, {
+	_date:    "2026-06-11"
+	headline: "Band Maid"
+	price:    39.65
+}, {
 	_date:     "2026-05-30"
 	headline:  "Shigure Ui"
 	price_jpy: 19000
