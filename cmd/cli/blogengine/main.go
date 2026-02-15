@@ -116,10 +116,9 @@ func run(stdout io.Writer, conf Config, preview, uploadPreview bool) error {
 	compact := conf.Render.Style == "compact"
 	var rendered map[string]*bytes.Buffer
 	if !fi.IsDir() {
-		rendered, err = renderSingle(conf.Render.Source, compact)
-	} else {
-		rendered, err = renderMulti(conf.Render.Source, conf.Render.GTM, conf.Render.BaseURL, compact)
+		return fmt.Errorf("expected directory as src")
 	}
+	rendered, err = renderMulti(conf.Render.Source, conf.Render.GTM, conf.Render.BaseURL, compact)
 	if err != nil {
 		return fmt.Errorf("render: %w", err)
 	}

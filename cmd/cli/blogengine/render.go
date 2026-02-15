@@ -41,30 +41,6 @@ func stripTitles(src []byte) (page []byte, title, subtitle string) {
 	return page, title, subtitle
 }
 
-func renderSingle(in string, compact bool) (map[string]*bytes.Buffer, error) {
-	b, err := os.ReadFile(in)
-	if err != nil {
-		return nil, fmt.Errorf("read file: %w", err)
-	}
-	b, title, subtitle := stripTitles(b)
-	rawHTML, rawCSS, err := webstyle.Markdown(b)
-	if err != nil {
-		return nil, fmt.Errorf("parse markdown: %w", err)
-	}
-	buf := new(bytes.Buffer)
-	o := webstyle.NewOptions(
-		title,
-		subtitle,
-		[]gomponents.Node{gomponents.Raw(string(rawHTML))})
-	o.CustomCSS = string(rawCSS)
-	o.CompactStyle = compact
-	err = webstyle.Structured(buf, o)
-	if err != nil {
-		return nil, fmt.Errorf("render result: %w", err)
-	}
-	return map[string]*bytes.Buffer{singleKey: buf}, nil
-}
-
 func renderMulti(in, gtm, baseURL string, compact bool) (map[string]*bytes.Buffer, error) {
 	var countFiles int
 	fsys := os.DirFS(in)
