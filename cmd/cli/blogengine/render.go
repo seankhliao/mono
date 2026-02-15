@@ -128,8 +128,8 @@ func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, 
 
 			u := baseURL + canonicalPathFromRelPath(p)
 			o := webstyle.NewOptions(
-				subtitle,
 				title,
+				subtitle,
 				[]gomponents.Node{gomponents.Raw(string(rawHTML))},
 			)
 			o.CompactStyle = compact

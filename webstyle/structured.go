@@ -61,7 +61,7 @@ type OptionsFooter struct {
 	URL  string
 }
 
-func NewOptions(subtitle, title string, content []gomponents.Node) Options {
+func NewOptions(title, subtitle string, content []gomponents.Node) Options {
 	return Options{
 		Gtag:         DefaultGTAG,
 		CompactStyle: true,
