@@ -1,0 +1,63 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/client-name: skaffold
+    run.googleapis.com/default-url-disabled: "true"
+    run.googleapis.com/ingress: all
+    run.googleapis.com/invoker-iam-disabled: 'true'
+    run.googleapis.com/launch-stage: BETA
+    run.googleapis.com/maxScale: "1"
+    run.googleapis.com/description: |
+      Custom git server
+  labels:
+    cloud.googleapis.com/location: us-central1
+  name: git-seankhliao-com
+  namespace: "330311169810"
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: "1"
+        run.googleapis.com/cpu-throttling: 'true'
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      containerConcurrency: 1000
+      containers:
+        - image: us-central1-docker.pkg.dev/com-seankhliao/run/githost
+          env:
+            - name: LOG_FORMAT
+              value: json
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_TRACES_EXPORTER
+              value: none
+            - name: APP_CONFIG_PATH
+              value: "/git/config.cue"
+          ports:
+            - containerPort: 8080
+              name: h2c
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+          volumeMounts:
+            - name: git
+              mountPath: /git
+      serviceAccountName: git-seankhliao-com@com-seankhliao.iam.gserviceaccount.com
+      timeoutSeconds: 5
+      volumes:
+        # This doesn't work....
+        # "fatal: not a git repository"
+        # probably something like https://github.com/seaweedfs/seaweedfs/issues/1182
+        - name: git
+          csi:
+            driver: gcsfuse.run.googleapis.com
+            readOnly: False
+            volumeAttributes:
+              bucketName: git-seankhliao-com
+  traffic:
+    - latestRevision: true
+      percent: 100

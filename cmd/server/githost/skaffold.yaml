@@ -1,0 +1,29 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: vanity
+build:
+  artifacts:
+    - image: us-central1-docker.pkg.dev/com-seankhliao/run/githost
+      ko:
+        main: .
+        # built from the base/ directory
+        # docker build -t us-central1-docker.pkg.dev/com-seankhliao/run/githost:base-cgit .
+        fromImage: "us-central1-docker.pkg.dev/com-seankhliao/run/githost:base-cgit"
+        env:
+          - CGO_ENABLED=0
+        flags:
+          - -trimpath
+        ldflags:
+          - -s
+          - -w
+  tagPolicy:
+    sha256: {}
+  platforms:
+    - linux/amd64
+manifests:
+  rawYaml:
+    - cloudrun.yaml
+deploy:
+  cloudrun:
+    region: us-central1
