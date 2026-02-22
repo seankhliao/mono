@@ -4,6 +4,7 @@ metadata:
   annotations:
     run.googleapis.com/client-name: skaffold
     run.googleapis.com/default-url-disabled: "true"
+    run.googleapis.com/invoker-iam-disabled: 'true'
     run.googleapis.com/description: |
       Sets default settings for github repos
     run.googleapis.com/ingress: all
