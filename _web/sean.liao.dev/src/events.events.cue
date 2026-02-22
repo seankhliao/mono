@@ -67,8 +67,6 @@ Events: [{
 		with a heavy emphasis on the new album
 		(I think, because I don't recognize the songs).
 		"""
-
-	"Amelia Moore": "https://www.youtube.com/@icryatwork"
 }, {
 	_date:    "2026-02-03"
 	headline: "Halsey"
@@ -2512,6 +2510,7 @@ Links: {
 		"Alessandra":                                  "https://www.youtube.com/@alessandrasmusic"
 		"Alessi Rose":                                 "https://www.youtube.com/@alessirose"
 		"Allie X":                                     "https://www.youtube.com/@AllieXXXXandra"
+		"Amelia Moore":                                "https://www.youtube.com/@icryatwork"
 		"ANKOR":                                       "https://www.youtube.com/@AnkorOfficial"
 		"Anna of the North":                           "https://www.youtube.com/@annaofthenorthforreal"
 		"Anne-Marie":                                  "https://www.youtube.com/@annemarie"
