@@ -58,6 +58,17 @@ Events: [{
 	_date:    "2026-02-20"
 	headline: "Ashnikko"
 	price:    44.55
+	support: ["Amelia Moore"]
+	text: """
+		We have [Amelia Moore], which was fine?
+		Then [Ashnikko],
+		still alt, but a softer kind.
+		Softer, less harsh and hard hitting,
+		with a heavy emphasis on the new album
+		(I think, because I don't recognize the songs).
+		"""
+
+	"Amelia Moore": "https://www.youtube.com/@icryatwork"
 }, {
 	_date:    "2026-02-03"
 	headline: "Halsey"
