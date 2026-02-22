@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	_ "embed"
 	"errors"
 	"flag"
@@ -11,6 +12,8 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"go.seankhliao.com/mono/cueconf"
@@ -108,6 +111,10 @@ type ConfigFirebase struct {
 }
 
 func run(stdout io.Writer, conf Config, preview, uploadPreview bool) error {
+	ctx := context.Background()
+	ctx, done := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer done()
+
 	fi, err := os.Stat(conf.Render.Source)
 	if err != nil {
 		return fmt.Errorf("stat source: %w", err)
@@ -118,7 +125,7 @@ func run(stdout io.Writer, conf Config, preview, uploadPreview bool) error {
 	if !fi.IsDir() {
 		return fmt.Errorf("expected directory as src")
 	}
-	rendered, err = renderMulti(conf.Render.Source, conf.Render.GTM, conf.Render.BaseURL, compact)
+	rendered, err = renderMulti(ctx, conf.Render.Source, conf.Render.GTM, conf.Render.BaseURL, compact)
 	if err != nil {
 		return fmt.Errorf("render: %w", err)
 	}
@@ -145,6 +152,7 @@ func run(stdout io.Writer, conf Config, preview, uploadPreview bool) error {
 			}
 			http.ServeContent(w, r, p, ts, bytes.NewReader(buf.Bytes()))
 		}))
+
 		var lis net.Listener
 		lis, err = net.Listen("tcp4", ":0")
 		if err != nil {
@@ -152,21 +160,33 @@ func run(stdout io.Writer, conf Config, preview, uploadPreview bool) error {
 		}
 		defer lis.Close()
 		lg.Info("listening", "addr", fmt.Sprintf("http://127.0.0.1:%d/", lis.Addr().(*net.TCPAddr).Port))
-		err = http.Serve(lis, mux)
-		if err != nil && !errors.Is(err, http.ErrServerClosed) {
-			return fmt.Errorf("unexpected server shutdown: %w", err)
+		svr := &http.Server{
+			Handler: mux,
 		}
+		ctx, cancel := context.WithCancel(ctx)
+		go func() {
+			defer cancel()
+			err := svr.Serve(lis)
+			if err != nil && !errors.Is(err, http.ErrServerClosed) {
+				lg.Error("unexpected server shutdown", "err", err)
+			}
+		}()
+		<-ctx.Done()
+		shutCtx := context.Background()
+		shutCtx, cancel = context.WithTimeout(shutCtx, 5*time.Second)
+		defer cancel()
+		svr.Shutdown(shutCtx)
 		return nil
 	}
 
 	if conf.Render.Destination != "" {
-		err = writeRendered(stdout, conf.Render.Destination, rendered)
+		err = writeRendered(ctx, stdout, conf.Render.Destination, rendered)
 		if err != nil {
 			return fmt.Errorf("write rendered: %w", err)
 		}
 	}
 	if conf.Firebase.SiteID != "" {
-		err = uploadFirebase(stdout, conf.Firebase, rendered, uploadPreview)
+		err = uploadFirebase(ctx, stdout, conf.Firebase, rendered, uploadPreview)
 		if err != nil {
 			return fmt.Errorf("upload to firebase: %w", err)
 		}

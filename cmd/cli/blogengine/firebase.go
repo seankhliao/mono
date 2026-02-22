@@ -19,9 +19,7 @@ import (
 	firebasehosting "google.golang.org/api/firebasehosting/v1beta1"
 )
 
-func uploadFirebase(stdout io.Writer, conf ConfigFirebase, rendered map[string]*bytes.Buffer, uploadPreview bool) error {
-	ctx := context.TODO()
-
+func uploadFirebase(ctx context.Context, stdout io.Writer, conf ConfigFirebase, rendered map[string]*bytes.Buffer, uploadPreview bool) error {
 	pathToHash, hashToGzip, err := hashAndGzip(rendered)
 	if err != nil {
 		return fmt.Errorf("prepare file hash: %w", err)
@@ -174,6 +172,9 @@ func uploadFiles(ctx context.Context, client *firebasehosting.Service, httpClien
 	for idx, uploadHash := range toUpload {
 		sem <- struct{}{}
 		spin.Suffix = fmt.Sprintf("%3d/%3d uploading files", idx+1, len(toUpload))
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 		wg.Go(func() {
 			defer func() { <-sem }()
 

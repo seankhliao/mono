@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"io/fs"
@@ -41,7 +42,7 @@ func stripTitles(src []byte) (page []byte, title, subtitle string) {
 	return page, title, subtitle
 }
 
-func renderMulti(in, gtm, baseURL string, compact bool) (map[string]*bytes.Buffer, error) {
+func renderMulti(ctx context.Context, in, gtm, baseURL string, compact bool) (map[string]*bytes.Buffer, error) {
 	var countFiles int
 	fsys := os.DirFS(in)
 	err := fs.WalkDir(fsys, ".", func(p string, d fs.DirEntry, err error) error {
@@ -60,7 +61,7 @@ func renderMulti(in, gtm, baseURL string, compact bool) (map[string]*bytes.Buffe
 
 	rendered := make(map[string]*bytes.Buffer)
 	rendered["sitemap.txt"] = new(bytes.Buffer)
-	err = fs.WalkDir(fsys, ".", walk(fsys, spin, rendered, gtm, baseURL, compact))
+	err = fs.WalkDir(fsys, ".", walk(ctx, fsys, spin, rendered, gtm, baseURL, compact))
 	if err != nil {
 		return nil, fmt.Errorf("process source: %w", err)
 	}
@@ -70,11 +71,14 @@ func renderMulti(in, gtm, baseURL string, compact bool) (map[string]*bytes.Buffe
 	return rendered, nil
 }
 
-func walk(fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, gtm, baseURL string, compact bool) fs.WalkDirFunc {
+func walk(ctx context.Context, fsys fs.FS, spin *spinner.Spinner, rendered map[string]*bytes.Buffer, gtm, baseURL string, compact bool) fs.WalkDirFunc {
 	var idx int
 	return func(p string, d fs.DirEntry, openErr error) error {
 		if openErr != nil || d.IsDir() {
 			return openErr
+		}
+		if err := ctx.Err(); err != nil {
+			return err
 		}
 
 		idx++

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -11,7 +12,7 @@ import (
 	"github.com/briandowns/spinner"
 )
 
-func writeRendered(stdout io.Writer, dst string, rendered map[string]*bytes.Buffer) error {
+func writeRendered(ctx context.Context, stdout io.Writer, dst string, rendered map[string]*bytes.Buffer) error {
 	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond, spinner.WithWriter(stdout))
 	spin.FinalMSG = fmt.Sprintf("%3d/%3d written to dst %q\n", len(rendered), len(rendered), dst)
 	spin.Start()
@@ -21,6 +22,10 @@ func writeRendered(stdout io.Writer, dst string, rendered map[string]*bytes.Buff
 	for p, buf := range rendered {
 		idx++
 		spin.Suffix = fmt.Sprintf("%3d/%3d writing to dst %q", idx, len(rendered), p)
+
+		if err := ctx.Err(); err != nil {
+			return err
+		}
 
 		if p == singleKey {
 			p = dst
