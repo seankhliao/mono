@@ -334,7 +334,9 @@ func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, 
 			return nil, fmt.Errorf("no context selected")
 		}
 
-		nsCache[a.context] = updatedNamespaces
+		if len(updatedNamespaces) > 0 {
+			nsCache[a.context] = updatedNamespaces
+		}
 		b, err = json.Marshal(nsCache)
 		if err != nil {
 			a.lg.Debug("marshal ns cache file", slog.String("err", err.Error()))
