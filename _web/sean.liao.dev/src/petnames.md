@@ -16,7 +16,7 @@ that I could use to name things.
 | Ihwa               | [Hero Killer][ihwa]                                     | ... retired ...  |
 | Justia             | [Brown Dust II][justia]                                 | ... retired ...  |
 | Lapis              | [The Dark Lord's Confession][lapis]                     | pixel 8 pro      |
-| Layla              | [Cry, or Better Yet, Beg][layla]                        | lichee pi 4a     |
+| Layla              | [Cry, or Better Yet, Beg][layla]                        | ... retired ...  |
 | Lucid              | [Lucid][lucid]                                          | ... retired ...  |
 | Makima             | [Chainsaw Man][makima]                                  | pixel tablet     |
 | Medea              | [Your Throne][medea]                                    | ... retired ...  |
