@@ -13,6 +13,10 @@ Description: """
 	"""
 
 Events: [{
+	_date:    "2026-11-12"
+	headline: "Hatsune Miku"
+	price:    91.10
+}, {
 	_date:    "2026-09-22"
 	headline: "LiSA"
 	price:    93.69
