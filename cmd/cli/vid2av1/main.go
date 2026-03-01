@@ -2,9 +2,9 @@ package main
 
 import (
 	"bytes"
-	"errors"
+	"flag"
+	"fmt"
 	"io"
-	"io/fs"
 	"log/slog"
 	"os"
 	"os/exec"
@@ -13,41 +13,44 @@ import (
 )
 
 func main() {
-	in := os.Args[1]
-	out := os.Args[2]
+	var indir, donedir, outdir, faileddir string
+	flag.StringVar(&indir, "in", "todo", "input directory")
+	flag.StringVar(&donedir, "done", "done", "done directory")
+	flag.StringVar(&outdir, "out", "out", "output directory")
+	flag.StringVar(&faileddir, "failed", "failed", "failed directory")
+	flag.Parse()
 
-	done := make(map[string]struct{})
-
-	des, err := os.ReadDir(out)
-	if err == nil {
-		for _, de := range des {
-			if de.IsDir() || strings.HasSuffix(de.Name(), ".jpg") {
-				continue
-			}
-			done[de.Name()] = struct{}{}
-
-			if strings.HasPrefix(de.Name(), ".") {
-				os.Remove(filepath.Join(out, de.Name()))
-			}
-		}
-	} else if !errors.Is(err, fs.ErrNotExist) {
-		slog.Error("list dst", "err", err)
-		os.Exit(1)
-	}
-
-	des, err = os.ReadDir(in)
+	err := run(indir, donedir, outdir, faileddir)
 	if err != nil {
-		slog.Error("list src", "err", err)
 		os.Exit(1)
+		fmt.Fprintln(os.Stderr, err)
+	}
+}
+
+func run(indir, donedir, outdir, faileddir string) error {
+	outprefixes, doneprefixes := make(map[string]struct{}), make(map[string]struct{})
+	des, err := os.ReadDir(outdir)
+	if err != nil {
+		return fmt.Errorf("read out dir %s: %w", outdir, err)
+	}
+	for _, de := range des {
+		outprefixes[de.Name()] = struct{}{}
+	}
+	des, err = os.ReadDir(donedir)
+	if err != nil {
+		return fmt.Errorf("read done dir %s: %w", outdir, err)
+	}
+	for _, de := range des {
+		doneprefixes[de.Name()] = struct{}{}
 	}
 
 	todo := make(map[string]struct{})
-
+	des, err = os.ReadDir(indir)
+	if err != nil {
+		return fmt.Errorf("read indir %s: %w", indir, err)
+	}
 	for _, de := range des {
 		if de.IsDir() || strings.HasSuffix(de.Name(), ".jpg") {
-			continue
-		}
-		if _, ok := done[de.Name()]; ok {
 			continue
 		}
 		todo[de.Name()] = struct{}{}
@@ -63,20 +66,66 @@ func main() {
 		i++
 		slog.Info("staring", "name", name, "idx", i, "total_todo", len(todo))
 
-		fullname := filepath.Join(in, name)
-		tmpout := filepath.Join(out, ".tmp."+name)
-		cmd := exec.Command("ffmpeg", "-i", fullname, "-c:v", "libsvtav1", "-cpu-used", "8", "-c:a", "copy", tmpout)
+		inname := filepath.Join(indir, name)
+
+		var outprefix, doneprefix string
+		for p := range outprefixes {
+			if strings.HasPrefix(name, p) {
+				outprefix = p
+				break
+			}
+		}
+		if outprefix == "" && len(name) > 10 && name[1] == '_' {
+			outprefix = name[:4]
+			outprefixes[outprefix] = struct{}{}
+			os.MkdirAll(filepath.Join(outdir, outprefix), 0o755)
+		}
+		if outprefix == "" {
+			outprefix = "other"
+		}
+		for p := range doneprefixes {
+			if strings.HasPrefix(name, p) {
+				doneprefix = p
+				break
+			}
+		}
+		if doneprefix == "" && len(name) > 10 && name[1] == '_' {
+			doneprefix = name[:4]
+			doneprefixes[doneprefix] = struct{}{}
+			os.MkdirAll(filepath.Join(donedir, doneprefix), 0o755)
+		}
+		if doneprefix == "" {
+			doneprefix = "other"
+		}
+
+		tmpname := filepath.Join(outdir, outprefix, ".tmp."+name)
+		outname := filepath.Join(outdir, outprefix, name)
+
+		donename := filepath.Join(donedir, doneprefix, name)
+
+		failedname := filepath.Join(faileddir, name)
+
+		cmd := exec.Command("ffmpeg",
+			"-i", inname,
+			"-c:v", "libsvtav1",
+			"-cpu-used", "8",
+			"-c:a", "copy",
+			tmpname,
+		)
 		cmd.Stdout = stdout
 		cmd.Stderr = stderr
 		err = cmd.Run()
 		if err != nil {
-			slog.Error("run ffmpeg", "name", name, "err", err)
+			os.RemoveAll(tmpname)
+			os.Rename(inname, failedname)
+			slog.Error("run ffmpeg", "name", inname, "err", err)
 			continue
 		}
-		outname := filepath.Join(out, name)
-		os.Rename(tmpout, outname)
+		os.Rename(tmpname, outname)
+		os.Rename(inname, donename)
 		slog.Info("done, renamed", "name", name, "idx", i, "total_todo", len(todo))
 	}
+	return nil
 }
 
 type prefixer struct {
