@@ -2,6 +2,22 @@
 
 ### _links_
 
+_youtube:_
+[ruka](https://www.youtube.com/@RukaCh.%E9%9B%A8%E6%B5%B7%E3%83%AB%E3%82%AB/posts)
+[suisei](https://www.youtube.com/@HoshimachiSuisei/posts)
+[towa](https://www.youtube.com/@TokoyamiTowa/posts)
+[ui](https://www.youtube.com/@ui_shig/posts)
+[umi](https://www.youtube.com/@umi_shinonome/posts)
+
+_txt:_
+[xkcd](https://xkcd.com)
+[cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
+
+_img:_
+[ghostblade ep 45](https://tapas.io/series/GhostBlade/info)
+
+#### dashboards
+
 _console:_
 [analytics](https://analytics.google.com)
 [gcp](https://console.cloud.google.com/home/dashboard?project=com-seankhliao)
@@ -23,10 +39,3 @@ _credit:_
 [amex](https://www.americanexpress.com/en-gb/account/login?inav=iNavLnkLog)
 chase
 virgin
-
-_txt:_
-[xkcd](https://xkcd.com)
-[cks](https://utcc.utoronto.ca/~cks/space/blog/__IndexChron)
-
-_img:_
-[ghostblade ep 45](https://tapas.io/series/GhostBlade/info)
