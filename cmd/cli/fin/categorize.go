@@ -90,7 +90,7 @@ var categories = []struct {
 			"the lower third", "eventim", "misato", "o2 academy islington",
 			"waitrose", "paul", "marks & spencer", "koffee", "sainsbury",
 			"whole foods market", "k. minamoto", "7-eleven",
-			"coca-cola", "wholefds", "food",
+			"coca-cola", "wholefds", "food", "bunsik",
 		},
 		[]string{
 			"restaurants", "retail_stores",
@@ -148,7 +148,7 @@ var categories = []struct {
 			"my o2 bill payment", "o2 balanceweb", "amznmktplace", "aliexpress", "h3g dd",
 			"gsuite", "o2 online", "amazon", "hutchison 3g", "google", "bic camera",
 			"framework", "hetzner", "viasat", "sp arace tech", "anker", "three", "o2",
-			"spotify", "tailscale",
+			"spotify", "tailscale", "mobal.com",
 		},
 		nil,
 	},

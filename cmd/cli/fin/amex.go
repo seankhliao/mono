@@ -19,7 +19,7 @@ func (c *Convert) amex(stdout, stderr io.Writer) error {
 		desc_ = strings.Join(strings.Fields(desc_), " ")
 		desc := date + " " + desc_
 
-		src := "AMX"
+		src := "AMC"
 		dst := categorize(desc_, "")
 
 		val = strings.ReplaceAll(val, ".", "")

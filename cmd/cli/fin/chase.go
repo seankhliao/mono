@@ -21,6 +21,7 @@ func (c *Convert) chase(stdout, stderr io.Writer) error {
 		date, time_ := rec[0], rec[1]
 		tx, desc := rec[2], rec[3]
 		val := rec[4]
+		val = strings.ReplaceAll(val, ",", "")
 		pound, pence, ok := strings.Cut(val, ".")
 		if !ok {
 			pence = "00"

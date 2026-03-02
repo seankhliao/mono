@@ -108,7 +108,7 @@ func run(indir, donedir, outdir, faileddir string) error {
 		cmd := exec.Command("ffmpeg",
 			"-i", inname,
 			"-c:v", "libsvtav1",
-			"-cpu-used", "8",
+			"-cpu-used", "12",
 			"-c:a", "copy",
 			tmpname,
 		)
