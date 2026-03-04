@@ -29,9 +29,9 @@ func stripTitles(src []byte) (page []byte, title, subtitle string) {
 	for sc.Scan() {
 		b := sc.Bytes()
 		switch {
-		case bytes.HasPrefix(b, []byte("# ")):
+		case title == "" && bytes.HasPrefix(b, []byte("# ")):
 			title = string(b[2:])
-		case bytes.HasPrefix(b, []byte("## ")):
+		case subtitle == "" && bytes.HasPrefix(b, []byte("## ")):
 			subtitle = string(b[3:])
 		default:
 			buf.Write(b)
