@@ -32,7 +32,7 @@ func HistogramDiff(a, b []byte, aName, bName string) []byte {
 	linesB, bHasNL := splitLines(b)
 
 	diffs := histogramDiff(linesA, linesB)
-	if slices.ContainsFunc(diffs, func(e DiffRecord) bool {
+	if !slices.ContainsFunc(diffs, func(e DiffRecord) bool {
 		return e.Type != Equal
 	}) && aHasNL == bHasNL {
 		return nil
