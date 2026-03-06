@@ -2,7 +2,6 @@ package diff
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -24,7 +23,7 @@ func TestDiff(t *testing.T) {
 			}
 			b, err := os.ReadFile(filepath.Join("testdata", de.Name(), "new"))
 			if err != nil {
-				t.Fatal("read old", err)
+				t.Fatal("read new", err)
 			}
 			want, err := os.ReadFile(filepath.Join("testdata", de.Name(), "diff"))
 			if err != nil {
@@ -33,9 +32,7 @@ func TestDiff(t *testing.T) {
 
 			got := HistogramDiff(a, b, "old", "new")
 			if !bytes.Equal(got, want) {
-				fmt.Fprint(t.Output(), "\n!!old:\n", string(a), "\n!!new:\n", string(b))
-				fmt.Fprint(t.Output(), "\n!!got:\n", string(got), "\n!!want:\n", string(want))
-				t.Fail()
+				t.Errorf("\n!!old:\n%s\n!!new:\n%s\n!!got:\n%s\n!!want:\n%s", a, b, got, want)
 			}
 			// err = os.WriteFile(filepath.Join("testdata", de.Name(), "got.diff"), got, 0o644)
 			// if err != nil {
