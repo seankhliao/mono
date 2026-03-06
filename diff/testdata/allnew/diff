@@ -1,0 +1,7 @@
+diff old new
+--- old
++++ new
+@@ -0,0 +1,3 @@
++a
++b
++c

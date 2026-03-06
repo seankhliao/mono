@@ -1,0 +1,14 @@
+diff old new
+--- old
++++ new
+@@ -5,7 +5,6 @@
+ 5
+ 6
+ 7
+-eight
+-nine
+-ten
+-eleven
++8
++9
++10

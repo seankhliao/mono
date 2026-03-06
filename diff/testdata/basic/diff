@@ -1,0 +1,15 @@
+diff old new
+--- old
++++ new
+@@ -1,7 +1,7 @@
++w
+ a
+ b
+-c
+-d
++x
++y
++z
+ e
+-f
+-g
