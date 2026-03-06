@@ -29,6 +29,10 @@ Events: [{
 	headline: "INNA"
 	price:    67.80
 }, {
+	_date:    "2026-07-19"
+	headline: "ATARASHII GAKKO"
+	price:    57.10
+}, {
 	_date:     "2026-07-05"
 	headline:  "Ado"
 	price_jpy: 130000
