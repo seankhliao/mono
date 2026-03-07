@@ -3,48 +3,54 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path"
 	"strings"
+
+	"go.seankhliao.com/mono/cmdline"
 )
 
 func main() {
-	ctx := context.Background()
-	rootDirs, err := run(ctx, "jj", "workspace", "root")
-	if err != nil || len(rootDirs) != 1 {
-		fmt.Fprintln(os.Stderr, "find workspace root", rootDirs, err)
-		os.Exit(1)
-	}
-	os.Chdir(rootDirs[0])
-	diffFiles, err := run(ctx, "jj", "diff", "--name-only")
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "find changed files", err)
-		os.Exit(1)
-	} else if len(diffFiles) == 0 {
-		fmt.Fprintln(os.Stderr, "no changed files")
-		os.Exit(1)
-	}
-
-	common := diffFiles[0]
-findCommon:
-	for {
-		common = path.Dir(common)
-		if common == "." {
-			common = "all"
-			break findCommon
+	cmdline.RunOS(cmdline.CommandRun("jj-commitmsg", "generate a commit message prefix based on changed files", func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+		rootDirs, err := run(ctx, "jj", "workspace", "root")
+		if err != nil || len(rootDirs) != 1 {
+			fmt.Fprintln(stderr, "find workspace root", rootDirs, err)
+			return 1
 		}
-		allMatch := true
-		for _, file := range diffFiles {
-			if !strings.HasPrefix(file, common) {
-				allMatch = false
+		os.Chdir(rootDirs[0])
+		diffFiles, err := run(ctx, "jj", "diff", "--name-only")
+		if err != nil {
+			fmt.Fprintln(stderr, "find changed files", err)
+			return 1
+		} else if len(diffFiles) == 0 {
+			fmt.Fprintln(stderr, "no changed files")
+			return 1
+		}
+
+		common := diffFiles[0]
+	findCommon:
+		for {
+			common = path.Dir(common)
+			if common == "." {
+				common = "all"
+				break findCommon
+			}
+			allMatch := true
+			for _, file := range diffFiles {
+				if !strings.HasPrefix(file, common) {
+					allMatch = false
+				}
+			}
+			if allMatch {
+				break findCommon
 			}
 		}
-		if allMatch {
-			break findCommon
-		}
-	}
-	fmt.Print(common)
+		fmt.Fprint(stdout, common)
+		return 0
+	}))
 }
 
 func run(ctx context.Context, cmd string, args ...string) ([]string, error) {
