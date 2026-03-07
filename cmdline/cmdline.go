@@ -52,7 +52,7 @@ func findRun(parents []string, c Commander, args []string) Runner {
 
 	var debugPrintFlags bool
 	fset.BoolVar(&debugPrintFlags, "flag-debug", false, "print the resolved flag values")
-	var argsFromFiles []string
+	var extraArgs []string
 	fset.Func("flag-file", `read flags from the given file. overrides cmdline flags, may use "quoted values"`, func(s string) error {
 		f, err := os.Open(s)
 		if err != nil {
@@ -67,7 +67,21 @@ func findRun(parents []string, c Commander, args []string) Runner {
 			return fmt.Errorf("read args from file %s: %w", s, err)
 		}
 		for _, asr := range as {
-			argsFromFiles = append(argsFromFiles, asr...)
+			extraArgs = append(extraArgs, asr...)
+		}
+		return nil
+	})
+	fset.Func("flag-env", `read flags from the given env var, may use "quoted values"`, func(s string) error {
+		val := os.Getenv(s)
+		cr := csv.NewReader(strings.NewReader(val))
+		cr.Comma = ' '
+		cr.FieldsPerRecord = -1
+		as, err := cr.ReadAll()
+		if err != nil {
+			return fmt.Errorf("read from env %s: %w", s, err)
+		}
+		for _, asr := range as {
+			extraArgs = append(extraArgs, asr...)
 		}
 		return nil
 	})
@@ -83,8 +97,8 @@ func findRun(parents []string, c Commander, args []string) Runner {
 			return helpFor(c, parents, fset, 1)(ctx, stdin, stdout, stderr, fsys)
 		}
 	}
-	if len(argsFromFiles) > 0 {
-		err = fset.Parse(argsFromFiles)
+	if len(extraArgs) > 0 {
+		err = fset.Parse(extraArgs)
 		if errors.Is(err, flag.ErrHelp) {
 			return helpFor(c, parents, fset, 0)
 		} else if err != nil {
