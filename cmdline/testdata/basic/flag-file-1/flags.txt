@@ -1,0 +1,6 @@
+-foo lorem -bar ipsum
+-qux=dolor
+
+-fizz
+"sit amet"
+-buzz "consectetur adipiscing"
