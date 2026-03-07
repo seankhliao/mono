@@ -11,6 +11,7 @@ import (
 	"io"
 	"io/fs"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -158,6 +159,23 @@ func printDebugFlags(fset *flag.FlagSet) Runner {
 
 		return 0
 	}
+}
+
+func UserConfigFile(fset *flag.FlagSet, name string, required bool) error {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return fmt.Errorf("get home dir: %w", err)
+	}
+	confDir := filepath.Join(homeDir, ".config")
+	confFile := filepath.Join(confDir, name)
+	if !required {
+		_, err := os.Stat(confFile)
+		if err != nil {
+			return nil
+		}
+	}
+	fset.Set("flag-file", confFile)
+	return nil
 }
 
 func ChdirToParentFlagFile(fset *flag.FlagSet, name string) error {

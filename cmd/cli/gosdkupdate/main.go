@@ -7,11 +7,11 @@ import (
 	"bytes"
 	"context"
 	"debug/buildinfo"
-	_ "embed"
 	"flag"
 	"fmt"
 	"go/version"
 	"io"
+	"io/fs"
 	"net/http"
 	"os"
 	"os/exec"
@@ -20,83 +20,71 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
-	"go.seankhliao.com/mono/cueconf"
+	"go.seankhliao.com/mono/cmdline"
 	"go.seankhliao.com/mono/goreleases"
-	"go.seankhliao.com/mono/ycli"
 )
 
-//go:embed schema.cue
-var configSchema string
-
 type Config struct {
-	Go struct {
-		Bootstrap string `json:"bootstrap"`
-		Releases  int    `json:"releases"`
-		Pre       bool   `json:"pre"`
-		Tip       struct {
-			Update bool `json:"update"`
-		} `json:"tip"`
-	}
-	Tools struct {
-		Update    bool `json:"update"`
-		Overrides map[string]struct {
-			Version string `json:"version"`
-			Cgo     bool   `json:"cgo"`
-		} `json:"overrides"`
-	} `json:"tools"`
+	Go          bool
+	Bootstrap   string
+	Releases    int
+	Prereleases bool
+	Tip         bool
+
+	Tools bool
 }
 
 func main() {
-	confDir, err := os.UserConfigDir()
-	if err != nil {
-		homeDir, err := os.UserHomeDir()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "get user home dir", err)
-			os.Exit(1)
-		}
-		confDir = filepath.Join(homeDir, ".config")
-	}
-	confFile := filepath.Join(confDir, "gosdkupdate.cue")
-	ycli.OSExec(ycli.New(
-		"gosdkupdate",
-		"keep up to date go toolchains",
-		func(fs *flag.FlagSet) {
-			fs.StringVar(&confFile, "config", confFile, "path to config file")
+	cmdline.RunOS(&cmdline.CommandBasic[Config]{
+		Name: "gosdkupdate",
+		Desc: "update local go installations and go tools",
+		Flags: func(c *Config, fset *flag.FlagSet) error {
+			fset.BoolVar(&c.Go, "go", true, "update go installs")
+			fset.StringVar(&c.Bootstrap, "bootstrap", "/usr/bin/go", "path to a bootstrap go install")
+			fset.IntVar(&c.Releases, "releases", 2, "number of go releases to keep")
+			fset.BoolVar(&c.Prereleases, "prereleases", true, "whether to get prereleases")
+			fset.BoolVar(&c.Tip, "tip", false, "whether to update tip")
+			fset.BoolVar(&c.Tools, "tools", true, "update go tools")
+
+			return cmdline.UserConfigFile(fset, "gosdkupdate.txt", false)
 		},
-		func(stdout, _ io.Writer) error {
-			conf, err := cueconf.ForFile[Config](configSchema, "#GosdkupdateConfig", confFile, true)
-			if err != nil {
-				return fmt.Errorf("gosdkupdate: decode config: %w", err)
-			}
+		Do: func(c *Config) cmdline.Runner {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+				tmpDir, err := os.MkdirTemp("", "gosdkupdate.*")
+				if err != nil {
+					fmt.Fprintln(stderr, "prepare temp dir", err)
+					return 1
+				}
+				err = os.Chdir(tmpDir)
+				if err != nil {
+					fmt.Fprintln(stderr, "chdir temp dir", err)
+					return 1
+				}
 
-			tmpDir, err := os.MkdirTemp("", "gosdkupdate.*")
-			if err != nil {
-				return fmt.Errorf("gosdkupdate: prepare temp dir: %w", err)
-			}
-			err = os.Chdir(tmpDir)
-			if err != nil {
-				return fmt.Errorf("gosdkupdate: switch to temp dir: %w", err)
-			}
+				err = updateGo(ctx, c, stdout)
+				if err != nil {
+					fmt.Fprintln(stderr, "update go", err)
+					return 1
+				}
 
-			err = updateGo(conf, stdout)
-			if err != nil {
-				return fmt.Errorf("gosdkupdate: update go installations: %w", err)
+				err = updateTools(ctx, c, stdout)
+				if err != nil {
+					fmt.Fprintln(stderr, "update tools", err)
+					return 1
+				}
+				return 0
 			}
-
-			err = updateTools(conf, stdout)
-			if err != nil {
-				return fmt.Errorf("gosdkupdate: update tools: %w", err)
-			}
-			return nil
 		},
-	))
+	})
 }
 
-func updateGo(c Config, stdout io.Writer) error {
-	ctx := context.Background()
+func updateGo(ctx context.Context, c *Config, stdout io.Writer) error {
+	if !c.Go {
+		return nil
+	}
 
-	toUpdate := c.Go.Releases
-	if c.Go.Tip.Update {
+	toUpdate := c.Releases
+	if c.Tip {
 		toUpdate++
 	}
 
@@ -123,19 +111,19 @@ func updateGo(c Config, stdout io.Writer) error {
 		}
 	}
 
-	if c.Go.Releases > 0 || c.Go.Pre {
+	if c.Releases > 0 || c.Prereleases {
 		// find the current releases
 		rels, err := goreleases.Releases(http.DefaultClient, ctx, "", true)
 		if err != nil {
 			return fmt.Errorf("get go releases: %w", err)
 		}
 
-		need := c.Go.Releases
+		need := c.Releases
 		var toKeep []string
 		var lastLang string
 		for i, rel := range rels {
 			if !rel.Stable {
-				if i == 0 && c.Go.Pre {
+				if i == 0 && c.Prereleases {
 					toKeep = append(toKeep, rel.Version)
 				}
 				continue
@@ -152,7 +140,7 @@ func updateGo(c Config, stdout io.Writer) error {
 		}
 
 		toUpdate = len(toKeep)
-		if c.Go.Tip.Update {
+		if c.Tip {
 			toUpdate++
 		}
 		spin.FinalMSG = fmt.Sprintf("%2d/%2d Go installations updated\n", toUpdate, toUpdate)
@@ -160,7 +148,7 @@ func updateGo(c Config, stdout io.Writer) error {
 		for i, rel := range toKeep {
 			spin.Suffix = fmt.Sprintf("%2d/%2d installing %s", i+1, toUpdate, rel)
 
-			cmd := exec.CommandContext(ctx, c.Go.Bootstrap, "env", "GOROOT")
+			cmd := exec.CommandContext(ctx, c.Bootstrap, "env", "GOROOT")
 			cmd.Env = append(baseEnv,
 				"GOTOOLCHAIN="+rel,
 			)
@@ -177,10 +165,10 @@ func updateGo(c Config, stdout io.Writer) error {
 		}
 	}
 
-	if c.Go.Tip.Update {
+	if c.Tip {
 		spin.Suffix = fmt.Sprintf("%2d/%2d installing tip", toUpdate, toUpdate)
 
-		cmd := exec.CommandContext(ctx, c.Go.Bootstrap, "install", "golang.org/dl/gotip@latest")
+		cmd := exec.CommandContext(ctx, c.Bootstrap, "install", "golang.org/dl/gotip@latest")
 		cmd.Env = baseEnv
 		out, err := cmd.CombinedOutput()
 		if err != nil {
@@ -212,8 +200,10 @@ func updateGo(c Config, stdout io.Writer) error {
 	return nil
 }
 
-func updateTools(c Config, stdout io.Writer) error {
-	ctx := context.Background()
+func updateTools(ctx context.Context, c *Config, stdout io.Writer) error {
+	if !c.Tools {
+		return nil
+	}
 
 	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond, spinner.WithWriter(stdout))
 	spin.Start()
@@ -257,24 +247,6 @@ func updateTools(c Config, stdout io.Writer) error {
 		baseEnv := os.Environ()
 
 		targetVer := "latest"
-		override, ok := c.Tools.Overrides[tool]
-		if ok {
-			targetVer = override.Version
-			if override.Cgo {
-				var found bool
-				for idx := range baseEnv {
-					if strings.HasPrefix(baseEnv[i], "CGO_ENABLED=") {
-						found = true
-						baseEnv[idx] = "CGO_ENABLED=1"
-						break
-					}
-				}
-				if !found {
-					baseEnv = append(baseEnv, "CGO_ENABLED=1")
-				}
-			}
-		}
-
 		cmd := exec.CommandContext(ctx, "go", "install", fmt.Sprintf("%s@%s", tool, targetVer))
 		cmd.Env = baseEnv
 		out, err := cmd.CombinedOutput()
