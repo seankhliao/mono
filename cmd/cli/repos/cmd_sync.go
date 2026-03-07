@@ -21,8 +21,8 @@ import (
 
 	"github.com/briandowns/spinner"
 	"github.com/google/go-github/v74/github"
+	"go.seankhliao.com/mono/cmdline"
 	"go.seankhliao.com/mono/cueconf"
-	"go.seankhliao.com/mono/ycli"
 	"golang.org/x/oauth2"
 )
 
@@ -44,27 +44,34 @@ type Config struct {
 
 type ConfigRemote struct{}
 
-func cmdSync() ycli.Command {
-	var configFile string
-	return ycli.New(
-		"sync",
-		"sync repositories with upstream origins",
-		func(fs *flag.FlagSet) {
-			fs.StringVar(&configFile, "config", "repos.cue", "path to config file")
-		},
-		func(stdout, _ io.Writer) error {
-			config, err := cueconf.ForFile[Config](configSchema, "#SyncConfig", configFile, false)
-			if err != nil {
-				return fmt.Errorf("repos: decode config: %w", err)
-			}
-
-			err = runSync(stdout, config)
-			if err != nil {
-				return fmt.Errorf("repos sync: %w", err)
-			}
+func cmdSync() cmdline.Commander {
+	type ConfigSub struct {
+		configFile string
+	}
+	return &cmdline.CommandBasic[ConfigSub]{
+		Name: "sync",
+		Desc: "sync repositories with upstream origins",
+		Flags: func(c *ConfigSub, fs *flag.FlagSet) error {
+			fs.StringVar(&c.configFile, "config", "repos.cue", "path to config file")
 			return nil
 		},
-	)
+		Do: func(c *ConfigSub) cmdline.Runner {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+				config, err := cueconf.ForFile[Config](configSchema, "#SyncConfig", c.configFile, false)
+				if err != nil {
+					fmt.Fprintf(stderr, "repos: decode config: %v\n", err)
+					return 1
+				}
+
+				err = runSync(stdout, config)
+				if err != nil {
+					fmt.Fprintf(stderr, "repos sync: %v\n", err)
+					return 1
+				}
+				return 0
+			}
+		},
+	}
 }
 
 func runSync(stdout io.Writer, conf Config) error {
@@ -76,7 +83,7 @@ func runSync(stdout io.Writer, conf Config) error {
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond, spinner.WithWriter(stdout))
 	spin.Start()
 
 	remoteURL := cmp.Or(conf.Upstream, conf.Origin)
@@ -101,39 +108,43 @@ func runSync(stdout io.Writer, conf Config) error {
 	resc := make(chan syncResult)
 
 	for _, repo := range download {
-		wg.Go(func() {
+		wg.Add(1)
+		go func(repo string) {
 			limiter <- struct{}{}
-			defer func() { <-limiter }()
+			defer func() { <-limiter; wg.Done() }()
 
 			resc <- syncResult{"download", repo, downloadRemote(ctx, conf.Upstream, conf.Origin, repo)}
-		})
+		}(repo)
 	}
 	for _, repo := range update {
-		wg.Go(func() {
+		wg.Add(1)
+		go func(repo string) {
 			limiter <- struct{}{}
-			defer func() { <-limiter }()
+			defer func() { <-limiter; wg.Done() }()
 
 			resc <- syncResult{"update", repo, updateRemote(ctx, conf.Upstream, conf.Origin, repo)}
-		})
+		}(repo)
 	}
 	for _, repo := range prune {
-		wg.Go(func() {
+		wg.Add(1)
+		go func(repo string) {
 			limiter <- struct{}{}
-			defer func() { <-limiter }()
+			defer func() { <-limiter; wg.Done() }()
 
 			resc <- syncResult{"prune", repo, removeLocal(ctx, repo)}
-		})
+		}(repo)
 	}
 
 	var errs []error
 	for i := range totalWork {
 		res := <-resc
 		spin.Suffix = fmt.Sprintf("% 4d/% 4d Working... %d errored, %s done",
-			i, totalWork, len(errs), res.name)
+			i+1, totalWork, len(errs), res.name)
 		if res.err != nil {
 			errs = append(errs, res.err)
 		}
 	}
+	wg.Wait()
 	spin.FinalMSG = fmt.Sprintf("% 4d/% 4d Downloaded: %d, Updated: %d, Pruned: %d, Errors: %d",
 		totalWork, totalWork, len(download), len(update), len(prune), len(errs))
 	spin.Stop()

@@ -10,27 +10,30 @@ import (
 	"slices"
 	"strings"
 
-	"go.seankhliao.com/mono/ycli"
+	"go.seankhliao.com/mono/cmdline"
 )
 
 func main() {
 	conf := new(CommonConfig)
-	ycli.OSExec(ycli.NewGroup(
-		"repos",
-		"tool for managing git repos",
-		func(fs *flag.FlagSet) {
+	cmdline.RunOS(&cmdline.CommandGroup{
+		Name: "repos",
+		Desc: "tool for managing git repos",
+		Flags: func(fs *flag.FlagSet) error {
 			fs.Func("eval-file", "path to a file to output commands to eval", func(s string) error {
 				var err error
 				conf.eval, err = os.OpenFile(s, os.O_RDWR, 0o644)
 				return err
 			})
+			return nil
 		},
-		cmdSync(),
-		cmdLast(conf),
-		cmdNew(conf),
-		cmdClean(),
-		cmdConfig(conf),
-	))
+		Subs: []cmdline.Commander{
+			cmdSync(),
+			cmdLast(conf),
+			cmdNew(conf),
+			cmdClean(),
+			cmdConfig(conf),
+		},
+	})
 }
 
 type CommonConfig struct {

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	_ "embed"
+	"context"
 	"errors"
 	"flag"
 	"fmt"
@@ -16,7 +17,7 @@ import (
 	"strconv"
 	"time"
 
-	"go.seankhliao.com/mono/ycli"
+	"go.seankhliao.com/mono/cmdline"
 )
 
 const (
@@ -56,49 +57,58 @@ SOFTWARE.
 `
 )
 
-func cmdNew(conf *CommonConfig) ycli.Command {
-	var modPrefix string
-	var srcPrefix string
-	var name string
-	var jj bool
-	return ycli.New(
-		"new",
-		"creates a new repository",
-		func(fs *flag.FlagSet) {
-			fs.StringVar(&modPrefix, "module-prefix", "go.seankhliao.com", "go module prefix")
-			fs.StringVar(&srcPrefix, "src-prefix", "https://github.com/seankhliao", "vcs source prefix")
-			fs.StringVar(&name, "name", "", "create a named repository in the current directory")
-			fs.BoolVar(&jj, "jj", true, "use jj as the vcs tool")
-		},
-		func(stdout, stderr io.Writer) error {
-			var base string
-			if name == "" {
-				var err error
-				name, err = newTestrepoVersion()
-				if err != nil {
-					return fmt.Errorf("repos new: get repo sequence: %w", err)
-				}
-
-				base, err = os.UserHomeDir()
-				if err != nil {
-					return fmt.Errorf("repos new: get home dir: %w", err)
-				}
-				base = filepath.Join(base, "tmp")
-			} else {
-				var err error
-				base, err = os.Getwd()
-				if err != nil {
-					return fmt.Errorf("repos new: get current dir: %w", err)
-				}
-			}
-
-			err := runNew(conf.eval, base, srcPrefix, modPrefix, name, jj)
-			if err != nil {
-				return fmt.Errorf("repos new: %w", err)
-			}
+func cmdNew(conf *CommonConfig) cmdline.Commander {
+	type ConfigNew struct {
+		modPrefix string
+		srcPrefix string
+		name      string
+		jj        bool
+	}
+	return &cmdline.CommandBasic[ConfigNew]{
+		Name: "new",
+		Desc: "creates a new repository",
+		Flags: func(c *ConfigNew, fs *flag.FlagSet) error {
+			fs.StringVar(&c.modPrefix, "module-prefix", "go.seankhliao.com", "go module prefix")
+			fs.StringVar(&c.srcPrefix, "src-prefix", "https://github.com/seankhliao", "vcs source prefix")
+			fs.StringVar(&c.name, "name", "", "create a named repository in the current directory")
+			fs.BoolVar(&c.jj, "jj", true, "use jj as the vcs tool")
 			return nil
 		},
-	)
+		Do: func(c *ConfigNew) cmdline.Runner {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+				var base string
+				if c.name == "" {
+					var err error
+					c.name, err = newTestrepoVersion()
+					if err != nil {
+						fmt.Fprintf(stderr, "repos new: get repo sequence: %v\n", err)
+						return 1
+					}
+
+					base, err = os.UserHomeDir()
+					if err != nil {
+						fmt.Fprintf(stderr, "repos new: get home dir: %v\n", err)
+						return 1
+					}
+					base = filepath.Join(base, "tmp")
+				} else {
+					var err error
+					base, err = os.Getwd()
+					if err != nil {
+						fmt.Fprintf(stderr, "repos new: get current dir: %v\n", err)
+						return 1
+					}
+				}
+
+				err := runNew(conf.eval, base, c.srcPrefix, c.modPrefix, c.name, c.jj)
+				if err != nil {
+					fmt.Fprintf(stderr, "repos new: %v\n", err)
+					return 1
+				}
+				return 0
+			}
+		},
+	}
 }
 
 func runNew(evalFile io.Writer, base, srcPrefix, modPrefix, name string, jj bool) error {

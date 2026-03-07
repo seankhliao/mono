@@ -12,9 +12,9 @@ func TestCommandGroup(t *testing.T) {
 	tcs := []testCommandCase{
 		{
 			&CommandGroup{
-				"no-subs",
-				"a description",
-				nil,
+				Name: "no-subs",
+				Desc: "a description",
+				Subs: nil,
 			},
 			[]string{"group"},
 			nil,
@@ -24,9 +24,9 @@ func TestCommandGroup(t *testing.T) {
 			1,
 		}, {
 			&CommandGroup{
-				"match-subs",
-				"a description",
-				[]Commander{
+				Name: "match-subs",
+				Desc: "a description",
+				Subs: []Commander{
 					&CommandBasic[struct{}]{
 						Name: "sub1",
 						Desc: "sub description",
@@ -47,9 +47,9 @@ func TestCommandGroup(t *testing.T) {
 			0,
 		}, {
 			&CommandGroup{
-				"no-match-subs",
-				"a description",
-				[]Commander{
+				Name: "no-match-subs",
+				Desc: "a description",
+				Subs: []Commander{
 					&CommandBasic[struct{}]{
 						Name: "sub1",
 						Desc: "sub description",
@@ -70,13 +70,13 @@ func TestCommandGroup(t *testing.T) {
 			1,
 		}, {
 			&CommandGroup{
-				"nested-match-subs",
-				"a description",
-				[]Commander{
+				Name: "nested-match-subs",
+				Desc: "a description",
+				Subs: []Commander{
 					&CommandGroup{
-						"level1",
-						"sub level 1",
-						[]Commander{
+						Name: "level1",
+						Desc: "sub level 1",
+						Subs: []Commander{
 							&CommandBasic[struct{}]{
 								Name: "level2",
 								Desc: "sub level 2",
@@ -99,13 +99,13 @@ func TestCommandGroup(t *testing.T) {
 			0,
 		}, {
 			&CommandGroup{
-				"nested-match-subs",
-				"a description",
-				[]Commander{
+				Name: "nested-match-subs",
+				Desc: "a description",
+				Subs: []Commander{
 					&CommandGroup{
-						"level1",
-						"sub level 1",
-						[]Commander{
+						Name: "level1",
+						Desc: "sub level 1",
+						Subs: []Commander{
 							&CommandBasic[struct{}]{
 								Name: "level2",
 								Desc: "sub level 2",
@@ -117,9 +117,9 @@ func TestCommandGroup(t *testing.T) {
 								},
 							},
 							&CommandGroup{
-								"no-subs",
-								"a description",
-								nil,
+								Name: "no-subs",
+								Desc: "a description",
+								Subs: nil,
 							},
 						},
 					},

@@ -8,27 +8,40 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
 
-	"go.seankhliao.com/mono/ycli"
+	"go.seankhliao.com/mono/cmdline"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/gcsblob"
 )
 
 func main() {
-	ycli.OSExec(ycli.NewGroup(
-		"fin",
-		"fin is a custom tool to track expenses",
-		func(fs *flag.FlagSet) {},
-		ViewCommand(),
-		PushCommand(),
-		PullCommand(),
-		ConvertCommand(),
-		TradingCommand(),
-	))
+	cmdline.RunOS(&cmdline.CommandGroup{
+		Name: "fin",
+		Desc: "fin is a custom tool to track expenses",
+		Subs: []cmdline.Commander{
+			ViewCommand(),
+			PushCommand(),
+			PullCommand(),
+			ConvertCommand(),
+			TradingCommand(),
+		},
+	})
+}
+
+func runWrap(f func(stdout, stderr io.Writer) error) cmdline.Runner {
+	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+		err := f(stdout, stderr)
+		if err != nil {
+			fmt.Fprintln(stderr, err)
+			return 1
+		}
+		return 0
+	}
 }
 
 type Convert struct {
@@ -36,54 +49,25 @@ type Convert struct {
 	hsbcCard string
 }
 
-func ConvertCommand() ycli.Command {
+func ConvertCommand() cmdline.Commander {
 	c := &Convert{}
-	return ycli.NewGroup(
-		"convert",
-		"convert card statements to fin data",
-		c.register,
-		ycli.New(
-			"amex",
-			"convert amex statements",
-			nil,
-			c.amex,
-		),
-		ycli.New(
-			"chase",
-			"convert chase statements",
-			nil,
-			c.chase,
-		),
-		ycli.New(
-			"hsbc",
-			"convert hsbc statements",
-			nil,
-			c.hsbc,
-		),
-		ycli.New("trading",
-			"convert trading212 statements",
-			nil,
-			c.trading,
-		),
-		ycli.New(
-			"chasetxt",
-			"convert copied chase pdf statements",
-			nil,
-			c.chasetxt,
-		),
-		ycli.New(
-			"chasesave",
-			"convert chase saver statements",
-			nil,
-			c.chasesave,
-		),
-		ycli.New(
-			"virgin",
-			"convert virgin credit card transactions",
-			nil,
-			c.virgin,
-		),
-	)
+	return &cmdline.CommandGroup{
+		Name: "convert",
+		Desc: "convert card statements to fin data",
+		Flags: func(fs *flag.FlagSet) error {
+			c.register(fs)
+			return nil
+		},
+		Subs: []cmdline.Commander{
+			cmdline.CommandRun("amex", "convert amex statements", runWrap(c.amex)),
+			cmdline.CommandRun("chase", "convert chase statements", runWrap(c.chase)),
+			cmdline.CommandRun("hsbc", "convert hsbc statements", runWrap(c.hsbc)),
+			cmdline.CommandRun("trading", "convert trading212 statements", runWrap(c.trading)),
+			cmdline.CommandRun("chasetxt", "convert copied chase pdf statements", runWrap(c.chasetxt)),
+			cmdline.CommandRun("chasesave", "convert chase saver statements", runWrap(c.chasesave)),
+			cmdline.CommandRun("virgin", "convert virgin credit card transactions", runWrap(c.virgin)),
+		},
+	}
 }
 
 func (c *Convert) register(fs *flag.FlagSet) {
@@ -116,18 +100,18 @@ type View struct {
 	configPath string
 }
 
-func ViewCommand() ycli.Command {
-	v := &View{}
-	return ycli.New(
-		"view",
-		"view summarizes the data into different views, printed to the console.",
-		v.register,
-		v.viewAll,
-	)
-}
-
-func (v *View) register(fs *flag.FlagSet) {
-	fs.StringVar(&v.configPath, "config", "gbp.fin.cue", "path to config file")
+func ViewCommand() cmdline.Commander {
+	return &cmdline.CommandBasic[View]{
+		Name: "view",
+		Desc: "view summarizes the data into different views, printed to the console.",
+		Flags: func(v *View, fs *flag.FlagSet) error {
+			fs.StringVar(&v.configPath, "config", "gbp.fin.cue", "path to config file")
+			return nil
+		},
+		Do: func(v *View) cmdline.Runner {
+			return runWrap(v.viewAll)
+		},
+	}
 }
 
 func (v *View) viewAll(stdout, stderr io.Writer) error {
@@ -141,24 +125,30 @@ func (v *View) viewAll(stdout, stderr io.Writer) error {
 	return nil
 }
 
-func PushCommand() ycli.Command {
-	var bucketName string
-	var localGlob string
-	return ycli.New(
-		"push",
-		"upload local data to a storage bucket",
-		func(fs *flag.FlagSet) {
-			fs.StringVar(&bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
-			fs.StringVar(&localGlob, "glob", "*.fin.cue", "a glob pattern patching local files")
-		},
-		func(stdout, stderr io.Writer) error {
-			err := runPush(stdout, bucketName, localGlob)
-			if err != nil {
-				return fmt.Errorf("push: %w", err)
-			}
+func PushCommand() cmdline.Commander {
+	type Config struct {
+		bucketName string
+		localGlob  string
+	}
+	return &cmdline.CommandBasic[Config]{
+		Name: "push",
+		Desc: "upload local data to a storage bucket",
+		Flags: func(c *Config, fs *flag.FlagSet) error {
+			fs.StringVar(&c.bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
+			fs.StringVar(&c.localGlob, "glob", "*.fin.cue", "a glob pattern patching local files")
 			return nil
 		},
-	)
+		Do: func(c *Config) cmdline.Runner {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+				err := runPush(stdout, c.bucketName, c.localGlob)
+				if err != nil {
+					fmt.Fprintf(stderr, "push: %v\n", err)
+					return 1
+				}
+				return 0
+			}
+		},
+	}
 }
 
 func runPush(stdout io.Writer, bucketName, localGlob string) error {
@@ -202,22 +192,28 @@ func runPush(stdout io.Writer, bucketName, localGlob string) error {
 	return nil
 }
 
-func PullCommand() ycli.Command {
-	var bucketName string
-	return ycli.New(
-		"pull",
-		"download remote data from a storage bucket",
-		func(fs *flag.FlagSet) {
-			fs.StringVar(&bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
-		},
-		func(stdout, stderr io.Writer) error {
-			err := runPull(stdout, bucketName)
-			if err != nil {
-				return fmt.Errorf("push: %w", err)
-			}
+func PullCommand() cmdline.Commander {
+	type Config struct {
+		bucketName string
+	}
+	return &cmdline.CommandBasic[Config]{
+		Name: "pull",
+		Desc: "download remote data from a storage bucket",
+		Flags: func(c *Config, fs *flag.FlagSet) error {
+			fs.StringVar(&c.bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
 			return nil
 		},
-	)
+		Do: func(c *Config) cmdline.Runner {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+				err := runPull(stdout, c.bucketName)
+				if err != nil {
+					fmt.Fprintf(stderr, "pull: %v\n", err)
+					return 1
+				}
+				return 0
+			}
+		},
+	}
 }
 
 func runPull(stdout io.Writer, bucketName string) error {

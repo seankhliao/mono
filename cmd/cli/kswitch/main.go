@@ -17,17 +17,12 @@ import (
 	"strings"
 
 	fzf "github.com/junegunn/fzf/src"
-	"go.seankhliao.com/mono/ycli"
+	"go.seankhliao.com/mono/cmdline"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1 "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 )
-
-// kswitch current
-// kswitch context
-// kswitch context --context "" --namespace ""
-// kswicth namespace
 
 const tmpPrefix = "kswitch.tmp.kubeconfig."
 
@@ -40,40 +35,25 @@ func main() {
 	if userConf != "" {
 		a.srcs = append(a.srcs, filepath.Join(userConf, "kube"))
 	}
-	ycli.OSExec(ycli.NewGroup("kswicth",
-		"manage the kubectl context",
-		a.register,
-		ycli.New(
-			"context",
-			"switch the current context",
-			nil,
-			a.switchContext,
-		),
-		ycli.New(
-			"namespace",
-			"switch the current namespace",
-			nil,
-			a.switchNamespace,
-		),
-		ycli.New(
-			"current",
-			"show the current context and namespace",
-			nil,
-			a.showCurrent,
-		),
-		ycli.New(
-			"wrapper",
-			"print the wrapper script",
-			nil,
-			a.showWrapper,
-		),
-		ycli.New(
-			"clear-cache",
-			"clear the namespace cache",
-			nil,
-			a.clearCache,
-		),
-	))
+	cmdline.RunOS(&cmdline.CommandGroup{
+		Name: "kswitch",
+		Desc: `manage the kubectl context
+
+Examples:
+
+	kswitch current
+	kswitch context
+	kswitch context --context "" --namespace ""
+	kswicth namespace
+`,
+		Subs: []cmdline.Commander{
+			a.cmd("context", "switch the current context", a.switchContext),
+			a.cmd("namespace", "switch the current namespace", a.switchNamespace),
+			a.cmd("current", "show the current context and namespace", a.showCurrent),
+			a.cmd("wrapper", "print the wrapper script", a.showWrapper),
+			a.cmd("clear-cache", "clear the namespace cache", a.clearCache),
+		},
+	})
 }
 
 type App struct {
@@ -103,6 +83,27 @@ func (a *App) register(fset *flag.FlagSet) {
 	fset.StringVar(&a.context, "context", "", "kubeconfig context to use")
 	fset.StringVar(&a.namespace, "namespace", "", "kubeconfig namespace to use")
 	fset.StringVar(&a.evalFile, "eval-file", "", "path to file to write commands")
+}
+
+func (a *App) cmd(name, desc string, f func(io.Writer, io.Writer) error) cmdline.Commander {
+	return &cmdline.CommandBasic[cmdline.Empty]{
+		Name: name,
+		Desc: desc,
+		Flags: func(_ *cmdline.Empty, fs *flag.FlagSet) error {
+			a.register(fs)
+			return nil
+		},
+		Do: func(_ *cmdline.Empty) cmdline.Runner {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+				err := f(stdout, stderr)
+				if err != nil {
+					fmt.Fprintln(stderr, err)
+					return 1
+				}
+				return 0
+			}
+		},
+	}
 }
 
 func (a *App) switchContext(stdout, stderr io.Writer) error {

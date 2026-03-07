@@ -1,25 +1,25 @@
 package main
 
 import (
+	"context"
 	_ "embed"
-	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 
-	"go.seankhliao.com/mono/ycli"
+	"go.seankhliao.com/mono/cmdline"
 )
 
 //go:embed wrapper.zsh
 var shellWrapper string
 
-func cmdConfig(conf *CommonConfig) ycli.Command {
-	return ycli.New(
+func cmdConfig(conf *CommonConfig) cmdline.Commander {
+	return cmdline.CommandRun(
 		"config",
 		"print the config",
-		func(fs *flag.FlagSet) {},
-		func(stdout, stderr io.Writer) error {
+		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 			fmt.Fprintln(stdout, shellWrapper)
-			return nil
+			return 0
 		},
 	)
 }

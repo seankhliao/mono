@@ -1,33 +1,35 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"text/tabwriter"
 	"time"
 
 	"github.com/briandowns/spinner"
-	"go.seankhliao.com/mono/ycli"
+	"go.seankhliao.com/mono/cmdline"
 )
 
-func cmdClean() ycli.Command {
-	return ycli.New(
+func cmdClean() cmdline.Commander {
+	return cmdline.CommandRun(
 		"clean",
 		"clean up temporary repositories",
-		nil,
-		func(stdout, _ io.Writer) error {
+		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 			tmpDir, repos, err := tmpRepos()
 			if err != nil {
-				return fmt.Errorf("repos clean: %w", err)
+				fmt.Fprintf(stderr, "repos clean: %v\n", err)
+				return 1
 			}
 			if len(repos) == 0 {
 				fmt.Fprintln(stdout, "repos clean: no repos to remove")
-				return nil
+				return 0
 			}
 
-			spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
+			spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond, spinner.WithWriter(stdout))
 			spin.Start()
 
 			type repoError struct {
@@ -58,7 +60,7 @@ func cmdClean() ycli.Command {
 				}
 				w.Flush()
 			}
-			return nil
+			return 0
 		},
 	)
 }
