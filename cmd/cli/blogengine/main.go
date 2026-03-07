@@ -19,7 +19,7 @@ import (
 //go:embed schema.cue
 var configSchema string
 
-type Flags struct {
+type Config struct {
 	Source string
 
 	BaseURL          string
@@ -48,10 +48,10 @@ type Firebase struct {
 }
 
 func main() {
-	cmdline.RunOS(&cmdline.CommandBasic[Flags]{
+	cmdline.RunOS(&cmdline.CommandBasic[Config]{
 		Name: "blogengine",
 		Desc: "markdown to html renderer, with firebase hosting integration",
-		Flags: func(c *Flags, fset *flag.FlagSet) error {
+		Flags: func(c *Config, fset *flag.FlagSet) error {
 			fset.StringVar(&c.Source, "src", "src", "path to source directory")
 			fset.BoolVar(&c.Compact, "compact", false, "use compact style")
 			fset.StringVar(&c.BaseURL, "base-url", "", "base url for canonicalization")
@@ -112,7 +112,7 @@ func main() {
 
 			return cmdline.ChdirToParentFlagFile(fset, "blogengine.txt")
 		},
-		Do: func(c *Flags) cmdline.Runner {
+		Do: func(c *Config) cmdline.Runner {
 			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 				ctx, done := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
 				defer done()

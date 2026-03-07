@@ -11,20 +11,24 @@ import (
 )
 
 func main() {
-	cmdline.RunOS(cmdline.CommandRun("ascii", "print an ascii table", func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
-		var rows []string
-		for i := range 128 {
-			rows = append(rows, fmt.Sprintf("% 3d\t%0.2X\t%6q\t%s", i, i, rune(i), names[i]))
-		}
-		var longest int
-		for _, row := range rows {
-			longest = max(longest, len(row))
-		}
-		for i := range 64 {
-			fmt.Fprint(stdout, rows[i], strings.Repeat(" ", longest-len(rows[i])), " |  ", rows[i+64], "\n")
-		}
-		return 0
-	}))
+	cmdline.RunOS(cmdline.CommandRun(
+		"ascii",
+		"print an ascii table",
+		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			var rows []string
+			for i := range 128 {
+				rows = append(rows, fmt.Sprintf("% 3d\t%0.2X\t%6q\t%s", i, i, rune(i), names[i]))
+			}
+			var longest int
+			for _, row := range rows {
+				longest = max(longest, len(row))
+			}
+			for i := range 64 {
+				fmt.Fprint(stdout, rows[i], strings.Repeat(" ", longest-len(rows[i])), " |  ", rows[i+64], "\n")
+			}
+			return 0
+		}),
+	)
 }
 
 var names = map[int]string{

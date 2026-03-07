@@ -27,14 +27,6 @@ import (
 const tmpPrefix = "kswitch.tmp.kubeconfig."
 
 func main() {
-	a := App{
-		lg:   slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{})),
-		srcs: []string{os.Getenv("KUBECONFIG")},
-	}
-	userConf, _ := os.UserConfigDir()
-	if userConf != "" {
-		a.srcs = append(a.srcs, filepath.Join(userConf, "kube"))
-	}
 	cmdline.RunOS(&cmdline.CommandGroup{
 		Name: "kswitch",
 		Desc: `manage the kubectl context
@@ -43,39 +35,76 @@ Examples:
 
 	kswitch current
 	kswitch context
-	kswitch context --context "" --namespace ""
-	kswicth namespace
+	kswitch context -context "..." -namespace "..."
+	kswitch namespace
+	kswitch cache-show
+	kswitch cache-clean
+	kswitch wrapper
 `,
 		Subs: []cmdline.Commander{
-			a.cmd("context", "switch the current context", a.switchContext),
-			a.cmd("namespace", "switch the current namespace", a.switchNamespace),
-			a.cmd("current", "show the current context and namespace", a.showCurrent),
-			a.cmd("wrapper", "print the wrapper script", a.showWrapper),
-			a.cmd("clear-cache", "clear the namespace cache", a.clearCache),
+			&cmdline.CommandBasic[App]{
+				Name:  "current",
+				Desc:  "show the current context",
+				Flags: (*App).register,
+				Do:    func(a *App) cmdline.Runner { return a.showCurrent },
+			},
+			&cmdline.CommandBasic[App]{
+				Name:  "context",
+				Desc:  "switch the current context",
+				Flags: (*App).register,
+				Do:    func(a *App) cmdline.Runner { return a.switchContext },
+			},
+			&cmdline.CommandBasic[App]{
+				Name:  "namespace",
+				Desc:  "switch the current context",
+				Flags: (*App).register,
+				Do:    func(a *App) cmdline.Runner { return a.switchNamespace },
+			},
+			&cmdline.CommandBasic[App]{
+				Name:  "cache-show",
+				Desc:  "print the location of the cache",
+				Flags: (*App).register,
+				Do:    func(a *App) cmdline.Runner { return a.printCache },
+			},
+			&cmdline.CommandBasic[App]{
+				Name:  "cache-clear",
+				Desc:  "reset the cache",
+				Flags: (*App).register,
+				Do:    func(a *App) cmdline.Runner { return a.clearCache },
+			},
+			&cmdline.CommandBasic[App]{
+				Name:  "wrapper",
+				Desc:  "print the wrapper script",
+				Flags: (*App).register,
+				Do:    func(a *App) cmdline.Runner { return a.printWrapper },
+			},
 		},
 	})
 }
 
 type App struct {
 	lg        *slog.Logger
+	lvl       slog.LevelVar
 	srcs      []string
 	context   string
 	namespace string
 	evalFile  string
+
+	confPath string
+	conf     *clientcmdapi.Config
 }
 
-func (a *App) register(fset *flag.FlagSet) {
-	fset.Func("log.level", "set log level", func(s string) error {
-		var lvl slog.Level
-		err := lvl.UnmarshalText([]byte(s))
-		if err != nil {
-			return err
-		}
-		a.lg = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
-			Level: lvl,
-		}))
-		return nil
-	})
+func (a *App) register(fset *flag.FlagSet) error {
+	a.srcs = append(a.srcs, os.Getenv("KUBECONFG"))
+	home, err := os.UserHomeDir()
+	if err == nil {
+		a.srcs = append(a.srcs, filepath.Join(home, ".config", "kube", "config"))
+		a.srcs = append(a.srcs, filepath.Join(home, ".kube", "config"))
+	}
+	a.lg = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: &a.lvl,
+	}))
+	fset.TextVar(&a.lvl, "log.level", &a.lvl, "log level")
 	fset.Func("kubeconfig", "path to kubeconfigs, may be directory, repeatable", func(s string) error {
 		a.srcs = append(a.srcs, s)
 		return nil
@@ -83,90 +112,53 @@ func (a *App) register(fset *flag.FlagSet) {
 	fset.StringVar(&a.context, "context", "", "kubeconfig context to use")
 	fset.StringVar(&a.namespace, "namespace", "", "kubeconfig namespace to use")
 	fset.StringVar(&a.evalFile, "eval-file", "", "path to file to write commands")
+	return nil
 }
 
-func (a *App) cmd(name, desc string, f func(io.Writer, io.Writer) error) cmdline.Commander {
-	return &cmdline.CommandBasic[cmdline.Empty]{
-		Name: name,
-		Desc: desc,
-		Flags: func(_ *cmdline.Empty, fs *flag.FlagSet) error {
-			a.register(fs)
-			return nil
-		},
-		Do: func(_ *cmdline.Empty) cmdline.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
-				err := f(stdout, stderr)
-				if err != nil {
-					fmt.Fprintln(stderr, err)
-					return 1
-				}
-				return 0
-			}
-		},
+func (a *App) switchContext(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+	err := a.selectContext()
+	if err != nil {
+		fmt.Fprintln(stderr, "select context", err)
+		return 1
 	}
+
+	return a.switchNamespace(ctx, stdin, stdout, stderr, fsys)
 }
 
-func (a *App) switchContext(stdout, stderr io.Writer) error {
-	conf, err := a.selectContext()
-	if err != nil {
-		return err
+func (a *App) switchNamespace(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+	a.currentConfig()
+
+	if !strings.Contains(a.confPath, tmpPrefix) {
+		err := a.selectContext()
+		if err != nil {
+			fmt.Fprintln(stderr, "select context", err)
+			return 1
+		}
 	}
 
-	conf, err = a.selectNamespace(conf)
+	err := a.selectNamespace()
 	if err != nil {
-		return err
+		fmt.Fprintln(stderr, "select namespace", err)
+		return 1
 	}
 
-	confPath, err := a.saveContext("", conf)
-	if err != nil {
-		return err
-	}
-
-	eval := fmt.Sprintf("export KUBECONFIG=%s\n", confPath)
+	eval := fmt.Sprintf("export KUBECONFIG=%s\n", a.confPath)
 	os.WriteFile(a.evalFile, []byte(eval), 0o644)
 
 	fmt.Fprintf(stdout, "kswitch context --context %s --namespace %s\n", a.context, a.namespace)
 	fmt.Fprintf(stdout, "CONTEXT %s :: %s\n", a.context, a.namespace)
 
-	return nil
+	return 0
 }
 
-func (a *App) switchNamespace(stdout, stderr io.Writer) error {
-	confPath, conf, confManaged := a.currentConfig()
-	if !confManaged {
-		var err error
-		conf, err = a.selectContext()
-		if err != nil {
-			return err
-		}
-		confPath, err = a.saveContext("", conf)
-		if err != nil {
-			return err
-		}
-	}
+func (a *App) selectContext() error {
+	a.currentConfig()
 
-	conf, err := a.selectNamespace(conf)
-	if err != nil {
-		return err
-	}
-
-	confPath, err = a.saveContext(confPath, conf)
-	if err != nil {
-		return err
-	}
-
-	eval := fmt.Sprintf("export KUBECONFIG=%s\n", confPath)
-	os.WriteFile(a.evalFile, []byte(eval), 0o644)
-
-	fmt.Fprintf(stdout, "kswitch context --context %s --namespace %s\n", a.context, a.namespace)
-	fmt.Fprintf(stdout, "CONTEXT %s :: %s\n", a.context, a.namespace)
-
-	return nil
-}
-
-func (a *App) selectContext() (*clientcmdapi.Config, error) {
 	all := clientcmdapi.NewConfig()
 	for _, src := range a.srcs {
+		if src == "" {
+			continue
+		}
 		fi, err := os.Stat(src)
 		if err != nil {
 			a.lg.Debug("failed stat of src", slog.String("file", src), slog.String("err", err.Error()))
@@ -201,13 +193,13 @@ func (a *App) selectContext() (*clientcmdapi.Config, error) {
 	}
 
 	if len(all.Contexts) == 0 {
-		return nil, fmt.Errorf("no contexts available")
+		return fmt.Errorf("no contexts available")
 	}
 
 	if a.context == "" {
 		fzfOpts, err := fzf.ParseOptions(true, []string{})
 		if err != nil {
-			return nil, fmt.Errorf("prepare fzf: %w", err)
+			return fmt.Errorf("prepare fzf: %w", err)
 		}
 		fzfOpts.Input = make(chan string, len(all.Contexts))
 		for n := range maps.Keys(all.Contexts) {
@@ -216,19 +208,19 @@ func (a *App) selectContext() (*clientcmdapi.Config, error) {
 		fzfOpts.Output = make(chan string, 1)
 		_, err = fzf.Run(fzfOpts)
 		if err != nil {
-			return nil, fmt.Errorf("run fzf: %w", err)
+			return fmt.Errorf("run fzf: %w", err)
 		}
 		close(fzfOpts.Output)
 
 		var ok bool
 		a.context, ok = <-fzfOpts.Output
 		if !ok {
-			return nil, fmt.Errorf("no context selected")
+			return fmt.Errorf("no context selected")
 		}
 	}
 	cont, ok := all.Contexts[a.context]
 	if a.context == "" || !ok {
-		return nil, fmt.Errorf("context not found in configs: %q", a.context)
+		return fmt.Errorf("context not found in configs: %q", a.context)
 	}
 	a.lg.Debug("got context", slog.Any("context", cont))
 
@@ -239,25 +231,11 @@ func (a *App) selectContext() (*clientcmdapi.Config, error) {
 	conf.AuthInfos[cont.AuthInfo] = all.AuthInfos[cont.AuthInfo]
 	conf.Preferences = all.Preferences
 	conf.Extensions = all.Extensions
-	return conf, nil
+	a.conf = conf
+	return nil
 }
 
-func (a *App) saveContext(confPath string, conf *clientcmdapi.Config) (string, error) {
-	if confPath == "" {
-		confPath = os.Getenv("KUBECONFIG")
-	}
-	if !strings.Contains(confPath, tmpPrefix) {
-		confPath = filepath.Join(os.TempDir(), tmpPrefix+rand.Text())
-	}
-	a.lg.Debug("write to file", slog.String("file", confPath))
-	err := clientcmd.WriteToFile(*conf, confPath)
-	if err != nil {
-		return "", fmt.Errorf("save kubeconfig to file %s: %w", confPath, err)
-	}
-	return confPath, nil
-}
-
-func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, error) {
+func (a *App) selectNamespace() error {
 	if a.namespace == "" {
 		var namespaces []string
 
@@ -284,7 +262,7 @@ func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, 
 
 		fzfOpts, err := fzf.ParseOptions(true, []string{})
 		if err != nil {
-			return nil, fmt.Errorf("prepare fzf: %w", err)
+			return fmt.Errorf("prepare fzf: %w", err)
 		}
 		fzfOpts.Output = make(chan string, 1)
 		fzfOpts.Input = make(chan string, len(namespaces))
@@ -296,7 +274,7 @@ func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, 
 
 		var updatedNamespaces []string
 		go func() {
-			restConf, errK := clientcmd.NewDefaultClientConfig(*conf, nil).ClientConfig()
+			restConf, errK := clientcmd.NewDefaultClientConfig(*a.conf, nil).ClientConfig()
 			if errK != nil {
 				a.lg.Error("create k8s config", slog.String("err", errK.Error()))
 				return
@@ -325,14 +303,14 @@ func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, 
 
 		_, err = fzf.Run(fzfOpts)
 		if err != nil {
-			return nil, fmt.Errorf("run fzf: %w", err)
+			return fmt.Errorf("run fzf: %w", err)
 		}
 		close(fzfOpts.Output)
 
 		var ok bool
 		a.namespace, ok = <-fzfOpts.Output
 		if !ok {
-			return nil, fmt.Errorf("no context selected")
+			return fmt.Errorf("no context selected")
 		}
 
 		if len(updatedNamespaces) > 0 {
@@ -349,52 +327,65 @@ func (a *App) selectNamespace(conf *clientcmdapi.Config) (*clientcmdapi.Config, 
 		}
 	}
 
-	cont := conf.Contexts[conf.CurrentContext]
-	cont.Namespace = a.namespace
-
-	return conf, nil
-}
-
-func (a *App) showCurrent(stdout, _ io.Writer) error {
-	_, conf, _ := a.currentConfig()
-	if conf == nil {
-		return nil
+	if !strings.Contains(a.confPath, tmpPrefix) {
+		a.confPath = filepath.Join(os.TempDir(), tmpPrefix+rand.Text())
 	}
-	kContext := conf.CurrentContext
-	kNamespace := cmp.Or(conf.Contexts[conf.CurrentContext].Namespace, "default")
-	fmt.Fprintf(stdout, "kswitch context --context %s --namespace %s\n", kContext, kNamespace)
-	fmt.Fprintf(stdout, "CONTEXT %s :: %s\n", kContext, kNamespace)
-
+	err := clientcmd.WriteToFile(*a.conf, a.confPath)
+	if err != nil {
+		return fmt.Errorf("save kubeconfig to file %s: %w", a.confPath, err)
+	}
 	return nil
 }
 
-func (a *App) currentConfig() (confPath string, conf *clientcmdapi.Config, managed bool) {
-	confPath = os.Getenv("KUBECONFIG")
+func (a *App) showCurrent(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+	a.currentConfig()
+	if a.conf == nil {
+		return 0
+	}
+	kContext := a.conf.CurrentContext
+	kNamespace := cmp.Or(a.conf.Contexts[a.conf.CurrentContext].Namespace, "default")
+	fmt.Fprintf(stdout, "kswitch context --context %s --namespace %s\n", kContext, kNamespace)
+	fmt.Fprintf(stdout, "CONTEXT %s :: %s\n", kContext, kNamespace)
+
+	return 0
+}
+
+func (a *App) currentConfig() {
+	if a.conf != nil && a.confPath != "" {
+		return
+	}
+
+	confPath := os.Getenv("KUBECONFIG")
 	if confPath == "" {
-		return "", nil, false
+		return
 	}
 	fi, err := os.Stat(confPath)
 	if err != nil {
-		// debug
-		return "", nil, false
+		return
 	}
 	if fi.IsDir() {
-		// debug
-		return "", nil, false
+		return
 	}
-	conf, err = clientcmd.LoadFromFile(confPath)
+	a.conf, err = clientcmd.LoadFromFile(confPath)
 	if err != nil {
-		return "", nil, false
-	}
-	if strings.Contains(confPath, tmpPrefix) {
-		managed = true
+		return
 	}
 
-	a.context = conf.CurrentContext
-	return confPath, conf, managed
+	a.context = a.conf.CurrentContext
+	a.confPath = a.confPath
 }
 
-func (a *App) clearCache(stdout, _ io.Writer) error {
+func (a *App) printCache(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+	cacheDir, err := os.UserCacheDir()
+	if err != nil {
+		cacheDir = os.TempDir()
+	}
+	cacheFile := filepath.Join(cacheDir, "kswitch-ns-cache.json")
+	fmt.Fprintln(stdout, cacheFile)
+	return 0
+}
+
+func (a *App) clearCache(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 	cacheDir, err := os.UserCacheDir()
 	if err != nil {
 		cacheDir = os.TempDir()
@@ -402,10 +393,11 @@ func (a *App) clearCache(stdout, _ io.Writer) error {
 	cacheFile := filepath.Join(cacheDir, "kswitch-ns-cache.json")
 	err = os.Remove(cacheFile)
 	if err != nil {
-		return fmt.Errorf("remove cache file %v: %w", cacheFile, err)
+		fmt.Fprintln(stderr, "remove cache file", cacheFile, err)
+		return 1
 	}
 	fmt.Fprintln(stdout, "removed", cacheFile)
-	return nil
+	return 0
 }
 
 func mergeConfig(all, conf *clientcmdapi.Config) {
@@ -419,7 +411,7 @@ func mergeConfig(all, conf *clientcmdapi.Config) {
 //go:embed wrapper.zsh
 var wrapper []byte
 
-func (a *App) showWrapper(stdout, stderr io.Writer) error {
+func (a *App) printWrapper(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 	stdout.Write(wrapper)
-	return nil
+	return 0
 }
