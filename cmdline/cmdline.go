@@ -20,12 +20,12 @@ type Commander interface {
 	ShortDesc() string
 	LongDesc() string
 
-	RegisterFlags(*flag.FlagSet)
+	RegisterFlags(*flag.FlagSet) error
 	SubCommands() []Commander
 	RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int
 }
 
-type Runner = func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int
+type Runner func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int
 
 // RunOS runs the given [Commander] with the default arguments
 // to interact with the os:
@@ -153,9 +153,47 @@ func helpFor(c Commander, parents []string, fset *flag.FlagSet, exit int) Runner
 func printDebugFlags(fset *flag.FlagSet) Runner {
 	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 		fset.VisitAll(func(f *flag.Flag) {
-			fmt.Fprintf(stdout, "-%s %v", f.Name, f.Value)
+			fmt.Fprintf(stdout, "-%s=%v ", f.Name, f.Value)
 		})
 
 		return 0
 	}
+}
+
+func ChdirToParentFlagFile(fset *flag.FlagSet, name string) error {
+	for {
+		_, err := os.Stat(name)
+		if err == nil {
+			break
+		} else if !errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("error checking for config file: %w", err)
+		}
+
+		_, err = os.Stat(".git")
+		if err == nil {
+			return fmt.Errorf("config file not found, not checking past repo root")
+		} else if !errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("error checking for git root: %w", err)
+		}
+		_, err = os.Stat(".jj")
+		if err == nil {
+			return fmt.Errorf("config file not found, not checking past repo root")
+		} else if !errors.Is(err, os.ErrNotExist) {
+			return fmt.Errorf("error checking for git root: %w", err)
+		}
+
+		if dir, _ := os.Getwd(); dir == "/" {
+			return fmt.Errorf("at system root /, config file not found")
+		}
+		err = os.Chdir("..")
+		if err != nil {
+			return fmt.Errorf("chdir to parent: %w", err)
+		}
+	}
+
+	err := fset.Set("flag-file", name)
+	if err != nil {
+		return fmt.Errorf("set flag-file: %w", err)
+	}
+	return nil
 }

@@ -19,7 +19,7 @@ type CommandBasic[C any] struct {
 	Name string
 	Desc string
 
-	Flags func(c *C, fset *flag.FlagSet)
+	Flags func(c *C, fset *flag.FlagSet) error
 	Do    func(c *C) Runner
 
 	conf C
@@ -35,10 +35,11 @@ func (c *CommandBasic[C]) LongDesc() string {
 	return c.Desc
 }
 
-func (c *CommandBasic[C]) RegisterFlags(fset *flag.FlagSet) {
+func (c *CommandBasic[C]) RegisterFlags(fset *flag.FlagSet) error {
 	if c.Flags != nil {
-		c.Flags(&c.conf, fset)
+		return c.Flags(&c.conf, fset)
 	}
+	return nil
 }
 func (c *CommandBasic[C]) SubCommands() []Commander { return nil }
 func (c *CommandBasic[C]) RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {

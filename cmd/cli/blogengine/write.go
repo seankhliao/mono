@@ -12,7 +12,7 @@ import (
 	"github.com/briandowns/spinner"
 )
 
-func writeRendered(ctx context.Context, stdout io.Writer, dst string, rendered map[string]*bytes.Buffer) error {
+func writeRendered(ctx context.Context, stdout io.Writer, rendered map[string]*bytes.Buffer, dst string) error {
 	spin := spinner.New(spinner.CharSets[39], 100*time.Millisecond, spinner.WithWriter(stdout))
 	spin.FinalMSG = fmt.Sprintf("%3d/%3d written to dst %q\n", len(rendered), len(rendered), dst)
 	spin.Start()

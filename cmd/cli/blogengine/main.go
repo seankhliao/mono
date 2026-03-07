@@ -1,206 +1,164 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	_ "embed"
-	"errors"
 	"flag"
 	"fmt"
 	"io"
 	"io/fs"
-	"log/slog"
-	"net"
-	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
+	"strings"
 	"syscall"
-	"time"
 
 	"go.seankhliao.com/mono/cmdline"
-	"go.seankhliao.com/mono/cueconf"
-	"go.seankhliao.com/mono/jsonlog"
-	"go.seankhliao.com/mono/yhttp"
 )
 
 //go:embed schema.cue
 var configSchema string
 
 type Flags struct {
-	ConfigFile    string
-	Preview       bool
-	UploadPreview bool
+	Source string
+
+	BaseURL          string
+	Compact          bool
+	GoogleTagManager string
+
+	Preview bool
+
+	Destination string
+
+	Firebase Firebase
+}
+
+type Firebase struct {
+	SiteID  string
+	Preview bool
+	Headers []struct {
+		Glob    string
+		Headers map[string]string
+	}
+	Redirects []struct {
+		Glob       string
+		Location   string
+		StatusCode int
+	}
 }
 
 func main() {
 	cmdline.RunOS(&cmdline.CommandBasic[Flags]{
 		Name: "blogengine",
 		Desc: "markdown to html renderer, with firebase hosting integration",
-		Flags: func(c *Flags, fset *flag.FlagSet) {
-			fset.StringVar(&c.ConfigFile, "config", "blogengine.cue", "path to config file")
-			fset.BoolVar(&c.Preview, "preview", false, "render in memory and serve a preview")
-			fset.BoolVar(&c.UploadPreview, "preview-upload", false, "upload to firebase in preview mode")
+		Flags: func(c *Flags, fset *flag.FlagSet) error {
+			fset.StringVar(&c.Source, "src", "src", "path to source directory")
+			fset.BoolVar(&c.Compact, "compact", false, "use compact style")
+			fset.StringVar(&c.BaseURL, "base-url", "", "base url for canonicalization")
+			fset.StringVar(&c.GoogleTagManager, "gtm", "", "google tag manager id")
+
+			fset.StringVar(&c.Destination, "dst", "", "output to local directory")
+
+			fset.BoolVar(&c.Preview, "preview", false, "serve the site on a local http server")
+
+			fset.StringVar(&c.Firebase.SiteID, "firebase-site-id", "", "firebase site ID")
+			fset.BoolVar(&c.Firebase.Preview, "firebase-preview", false, "upload to firebase in preview mode")
+			fset.Func("firebase-headers", "header in format: glob key=value [key=value...]", func(s string) error {
+				glob, headers, ok := strings.Cut(s, " ")
+				if !ok {
+					return fmt.Errorf("missing headers for glob: %s", s)
+				}
+				m := make(map[string]string)
+				for h := range strings.SplitSeq(headers, " ") {
+					k, v, ok := strings.Cut(h, "=")
+					if !ok {
+						return fmt.Errorf("header missing =: %v", h)
+					}
+					m[k] = v
+				}
+				c.Firebase.Headers = append(c.Firebase.Headers, struct {
+					Glob    string
+					Headers map[string]string
+				}{
+					Glob:    glob,
+					Headers: m,
+				})
+				return nil
+			})
+			fset.Func("firebase-redirects", "redirects in format: glob location code", func(s string) error {
+				glob, rest, ok := strings.Cut(s, " ")
+				if !ok {
+					return fmt.Errorf("missing rest for glob: %s", s)
+				}
+				location, codes, ok := strings.Cut(rest, " ")
+				if !ok {
+					return fmt.Errorf("missing code for location: %s", s)
+				}
+				code, err := strconv.Atoi(codes)
+				if err != nil {
+					return fmt.Errorf("invalid code for %s: %w", s, err)
+				}
+				c.Firebase.Redirects = append(c.Firebase.Redirects, struct {
+					Glob       string
+					Location   string
+					StatusCode int
+				}{
+					Glob:       glob,
+					Location:   location,
+					StatusCode: code,
+				})
+				return nil
+			})
+
+			return cmdline.ChdirToParentFlagFile(fset, "blogengine.txt")
 		},
 		Do: func(c *Flags) cmdline.Runner {
 			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
-				err := chdirWebRoot(c.ConfigFile)
+				ctx, done := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+				defer done()
+
+				fi, err := os.Stat(c.Source)
 				if err != nil {
-					fmt.Fprintln(stderr, "change to site root dir:", err)
+					fmt.Fprintln(stderr, "stat source:", err)
+					return 1
+				} else if !fi.IsDir() {
+					fmt.Fprintln(stderr, "src must be a directory")
 					return 1
 				}
 
-				config, err := cueconf.ForFile[Config](configSchema, "#BlogengineConfig", c.ConfigFile, false)
+				rendered, err := renderMulti(ctx, c.Source, c.GoogleTagManager, c.BaseURL, c.Compact)
 				if err != nil {
-					fmt.Fprintln(stderr, "decode config:", err)
+					fmt.Fprintln(stderr, "render:", err)
 					return 1
 				}
 
-				err = run(stdout, config, c.Preview, c.UploadPreview)
-				if err != nil {
-					fmt.Fprintln(stderr, "run:", err)
-					return 1
+				if c.Preview {
+					err = servePreview(ctx, stdout, rendered)
+					if err != nil {
+						fmt.Fprintln(stderr, "serve preview", err)
+						return 1
+					}
+					return 0
 				}
+
+				if c.Destination != "" {
+					err = writeRendered(ctx, stdout, rendered, c.Destination)
+					if err != nil {
+						fmt.Fprintln(stderr, "write to dst", c.Destination, err)
+						return 1
+					}
+				}
+
+				if c.Firebase.SiteID != "" {
+					err = uploadFirebase(ctx, stdout, rendered, c.Firebase)
+					if err != nil {
+						fmt.Fprintln(stderr, "firebase upload:", err)
+						return 1
+					}
+				}
+
 				return 0
 			}
 		},
 	})
-}
-
-func chdirWebRoot(configFile string) error {
-	// find and change to web root
-	for {
-		_, err := os.Stat(configFile)
-		if err != nil {
-			if errors.Is(err, os.ErrNotExist) {
-				_, err = os.Stat(".git")
-				if err == nil {
-					return fmt.Errorf("config file not found, not checking past repo root")
-				} else if errors.Is(err, os.ErrNotExist) {
-					if dir, _ := os.Getwd(); dir == "/" {
-						return fmt.Errorf("at system root /, config file not found")
-					}
-					os.Chdir("..")
-
-					continue
-				} else {
-					return fmt.Errorf("error checking for git root: %w", err)
-				}
-			} else {
-				return fmt.Errorf("error checking for config file: %w", err)
-			}
-		}
-		break
-	}
-
-	return nil
-}
-
-type Config struct {
-	Render struct {
-		BaseURL     string `json:"baseUrl"`
-		Destination string `json:"dst"`
-		GTM         string `json:"gtm"`
-		Source      string `json:"src"`
-		Style       string `json:"style"`
-	} `json:"render"`
-	Firebase ConfigFirebase `json:"firebase"`
-}
-
-type ConfigFirebase struct {
-	SiteID string `json:"site"`
-
-	Headers []struct {
-		Glob    string            `json:"glob"`
-		Headers map[string]string `json:"headers"`
-	} `json:"headers"`
-	Redirects []struct {
-		Glob       string `json:"glob"`
-		Location   string `json:"location"`
-		StatusCode int    `json:"code"`
-	} `json:"redirects"`
-}
-
-func run(stdout io.Writer, conf Config, preview, uploadPreview bool) error {
-	ctx := context.Background()
-	ctx, done := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
-	defer done()
-
-	fi, err := os.Stat(conf.Render.Source)
-	if err != nil {
-		return fmt.Errorf("stat source: %w", err)
-	}
-
-	compact := conf.Render.Style == "compact"
-	var rendered map[string]*bytes.Buffer
-	if !fi.IsDir() {
-		return fmt.Errorf("expected directory as src")
-	}
-	rendered, err = renderMulti(ctx, conf.Render.Source, conf.Render.GTM, conf.Render.BaseURL, compact)
-	if err != nil {
-		return fmt.Errorf("render: %w", err)
-	}
-
-	if preview {
-		lg := slog.New(jsonlog.New(slog.LevelInfo, stdout))
-		lookup := make(map[string]string)
-		for p := range rendered {
-			lookup[canonicalPathFromRelPath(p)] = p
-		}
-		ts := time.Now()
-		mux := yhttp.New()
-		mux.Handle("GET /", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			p, ok := lookup[r.URL.Path]
-			lg.LogAttrs(r.Context(), slog.LevelInfo, "serve page", slog.String("path", r.URL.Path), slog.String("lookup", p))
-			if !ok {
-				http.Error(w, "not found", http.StatusNotFound)
-				return
-			}
-			buf, ok := rendered[p]
-			if !ok {
-				http.Error(w, "not found", http.StatusNotFound)
-				return
-			}
-			http.ServeContent(w, r, p, ts, bytes.NewReader(buf.Bytes()))
-		}))
-
-		var lis net.Listener
-		lis, err = net.Listen("tcp4", ":0")
-		if err != nil {
-			return fmt.Errorf("listen on a port: %w", err)
-		}
-		defer lis.Close()
-		lg.Info("listening", "addr", fmt.Sprintf("http://127.0.0.1:%d/", lis.Addr().(*net.TCPAddr).Port))
-		svr := &http.Server{
-			Handler: mux,
-		}
-		ctx, cancel := context.WithCancel(ctx)
-		go func() {
-			defer cancel()
-			err := svr.Serve(lis)
-			if err != nil && !errors.Is(err, http.ErrServerClosed) {
-				lg.Error("unexpected server shutdown", "err", err)
-			}
-		}()
-		<-ctx.Done()
-		shutCtx := context.Background()
-		shutCtx, cancel = context.WithTimeout(shutCtx, 5*time.Second)
-		defer cancel()
-		svr.Shutdown(shutCtx)
-		return nil
-	}
-
-	if conf.Render.Destination != "" {
-		err = writeRendered(ctx, stdout, conf.Render.Destination, rendered)
-		if err != nil {
-			return fmt.Errorf("write rendered: %w", err)
-		}
-	}
-	if conf.Firebase.SiteID != "" {
-		err = uploadFirebase(ctx, stdout, conf.Firebase, rendered, uploadPreview)
-		if err != nil {
-			return fmt.Errorf("upload to firebase: %w", err)
-		}
-	}
-
-	return nil
 }

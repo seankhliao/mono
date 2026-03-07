@@ -90,8 +90,9 @@ func TestCommandBasic(t *testing.T) {
 			}]{
 				Name: "set-flag",
 				Desc: "a description",
-				Flags: func(c *struct{ F string }, fset *flag.FlagSet) {
+				Flags: func(c *struct{ F string }, fset *flag.FlagSet) error {
 					fset.StringVar(&c.F, "a-flag", "default-value", "a boolean flag")
+					return nil
 				},
 				Do: func(c *struct{ F string }) Runner {
 					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
@@ -112,8 +113,9 @@ func TestCommandBasic(t *testing.T) {
 			}]{
 				Name: "debug-flag",
 				Desc: "a description",
-				Flags: func(c *struct{ F string }, fset *flag.FlagSet) {
+				Flags: func(c *struct{ F string }, fset *flag.FlagSet) error {
 					fset.StringVar(&c.F, "a-flag", "default-value", "a boolean flag")
+					return nil
 				},
 				Do: func(c *struct{ F string }) Runner {
 					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
@@ -134,12 +136,13 @@ func TestCommandBasic(t *testing.T) {
 			}]{
 				Name: "flag-file-1",
 				Desc: "read flags from files",
-				Flags: func(c *struct{ V [5]string }, fset *flag.FlagSet) {
+				Flags: func(c *struct{ V [5]string }, fset *flag.FlagSet) error {
 					fset.StringVar(&c.V[0], "foo", "default", "help")
 					fset.StringVar(&c.V[1], "bar", "default", "help")
 					fset.StringVar(&c.V[2], "qux", "default", "help")
 					fset.StringVar(&c.V[3], "fizz", "default", "help")
 					fset.StringVar(&c.V[4], "buzz", "default", "help")
+					return nil
 				},
 				Do: func(c *struct{ V [5]string }) Runner {
 					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {

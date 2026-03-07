@@ -19,7 +19,7 @@ import (
 	firebasehosting "google.golang.org/api/firebasehosting/v1beta1"
 )
 
-func uploadFirebase(ctx context.Context, stdout io.Writer, conf ConfigFirebase, rendered map[string]*bytes.Buffer, uploadPreview bool) error {
+func uploadFirebase(ctx context.Context, stdout io.Writer, rendered map[string]*bytes.Buffer, c Firebase) error {
 	pathToHash, hashToGzip, err := hashAndGzip(rendered)
 	if err != nil {
 		return fmt.Errorf("prepare file hash: %w", err)
@@ -42,7 +42,7 @@ func uploadFirebase(ctx context.Context, stdout io.Writer, conf ConfigFirebase, 
 	}
 
 	spin.Suffix = "creating new website version"
-	site, version, err := createVersion(ctx, client, conf)
+	site, version, err := createVersion(ctx, client, c)
 	if err != nil {
 		return fmt.Errorf("create new version: %w", err)
 	}
@@ -59,7 +59,7 @@ func uploadFirebase(ctx context.Context, stdout io.Writer, conf ConfigFirebase, 
 	}
 
 	spin.Suffix = "releasing..."
-	u, err := release(ctx, client, site, version, uploadPreview)
+	u, err := release(ctx, client, site, version, c.Preview)
 	if err != nil {
 		return err
 	}
@@ -123,18 +123,18 @@ func printUploaded(pathToHash map[string]string, toUpload []string) {
 	}
 }
 
-func createVersion(ctx context.Context, client *firebasehosting.Service, conf ConfigFirebase) (string, string, error) {
+func createVersion(ctx context.Context, client *firebasehosting.Service, c Firebase) (string, string, error) {
 	servingConf := &firebasehosting.ServingConfig{
 		CleanUrls:             true,
 		TrailingSlashBehavior: "ADD",
 	}
-	for _, header := range conf.Headers {
+	for _, header := range c.Headers {
 		servingConf.Headers = append(servingConf.Headers, &firebasehosting.Header{
 			Glob:    header.Glob,
 			Headers: header.Headers,
 		})
 	}
-	for _, redirect := range conf.Redirects {
+	for _, redirect := range c.Redirects {
 		servingConf.Redirects = append(servingConf.Redirects, &firebasehosting.Redirect{
 			Glob:       redirect.Glob,
 			Location:   redirect.Location,
@@ -142,7 +142,7 @@ func createVersion(ctx context.Context, client *firebasehosting.Service, conf Co
 		})
 	}
 
-	siteID := "sites/" + conf.SiteID
+	siteID := "sites/" + c.SiteID
 	version, err := client.Sites.Versions.Create(siteID, &firebasehosting.Version{
 		Config: servingConf,
 	}).Context(ctx).Do()

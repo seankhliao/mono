@@ -1,28 +1,5 @@
 import "time"
 
-#BlogengineConfig: {
-	render: {
-		baseUrl: string
-		dst?:    string | *""
-		gtm?:    string
-		src:     string | *"src"
-		style:   "compact" | *"full"
-	}
-
-	firebase?: {
-		site: string
-		redirects?: [...{
-			glob:     string
-			location: string
-			code:     int
-		}]
-		headers?: [...{
-			glob: string
-			headers: [string]: string
-		}]
-	}
-}
-
 #EventPage: {
 	Title:    string
 	Subtitle: string
