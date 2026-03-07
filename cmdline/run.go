@@ -114,7 +114,7 @@ func findRun(parents []string, c Commander, args []string) Runner {
 	}
 
 	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
-		fmt.Fprintf(stderr, "unexpected arguments: %v\n\b", fset.Args())
+		fmt.Fprintf(stderr, "unexpected arguments: %v\n\n", fset.Args())
 		return helpFor(c, parents, fset, 1)(ctx, stdin, stdout, stderr, fsys)
 	}
 }
@@ -134,20 +134,18 @@ func helpFor(c Commander, parents []string, fset *flag.FlagSet, exit int) Runner
 		if len(subs) > 0 {
 			fmt.Fprintf(w, "\nCommands:\n")
 			for _, sub := range subs {
-				fmt.Fprintf(w, "  %s\n    %s\n", sub.CmdName(), sub.ShortDesc())
+				fmt.Fprintf(w, "\t%s\n\t\t%s\n", sub.CmdName(), sub.ShortDesc())
 			}
 		}
 
 		fmt.Fprintf(w, "\nFlags:\n")
 		fset.VisitAll(func(f *flag.Flag) {
-			fmt.Fprintf(w, "  -%s\n", f.Name)
+			fmt.Fprintf(w, "\t-%s\n", f.Name)
 			if f.DefValue != "" {
-				fmt.Fprintf(w, "    default: %v\n", f.Value)
+				fmt.Fprintf(w, "\t\tdefault: %v\n", f.Value)
 			}
-			fmt.Fprintf(w, "    %s\n", f.Usage)
+			fmt.Fprintf(w, "\t\t%s\n", f.Usage)
 		})
-		fset.SetOutput(w)
-		fset.PrintDefaults()
 		return exit
 	}
 }

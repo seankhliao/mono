@@ -8,6 +8,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"log/slog"
 	"net"
 	"net/http"
@@ -16,44 +17,53 @@ import (
 	"syscall"
 	"time"
 
+	"go.seankhliao.com/mono/cmdline"
 	"go.seankhliao.com/mono/cueconf"
 	"go.seankhliao.com/mono/jsonlog"
-	"go.seankhliao.com/mono/ycli"
 	"go.seankhliao.com/mono/yhttp"
 )
 
 //go:embed schema.cue
 var configSchema string
 
+type Flags struct {
+	ConfigFile    string
+	Preview       bool
+	UploadPreview bool
+}
+
 func main() {
-	var configFile string
-	var preview, uploadPreview bool
-	ycli.OSExec(ycli.New(
-		"blogengine",
-		"markdown to html renderer, with firebase integration",
-		func(fs *flag.FlagSet) {
-			fs.StringVar(&configFile, "config", "blogengine.cue", "path to config file")
-			fs.BoolVar(&preview, "preview", false, "render in memory and serve a preview")
-			fs.BoolVar(&uploadPreview, "upload-preview", false, "upload to firebase in preview mode")
+	cmdline.RunOS(&cmdline.CommandBasic[Flags]{
+		Name: "blogengine",
+		Desc: "markdown to html renderer, with firebase hosting integration",
+		Flags: func(c *Flags, fset *flag.FlagSet) {
+			fset.StringVar(&c.ConfigFile, "config", "blogengine.cue", "path to config file")
+			fset.BoolVar(&c.Preview, "preview", false, "render in memory and serve a preview")
+			fset.BoolVar(&c.UploadPreview, "preview-upload", false, "upload to firebase in preview mode")
 		},
-		func(stdout, _ io.Writer) error {
-			err := chdirWebRoot(configFile)
-			if err != nil {
-				return fmt.Errorf("blogengine: %w", err)
-			}
+		Do: func(c *Flags) cmdline.Runner {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+				err := chdirWebRoot(c.ConfigFile)
+				if err != nil {
+					fmt.Fprintln(stderr, "change to site root dir:", err)
+					return 1
+				}
 
-			config, err := cueconf.ForFile[Config](configSchema, "#BlogengineConfig", configFile, false)
-			if err != nil {
-				return fmt.Errorf("blogengine: decode config: %w", err)
-			}
+				config, err := cueconf.ForFile[Config](configSchema, "#BlogengineConfig", c.ConfigFile, false)
+				if err != nil {
+					fmt.Fprintln(stderr, "decode config:", err)
+					return 1
+				}
 
-			err = run(stdout, config, preview, uploadPreview)
-			if err != nil {
-				return fmt.Errorf("blogengine: %w", err)
+				err = run(stdout, config, c.Preview, c.UploadPreview)
+				if err != nil {
+					fmt.Fprintln(stderr, "run:", err)
+					return 1
+				}
+				return 0
 			}
-			return nil
 		},
-	))
+	})
 }
 
 func chdirWebRoot(configFile string) error {

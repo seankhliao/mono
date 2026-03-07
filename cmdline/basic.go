@@ -10,6 +10,11 @@ import (
 
 var _ Commander = &CommandBasic[struct{}]{}
 
+type (
+	Empty         = struct{}
+	CommandSimple = CommandBasic[Empty]
+)
+
 type CommandBasic[C any] struct {
 	Name string
 	Desc string
@@ -38,4 +43,14 @@ func (c *CommandBasic[C]) RegisterFlags(fset *flag.FlagSet) {
 func (c *CommandBasic[C]) SubCommands() []Commander { return nil }
 func (c *CommandBasic[C]) RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 	return c.Do(&c.conf)(ctx, stdin, stdout, stderr, fsys)
+}
+
+func CommandRun(name, desc string, f Runner) *CommandSimple {
+	return &CommandSimple{
+		Name: name,
+		Desc: desc,
+		Do: func(c *Empty) Runner {
+			return f
+		},
+	}
 }

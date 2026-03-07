@@ -157,6 +157,17 @@ func TestCommandBasic(t *testing.T) {
 			},
 			nil,
 			0,
+		}, {
+			CommandRun("run", "some dec", func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+				fmt.Fprintln(stdout, "hello world")
+				return 0
+			}),
+			[]string{"run"},
+			[]string{
+				"hello world",
+			},
+			nil,
+			0,
 		},
 	}
 
