@@ -7,11 +7,11 @@ import (
 	"io/fs"
 	"strings"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
 func main() {
-	cmdline.RunOS(cmdline.CommandRun(
+	run.OSExec(run.CommandRun(
 		"ascii",
 		"print an ascii table",
 		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {

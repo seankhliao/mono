@@ -14,16 +14,16 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 	"gocloud.dev/blob"
 	_ "gocloud.dev/blob/gcsblob"
 )
 
 func main() {
-	cmdline.RunOS(&cmdline.CommandGroup{
+	run.OSExec(&run.CommandGroup{
 		Name: "fin",
 		Desc: "fin is a custom tool to track expenses",
-		Subs: []cmdline.Commander{
+		Subs: []run.Commander{
 			ViewCommand(),
 			PushCommand(),
 			PullCommand(),
@@ -33,7 +33,7 @@ func main() {
 	})
 }
 
-func runWrap(f func(stdout, stderr io.Writer) error) cmdline.Runner {
+func runWrap(f func(stdout, stderr io.Writer) error) run.Runner {
 	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 		err := f(stdout, stderr)
 		if err != nil {
@@ -49,23 +49,23 @@ type Convert struct {
 	hsbcCard string
 }
 
-func ConvertCommand() cmdline.Commander {
+func ConvertCommand() run.Commander {
 	c := &Convert{}
-	return &cmdline.CommandGroup{
+	return &run.CommandGroup{
 		Name: "convert",
 		Desc: "convert card statements to fin data",
 		Flags: func(fs *flag.FlagSet) error {
 			c.register(fs)
 			return nil
 		},
-		Subs: []cmdline.Commander{
-			cmdline.CommandRun("amex", "convert amex statements", runWrap(c.amex)),
-			cmdline.CommandRun("chase", "convert chase statements", runWrap(c.chase)),
-			cmdline.CommandRun("hsbc", "convert hsbc statements", runWrap(c.hsbc)),
-			cmdline.CommandRun("trading", "convert trading212 statements", runWrap(c.trading)),
-			cmdline.CommandRun("chasetxt", "convert copied chase pdf statements", runWrap(c.chasetxt)),
-			cmdline.CommandRun("chasesave", "convert chase saver statements", runWrap(c.chasesave)),
-			cmdline.CommandRun("virgin", "convert virgin credit card transactions", runWrap(c.virgin)),
+		Subs: []run.Commander{
+			run.CommandRun("amex", "convert amex statements", runWrap(c.amex)),
+			run.CommandRun("chase", "convert chase statements", runWrap(c.chase)),
+			run.CommandRun("hsbc", "convert hsbc statements", runWrap(c.hsbc)),
+			run.CommandRun("trading", "convert trading212 statements", runWrap(c.trading)),
+			run.CommandRun("chasetxt", "convert copied chase pdf statements", runWrap(c.chasetxt)),
+			run.CommandRun("chasesave", "convert chase saver statements", runWrap(c.chasesave)),
+			run.CommandRun("virgin", "convert virgin credit card transactions", runWrap(c.virgin)),
 		},
 	}
 }
@@ -100,15 +100,15 @@ type View struct {
 	configPath string
 }
 
-func ViewCommand() cmdline.Commander {
-	return &cmdline.CommandBasic[View]{
+func ViewCommand() run.Commander {
+	return &run.CommandBasic[View]{
 		Name: "view",
 		Desc: "view summarizes the data into different views, printed to the console.",
 		Flags: func(v *View, fs *flag.FlagSet) error {
 			fs.StringVar(&v.configPath, "config", "gbp.fin.cue", "path to config file")
 			return nil
 		},
-		Do: func(v *View) cmdline.Runner {
+		Do: func(v *View) run.Runner {
 			return runWrap(v.viewAll)
 		},
 	}
@@ -125,12 +125,12 @@ func (v *View) viewAll(stdout, stderr io.Writer) error {
 	return nil
 }
 
-func PushCommand() cmdline.Commander {
+func PushCommand() run.Commander {
 	type Config struct {
 		bucketName string
 		localGlob  string
 	}
-	return &cmdline.CommandBasic[Config]{
+	return &run.CommandBasic[Config]{
 		Name: "push",
 		Desc: "upload local data to a storage bucket",
 		Flags: func(c *Config, fs *flag.FlagSet) error {
@@ -138,7 +138,7 @@ func PushCommand() cmdline.Commander {
 			fs.StringVar(&c.localGlob, "glob", "*.fin.cue", "a glob pattern patching local files")
 			return nil
 		},
-		Do: func(c *Config) cmdline.Runner {
+		Do: func(c *Config) run.Runner {
 			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 				err := runPush(stdout, c.bucketName, c.localGlob)
 				if err != nil {
@@ -192,18 +192,18 @@ func runPush(stdout io.Writer, bucketName, localGlob string) error {
 	return nil
 }
 
-func PullCommand() cmdline.Commander {
+func PullCommand() run.Commander {
 	type Config struct {
 		bucketName string
 	}
-	return &cmdline.CommandBasic[Config]{
+	return &run.CommandBasic[Config]{
 		Name: "pull",
 		Desc: "download remote data from a storage bucket",
 		Flags: func(c *Config, fs *flag.FlagSet) error {
 			fs.StringVar(&c.bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
 			return nil
 		},
-		Do: func(c *Config) cmdline.Runner {
+		Do: func(c *Config) run.Runner {
 			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 				err := runPull(stdout, c.bucketName)
 				if err != nil {

@@ -2,8 +2,8 @@ package main
 
 import (
 	"bytes"
-	_ "embed"
 	"context"
+	_ "embed"
 	"errors"
 	"flag"
 	"fmt"
@@ -17,7 +17,7 @@ import (
 	"strconv"
 	"time"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
 const (
@@ -57,14 +57,14 @@ SOFTWARE.
 `
 )
 
-func cmdNew(conf *CommonConfig) cmdline.Commander {
+func cmdNew(conf *CommonConfig) run.Commander {
 	type ConfigNew struct {
 		modPrefix string
 		srcPrefix string
 		name      string
 		jj        bool
 	}
-	return &cmdline.CommandBasic[ConfigNew]{
+	return &run.CommandBasic[ConfigNew]{
 		Name: "new",
 		Desc: "creates a new repository",
 		Flags: func(c *ConfigNew, fs *flag.FlagSet) error {
@@ -74,7 +74,7 @@ func cmdNew(conf *CommonConfig) cmdline.Commander {
 			fs.BoolVar(&c.jj, "jj", true, "use jj as the vcs tool")
 			return nil
 		},
-		Do: func(c *ConfigNew) cmdline.Runner {
+		Do: func(c *ConfigNew) run.Runner {
 			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 				var base string
 				if c.name == "" {

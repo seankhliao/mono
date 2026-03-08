@@ -10,11 +10,11 @@ import (
 	"path"
 	"strings"
 
-	"go.seankhliao.com/mono/cmdline"
+	run1 "go.seankhliao.com/mono/run"
 )
 
 func main() {
-	cmdline.RunOS(cmdline.CommandRun(
+	run1.OSExec(run1.CommandRun(
 		"jj-commitmsg",
 		"generate a commit message prefix based on changed files",
 		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {

@@ -11,11 +11,11 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
-func cmdClean() cmdline.Commander {
-	return cmdline.CommandRun(
+func cmdClean() run.Commander {
+	return run.CommandRun(
 		"clean",
 		"clean up temporary repositories",
 		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {

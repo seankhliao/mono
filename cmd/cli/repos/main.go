@@ -10,12 +10,12 @@ import (
 	"slices"
 	"strings"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
 func main() {
 	conf := new(CommonConfig)
-	cmdline.RunOS(&cmdline.CommandGroup{
+	run.OSExec(&run.CommandGroup{
 		Name: "repos",
 		Desc: "tool for managing git repos",
 		Flags: func(fs *flag.FlagSet) error {
@@ -26,7 +26,7 @@ func main() {
 			})
 			return nil
 		},
-		Subs: []cmdline.Commander{
+		Subs: []run.Commander{
 			cmdSync(),
 			cmdLast(conf),
 			cmdNew(conf),

@@ -18,11 +18,11 @@ import (
 	"sync"
 	"time"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
 func main() {
-	cmdline.RunOS(&cmdline.CommandBasic[app]{
+	run.OSExec(&run.CommandBasic[app]{
 		Name: "mirrorrank",
 		Desc: "test arch linux mirrors for download speed",
 		Flags: func(a *app, fset *flag.FlagSet) error {
@@ -46,7 +46,7 @@ func main() {
 			})
 			return nil
 		},
-		Do: func(a *app) cmdline.Runner {
+		Do: func(a *app) run.Runner {
 			return a.run
 		},
 	})

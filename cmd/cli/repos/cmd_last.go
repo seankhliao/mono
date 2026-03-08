@@ -7,11 +7,11 @@ import (
 	"io/fs"
 	"path/filepath"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
-func cmdLast(conf *CommonConfig) cmdline.Commander {
-	return cmdline.CommandRun(
+func cmdLast(conf *CommonConfig) run.Commander {
+	return run.CommandRun(
 		"last",
 		"switches to the newest temporary repository",
 		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {

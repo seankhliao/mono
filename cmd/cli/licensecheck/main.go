@@ -10,7 +10,7 @@ import (
 	"os"
 
 	"github.com/google/licensecheck"
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
 type Config struct {
@@ -18,14 +18,14 @@ type Config struct {
 }
 
 func main() {
-	cmdline.RunOS(&cmdline.CommandBasic[Config]{
+	run.OSExec(&run.CommandBasic[Config]{
 		Name: "licensecheck",
 		Desc: "run google/licensecheck on the given file",
 		Flags: func(c *Config, fset *flag.FlagSet) error {
 			fset.StringVar(&c.File, "file", "LICENSE", "path to file to check")
 			return nil
 		},
-		Do: func(c *Config) cmdline.Runner {
+		Do: func(c *Config) run.Runner {
 			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 				b, err := os.ReadFile(c.File)
 				if err != nil {

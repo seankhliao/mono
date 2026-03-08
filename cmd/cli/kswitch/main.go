@@ -17,7 +17,7 @@ import (
 	"strings"
 
 	fzf "github.com/junegunn/fzf/src"
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1 "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/tools/clientcmd"
@@ -27,7 +27,7 @@ import (
 const tmpPrefix = "kswitch.tmp.kubeconfig."
 
 func main() {
-	cmdline.RunOS(&cmdline.CommandGroup{
+	run.OSExec(&run.CommandGroup{
 		Name: "kswitch",
 		Desc: `manage the kubectl context
 
@@ -41,42 +41,42 @@ Examples:
 	kswitch cache-clean
 	kswitch wrapper
 `,
-		Subs: []cmdline.Commander{
-			&cmdline.CommandBasic[App]{
+		Subs: []run.Commander{
+			&run.CommandBasic[App]{
 				Name:  "current",
 				Desc:  "show the current context",
 				Flags: (*App).register,
-				Do:    func(a *App) cmdline.Runner { return a.showCurrent },
+				Do:    func(a *App) run.Runner { return a.showCurrent },
 			},
-			&cmdline.CommandBasic[App]{
+			&run.CommandBasic[App]{
 				Name:  "context",
 				Desc:  "switch the current context",
 				Flags: (*App).register,
-				Do:    func(a *App) cmdline.Runner { return a.switchContext },
+				Do:    func(a *App) run.Runner { return a.switchContext },
 			},
-			&cmdline.CommandBasic[App]{
+			&run.CommandBasic[App]{
 				Name:  "namespace",
 				Desc:  "switch the current context",
 				Flags: (*App).register,
-				Do:    func(a *App) cmdline.Runner { return a.switchNamespace },
+				Do:    func(a *App) run.Runner { return a.switchNamespace },
 			},
-			&cmdline.CommandBasic[App]{
+			&run.CommandBasic[App]{
 				Name:  "cache-show",
 				Desc:  "print the location of the cache",
 				Flags: (*App).register,
-				Do:    func(a *App) cmdline.Runner { return a.printCache },
+				Do:    func(a *App) run.Runner { return a.printCache },
 			},
-			&cmdline.CommandBasic[App]{
+			&run.CommandBasic[App]{
 				Name:  "cache-clear",
 				Desc:  "reset the cache",
 				Flags: (*App).register,
-				Do:    func(a *App) cmdline.Runner { return a.clearCache },
+				Do:    func(a *App) run.Runner { return a.clearCache },
 			},
-			&cmdline.CommandBasic[App]{
+			&run.CommandBasic[App]{
 				Name:  "wrapper",
 				Desc:  "print the wrapper script",
 				Flags: (*App).register,
-				Do:    func(a *App) cmdline.Runner { return a.printWrapper },
+				Do:    func(a *App) run.Runner { return a.printWrapper },
 			},
 		},
 	})
@@ -372,7 +372,7 @@ func (a *App) currentConfig() {
 	}
 
 	a.context = a.conf.CurrentContext
-	a.confPath = a.confPath
+	a.confPath = confPath
 }
 
 func (a *App) printCache(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {

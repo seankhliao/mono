@@ -20,8 +20,8 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
-	"go.seankhliao.com/mono/cmdline"
 	"go.seankhliao.com/mono/goreleases"
+	"go.seankhliao.com/mono/run"
 )
 
 type Config struct {
@@ -35,7 +35,7 @@ type Config struct {
 }
 
 func main() {
-	cmdline.RunOS(&cmdline.CommandBasic[Config]{
+	run.OSExec(&run.CommandBasic[Config]{
 		Name: "gosdkupdate",
 		Desc: "update local go installations and go tools",
 		Flags: func(c *Config, fset *flag.FlagSet) error {
@@ -46,9 +46,9 @@ func main() {
 			fset.BoolVar(&c.Tip, "tip", false, "whether to update tip")
 			fset.BoolVar(&c.Tools, "tools", true, "update go tools")
 
-			return cmdline.UserConfigFile(fset, "gosdkupdate.txt", false)
+			return run.UserConfigFile(fset, "gosdkupdate.txt", false)
 		},
-		Do: func(c *Config) cmdline.Runner {
+		Do: func(c *Config) run.Runner {
 			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 				tmpDir, err := os.MkdirTemp("", "gosdkupdate.*")
 				if err != nil {

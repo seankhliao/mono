@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
 type stock struct {
@@ -21,18 +21,18 @@ type stock struct {
 	shares, total      float64
 }
 
-func TradingCommand() cmdline.Commander {
+func TradingCommand() run.Commander {
 	type Config struct {
 		filename string
 	}
-	return &cmdline.CommandBasic[Config]{
+	return &run.CommandBasic[Config]{
 		Name: "trading",
 		Desc: "calculate trading gain/loss",
 		Flags: func(c *Config, fs *flag.FlagSet) error {
 			fs.StringVar(&c.filename, "file", "trading.csv", "path to trading212 history file")
 			return nil
 		},
-		Do: func(c *Config) cmdline.Runner {
+		Do: func(c *Config) run.Runner {
 			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 				file, err := os.Open(c.filename)
 				if err != nil {

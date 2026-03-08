@@ -13,7 +13,7 @@ import (
 	"strings"
 	"syscall"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
 //go:embed schema.cue
@@ -48,7 +48,7 @@ type Firebase struct {
 }
 
 func main() {
-	cmdline.RunOS(&cmdline.CommandBasic[Config]{
+	run.OSExec(&run.CommandBasic[Config]{
 		Name: "blogengine",
 		Desc: "markdown to html renderer, with firebase hosting integration",
 		Flags: func(c *Config, fset *flag.FlagSet) error {
@@ -110,9 +110,9 @@ func main() {
 				return nil
 			})
 
-			return cmdline.ChdirToParentFlagFile(fset, "blogengine.txt")
+			return run.ChdirToParentFlagFile(fset, "blogengine.txt")
 		},
-		Do: func(c *Config) cmdline.Runner {
+		Do: func(c *Config) run.Runner {
 			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 				ctx, done := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
 				defer done()

@@ -7,14 +7,14 @@ import (
 	"io"
 	"io/fs"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
 //go:embed wrapper.zsh
 var shellWrapper string
 
-func cmdConfig(conf *CommonConfig) cmdline.Commander {
-	return cmdline.CommandRun(
+func cmdConfig(conf *CommonConfig) run.Commander {
+	return run.CommandRun(
 		"config",
 		"print the config",
 		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {

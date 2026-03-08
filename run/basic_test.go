@@ -1,4 +1,4 @@
-package cmdline
+package run
 
 import (
 	"bytes"
@@ -126,7 +126,7 @@ func TestCommandBasic(t *testing.T) {
 			},
 			[]string{"basic", "-flag-debug"},
 			[]string{
-				"-a-flag default-value",
+				"-a-flag=default-value",
 			},
 			nil,
 			0,
@@ -196,7 +196,7 @@ func testCommand(t *testing.T, cmdType string, tc testCommandCase) {
 		fsys := os.DirFS(filepath.Join("testdata", cmdType, tc.c.CmdName()))
 
 		t.Logf("args: %v", tc.args)
-		gotExit := Run(tc.c, tc.args, stdin, &stdout, &stderr, fsys)
+		gotExit := Exec(tc.c, tc.args, stdin, &stdout, &stderr, fsys)
 		if gotExit != tc.exit {
 			t.Errorf("exit code = %d, want = %d", gotExit, tc.exit)
 		}

@@ -1,6 +1,6 @@
-// Package cmdline provides some basic tools for registering commands
+// Package run provides some basic tools for registering commands
 // with configs and running them.
-package cmdline
+package run
 
 import (
 	"context"
@@ -28,18 +28,18 @@ type Commander interface {
 
 type Runner func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int
 
-// RunOS runs the given [Commander] with the default arguments
+// OSExec runs the given [Commander] with the default arguments
 // to interact with the os:
 //
 //	func main() {
-//		cmdline.RunOS(c)
+//		cmdline.OSExec(c)
 //	}
-func RunOS(c Commander) {
-	os.Exit(Run(c, os.Args, os.Stdin, os.Stderr, os.Stdout, os.DirFS("/")))
+func OSExec(c Commander) {
+	os.Exit(Exec(c, os.Args, os.Stdin, os.Stderr, os.Stdout, os.DirFS("/")))
 }
 
-// Run runs the given command, allowing injection of most OS parameters.
-func Run(c Commander, args []string, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+// Exec runs the given command, allowing injection of most OS parameters.
+func Exec(c Commander, args []string, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 	run := findRun(nil, c, args)
 	ctx := context.Background()
 	return run(ctx, stdin, stdout, stderr, fsys)

@@ -1,4 +1,4 @@
-package cmdline
+package run
 
 import (
 	"context"
@@ -34,7 +34,7 @@ func (c *CommandGroup) RegisterFlags(fset *flag.FlagSet) error {
 	}
 	return nil
 }
-func (c *CommandGroup) SubCommands() []Commander               { return c.Subs }
+func (c *CommandGroup) SubCommands() []Commander { return c.Subs }
 func (c *CommandGroup) RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 	return -1
 }

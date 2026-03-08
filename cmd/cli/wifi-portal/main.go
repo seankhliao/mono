@@ -8,11 +8,11 @@ import (
 	"io/fs"
 	"net/http"
 
-	"go.seankhliao.com/mono/cmdline"
+	"go.seankhliao.com/mono/run"
 )
 
 func main() {
-	cmdline.RunOS(cmdline.CommandRun(
+	run.OSExec(run.CommandRun(
 		"wifi-portal",
 		"check the wifi portal login page",
 		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
