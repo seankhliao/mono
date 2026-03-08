@@ -1,0 +1,13 @@
+[Unit]
+Description=nerys-monolith
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=/usr/local/bin/nerys-monolith serve -http.tls -1 -http.plain 80
+
+[Install]
+WantedBy=multi-user.target
