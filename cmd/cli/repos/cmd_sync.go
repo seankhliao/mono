@@ -56,19 +56,17 @@ func cmdSync() run.Commander {
 			return nil
 		},
 		Do: func(c *ConfigSub) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				config, err := cueconf.ForFile[Config](configSchema, "#SyncConfig", c.configFile, false)
 				if err != nil {
-					fmt.Fprintf(stderr, "repos: decode config: %v\n", err)
-					return 1
+					return fmt.Errorf("repos: decode config: %w", err)
 				}
 
 				err = runSync(stdout, config)
 				if err != nil {
-					fmt.Fprintf(stderr, "repos sync: %v\n", err)
-					return 1
+					return fmt.Errorf("repos sync: %w", err)
 				}
-				return 0
+				return nil
 			}
 		},
 	}

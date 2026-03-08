@@ -113,51 +113,45 @@ func main() {
 			return run.ChdirToParentFlagFile(fset, "blogengine.txt")
 		},
 		Do: func(c *Config) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				ctx, done := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
 				defer done()
 
 				fi, err := os.Stat(c.Source)
 				if err != nil {
-					fmt.Fprintln(stderr, "stat source:", err)
-					return 1
+					return fmt.Errorf("stat source: %w", err)
 				} else if !fi.IsDir() {
-					fmt.Fprintln(stderr, "src must be a directory")
-					return 1
+					return fmt.Errorf("src must be a directory")
 				}
 
 				rendered, err := renderMulti(ctx, c.Source, c.GoogleTagManager, c.BaseURL, c.Compact)
 				if err != nil {
-					fmt.Fprintln(stderr, "render:", err)
-					return 1
+					return fmt.Errorf("render: %w", err)
 				}
 
 				if c.Preview {
 					err = servePreview(ctx, stdout, rendered)
 					if err != nil {
-						fmt.Fprintln(stderr, "serve preview", err)
-						return 1
+						return fmt.Errorf("serve preview: %w", err)
 					}
-					return 0
+					return nil
 				}
 
 				if c.Destination != "" {
 					err = writeRendered(ctx, stdout, rendered, c.Destination)
 					if err != nil {
-						fmt.Fprintln(stderr, "write to dst", c.Destination, err)
-						return 1
+						return fmt.Errorf("write to dst %s: %w", c.Destination, err)
 					}
 				}
 
 				if c.Firebase.SiteID != "" {
 					err = uploadFirebase(ctx, stdout, rendered, c.Firebase)
 					if err != nil {
-						fmt.Fprintln(stderr, "firebase upload:", err)
-						return 1
+						return fmt.Errorf("firebase upload: %w", err)
 					}
 				}
 
-				return 0
+				return nil
 			}
 		},
 	})

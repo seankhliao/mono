@@ -16,16 +16,15 @@ func main() {
 	run.OSExec(run.CommandRun(
 		"lapis",
 		"connect to lapis wifi",
-		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 			b, err := exec.CommandContext(ctx, "iwctl", "station", "wlan0", "scan").CombinedOutput()
 			if err != nil {
-				fmt.Fprintln(stderr, "scan", string(b))
-				return 1
+				return fmt.Errorf("scan: %s, %w", string(b), err)
 			}
 			for range 10 {
 				b, err = exec.CommandContext(ctx, "iwctl", "station", "wlan0", "get-networks").CombinedOutput()
 				if err != nil {
-					fmt.Fprintln(stderr, "get-networks:", string(b))
+					// fmt.Fprintln(stderr, "get-networks:", string(b))
 					time.Sleep(time.Second)
 					continue
 				}
@@ -38,10 +37,9 @@ func main() {
 			}
 			b, err = exec.CommandContext(ctx, "iwctl", "station", "wlan0", "connect", "lapis").CombinedOutput()
 			if err != nil {
-				fmt.Fprintln(stderr, "connect", string(b))
-				return 1
+				return fmt.Errorf("connect: %s, %w", string(b), err)
 			}
-			return 0
+			return nil
 		}),
 	)
 }

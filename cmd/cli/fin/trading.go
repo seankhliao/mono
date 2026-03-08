@@ -33,17 +33,15 @@ func TradingCommand() run.Commander {
 			return nil
 		},
 		Do: func(c *Config) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				file, err := os.Open(c.filename)
 				if err != nil {
-					fmt.Fprintf(stderr, "open file: %v\n", err)
-					return 1
+					return fmt.Errorf("open file: %w", err)
 				}
 				cr := csv.NewReader(file)
 				_, err = cr.Read()
 				if err != nil {
-					fmt.Fprintf(stderr, "read headers: %v\n", err)
-					return 1
+					return fmt.Errorf("read headers: %w", err)
 				}
 
 				results := make(map[string]float64)
@@ -55,8 +53,7 @@ func TradingCommand() run.Commander {
 
 				transactions, err := cr.ReadAll()
 				if err != nil {
-					fmt.Fprintf(stderr, "read transactions: %v\n", err)
-					return 1
+					return fmt.Errorf("read transactions: %w", err)
 				}
 				for _, tr := range transactions {
 					// row := transactionRow{tr[0], tr[1], tr[2], tr[3], tr[4], tr[5], tr[6], tr[7], tr[8], tr[9], tr[10], tr[11], tr[12], tr[13], tr[14], tr[15], tr[16], tr[17], tr[18], tr[19], tr[20]}
@@ -74,23 +71,19 @@ func TradingCommand() run.Commander {
 
 					exchange, err := strconv.ParseFloat(row.Exchange_rate, 64)
 					if err != nil {
-						fmt.Fprintf(stderr, "parse exchange rate: %v\n", err)
-						return 1
+						return fmt.Errorf("parse exchange rate: %w", err)
 					}
 					date, err := time.Parse(time.DateTime, row.Time)
 					if err != nil {
-						fmt.Fprintf(stderr, "parse time: %v\n", err)
-						return 1
+						return fmt.Errorf("parse time: %w", err)
 					}
 					shares, err := strconv.ParseFloat(row.No__of_shares, 64)
 					if err != nil {
-						fmt.Fprintf(stderr, "parse shares as float: %v\n", err)
-						return 1
+						return fmt.Errorf("parse shares as float: %w", err)
 					}
 					total, err := strconv.ParseFloat(row.Price___share, 64)
 					if err != nil {
-						fmt.Fprintf(stderr, "parse total as float: %v\n", err)
-						return 1
+						return fmt.Errorf("parse total as float: %w", err)
 					}
 					total = shares * total
 
@@ -98,8 +91,7 @@ func TradingCommand() run.Commander {
 					if row.Result != "" {
 						result, err = strconv.ParseFloat(row.Result, 64)
 						if err != nil {
-							fmt.Fprintf(stderr, "parse result: %v\n", err)
-							return 1
+							return fmt.Errorf("parse result: %w", err)
 						}
 						results[row.Currency_Result] += result
 					}
@@ -185,7 +177,7 @@ func TradingCommand() run.Commander {
 					fmt.Fprintln(stdout, key.year, key.curr, profit, profitGBP)
 				}
 
-				return 0
+				return nil
 			}
 		},
 	}

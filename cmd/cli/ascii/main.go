@@ -14,7 +14,7 @@ func main() {
 	run.OSExec(run.CommandRun(
 		"ascii",
 		"print an ascii table",
-		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 			var rows []string
 			for i := range 128 {
 				rows = append(rows, fmt.Sprintf("% 3d\t%0.2X\t%6q\t%s", i, i, rune(i), names[i]))
@@ -26,7 +26,7 @@ func main() {
 			for i := range 64 {
 				fmt.Fprint(stdout, rows[i], strings.Repeat(" ", longest-len(rows[i])), " |  ", rows[i+64], "\n")
 			}
-			return 0
+			return nil
 		}),
 	)
 }

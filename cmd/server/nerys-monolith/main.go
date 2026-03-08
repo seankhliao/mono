@@ -40,12 +40,8 @@ func (s *ServeConfig) Flags(fset *flag.FlagSet) error {
 }
 
 func (s *ServeConfig) Do() run.Runner {
-	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
-		err := s.Run(ctx, stdin, stdout, stderr, fsys)
-		if err != nil {
-			return 1
-		}
-		return 0
+	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+		return s.Run(ctx, stdin, stdout, stderr, fsys)
 	}
 }
 
@@ -55,7 +51,6 @@ func (s *ServeConfig) Run(ctx context.Context, stdin io.Reader, stdout, stderr i
 	})
 	register := func(mux *http.ServeMux) {
 		registerDebug(mux)
-		s.registerAdmin(mux)
 	}
 	runner := s.h.Runner(logHandler, register)
 

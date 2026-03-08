@@ -31,9 +31,9 @@ func TestCommandGroup(t *testing.T) {
 						Name: "sub1",
 						Desc: "sub description",
 						Do: func(c *struct{}) Runner {
-							return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+							return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 								fmt.Fprintln(out, "hello world")
-								return 0
+								return nil
 							}
 						},
 					},
@@ -54,9 +54,9 @@ func TestCommandGroup(t *testing.T) {
 						Name: "sub1",
 						Desc: "sub description",
 						Do: func(c *struct{}) Runner {
-							return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+							return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 								fmt.Fprintln(out, "hello world")
-								return 0
+								return nil
 							}
 						},
 					},
@@ -81,9 +81,9 @@ func TestCommandGroup(t *testing.T) {
 								Name: "level2",
 								Desc: "sub level 2",
 								Do: func(c *struct{}) Runner {
-									return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+									return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 										fmt.Fprintln(out, "hello world")
-										return 0
+										return nil
 									}
 								},
 							},
@@ -110,9 +110,9 @@ func TestCommandGroup(t *testing.T) {
 								Name: "level2",
 								Desc: "sub level 2",
 								Do: func(c *struct{}) Runner {
-									return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+									return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 										fmt.Fprintln(out, "hello world")
-										return 0
+										return nil
 									}
 								},
 							},

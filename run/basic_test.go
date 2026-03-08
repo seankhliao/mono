@@ -21,9 +21,9 @@ func TestCommandBasic(t *testing.T) {
 				Name: "basic",
 				Desc: "a description",
 				Do: func(c *struct{}) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, "hello world")
-						return 0
+						return nil
 					}
 				},
 			},
@@ -38,9 +38,9 @@ func TestCommandBasic(t *testing.T) {
 				Name: "help-text",
 				Desc: "a description",
 				Do: func(c *struct{}) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, "hello world")
-						return 0
+						return nil
 					}
 				},
 			},
@@ -55,9 +55,9 @@ func TestCommandBasic(t *testing.T) {
 				Name: "unknown-flag",
 				Desc: "a description",
 				Do: func(c *struct{}) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, "hello world")
-						return 0
+						return nil
 					}
 				},
 			},
@@ -72,9 +72,9 @@ func TestCommandBasic(t *testing.T) {
 				Name: "unknown-arg",
 				Desc: "a description",
 				Do: func(c *struct{}) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, "hello world")
-						return 0
+						return nil
 					}
 				},
 			},
@@ -95,9 +95,9 @@ func TestCommandBasic(t *testing.T) {
 					return nil
 				},
 				Do: func(c *struct{ F string }) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, c.F)
-						return 0
+						return nil
 					}
 				},
 			},
@@ -118,9 +118,9 @@ func TestCommandBasic(t *testing.T) {
 					return nil
 				},
 				Do: func(c *struct{ F string }) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, c.F)
-						return 0
+						return nil
 					}
 				},
 			},
@@ -145,12 +145,12 @@ func TestCommandBasic(t *testing.T) {
 					return nil
 				},
 				Do: func(c *struct{ V [5]string }) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) int {
+					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, c.V)
 						if !slices.Equal(c.V[:], []string{"lorem", "ipsum", "dolor", "sit amet", "consectetur adipiscing"}) {
-							return 1
+							return fmt.Errorf("wrong output")
 						}
-						return 0
+						return nil
 					}
 				},
 			},
@@ -161,9 +161,9 @@ func TestCommandBasic(t *testing.T) {
 			nil,
 			0,
 		}, {
-			CommandRun("run", "some dec", func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			CommandRun("run", "some dec", func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				fmt.Fprintln(stdout, "hello world")
-				return 0
+				return nil
 			}),
 			[]string{"run"},
 			[]string{

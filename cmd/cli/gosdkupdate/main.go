@@ -49,30 +49,26 @@ func main() {
 			return run.UserConfigFile(fset, "gosdkupdate.txt", false)
 		},
 		Do: func(c *Config) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				tmpDir, err := os.MkdirTemp("", "gosdkupdate.*")
 				if err != nil {
-					fmt.Fprintln(stderr, "prepare temp dir", err)
-					return 1
+					return fmt.Errorf("prepare temp dir: %w", err)
 				}
 				err = os.Chdir(tmpDir)
 				if err != nil {
-					fmt.Fprintln(stderr, "chdir temp dir", err)
-					return 1
+					return fmt.Errorf("chdir temp dir: %w", err)
 				}
 
 				err = updateGo(ctx, c, stdout)
 				if err != nil {
-					fmt.Fprintln(stderr, "update go", err)
-					return 1
+					return fmt.Errorf("update go: %w", err)
 				}
 
 				err = updateTools(ctx, c, stdout)
 				if err != nil {
-					fmt.Fprintln(stderr, "update tools", err)
-					return 1
+					return fmt.Errorf("update tools: %w", err)
 				}
-				return 0
+				return nil
 			}
 		},
 	})

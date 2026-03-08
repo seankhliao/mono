@@ -26,11 +26,10 @@ func main() {
 			return nil
 		},
 		Do: func(c *Config) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				b, err := os.ReadFile(c.File)
 				if err != nil {
-					fmt.Fprintln(stderr, "read file", c.File, err)
-					return 1
+					return fmt.Errorf("read file %s: %w", c.File, err)
 				}
 
 				cov := licensecheck.Scan(b)
@@ -38,7 +37,7 @@ func main() {
 				for _, m := range cov.Match {
 					fmt.Fprintf(stdout, "match: %+v\n", m)
 				}
-				return 0
+				return nil
 			}
 		},
 	})

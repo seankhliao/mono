@@ -17,20 +17,17 @@ func main() {
 	run1.OSExec(run1.CommandRun(
 		"jj-commitmsg",
 		"generate a commit message prefix based on changed files",
-		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 			rootDirs, err := run(ctx, "jj", "workspace", "root")
 			if err != nil || len(rootDirs) != 1 {
-				fmt.Fprintln(stderr, "find workspace root", rootDirs, err)
-				return 1
+				return fmt.Errorf("find workspace root: %v, %w", rootDirs, err)
 			}
 			os.Chdir(rootDirs[0])
 			diffFiles, err := run(ctx, "jj", "diff", "--name-only")
 			if err != nil {
-				fmt.Fprintln(stderr, "find changed files", err)
-				return 1
+				return fmt.Errorf("find changed files: %w", err)
 			} else if len(diffFiles) == 0 {
-				fmt.Fprintln(stderr, "no changed files")
-				return 1
+				return fmt.Errorf("no changed files")
 			}
 
 			common := diffFiles[0]
@@ -52,7 +49,7 @@ func main() {
 				}
 			}
 			fmt.Fprint(stdout, common)
-			return 0
+			return nil
 		}),
 	)
 }

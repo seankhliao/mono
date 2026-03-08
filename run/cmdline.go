@@ -23,10 +23,10 @@ type Commander interface {
 
 	RegisterFlags(*flag.FlagSet) error
 	SubCommands() []Commander
-	RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int
+	RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error
 }
 
-type Runner func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int
+type Runner func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error
 
 // OSExec runs the given [Commander] with the default arguments
 // to interact with the os:
@@ -42,7 +42,12 @@ func OSExec(c Commander) {
 func Exec(c Commander, args []string, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
 	run := findRun(nil, c, args)
 	ctx := context.Background()
-	return run(ctx, stdin, stdout, stderr, fsys)
+	err := run(ctx, stdin, stdout, stderr, fsys)
+	if err != nil {
+		fmt.Fprintln(stderr, err)
+		return 1
+	}
+	return 0
 }
 
 func findRun(parents []string, c Commander, args []string) Runner {
@@ -90,29 +95,23 @@ func findRun(parents []string, c Commander, args []string) Runner {
 
 	err := fset.Parse(args[1:])
 	if errors.Is(err, flag.ErrHelp) {
-		return helpFor(c, parents, fset, 0)
+		return helpFor(c, parents, fset, nil)
 	} else if err != nil {
-		return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
-			fmt.Fprintf(stderr, "parse cmdline: %v\n\n", err)
-			return helpFor(c, parents, fset, 1)(ctx, stdin, stdout, stderr, fsys)
-		}
+		return helpFor(c, parents, fset, err)
 	}
 	if len(extraArgs) > 0 {
 		err = fset.Parse(extraArgs)
 		if errors.Is(err, flag.ErrHelp) {
-			return helpFor(c, parents, fset, 0)
+			return helpFor(c, parents, fset, nil)
 		} else if err != nil {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
-				fmt.Fprintf(stderr, "parse args from files: %v\n\n", err)
-				return helpFor(c, parents, fset, 1)(ctx, stdin, stdout, stderr, fsys)
-			}
+			return helpFor(c, parents, fset, err)
 		}
 	}
 
 	if fset.NArg() == 0 {
 		_, ok := c.(*CommandGroup)
 		if ok {
-			return helpFor(c, parents, fset, 1)
+			return helpFor(c, parents, fset, errors.New("no command given"))
 		}
 
 		if debugPrintFlags {
@@ -128,16 +127,13 @@ func findRun(parents []string, c Commander, args []string) Runner {
 		}
 	}
 
-	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
-		fmt.Fprintf(stderr, "unexpected arguments: %v\n\n", fset.Args())
-		return helpFor(c, parents, fset, 1)(ctx, stdin, stdout, stderr, fsys)
-	}
+	return helpFor(c, parents, fset, fmt.Errorf("unexpected arguments: %v", fset.Args()))
 }
 
-func helpFor(c Commander, parents []string, fset *flag.FlagSet, exit int) Runner {
-	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+func helpFor(c Commander, parents []string, fset *flag.FlagSet, err error) Runner {
+	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 		w := stdout
-		if exit != 0 {
+		if err != nil {
 			w = stderr
 		}
 
@@ -161,17 +157,18 @@ func helpFor(c Commander, parents []string, fset *flag.FlagSet, exit int) Runner
 			}
 			fmt.Fprintf(w, "\t\t%s\n", f.Usage)
 		})
-		return exit
+
+		return err
 	}
 }
 
 func printDebugFlags(fset *flag.FlagSet) Runner {
-	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 		fset.VisitAll(func(f *flag.Flag) {
 			fmt.Fprintf(stdout, "-%s=%v ", f.Name, f.Value)
 		})
 
-		return 0
+		return nil
 	}
 }
 

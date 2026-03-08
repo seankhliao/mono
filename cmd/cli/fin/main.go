@@ -34,13 +34,8 @@ func main() {
 }
 
 func runWrap(f func(stdout, stderr io.Writer) error) run.Runner {
-	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
-		err := f(stdout, stderr)
-		if err != nil {
-			fmt.Fprintln(stderr, err)
-			return 1
-		}
-		return 0
+	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+		return f(stdout, stderr)
 	}
 }
 
@@ -139,13 +134,12 @@ func PushCommand() run.Commander {
 			return nil
 		},
 		Do: func(c *Config) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				err := runPush(stdout, c.bucketName, c.localGlob)
 				if err != nil {
-					fmt.Fprintf(stderr, "push: %v\n", err)
-					return 1
+					return fmt.Errorf("push: %w", err)
 				}
-				return 0
+				return nil
 			}
 		},
 	}
@@ -204,13 +198,12 @@ func PullCommand() run.Commander {
 			return nil
 		},
 		Do: func(c *Config) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				err := runPull(stdout, c.bucketName)
 				if err != nil {
-					fmt.Fprintf(stderr, "pull: %v\n", err)
-					return 1
+					return fmt.Errorf("pull: %w", err)
 				}
-				return 0
+				return nil
 			}
 		},
 	}

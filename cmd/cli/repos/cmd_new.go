@@ -75,37 +75,33 @@ func cmdNew(conf *CommonConfig) run.Commander {
 			return nil
 		},
 		Do: func(c *ConfigNew) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				var base string
 				if c.name == "" {
 					var err error
 					c.name, err = newTestrepoVersion()
 					if err != nil {
-						fmt.Fprintf(stderr, "repos new: get repo sequence: %v\n", err)
-						return 1
+						return fmt.Errorf("repos new: get repo sequence: %w", err)
 					}
 
 					base, err = os.UserHomeDir()
 					if err != nil {
-						fmt.Fprintf(stderr, "repos new: get home dir: %v\n", err)
-						return 1
+						return fmt.Errorf("repos new: get home dir: %w", err)
 					}
 					base = filepath.Join(base, "tmp")
 				} else {
 					var err error
 					base, err = os.Getwd()
 					if err != nil {
-						fmt.Fprintf(stderr, "repos new: get current dir: %v\n", err)
-						return 1
+						return fmt.Errorf("repos new: get current dir: %w", err)
 					}
 				}
 
 				err := runNew(conf.eval, base, c.srcPrefix, c.modPrefix, c.name, c.jj)
 				if err != nil {
-					fmt.Fprintf(stderr, "repos new: %v\n", err)
-					return 1
+					return fmt.Errorf("repos new: %w", err)
 				}
-				return 0
+				return nil
 			}
 		},
 	}

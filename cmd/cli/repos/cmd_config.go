@@ -17,9 +17,9 @@ func cmdConfig(conf *CommonConfig) run.Commander {
 	return run.CommandRun(
 		"config",
 		"print the config",
-		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 			fmt.Fprintln(stdout, shellWrapper)
-			return 0
+			return nil
 		},
 	)
 }

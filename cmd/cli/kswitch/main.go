@@ -115,31 +115,28 @@ func (a *App) register(fset *flag.FlagSet) error {
 	return nil
 }
 
-func (a *App) switchContext(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+func (a *App) switchContext(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	err := a.selectContext()
 	if err != nil {
-		fmt.Fprintln(stderr, "select context", err)
-		return 1
+		return fmt.Errorf("select context: %w", err)
 	}
 
 	return a.switchNamespace(ctx, stdin, stdout, stderr, fsys)
 }
 
-func (a *App) switchNamespace(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+func (a *App) switchNamespace(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	a.currentConfig()
 
 	if !strings.Contains(a.confPath, tmpPrefix) {
 		err := a.selectContext()
 		if err != nil {
-			fmt.Fprintln(stderr, "select context", err)
-			return 1
+			return fmt.Errorf("select context: %w", err)
 		}
 	}
 
 	err := a.selectNamespace()
 	if err != nil {
-		fmt.Fprintln(stderr, "select namespace", err)
-		return 1
+		return fmt.Errorf("select namespace: %w", err)
 	}
 
 	eval := fmt.Sprintf("export KUBECONFIG=%s\n", a.confPath)
@@ -148,7 +145,7 @@ func (a *App) switchNamespace(ctx context.Context, stdin io.Reader, stdout, stde
 	fmt.Fprintf(stdout, "kswitch context --context %s --namespace %s\n", a.context, a.namespace)
 	fmt.Fprintf(stdout, "CONTEXT %s :: %s\n", a.context, a.namespace)
 
-	return 0
+	return nil
 }
 
 func (a *App) selectContext() error {
@@ -337,17 +334,17 @@ func (a *App) selectNamespace() error {
 	return nil
 }
 
-func (a *App) showCurrent(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+func (a *App) showCurrent(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	a.currentConfig()
 	if a.conf == nil {
-		return 0
+		return nil
 	}
 	kContext := a.conf.CurrentContext
 	kNamespace := cmp.Or(a.conf.Contexts[a.conf.CurrentContext].Namespace, "default")
 	fmt.Fprintf(stdout, "kswitch context --context %s --namespace %s\n", kContext, kNamespace)
 	fmt.Fprintf(stdout, "CONTEXT %s :: %s\n", kContext, kNamespace)
 
-	return 0
+	return nil
 }
 
 func (a *App) currentConfig() {
@@ -375,17 +372,17 @@ func (a *App) currentConfig() {
 	a.confPath = confPath
 }
 
-func (a *App) printCache(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+func (a *App) printCache(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	cacheDir, err := os.UserCacheDir()
 	if err != nil {
 		cacheDir = os.TempDir()
 	}
 	cacheFile := filepath.Join(cacheDir, "kswitch-ns-cache.json")
 	fmt.Fprintln(stdout, cacheFile)
-	return 0
+	return nil
 }
 
-func (a *App) clearCache(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+func (a *App) clearCache(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	cacheDir, err := os.UserCacheDir()
 	if err != nil {
 		cacheDir = os.TempDir()
@@ -393,11 +390,10 @@ func (a *App) clearCache(ctx context.Context, stdin io.Reader, stdout, stderr io
 	cacheFile := filepath.Join(cacheDir, "kswitch-ns-cache.json")
 	err = os.Remove(cacheFile)
 	if err != nil {
-		fmt.Fprintln(stderr, "remove cache file", cacheFile, err)
-		return 1
+		return fmt.Errorf("remove cache file %s: %w", cacheFile, err)
 	}
 	fmt.Fprintln(stdout, "removed", cacheFile)
-	return 0
+	return nil
 }
 
 func mergeConfig(all, conf *clientcmdapi.Config) {
@@ -411,7 +407,7 @@ func mergeConfig(all, conf *clientcmdapi.Config) {
 //go:embed wrapper.zsh
 var wrapper []byte
 
-func (a *App) printWrapper(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+func (a *App) printWrapper(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	stdout.Write(wrapper)
-	return 0
+	return nil
 }

@@ -42,7 +42,7 @@ func (c *CommandBasic[C]) RegisterFlags(fset *flag.FlagSet) error {
 	return nil
 }
 func (c *CommandBasic[C]) SubCommands() []Commander { return nil }
-func (c *CommandBasic[C]) RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+func (c *CommandBasic[C]) RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	return c.Do(&c.conf)(ctx, stdin, stdout, stderr, fsys)
 }
 

@@ -67,7 +67,7 @@ type app struct {
 	exclude         map[string]struct{}
 }
 
-func (a *app) run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+func (a *app) run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	lg := slog.New(slog.NewTextHandler(stderr, nil))
 
 	client := http.Client{
@@ -98,8 +98,7 @@ func (a *app) run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer
 
 		r, err := client.Get(u.String())
 		if err != nil {
-			fmt.Fprintf(stderr, "get mirrorlist from remote: %v\n", err)
-			return 1
+			return fmt.Errorf("get mirrorlist from remote: %w", err)
 		}
 		defer r.Body.Close()
 		rawMirrorlist = r.Body
@@ -107,8 +106,7 @@ func (a *app) run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer
 		var err error
 		rawMirrorlist, err = os.Open(a.file)
 		if err != nil {
-			fmt.Fprintf(stderr, "read local mirrorlist: %v\n", err)
-			return 1
+			return fmt.Errorf("read local mirrorlist: %w", err)
 		}
 	}
 
@@ -190,9 +188,8 @@ loop:
 	}
 	err := os.WriteFile(a.save, b.Bytes(), 0o644)
 	if err != nil {
-		fmt.Fprintf(stderr, "write result: %v\n", err)
-		return 1
+		return fmt.Errorf("write result: %w", err)
 	}
 	fmt.Fprintln(stdout, b.String())
-	return 0
+	return nil
 }

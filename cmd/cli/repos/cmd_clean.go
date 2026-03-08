@@ -18,15 +18,14 @@ func cmdClean() run.Commander {
 	return run.CommandRun(
 		"clean",
 		"clean up temporary repositories",
-		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) int {
+		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 			tmpDir, repos, err := tmpRepos()
 			if err != nil {
-				fmt.Fprintf(stderr, "repos clean: %v\n", err)
-				return 1
+				return fmt.Errorf("repos clean: %w", err)
 			}
 			if len(repos) == 0 {
 				fmt.Fprintln(stdout, "repos clean: no repos to remove")
-				return 0
+				return nil
 			}
 
 			spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond, spinner.WithWriter(stdout))
@@ -60,7 +59,7 @@ func cmdClean() run.Commander {
 				}
 				w.Flush()
 			}
-			return 0
+			return nil
 		},
 	)
 }
