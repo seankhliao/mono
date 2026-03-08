@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"io"
 	"io/fs"
 	"log/slog"
@@ -40,9 +41,7 @@ func (s *ServeConfig) Flags(fset *flag.FlagSet) error {
 }
 
 func (s *ServeConfig) Do() run.Runner {
-	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-		return s.Run(ctx, stdin, stdout, stderr, fsys)
-	}
+	return s.Run
 }
 
 func (s *ServeConfig) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
@@ -50,9 +49,11 @@ func (s *ServeConfig) Run(ctx context.Context, stdin io.Reader, stdout, stderr i
 		Level: &s.LogLevel,
 	})
 	register := func(mux *http.ServeMux) {
-		registerDebug(mux)
+		mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
+			fmt.Fprintln(w, "hello world")
+		})
 	}
-	runner := s.h.Runner(logHandler, register)
 
+	runner := s.h.Runner(logHandler, register)
 	return runner(ctx, stdin, stdout, stderr, fsys)
 }

@@ -73,9 +73,8 @@ func (h *HTTP) Runner(logHandler slog.Handler, register func(*http.ServeMux)) ru
 
 		mux := http.NewServeMux()
 
-		mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
-			fmt.Fprintln(w, "hello world")
-		})
+		registerDebug(mux)
+		register(mux)
 
 		var handler http.Handler
 		handler = mux
