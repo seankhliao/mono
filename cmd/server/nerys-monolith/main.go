@@ -333,10 +333,7 @@ func hostPolicy(ctx context.Context, host string) error {
 		return fmt.Errorf("not a public address: %s", host)
 	}
 	h, _ = strings.CutSuffix(h, ".nerys")
-	if h == "" {
-		return nil
-	}
-	if !strings.Contains(h, ".") {
+	if strings.Contains(h, ".") {
 		return fmt.Errorf("not an allowed subdomain: %s", host)
 	}
 	return nil
