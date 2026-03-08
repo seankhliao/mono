@@ -154,18 +154,8 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 				HTTPClient:   client,
 				DirectoryURL: s.TLSACMEServerURL,
 			},
-			Email: s.TLSACMEEmail,
-			HostPolicy: func(ctx context.Context, host string) error {
-				host, ok := strings.CutSuffix(host, ".liao.dev")
-				if !ok {
-					return fmt.Errorf("not public")
-				}
-				host, _ = strings.CutSuffix(host, ".nerys")
-				if !strings.Contains(host, ".") {
-					return fmt.Errorf("not an allowed subdomain")
-				}
-				return nil
-			},
+			Email:      s.TLSACMEEmail,
+			HostPolicy: hostPolicy,
 		}
 		if s.TLSACMEEABKID != "" && len(s.TLSACMEEABKey) > 0 {
 			key, err := base64.StdEncoding.DecodeString(s.TLSACMEEABKey)
@@ -335,4 +325,19 @@ func buildInfo(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintln(rw, bi)
+}
+
+func hostPolicy(ctx context.Context, host string) error {
+	h, ok := strings.CutSuffix(host, ".liao.dev")
+	if !ok {
+		return fmt.Errorf("not a public address: %s", host)
+	}
+	h, _ = strings.CutSuffix(h, ".nerys")
+	if h == "" {
+		return nil
+	}
+	if !strings.Contains(h, ".") {
+		return fmt.Errorf("not an allowed subdomain: %s", host)
+	}
+	return nil
 }
