@@ -241,11 +241,17 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 
 	// wait for termination
 	log.LogAttrs(ctx, slog.LevelDebug, "waiting for shutdown signal")
-	sig := <-sigc
-	log.LogAttrs(ctx, slog.LevelInfo, "starting graceful shutdown",
-		slog.String("signal", sig.String()),
-		slog.Duration("grace_period", s.HTTPShutdownGrace),
-	)
+	select {
+	case <-ctx.Done():
+		log.LogAttrs(ctx, slog.LevelWarn, "graceful shutdown triggered by cancel",
+			slog.Any("err", context.Cause(ctx)),
+		)
+	case sig := <-sigc:
+		log.LogAttrs(ctx, slog.LevelInfo, "starting graceful shutdown",
+			slog.String("signal", sig.String()),
+			slog.Duration("grace_period", s.HTTPShutdownGrace),
+		)
+	}
 
 	// start graceful shutdown
 	graceShutdownDone := make(chan struct{}, 1)
@@ -267,7 +273,7 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 	case <-graceShutdownDone:
 		log.LogAttrs(ctx, slog.LevelInfo, "graceful shutdown complete")
 
-	case sig = <-sigc:
+	case sig := <-sigc:
 		// force a shutdown
 		signal.Stop(sigc)
 		log.LogAttrs(ctx, slog.LevelWarn, "got second signal, forcing shutdown",
