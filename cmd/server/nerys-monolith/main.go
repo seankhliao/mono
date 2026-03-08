@@ -362,6 +362,9 @@ func listenFlag(addrFlag *[]string) func(string) error {
 					return fmt.Errorf("parse address %s: %w", addr.String(), err)
 				}
 				ip := prefix.Addr()
+				if ip.IsLinkLocalUnicast() {
+					continue
+				}
 				isPrivate := ip.IsLoopback() || tsPrivate4.Contains(ip) || tsPrivate6.Contains(ip)
 				if (host == "private" && isPrivate) || (host == "public" && !isPrivate) {
 					*addrFlag = append(*addrFlag, net.JoinHostPort(ip.String(), port))
