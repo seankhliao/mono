@@ -357,10 +357,11 @@ func listenFlag(addrFlag *[]string) func(string) error {
 				return fmt.Errorf("list addresses for interface %s: %w", iface.Name, err)
 			}
 			for _, addr := range addrs {
-				ip, err := netip.ParseAddr(addr.String())
+				prefix, err := netip.ParsePrefix(addr.String())
 				if err != nil {
 					return fmt.Errorf("parse address %s: %w", addr.String(), err)
 				}
+				ip := prefix.Addr()
 				isPrivate := ip.IsLoopback() || tsPrivate4.Contains(ip) || tsPrivate6.Contains(ip)
 				if (host == "private" && isPrivate) || (host == "public" && !isPrivate) {
 					*addrFlag = append(*addrFlag, net.JoinHostPort(ip.String(), port))
