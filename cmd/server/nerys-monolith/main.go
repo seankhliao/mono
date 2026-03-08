@@ -47,7 +47,7 @@ type ServeConfig struct {
 	LogLevel slog.LevelVar
 
 	TLSACME          bool
-	TLSACMEDirectory string
+	TLSACMEServerURL string
 	TLSACMEDir       string
 	TLSACMEEABKey    string
 	TLSACMEEABKID    string
@@ -63,7 +63,7 @@ func (s *ServeConfig) Flags(fset *flag.FlagSet) error {
 
 	fset.BoolVar(&s.TLSACME, "tls.acme", false, "enable TLS ACME autocert")
 	fset.StringVar(&s.TLSACMEDir, "tls.acme.dir", "acme-tls", "path to directory to cache TLS certs")
-	fset.StringVar(&s.TLSACMEDir, "tls.acme.url", "", "TLS ACME directory (server url)")
+	fset.StringVar(&s.TLSACMEServerURL, "tls.acme.url", "", "TLS ACME directory (server url)")
 	fset.StringVar(&s.TLSACMEEmail, "tls.acme.email", "acme+nerys-monolith@liao.dev", "email to use for TLS ACME")
 	fset.StringVar(&s.TLSACMEEABKID, "tls.acme.eab.kid", "", "TLS ACME EAB Key ID")
 	fset.StringVar(&s.TLSACMEEABKey, "tls.acme.eab.key", "", "TLS ACME EAB Key (base64 encoded)")
@@ -147,16 +147,20 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 
 	if s.TLSACME {
 		log.LogAttrs(ctx, slog.LevelDebug, "enabling TLS with ACME",
-			slog.String("acme_directory", s.TLSACMEDirectory),
+			slog.String("acme_server_url", s.TLSACMEServerURL),
+			slog.String("acme_cache", s.TLSACMEDir),
 			slog.String("acme_email", s.TLSACMEEmail),
 			slog.String("acme_eab_kid", s.TLSACMEEABKID),
 		)
+		if s.TLSACMEDir == "" || s.TLSACMEServerURL == "" {
+			return fmt.Errorf("missing config for tls acme")
+		}
 		acmeMgr := autocert.Manager{
 			Prompt: autocert.AcceptTOS,
 			Cache:  autocert.DirCache(s.TLSACMEDir),
 			Client: &acme.Client{
 				HTTPClient:   client,
-				DirectoryURL: s.TLSACMEDirectory,
+				DirectoryURL: s.TLSACMEServerURL,
 			},
 			Email: s.TLSACMEEmail,
 		}
