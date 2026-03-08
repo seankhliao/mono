@@ -11,7 +11,6 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
-	"net/http/httputil"
 	"net/http/pprof"
 	"net/netip"
 	"os"
@@ -19,6 +18,7 @@ import (
 	"path/filepath"
 	"runtime/debug"
 	"strconv"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -52,6 +52,7 @@ type ServeConfig struct {
 	TLSACMEEABKey    string
 	TLSACMEEABKID    string
 	TLSACMEEmail     string
+	TLSACMEAllow     []string
 
 	HTTPTLS           int
 	HTTPPlain         int
@@ -114,22 +115,13 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 	mux.Handle("GET /debug/pprof/profile", privateOnly()(http.HandlerFunc(pprof.Profile)))
 	mux.Handle("GET /debug/pprof/symbol", privateOnly()(http.HandlerFunc(pprof.Symbol)))
 	mux.Handle("GET /debug/pprof/trace", privateOnly()(http.HandlerFunc(pprof.Trace)))
+	mux.Handle("DELETE /admin/tls-acme-reset", privateOnly()(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		os.Remove(filepath.Join("/var/lib/nerys-monolith", "fs-check"))
+		os.RemoveAll(s.TLSACMEDir)
+	})))
 
 	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "hello world")
-	})
-
-	mux.HandleFunc("GET /test-fs", func(w http.ResponseWriter, r *http.Request) {
-		name := filepath.Join("/var/lib/nerys-monolith", "fs-check")
-		b, _ := httputil.DumpRequest(r, false)
-		os.WriteFile(name, b, 0o644)
-		f, err := os.Open(name)
-		if err != nil {
-			fmt.Fprintln(w, err)
-			return
-		}
-		defer f.Close()
-		io.Copy(w, f)
 	})
 
 	var h http.Handler
@@ -163,6 +155,17 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 				DirectoryURL: s.TLSACMEServerURL,
 			},
 			Email: s.TLSACMEEmail,
+			HostPolicy: func(ctx context.Context, host string) error {
+				host, ok := strings.CutSuffix(host, ".liao.dev")
+				if !ok {
+					return fmt.Errorf("not public")
+				}
+				host, _ = strings.CutSuffix(host, ".nerys")
+				if !strings.Contains(host, ".") {
+					return fmt.Errorf("not an allowed subdomain")
+				}
+				return nil
+			},
 		}
 		if s.TLSACMEEABKID != "" && len(s.TLSACMEEABKey) > 0 {
 			key, err := base64.StdEncoding.DecodeString(s.TLSACMEEABKey)

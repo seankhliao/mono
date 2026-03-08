@@ -17,7 +17,7 @@ ExecStart=/usr/local/bin/nerys-monolith serve \
     -http.tls 443 \
     -tls.acme \
     -tls.acme.dir /var/lib/nerys-monolith/tls-acme \
-    -tls.acme.url https://acme-staging-v02.api.letsencrypt.org/directory
+    -tls.acme.url https://acme-v02.api.letsencrypt.org/directory
 
 [Install]
 WantedBy=multi-user.target
