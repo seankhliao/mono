@@ -7,6 +7,11 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
+User=nery-monolith
+DynamicUser=true
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+Nice=5
+StateDirectory=nerys-monolith
 ExecStart=/usr/local/bin/nerys-monolith serve -http.tls -1 -http.plain 80
 
 [Install]

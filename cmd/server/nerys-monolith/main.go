@@ -11,10 +11,12 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
+	"net/http/httputil"
 	"net/http/pprof"
 	"net/netip"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"runtime/debug"
 	"strconv"
 	"sync"
@@ -115,6 +117,19 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 
 	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "hello world")
+	})
+
+	mux.HandleFunc("GET /test-fs", func(w http.ResponseWriter, r *http.Request) {
+		name := filepath.Join("/var/lib/nerys-monolith", "fs-check")
+		b, _ := httputil.DumpRequest(r, false)
+		os.WriteFile(name, b, 0o644)
+		f, err := os.Open(name)
+		if err != nil {
+			fmt.Fprintln(w, err)
+			return
+		}
+		defer f.Close()
+		io.Copy(w, f)
 	})
 
 	var h http.Handler
