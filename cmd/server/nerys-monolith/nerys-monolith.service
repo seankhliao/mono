@@ -12,7 +12,12 @@ DynamicUser=true
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 Nice=5
 StateDirectory=nerys-monolith
-ExecStart=/usr/local/bin/nerys-monolith serve -http.tls -1 -http.plain 80
+ExecStart=/usr/local/bin/nerys-monolith serve \
+    -http.plain 80 \
+    -http.tls 443 \
+    -tls.acme \
+    -tls.acme.dir /var/lib/nerys-monolith/tls-acme \
+    -tls.acme.url https://acme-staging-v02.api.letsencrypt.org/directory
 
 [Install]
 WantedBy=multi-user.target
