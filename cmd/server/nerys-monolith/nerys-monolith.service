@@ -13,8 +13,8 @@ AmbientCapabilities=CAP_NET_BIND_SERVICE
 Nice=5
 StateDirectory=nerys-monolith
 ExecStart=/usr/local/bin/nerys-monolith serve \
-    -http.plain 80 \
-    -http.tls 443 \
+    -http.plain private:80 \
+    -http.tls public:443 \
     -tls.acme \
     -tls.acme.dir /var/lib/nerys-monolith/tls-acme \
     -tls.acme.url https://acme-v02.api.letsencrypt.org/directory

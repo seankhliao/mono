@@ -17,7 +17,6 @@ import (
 	"os/signal"
 	"path/filepath"
 	"runtime/debug"
-	"strconv"
 	"strings"
 	"sync"
 	"syscall"
@@ -54,8 +53,8 @@ type ServeConfig struct {
 	TLSACMEEmail     string
 	TLSACMEAllow     []string
 
-	HTTPTLS           int
-	HTTPPlain         int
+	HTTPTLS           []string
+	HTTPPlain         []string
 	HTTPShutdownGrace time.Duration
 }
 
@@ -69,8 +68,8 @@ func (s *ServeConfig) Flags(fset *flag.FlagSet) error {
 	fset.StringVar(&s.TLSACMEEABKID, "tls.acme.eab.kid", "", "TLS ACME EAB Key ID")
 	fset.StringVar(&s.TLSACMEEABKey, "tls.acme.eab.key", "", "TLS ACME EAB Key (base64 encoded)")
 
-	fset.IntVar(&s.HTTPTLS, "http.tls", 443, "port to serve HTTP over TLS, -1 to disable")
-	fset.IntVar(&s.HTTPPlain, "http.plain", -1, "port to serve HTTP over plaintext, -1 to disable")
+	fset.Func("http.plain", "repeatable host:port addresses to listen on. host may be 'private' or 'public'", listenFlag(&s.HTTPPlain))
+	fset.Func("http.tls", "repeatable host:port addresses to listen on. host may be 'private' or 'public'", listenFlag(&s.HTTPTLS))
 	fset.DurationVar(&s.HTTPShutdownGrace, "http.shutdown.grace", 30*time.Second, "HTTP server graceful shutdown wait")
 	return nil
 }
@@ -167,7 +166,7 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 			}
 			acmeMgr.ExternalAccountBinding = &acme.ExternalAccountBinding{
 				KID: s.TLSACMEEABKID,
-				Key: key,
+				Key: key, // TODO: confirm if this actually needs to be base64 decoded
 			}
 		}
 		svr.TLSConfig = acmeMgr.TLSConfig()
@@ -175,11 +174,10 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 	}
 
 	var wg sync.WaitGroup
-	if s.HTTPTLS >= 0 {
+	for _, addr := range s.HTTPTLS {
 		wg.Go(func() {
 			defer cancel(errors.New("serveTLS returned"))
 
-			addr := net.JoinHostPort("", strconv.Itoa(s.HTTPTLS))
 			lis, err := net.Listen("tcp", addr)
 			if err != nil {
 				log.LogAttrs(ctx, slog.LevelError, "listen tcp for ServeTLS",
@@ -208,11 +206,10 @@ func (s *ServeConfig) Run(ctx context.Context, _ io.Reader, _, stderr io.Writer,
 			}
 		})
 	}
-	if s.HTTPPlain >= 0 {
+	for _, addr := range s.HTTPPlain {
 		wg.Go(func() {
 			defer cancel(errors.New("serve returned"))
 
-			addr := net.JoinHostPort("", strconv.Itoa(s.HTTPPlain))
 			lis, err := net.Listen("tcp", addr)
 			if err != nil {
 				log.LogAttrs(ctx, slog.LevelError, "listen tcp for Serve",
@@ -337,4 +334,39 @@ func hostPolicy(ctx context.Context, host string) error {
 		return fmt.Errorf("not an allowed subdomain: %s", host)
 	}
 	return nil
+}
+
+func listenFlag(addrFlag *[]string) func(string) error {
+	return func(s string) error {
+		host, port, err := net.SplitHostPort(s)
+		if err != nil {
+			return fmt.Errorf("not host:port %s: %w", s, err)
+		}
+
+		if host != "private" && host != "public" {
+			*addrFlag = append(*addrFlag, s)
+			return nil
+		}
+		ifaces, err := net.Interfaces()
+		if err != nil {
+			return fmt.Errorf("list interfaces: %w", err)
+		}
+		for _, iface := range ifaces {
+			addrs, err := iface.Addrs()
+			if err != nil {
+				return fmt.Errorf("list addresses for interface %s: %w", iface.Name, err)
+			}
+			for _, addr := range addrs {
+				ip, err := netip.ParseAddr(addr.String())
+				if err != nil {
+					return fmt.Errorf("parse address %s: %w", addr.String(), err)
+				}
+				isPrivate := ip.IsLoopback() || tsPrivate4.Contains(ip) || tsPrivate6.Contains(ip)
+				if (host == "private" && isPrivate) || (host == "public" && !isPrivate) {
+					*addrFlag = append(*addrFlag, net.JoinHostPort(ip.String(), port))
+				}
+			}
+		}
+		return nil
+	}
 }
