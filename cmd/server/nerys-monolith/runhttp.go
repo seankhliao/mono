@@ -19,6 +19,7 @@ import (
 	"syscall"
 	"time"
 
+	"go.seankhliao.com/mono/run"
 	"golang.org/x/crypto/acme"
 	"golang.org/x/crypto/acme/autocert"
 )
@@ -50,7 +51,7 @@ func (h *HTTP) Flags(fset *flag.FlagSet) {
 	fset.DurationVar(&h.HTTPShutdownGrace, "http.shutdown.grace", 30*time.Second, "HTTP server graceful shutdown wait")
 }
 
-func (h *HTTP) Runner(logHandler slog.Handler, register func(*http.ServeMux)) func(ctx context.Context, _ io.Reader, _, stderr io.Writer, _ fs.FS) error {
+func (h *HTTP) Runner(logHandler slog.Handler, register func(*http.ServeMux)) run.Runner {
 	return func(ctx context.Context, _ io.Reader, _, stderr io.Writer, _ fs.FS) error {
 		sigc := make(chan os.Signal, 1)
 		signal.Notify(sigc, syscall.SIGINT, syscall.SIGTERM)
