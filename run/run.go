@@ -35,7 +35,7 @@ type Runner func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer,
 //		cmdline.OSExec(c)
 //	}
 func OSExec(c Commander) {
-	os.Exit(Exec(c, os.Args, os.Stdin, os.Stderr, os.Stdout, os.DirFS("/")))
+	os.Exit(Exec(c, os.Args, os.Stdin, os.Stdout, os.Stderr, os.DirFS("/")))
 }
 
 // Exec runs the given command, allowing injection of most OS parameters.
