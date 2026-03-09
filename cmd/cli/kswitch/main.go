@@ -324,6 +324,7 @@ func (a *App) selectNamespace() error {
 		}
 	}
 
+	a.conf.Contexts[a.conf.CurrentContext].Namespace = a.namespace
 	if !strings.Contains(a.confPath, tmpPrefix) {
 		a.confPath = filepath.Join(os.TempDir(), tmpPrefix+rand.Text())
 	}
