@@ -14,19 +14,29 @@ import (
 	"testing"
 )
 
-func TestCommandBasic(t *testing.T) {
+type testSimpler struct {
+	flags func(*flag.FlagSet) error
+	run   Runner
+}
+
+func (s *testSimpler) Flags(fset *flag.FlagSet) error {
+	if s.flags != nil {
+		return s.flags(fset)
+	}
+	return nil
+}
+
+func (s *testSimpler) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return s.run(ctx, stdin, stdout, stderr, fsys)
+}
+
+func TestSimpleFunc(t *testing.T) {
 	tcs := []testCommandCase{
 		{
-			&CommandBasic[struct{}]{
-				Name: "basic",
-				Desc: "a description",
-				Do: func(c *struct{}) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
-						fmt.Fprintln(out, "hello world")
-						return nil
-					}
-				},
-			},
+			Func("basic", "a description", func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
+				fmt.Fprintln(out, "hello world")
+				return nil
+			}),
 			[]string{"basic"},
 			[]string{
 				"hello world",
@@ -34,16 +44,10 @@ func TestCommandBasic(t *testing.T) {
 			nil,
 			0,
 		}, {
-			&CommandBasic[struct{}]{
-				Name: "help-text",
-				Desc: "a description",
-				Do: func(c *struct{}) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
-						fmt.Fprintln(out, "hello world")
-						return nil
-					}
-				},
-			},
+			Func("help-text", "a description", func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
+				fmt.Fprintln(out, "hello world")
+				return nil
+			}),
 			[]string{"basic", "-help"},
 			[]string{
 				"Usage: help-text",
@@ -51,16 +55,10 @@ func TestCommandBasic(t *testing.T) {
 			nil,
 			0,
 		}, {
-			&CommandBasic[struct{}]{
-				Name: "unknown-flag",
-				Desc: "a description",
-				Do: func(c *struct{}) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
-						fmt.Fprintln(out, "hello world")
-						return nil
-					}
-				},
-			},
+			Func("unknown-flag", "a description", func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
+				fmt.Fprintln(out, "hello world")
+				return nil
+			}),
 			[]string{"basic", "-x"},
 			nil,
 			[]string{
@@ -68,16 +66,10 @@ func TestCommandBasic(t *testing.T) {
 			},
 			1,
 		}, {
-			&CommandBasic[struct{}]{
-				Name: "unknown-arg",
-				Desc: "a description",
-				Do: func(c *struct{}) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
-						fmt.Fprintln(out, "hello world")
-						return nil
-					}
-				},
-			},
+			Func("unknown-arg", "a description", func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
+				fmt.Fprintln(out, "hello world")
+				return nil
+			}),
 			[]string{"basic", "x"},
 			nil,
 			[]string{
@@ -85,22 +77,20 @@ func TestCommandBasic(t *testing.T) {
 			},
 			1,
 		}, {
-			&CommandBasic[struct {
-				F string
-			}]{
-				Name: "set-flag",
-				Desc: "a description",
-				Flags: func(c *struct{ F string }, fset *flag.FlagSet) error {
-					fset.StringVar(&c.F, "a-flag", "default-value", "a boolean flag")
-					return nil
-				},
-				Do: func(c *struct{ F string }) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
+			func() Commander {
+				type conf struct{ F string }
+				c := &conf{}
+				return Simple("set-flag", "a description", &testSimpler{
+					flags: func(fset *flag.FlagSet) error {
+						fset.StringVar(&c.F, "a-flag", "default-value", "a boolean flag")
+						return nil
+					},
+					run: func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, c.F)
 						return nil
-					}
-				},
-			},
+					},
+				})
+			}(),
 			[]string{"basic", "-a-flag=some-value"},
 			[]string{
 				"some-value",
@@ -108,22 +98,20 @@ func TestCommandBasic(t *testing.T) {
 			nil,
 			0,
 		}, {
-			&CommandBasic[struct {
-				F string
-			}]{
-				Name: "debug-flag",
-				Desc: "a description",
-				Flags: func(c *struct{ F string }, fset *flag.FlagSet) error {
-					fset.StringVar(&c.F, "a-flag", "default-value", "a boolean flag")
-					return nil
-				},
-				Do: func(c *struct{ F string }) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
+			func() Commander {
+				type conf struct{ F string }
+				c := &conf{}
+				return Simple("debug-flag", "a description", &testSimpler{
+					flags: func(fset *flag.FlagSet) error {
+						fset.StringVar(&c.F, "a-flag", "default-value", "a boolean flag")
+						return nil
+					},
+					run: func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, c.F)
 						return nil
-					}
-				},
-			},
+					},
+				})
+			}(),
 			[]string{"basic", "-flag-debug"},
 			[]string{
 				"-a-flag=default-value",
@@ -131,29 +119,27 @@ func TestCommandBasic(t *testing.T) {
 			nil,
 			0,
 		}, {
-			&CommandBasic[struct {
-				V [5]string
-			}]{
-				Name: "flag-file-1",
-				Desc: "read flags from files",
-				Flags: func(c *struct{ V [5]string }, fset *flag.FlagSet) error {
-					fset.StringVar(&c.V[0], "foo", "default", "help")
-					fset.StringVar(&c.V[1], "bar", "default", "help")
-					fset.StringVar(&c.V[2], "qux", "default", "help")
-					fset.StringVar(&c.V[3], "fizz", "default", "help")
-					fset.StringVar(&c.V[4], "buzz", "default", "help")
-					return nil
-				},
-				Do: func(c *struct{ V [5]string }) Runner {
-					return func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
+			func() Commander {
+				type conf struct{ V [5]string }
+				c := &conf{}
+				return Simple("flag-file-1", "read flags from files", &testSimpler{
+					flags: func(fset *flag.FlagSet) error {
+						fset.StringVar(&c.V[0], "foo", "default", "help")
+						fset.StringVar(&c.V[1], "bar", "default", "help")
+						fset.StringVar(&c.V[2], "qux", "default", "help")
+						fset.StringVar(&c.V[3], "fizz", "default", "help")
+						fset.StringVar(&c.V[4], "buzz", "default", "help")
+						return nil
+					},
+					run: func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 						fmt.Fprintln(out, c.V)
 						if !slices.Equal(c.V[:], []string{"lorem", "ipsum", "dolor", "sit amet", "consectetur adipiscing"}) {
 							return fmt.Errorf("wrong output")
 						}
 						return nil
-					}
-				},
-			},
+					},
+				})
+			}(),
 			[]string{"x", "-flag-file", "testdata/basic/flag-file-1/flags.txt"},
 			[]string{
 				"lorem ipsum dolor sit amet consectetur adipiscing",
@@ -161,7 +147,7 @@ func TestCommandBasic(t *testing.T) {
 			nil,
 			0,
 		}, {
-			CommandRun("run", "some dec", func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+			Func("run", "some dec", func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 				fmt.Fprintln(stdout, "hello world")
 				return nil
 			}),

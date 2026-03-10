@@ -1,14 +1,9 @@
-package main
+package run
 
 import (
 	"net"
 	"net/http"
 	"net/netip"
-)
-
-var (
-	tsPrivate4 = netip.MustParsePrefix("100.64.0.0/10")
-	tsPrivate6 = netip.MustParsePrefix("fd7a:115c:a1e0::/48")
 )
 
 func privateOnly(h http.Handler) http.Handler {

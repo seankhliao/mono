@@ -20,17 +20,15 @@ import (
 )
 
 func main() {
-	run.OSExec(&run.CommandGroup{
-		Name: "fin",
-		Desc: "fin is a custom tool to track expenses",
-		Subs: []run.Commander{
-			ViewCommand(),
-			PushCommand(),
-			PullCommand(),
-			ConvertCommand(),
-			TradingCommand(),
-		},
-	})
+	run.OSExec(run.Group(
+		"fin",
+		"custom tool for expense tracking",
+		run.Simple("view", "view processed results", &View{}),
+		run.Simple("push", "upload local data to remote storage", &Push{}),
+		run.Simple("pull", "download remote data from remote storage", &Pull{}),
+		ConvertCommand(),
+		TradingCommand(),
+	))
 }
 
 func runWrap(f func(stdout, stderr io.Writer) error) run.Runner {
@@ -46,28 +44,27 @@ type Convert struct {
 
 func ConvertCommand() run.Commander {
 	c := &Convert{}
-	return &run.CommandGroup{
-		Name: "convert",
-		Desc: "convert card statements to fin data",
-		Flags: func(fs *flag.FlagSet) error {
-			c.register(fs)
-			return nil
-		},
-		Subs: []run.Commander{
-			run.CommandRun("amex", "convert amex statements", runWrap(c.amex)),
-			run.CommandRun("chase", "convert chase statements", runWrap(c.chase)),
-			run.CommandRun("hsbc", "convert hsbc statements", runWrap(c.hsbc)),
-			run.CommandRun("trading", "convert trading212 statements", runWrap(c.trading)),
-			run.CommandRun("chasetxt", "convert copied chase pdf statements", runWrap(c.chasetxt)),
-			run.CommandRun("chasesave", "convert chase saver statements", runWrap(c.chasesave)),
-			run.CommandRun("virgin", "convert virgin credit card transactions", runWrap(c.virgin)),
-		},
-	}
+	return run.Group(
+		"convert",
+		"convert card statements to fin data",
+		run.Func("amex", "convert amex statements", runWrap(c.amex)),
+		run.Func("chase", "convert chase statements", runWrap(c.chase)),
+		run.Func("hsbc", "convert hsbc statements", runWrap(c.hsbc)),
+		run.Func("trading", "convert trading212 statements", runWrap(c.trading)),
+		run.Func("chasetxt", "convert copied chase pdf statements", runWrap(c.chasetxt)),
+		run.Func("chasesave", "convert chase saver statements", runWrap(c.chasesave)),
+		run.Func("virgin", "convert virgin credit card transactions", runWrap(c.virgin)),
+	)
 }
 
 func (c *Convert) register(fs *flag.FlagSet) {
 	fs.StringVar(&c.filepath, "file", "", "path to statement file")
 	fs.StringVar(&c.hsbcCard, "hsbc", "debit", "hsbc account debit or credit")
+}
+
+func (c *Convert) Flags(fset *flag.FlagSet) error {
+	c.register(fset)
+	return nil
 }
 
 func (c *Convert) reader() ([][]string, error) {
@@ -95,21 +92,12 @@ type View struct {
 	configPath string
 }
 
-func ViewCommand() run.Commander {
-	return &run.CommandBasic[View]{
-		Name: "view",
-		Desc: "view summarizes the data into different views, printed to the console.",
-		Flags: func(v *View, fs *flag.FlagSet) error {
-			fs.StringVar(&v.configPath, "config", "gbp.fin.cue", "path to config file")
-			return nil
-		},
-		Do: func(v *View) run.Runner {
-			return runWrap(v.viewAll)
-		},
-	}
+func (v *View) Flags(fset *flag.FlagSet) error {
+	fset.StringVar(&v.configPath, "config", "gbp.fin.cue", "path to config file")
+	return nil
 }
 
-func (v *View) viewAll(stdout, stderr io.Writer) error {
+func (v *View) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	cur, err := DecodeFile(v.configPath)
 	if err != nil {
 		return fmt.Errorf("decode data: %w", err)
@@ -120,29 +108,23 @@ func (v *View) viewAll(stdout, stderr io.Writer) error {
 	return nil
 }
 
-func PushCommand() run.Commander {
-	type Config struct {
-		bucketName string
-		localGlob  string
+type Push struct {
+	bucketName string
+	localGlob  string
+}
+
+func (p *Push) Flags(fset *flag.FlagSet) error {
+	fset.StringVar(&p.bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
+	fset.StringVar(&p.localGlob, "glob", "*.fin.cue", "a glob pattern patching local files")
+	return nil
+}
+
+func (p *Push) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	err := runPush(stdout, p.bucketName, p.localGlob)
+	if err != nil {
+		return fmt.Errorf("push: %w", err)
 	}
-	return &run.CommandBasic[Config]{
-		Name: "push",
-		Desc: "upload local data to a storage bucket",
-		Flags: func(c *Config, fs *flag.FlagSet) error {
-			fs.StringVar(&c.bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
-			fs.StringVar(&c.localGlob, "glob", "*.fin.cue", "a glob pattern patching local files")
-			return nil
-		},
-		Do: func(c *Config) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-				err := runPush(stdout, c.bucketName, c.localGlob)
-				if err != nil {
-					return fmt.Errorf("push: %w", err)
-				}
-				return nil
-			}
-		},
-	}
+	return nil
 }
 
 func runPush(stdout io.Writer, bucketName, localGlob string) error {
@@ -186,27 +168,21 @@ func runPush(stdout io.Writer, bucketName, localGlob string) error {
 	return nil
 }
 
-func PullCommand() run.Commander {
-	type Config struct {
-		bucketName string
+type Pull struct {
+	bucketName string
+}
+
+func (p *Pull) Flags(fset *flag.FlagSet) error {
+	fset.StringVar(&p.bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
+	return nil
+}
+
+func (p *Pull) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	err := runPull(stdout, p.bucketName)
+	if err != nil {
+		return fmt.Errorf("pull: %w", err)
 	}
-	return &run.CommandBasic[Config]{
-		Name: "pull",
-		Desc: "download remote data from a storage bucket",
-		Flags: func(c *Config, fs *flag.FlagSet) error {
-			fs.StringVar(&c.bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
-			return nil
-		},
-		Do: func(c *Config) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-				err := runPull(stdout, c.bucketName)
-				if err != nil {
-					return fmt.Errorf("pull: %w", err)
-				}
-				return nil
-			}
-		},
-	}
+	return nil
 }
 
 func runPull(stdout io.Writer, bucketName string) error {

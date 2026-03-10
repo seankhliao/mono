@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"io"
 	"io/fs"
@@ -11,55 +12,52 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
-	"go.seankhliao.com/mono/run"
 )
 
-func cmdClean() run.Commander {
-	return run.CommandRun(
-		"clean",
-		"clean up temporary repositories",
-		func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-			tmpDir, repos, err := tmpRepos()
-			if err != nil {
-				return fmt.Errorf("repos clean: %w", err)
-			}
-			if len(repos) == 0 {
-				fmt.Fprintln(stdout, "repos clean: no repos to remove")
-				return nil
-			}
+type cleanCmd struct{}
 
-			spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond, spinner.WithWriter(stdout))
-			spin.Start()
+func (c *cleanCmd) Flags(fset *flag.FlagSet) error { return nil }
 
-			type repoError struct {
-				name string
-				err  error
-			}
+func (c *cleanCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	tmpDir, repos, err := tmpRepos()
+	if err != nil {
+		return fmt.Errorf("repos clean: %w", err)
+	}
+	if len(repos) == 0 {
+		fmt.Fprintln(stdout, "repos clean: no repos to remove")
+		return nil
+	}
 
-			var errs []repoError
+	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond, spinner.WithWriter(stdout))
+	spin.Start()
 
-			for _, r := range repos {
-				spin.Suffix = fmt.Sprintf("Removing %s", r.Name())
-				repoPath := filepath.Join(tmpDir, r.Name())
-				err := os.RemoveAll(repoPath)
-				if err != nil {
-					errs = append(errs, repoError{r.Name(), err})
-				}
-			}
+	type repoError struct {
+		name string
+		err  error
+	}
 
-			spin.Stop()
-			fmt.Fprintln(stdout)
-			fmt.Fprintf(stdout, "Removed %d repos\n\n", len(repos)-len(errs))
+	var errs []repoError
 
-			if len(errs) > 0 {
-				fmt.Fprintln(stdout, "Error removing repos:")
-				w := tabwriter.NewWriter(stdout, 1, 8, 1, ' ', 0)
-				for _, err := range errs {
-					fmt.Fprintf(w, "%s\t%v\n", err.name, err.err)
-				}
-				w.Flush()
-			}
-			return nil
-		},
-	)
+	for _, r := range repos {
+		spin.Suffix = fmt.Sprintf("Removing %s", r.Name())
+		repoPath := filepath.Join(tmpDir, r.Name())
+		err := os.RemoveAll(repoPath)
+		if err != nil {
+			errs = append(errs, repoError{r.Name(), err})
+		}
+	}
+
+	spin.Stop()
+	fmt.Fprintln(stdout)
+	fmt.Fprintf(stdout, "Removed %d repos\n\n", len(repos)-len(errs))
+
+	if len(errs) > 0 {
+		fmt.Fprintln(stdout, "Error removing repos:")
+		w := tabwriter.NewWriter(stdout, 1, 8, 1, ' ', 0)
+		for _, err := range errs {
+			fmt.Fprintf(w, "%s\t%v\n", err.name, err.err)
+		}
+		w.Flush()
+	}
+	return nil
 }

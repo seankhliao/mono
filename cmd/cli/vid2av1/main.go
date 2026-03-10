@@ -2,32 +2,41 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"log/slog"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"go.seankhliao.com/mono/run"
 )
 
 func main() {
-	var indir, donedir, outdir, faileddir string
-	flag.StringVar(&indir, "in", "todo", "input directory")
-	flag.StringVar(&donedir, "done", "done", "done directory")
-	flag.StringVar(&outdir, "out", "out", "output directory")
-	flag.StringVar(&faileddir, "failed", "failed", "failed directory")
-	flag.Parse()
-
-	err := run(indir, donedir, outdir, faileddir)
-	if err != nil {
-		os.Exit(1)
-		fmt.Fprintln(os.Stderr, err)
-	}
+	run.OSExec(run.Simple("vid2av1", "convert video to av1", &Config{}))
 }
 
-func run(indir, donedir, outdir, faileddir string) error {
+type Config struct {
+	indir, donedir, outdir, faileddir string
+}
+
+func (c *Config) Flags(fset *flag.FlagSet) error {
+	fset.StringVar(&c.indir, "in", "todo", "input directory")
+	fset.StringVar(&c.donedir, "done", "done", "done directory")
+	fset.StringVar(&c.outdir, "out", "out", "output directory")
+	fset.StringVar(&c.faileddir, "failed", "failed", "failed directory")
+	return nil
+}
+
+func (c *Config) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return runConv(ctx, stdout, stderr, c.indir, c.donedir, c.outdir, c.faileddir)
+}
+
+func runConv(ctx context.Context, stdoutW, stderrW io.Writer, indir, donedir, outdir, faileddir string) error {
 	outprefixes, doneprefixes := make(map[string]struct{}), make(map[string]struct{})
 	des, err := os.ReadDir(outdir)
 	if err != nil {
@@ -58,8 +67,8 @@ func run(indir, donedir, outdir, faileddir string) error {
 
 	slog.Info("starting", "total", len(des), "todo", len(todo))
 
-	stdout := &prefixer{w: os.Stdout, p: "\t[out] "}
-	stderr := &prefixer{w: os.Stdout, p: "\t[err] "}
+	stdout := &prefixer{w: stdoutW, p: "\t[out] "}
+	stderr := &prefixer{w: stderrW, p: "\t[err] "}
 
 	var i int
 	for name := range todo {
@@ -105,7 +114,7 @@ func run(indir, donedir, outdir, faileddir string) error {
 
 		failedname := filepath.Join(faileddir, name)
 
-		cmd := exec.Command("ffmpeg",
+		cmd := exec.CommandContext(ctx, "ffmpeg",
 			"-i", inname,
 			"-c:v", "libsvtav1",
 			"-cpu-used", "12",

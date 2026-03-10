@@ -5,53 +5,52 @@ import (
 	"flag"
 	"io"
 	"io/fs"
-	"strings"
 )
 
-var _ Commander = &CommandBasic[struct{}]{}
-
-type (
-	Empty         = struct{}
-	CommandSimple = CommandBasic[Empty]
+var (
+	_ Commander    = &simple{}
+	_ CommanderRun = &simple{}
 )
 
-type CommandBasic[C any] struct {
-	Name string
-	Desc string
-
-	Flags func(c *C, fset *flag.FlagSet) error
-	Do    func(c *C) Runner
-
-	conf C
+type simple struct {
+	name string
+	desc string
+	c    Simpler
 }
 
-func (c *CommandBasic[C]) CmdName() string { return c.Name }
-func (c *CommandBasic[C]) ShortDesc() string {
-	s, _, _ := strings.Cut(c.Desc, "\n")
-	return s
+type Simpler interface {
+	Flags(*flag.FlagSet) error
+	Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error
 }
 
-func (c *CommandBasic[C]) LongDesc() string {
-	return c.Desc
+func (s *simple) CmdName() string { return s.name }
+func (s *simple) CmdDesc() string { return s.desc }
+
+func (s *simple) Flags(fset *flag.FlagSet) error {
+	return s.c.Flags(fset)
 }
 
-func (c *CommandBasic[C]) RegisterFlags(fset *flag.FlagSet) error {
-	if c.Flags != nil {
-		return c.Flags(&c.conf, fset)
-	}
-	return nil
-}
-func (c *CommandBasic[C]) SubCommands() []Commander { return nil }
-func (c *CommandBasic[C]) RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-	return c.Do(&c.conf)(ctx, stdin, stdout, stderr, fsys)
+func (s *simple) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return s.c.Run(ctx, stdin, stdout, stderr, fsys)
 }
 
-func CommandRun(name, desc string, f Runner) *CommandSimple {
-	return &CommandSimple{
-		Name: name,
-		Desc: desc,
-		Do: func(c *Empty) Runner {
-			return f
-		},
-	}
+func Simple(name, desc string, c Simpler) Commander {
+	return &simple{name, desc, c}
+}
+
+func Func(name, desc string, f Runner) Commander {
+	return &simpleFunc{name, desc, f}
+}
+
+type simpleFunc struct {
+	name string
+	desc string
+	f    Runner
+}
+
+func (s *simpleFunc) CmdName() string           { return s.name }
+func (s *simpleFunc) CmdDesc() string           { return s.desc }
+func (s *simpleFunc) Flags(*flag.FlagSet) error { return nil }
+func (s *simpleFunc) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return s.f(ctx, stdin, stdout, stderr, fsys)
 }

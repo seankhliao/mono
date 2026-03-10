@@ -1,25 +1,25 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"log/slog"
+	"io"
+	"io/fs"
 	"os"
+
+	"go.seankhliao.com/mono/run"
 )
 
 func main() {
-	err := run()
-	if err != nil {
-		slog.Error("run", "err", err)
-		os.Exit(1)
-	}
+	run.OSExec(run.Func("nato", "print nato phonetic alphabet", f))
 }
 
-func run() error {
+func f(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	args := os.Args[1:]
 	if len(args) == 0 {
 		for i := range 'Z' - 'A' {
 			r := 'A' + i
-			fmt.Printf("%c\t%v\n", r, nato[r])
+			fmt.Fprintf(stdout, "%c\t%v\n", r, nato[r])
 		}
 		return nil
 	}
@@ -28,17 +28,17 @@ func run() error {
 		for _, r := range arg {
 			switch {
 			case r == ' ':
-				fmt.Println()
+				fmt.Fprintln(stdout)
 			case 'a' <= r && r <= 'z':
 				r += 'A' - 'a'
 				fallthrough
 			case 'A' <= r && r <= 'Z':
-				fmt.Printf("%c\t%v\n", r, nato[r])
+				fmt.Fprintf(stdout, "%c\t%v\n", r, nato[r])
 			default:
-				fmt.Println(r)
+				fmt.Fprintln(stdout, r)
 			}
 		}
-		fmt.Println()
+		fmt.Fprintln(stdout)
 	}
 
 	return nil

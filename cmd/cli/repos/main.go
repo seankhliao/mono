@@ -3,7 +3,6 @@ package main
 
 import (
 	_ "embed"
-	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -14,31 +13,15 @@ import (
 )
 
 func main() {
-	conf := new(CommonConfig)
-	run.OSExec(&run.CommandGroup{
-		Name: "repos",
-		Desc: "tool for managing git repos",
-		Flags: func(fs *flag.FlagSet) error {
-			fs.Func("eval-file", "path to a file to output commands to eval", func(s string) error {
-				var err error
-				conf.eval, err = os.OpenFile(s, os.O_RDWR, 0o644)
-				return err
-			})
-			return nil
-		},
-		Subs: []run.Commander{
-			cmdSync(),
-			cmdLast(conf),
-			cmdNew(conf),
-			cmdClean(),
-			cmdConfig(conf),
-		},
-	})
-}
-
-type CommonConfig struct {
-	// evalFile string
-	eval *os.File
+	run.OSExec(run.Group(
+		"repos",
+		"tool for managing git repos",
+		run.Simple("sync", "sync repositories with upstream origins", &ConfigSub{}),
+		run.Simple("last", "switches to the newest temporary repository", &lastCmd{}),
+		run.Simple("new", "creates a new repository", &ConfigNew{}),
+		run.Simple("clean", "clean up temporary repositories", &cleanCmd{}),
+		run.Simple("config", "print the config", &configCmd{}),
+	))
 }
 
 // tmpRepos returns direntries of temporary repos in sorted order

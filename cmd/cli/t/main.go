@@ -3,13 +3,16 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"fmt"
 	"io"
-	"log"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
+
+	"go.seankhliao.com/mono/run"
 )
 
 const (
@@ -29,34 +32,42 @@ function t() {
 var ansi = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
 
 func main() {
+	run.OSExec(run.Func("t", "grep and generate aliases to open nvim", f))
+}
+
+func f(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	if len(os.Args) > 1 && os.Args[1] == "--help" {
-		fmt.Fprint(os.Stderr, helpText)
-		os.Exit(1)
+		fmt.Fprint(stderr, helpText)
+		return nil
 	}
 
-	cmd := exec.Command("rg", append([]string{"--heading", "--column", "--color=always"}, os.Args[1:]...)...)
-	cmd.Stderr = os.Stderr
+	cmd := exec.CommandContext(ctx, "rg", append([]string{"--heading", "--column", "--color=always"}, os.Args[1:]...)...)
+	cmd.Stderr = stderr
 	rc, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer rc.Close()
 
-	f, err := os.Create("/tmp/t_aliases")
+	aliasFile, err := os.Create("/tmp/t_aliases")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	defer f.Close()
+	defer aliasFile.Close()
 
-	cmd.Start()
+	err = cmd.Start()
+	if err != nil {
+		return err
+	}
 	defer cmd.Wait()
 
 	wd, err := os.Getwd()
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
-	outputToAliases(f, os.Stdout, rc, wd, os.Getenv(envLong) == "1")
+	outputToAliases(aliasFile, stdout, rc, wd, os.Getenv(envLong) == "1")
+	return nil
 }
 
 func outputToAliases(alias, console io.Writer, r io.Reader, wdPath string, includeLong bool) {

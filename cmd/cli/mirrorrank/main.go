@@ -22,34 +22,7 @@ import (
 )
 
 func main() {
-	run.OSExec(&run.CommandBasic[app]{
-		Name: "mirrorrank",
-		Desc: "test arch linux mirrors for download speed",
-		Flags: func(a *app, fset *flag.FlagSet) error {
-			a.exclude = map[string]struct{}{
-				"checkdomain.de": {},
-			}
-			fset.BoolVar(&a.ip4, "4", false, "limit to IPv4")
-			fset.BoolVar(&a.ip6, "6", false, "limit to IPv6")
-			fset.StringVar(&a.file, "f", "", "mirrorlist to use instead of from archlinux.org/mirrorlist/")
-			fset.StringVar(&a.save, "s", "/etc/pacman.d/mirrorlist", "output file location")
-			fset.IntVar(&a.parallel, "p", 10, "parallel downloads")
-			fset.IntVar(&a.limit, "l", 5, "limit output")
-			fset.DurationVar(&a.timeout, "t", 5*time.Second, "timeout")
-			fset.Func("e", "exclude string (repeatable)", func(s string) error {
-				a.exclude[s] = struct{}{}
-				return nil
-			})
-			fset.Func("c", "limit to countries (repeatable)", func(s string) error {
-				a.countries = append(a.countries, s)
-				return nil
-			})
-			return nil
-		},
-		Do: func(a *app) run.Runner {
-			return a.run
-		},
-	})
+	run.OSExec(run.Simple("mirrorrank", "test arch linux mirrors for download speed", &app{}))
 }
 
 type Mirror struct {
@@ -67,7 +40,29 @@ type app struct {
 	exclude         map[string]struct{}
 }
 
-func (a *app) run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+func (a *app) Flags(fset *flag.FlagSet) error {
+	a.exclude = map[string]struct{}{
+		"checkdomain.de": {},
+	}
+	fset.BoolVar(&a.ip4, "4", false, "limit to IPv4")
+	fset.BoolVar(&a.ip6, "6", false, "limit to IPv6")
+	fset.StringVar(&a.file, "f", "", "mirrorlist to use instead of from archlinux.org/mirrorlist/")
+	fset.StringVar(&a.save, "s", "/etc/pacman.d/mirrorlist", "output file location")
+	fset.IntVar(&a.parallel, "p", 10, "parallel downloads")
+	fset.IntVar(&a.limit, "l", 5, "limit output")
+	fset.DurationVar(&a.timeout, "t", 5*time.Second, "timeout")
+	fset.Func("e", "exclude string (repeatable)", func(s string) error {
+		a.exclude[s] = struct{}{}
+		return nil
+	})
+	fset.Func("c", "limit to countries (repeatable)", func(s string) error {
+		a.countries = append(a.countries, s)
+		return nil
+	})
+	return nil
+}
+
+func (a *app) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	lg := slog.New(slog.NewTextHandler(stderr, nil))
 
 	client := http.Client{

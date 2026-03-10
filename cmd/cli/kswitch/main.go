@@ -24,12 +24,9 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 )
 
-const tmpPrefix = "kswitch.tmp.kubeconfig."
-
-func main() {
-	run.OSExec(&run.CommandGroup{
-		Name: "kswitch",
-		Desc: `manage the kubectl context
+const (
+	tmpPrefix = "kswitch.tmp.kubeconfig."
+	examples  = `manage the kubectl context
 
 Examples:
 
@@ -40,46 +37,57 @@ Examples:
 	kswitch cache-show
 	kswitch cache-clean
 	kswitch wrapper
-`,
-		Subs: []run.Commander{
-			&run.CommandBasic[App]{
-				Name:  "current",
-				Desc:  "show the current context",
-				Flags: (*App).register,
-				Do:    func(a *App) run.Runner { return a.showCurrent },
-			},
-			&run.CommandBasic[App]{
-				Name:  "context",
-				Desc:  "switch the current context",
-				Flags: (*App).register,
-				Do:    func(a *App) run.Runner { return a.switchContext },
-			},
-			&run.CommandBasic[App]{
-				Name:  "namespace",
-				Desc:  "switch the current context",
-				Flags: (*App).register,
-				Do:    func(a *App) run.Runner { return a.switchNamespace },
-			},
-			&run.CommandBasic[App]{
-				Name:  "cache-show",
-				Desc:  "print the location of the cache",
-				Flags: (*App).register,
-				Do:    func(a *App) run.Runner { return a.printCache },
-			},
-			&run.CommandBasic[App]{
-				Name:  "cache-clear",
-				Desc:  "reset the cache",
-				Flags: (*App).register,
-				Do:    func(a *App) run.Runner { return a.clearCache },
-			},
-			&run.CommandBasic[App]{
-				Name:  "wrapper",
-				Desc:  "print the wrapper script",
-				Flags: (*App).register,
-				Do:    func(a *App) run.Runner { return a.printWrapper },
-			},
-		},
-	})
+`
+)
+
+func main() {
+	app := &App{}
+	run.OSExec(run.Group(
+		"kswitch",
+		examples,
+		run.Simple("current", "show the current context", &currentCmd{app}),
+		run.Simple("context", "switch the current context", &switchContextCmd{app}),
+		run.Simple("namespace", "switch the current context", &switchNamespaceCmd{app}),
+		run.Simple("cache-show", "print the location of the cache", &cacheShowCmd{app}),
+		run.Simple("cache-clear", "reset the cache", &cacheClearCmd{app}),
+		run.Simple("wrapper", "print the wrapper script", &wrapperCmd{app}),
+	))
+}
+
+type currentCmd struct{ *App }
+
+func (c *currentCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return c.App.showCurrent(ctx, stdin, stdout, stderr, fsys)
+}
+
+type switchContextCmd struct{ *App }
+
+func (c *switchContextCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return c.App.switchContext(ctx, stdin, stdout, stderr, fsys)
+}
+
+type switchNamespaceCmd struct{ *App }
+
+func (c *switchNamespaceCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return c.App.switchNamespace(ctx, stdin, stdout, stderr, fsys)
+}
+
+type cacheShowCmd struct{ *App }
+
+func (c *cacheShowCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return c.App.printCache(ctx, stdin, stdout, stderr, fsys)
+}
+
+type cacheClearCmd struct{ *App }
+
+func (c *cacheClearCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return c.App.clearCache(ctx, stdin, stdout, stderr, fsys)
+}
+
+type wrapperCmd struct{ *App }
+
+func (c *wrapperCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	return c.App.printWrapper(ctx, stdin, stdout, stderr, fsys)
 }
 
 type App struct {
@@ -94,7 +102,7 @@ type App struct {
 	conf     *clientcmdapi.Config
 }
 
-func (a *App) register(fset *flag.FlagSet) error {
+func (a *App) Flags(fset *flag.FlagSet) error {
 	a.srcs = append(a.srcs, os.Getenv("KUBECONFG"))
 	home, err := os.UserHomeDir()
 	if err == nil {

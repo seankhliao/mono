@@ -15,15 +15,28 @@ import (
 	"strings"
 )
 
-// Commander represents a process command or subcommand
+// Commander represents a command.
 type Commander interface {
+	// CmdName should be a single word
 	CmdName() string
-	ShortDesc() string
-	LongDesc() string
+	// CmdDesc should have at least one line.
+	// The first line is used as a short description.
+	CmdDesc() string
+}
 
-	RegisterFlags(*flag.FlagSet) error
-	SubCommands() []Commander
-	RunCmd(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error
+// CommanderRun represents a runnable command.
+type CommanderRun interface {
+	Commander
+	// Flags is for registering flags
+	// and doing any other pre initialization.
+	Flags(fset *flag.FlagSet) error
+	// Run should run the command.
+	Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error
+}
+
+// CommanderGroup represents a command with subcommands.
+type CommanderGroup interface {
+	Commands() []Commander
 }
 
 type Runner func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error
@@ -91,7 +104,12 @@ func findRun(parents []string, c Commander, args []string) Runner {
 		return nil
 	})
 
-	c.RegisterFlags(fset)
+	if cr, ok := c.(CommanderRun); ok {
+		err := cr.Flags(fset)
+		if err != nil {
+			return helpFor(c, parents, fset, err)
+		}
+	}
 
 	err := fset.Parse(args[1:])
 	if errors.Is(err, flag.ErrHelp) {
@@ -109,21 +127,26 @@ func findRun(parents []string, c Commander, args []string) Runner {
 	}
 
 	if fset.NArg() == 0 {
-		_, ok := c.(*CommandGroup)
-		if ok {
-			return helpFor(c, parents, fset, errors.New("no command given"))
+		if _, ok := c.(CommanderGroup); ok {
+			return helpFor(c, parents, fset, errors.New("no subcommand given"))
 		}
 
 		if debugPrintFlags {
 			return printDebugFlags(fset)
 		}
 
-		return c.RunCmd
+		if cr, ok := c.(CommanderRun); ok {
+			return cr.Run
+		}
+
+		return helpFor(c, parents, fset, errors.New("not a runnable command"))
 	}
 	subName := fset.Arg(0)
-	for _, sub := range c.SubCommands() {
-		if subName == sub.CmdName() {
-			return findRun(append(parents, c.CmdName()), sub, fset.Args())
+	if cg, ok := c.(CommanderGroup); ok {
+		for _, sub := range cg.Commands() {
+			if subName == sub.CmdName() {
+				return findRun(append(parents, c.CmdName()), sub, fset.Args())
+			}
 		}
 	}
 
@@ -139,13 +162,16 @@ func helpFor(c Commander, parents []string, fset *flag.FlagSet, err error) Runne
 
 		fmt.Fprintf(w, "Usage: %s [flags]\n", strings.Join(append(parents, c.CmdName()), " "))
 
-		fmt.Fprintf(w, "\n%s\n", c.LongDesc())
+		fmt.Fprintf(w, "\n%s\n", c.CmdDesc())
 
-		subs := c.SubCommands()
-		if len(subs) > 0 {
-			fmt.Fprintf(w, "\nCommands:\n")
-			for _, sub := range subs {
-				fmt.Fprintf(w, "\t%s\n\t\t%s\n", sub.CmdName(), sub.ShortDesc())
+		if cg, ok := c.(CommanderGroup); ok {
+			cmds := cg.Commands()
+			if len(cmds) > 0 {
+				fmt.Fprintf(w, "\nCommands:\n")
+				for _, cmd := range cmds {
+					short, _, _ := strings.Cut(cmd.CmdDesc(), "\n")
+					fmt.Fprintf(w, "\t%s\n\t\t%s\n", cmd.CmdName(), short)
+				}
 			}
 		}
 

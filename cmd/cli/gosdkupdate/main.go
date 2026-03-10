@@ -34,44 +34,41 @@ type Config struct {
 	Tools bool
 }
 
+func (c *Config) Flags(fset *flag.FlagSet) error {
+	fset.BoolVar(&c.Go, "go", true, "update go installs")
+	fset.StringVar(&c.Bootstrap, "bootstrap", "/usr/bin/go", "path to a bootstrap go install")
+	fset.IntVar(&c.Releases, "releases", 2, "number of go releases to keep")
+	fset.BoolVar(&c.Prereleases, "prereleases", true, "whether to get prereleases")
+	fset.BoolVar(&c.Tip, "tip", false, "whether to update tip")
+	fset.BoolVar(&c.Tools, "tools", true, "update go tools")
+
+	return run.UserConfigFile(fset, "gosdkupdate.txt", false)
+}
+
 func main() {
-	run.OSExec(&run.CommandBasic[Config]{
-		Name: "gosdkupdate",
-		Desc: "update local go installations and go tools",
-		Flags: func(c *Config, fset *flag.FlagSet) error {
-			fset.BoolVar(&c.Go, "go", true, "update go installs")
-			fset.StringVar(&c.Bootstrap, "bootstrap", "/usr/bin/go", "path to a bootstrap go install")
-			fset.IntVar(&c.Releases, "releases", 2, "number of go releases to keep")
-			fset.BoolVar(&c.Prereleases, "prereleases", true, "whether to get prereleases")
-			fset.BoolVar(&c.Tip, "tip", false, "whether to update tip")
-			fset.BoolVar(&c.Tools, "tools", true, "update go tools")
+	run.OSExec(run.Simple("gosdkupdate", "update go installations and go tools", &Config{}))
+}
 
-			return run.UserConfigFile(fset, "gosdkupdate.txt", false)
-		},
-		Do: func(c *Config) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-				tmpDir, err := os.MkdirTemp("", "gosdkupdate.*")
-				if err != nil {
-					return fmt.Errorf("prepare temp dir: %w", err)
-				}
-				err = os.Chdir(tmpDir)
-				if err != nil {
-					return fmt.Errorf("chdir temp dir: %w", err)
-				}
+func (c *Config) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	tmpDir, err := os.MkdirTemp("", "gosdkupdate.*")
+	if err != nil {
+		return fmt.Errorf("prepare temp dir: %w", err)
+	}
+	err = os.Chdir(tmpDir)
+	if err != nil {
+		return fmt.Errorf("chdir temp dir: %w", err)
+	}
 
-				err = updateGo(ctx, c, stdout)
-				if err != nil {
-					return fmt.Errorf("update go: %w", err)
-				}
+	err = updateGo(ctx, c, stdout)
+	if err != nil {
+		return fmt.Errorf("update go: %w", err)
+	}
 
-				err = updateTools(ctx, c, stdout)
-				if err != nil {
-					return fmt.Errorf("update tools: %w", err)
-				}
-				return nil
-			}
-		},
-	})
+	err = updateTools(ctx, c, stdout)
+	if err != nil {
+		return fmt.Errorf("update tools: %w", err)
+	}
+	return nil
 }
 
 func updateGo(ctx context.Context, c *Config, stdout io.Writer) error {

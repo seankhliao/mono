@@ -22,7 +22,6 @@ import (
 	"github.com/briandowns/spinner"
 	"github.com/google/go-github/v74/github"
 	"go.seankhliao.com/mono/cueconf"
-	"go.seankhliao.com/mono/run"
 	"golang.org/x/oauth2"
 )
 
@@ -44,32 +43,26 @@ type Config struct {
 
 type ConfigRemote struct{}
 
-func cmdSync() run.Commander {
-	type ConfigSub struct {
-		configFile string
-	}
-	return &run.CommandBasic[ConfigSub]{
-		Name: "sync",
-		Desc: "sync repositories with upstream origins",
-		Flags: func(c *ConfigSub, fs *flag.FlagSet) error {
-			fs.StringVar(&c.configFile, "config", "repos.cue", "path to config file")
-			return nil
-		},
-		Do: func(c *ConfigSub) run.Runner {
-			return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-				config, err := cueconf.ForFile[Config](configSchema, "#SyncConfig", c.configFile, false)
-				if err != nil {
-					return fmt.Errorf("repos: decode config: %w", err)
-				}
+type ConfigSub struct {
+	configFile string
+}
 
-				err = runSync(stdout, config)
-				if err != nil {
-					return fmt.Errorf("repos sync: %w", err)
-				}
-				return nil
-			}
-		},
+func (c *ConfigSub) Flags(fs *flag.FlagSet) error {
+	fs.StringVar(&c.configFile, "config", "repos.cue", "path to config file")
+	return nil
+}
+
+func (c *ConfigSub) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+	config, err := cueconf.ForFile[Config](configSchema, "#SyncConfig", c.configFile, false)
+	if err != nil {
+		return fmt.Errorf("repos: decode config: %w", err)
 	}
+
+	err = runSync(stdout, config)
+	if err != nil {
+		return fmt.Errorf("repos sync: %w", err)
+	}
+	return nil
 }
 
 func runSync(stdout io.Writer, conf Config) error {

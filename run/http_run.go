@@ -1,4 +1,4 @@
-package main
+package run
 
 import (
 	"context"
@@ -11,17 +11,22 @@ import (
 	"log/slog"
 	"net"
 	"net/http"
+	"net/http/pprof"
 	"net/netip"
 	"os"
 	"os/signal"
-	"strings"
+	"runtime/debug"
 	"sync"
 	"syscall"
 	"time"
 
-	"go.seankhliao.com/mono/run"
 	"golang.org/x/crypto/acme"
 	"golang.org/x/crypto/acme/autocert"
+)
+
+var (
+	tsPrivate4 = netip.MustParsePrefix("100.64.0.0/10")
+	tsPrivate6 = netip.MustParsePrefix("fd7a:115c:a1e0::/48")
 )
 
 type HTTP struct {
@@ -32,6 +37,7 @@ type HTTP struct {
 	TLSACMEEABKID    string
 	TLSACMEEmail     string
 	TLSACMEAllow     []string
+	HostPolicy       autocert.HostPolicy
 
 	HTTPTLS           []string
 	HTTPPlain         []string
@@ -51,7 +57,7 @@ func (h *HTTP) Flags(fset *flag.FlagSet) {
 	fset.DurationVar(&h.HTTPShutdownGrace, "http.shutdown.grace", 30*time.Second, "HTTP server graceful shutdown wait")
 }
 
-func (h *HTTP) Runner(logHandler slog.Handler, register func(*http.ServeMux)) run.Runner {
+func (h *HTTP) Runner(logHandler slog.Handler, register func(*http.ServeMux)) Runner {
 	return func(ctx context.Context, _ io.Reader, _, stderr io.Writer, _ fs.FS) error {
 		sigc := make(chan os.Signal, 1)
 		signal.Notify(sigc, syscall.SIGINT, syscall.SIGTERM)
@@ -76,8 +82,8 @@ func (h *HTTP) Runner(logHandler slog.Handler, register func(*http.ServeMux)) ru
 		registerDebug(mux)
 		register(mux)
 
-		var handler http.Handler
-		handler = mux
+		// var handler http.Handler
+		handler := mux
 		// TODO: wrap in instrumentation
 		// TODO: register http handlers
 
@@ -107,7 +113,7 @@ func (h *HTTP) Runner(logHandler slog.Handler, register func(*http.ServeMux)) ru
 					DirectoryURL: h.TLSACMEServerURL,
 				},
 				Email:      h.TLSACMEEmail,
-				HostPolicy: hostPolicy,
+				HostPolicy: h.HostPolicy,
 			}
 			if h.TLSACMEEABKID != "" && len(h.TLSACMEEABKey) > 0 {
 				key, err := base64.StdEncoding.DecodeString(h.TLSACMEEABKey)
@@ -250,18 +256,6 @@ func (h *HTTP) Runner(logHandler slog.Handler, register func(*http.ServeMux)) ru
 	}
 }
 
-func hostPolicy(ctx context.Context, host string) error {
-	h, ok := strings.CutSuffix(host, ".liao.dev")
-	if !ok {
-		return fmt.Errorf("not a public address: %s", host)
-	}
-	h, _ = strings.CutSuffix(h, ".nerys")
-	if strings.Contains(h, ".") {
-		return fmt.Errorf("not an allowed subdomain: %s", host)
-	}
-	return nil
-}
-
 func listenFlag(addrFlag *[]string) func(string) error {
 	return func(s string) error {
 		host, port, err := net.SplitHostPort(s)
@@ -299,4 +293,23 @@ func listenFlag(addrFlag *[]string) func(string) error {
 		}
 		return nil
 	}
+}
+
+func registerDebug(mux *http.ServeMux) {
+	mux.Handle("GET /debug/buildinfo", privateOnly(http.HandlerFunc(buildInfo)))
+	mux.Handle("GET /debug/pprof/", privateOnly(http.HandlerFunc(pprof.Index)))
+	mux.Handle("GET /debug/pprof/cmdline", privateOnly(http.HandlerFunc(pprof.Cmdline)))
+	mux.Handle("GET /debug/pprof/profile", privateOnly(http.HandlerFunc(pprof.Profile)))
+	mux.Handle("GET /debug/pprof/symbol", privateOnly(http.HandlerFunc(pprof.Symbol)))
+	mux.Handle("GET /debug/pprof/trace", privateOnly(http.HandlerFunc(pprof.Trace)))
+}
+
+func buildInfo(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Set("content-type", "text/plain")
+	bi, ok := debug.ReadBuildInfo()
+	if !ok {
+		fmt.Fprintln(rw, "no embedded build info")
+		return
+	}
+	fmt.Fprintln(rw, bi)
 }
