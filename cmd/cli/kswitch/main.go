@@ -135,7 +135,7 @@ func (a *App) switchContext(ctx context.Context, stdin io.Reader, stdout, stderr
 func (a *App) switchNamespace(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	a.currentConfig()
 
-	if !strings.Contains(a.confPath, tmpPrefix) {
+	if a.confPath != ":memory:" && !strings.Contains(a.confPath, tmpPrefix) {
 		err := a.selectContext()
 		if err != nil {
 			return fmt.Errorf("select context: %w", err)
@@ -201,28 +201,27 @@ func (a *App) selectContext() error {
 		return fmt.Errorf("no contexts available")
 	}
 
-	if a.context == "" {
-		fzfOpts, err := fzf.ParseOptions(true, []string{})
-		if err != nil {
-			return fmt.Errorf("prepare fzf: %w", err)
-		}
-		fzfOpts.Input = make(chan string, len(all.Contexts))
-		for n := range maps.Keys(all.Contexts) {
-			fzfOpts.Input <- n
-		}
-		fzfOpts.Output = make(chan string, 1)
-		_, err = fzf.Run(fzfOpts)
-		if err != nil {
-			return fmt.Errorf("run fzf: %w", err)
-		}
-		close(fzfOpts.Output)
-
-		var ok bool
-		a.context, ok = <-fzfOpts.Output
-		if !ok {
-			return fmt.Errorf("no context selected")
-		}
+	fzfOpts, err := fzf.ParseOptions(true, []string{})
+	if err != nil {
+		return fmt.Errorf("prepare fzf: %w", err)
 	}
+	fzfOpts.Input = make(chan string, len(all.Contexts))
+	for n := range maps.Keys(all.Contexts) {
+		fzfOpts.Input <- n
+	}
+	fzfOpts.Output = make(chan string, 1)
+	_, err = fzf.Run(fzfOpts)
+	if err != nil {
+		return fmt.Errorf("run fzf: %w", err)
+	}
+	close(fzfOpts.Output)
+
+	var ok bool
+	a.context, ok = <-fzfOpts.Output
+	if !ok {
+		return fmt.Errorf("no context selected")
+	}
+
 	cont, ok := all.Contexts[a.context]
 	if a.context == "" || !ok {
 		return fmt.Errorf("context not found in configs: %q", a.context)
@@ -237,6 +236,7 @@ func (a *App) selectContext() error {
 	conf.Preferences = all.Preferences
 	conf.Extensions = all.Extensions
 	a.conf = conf
+	a.confPath = ":memory:"
 	return nil
 }
 
