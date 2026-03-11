@@ -66,6 +66,15 @@ Events: [{
 	_date:    "2026-03-10"
 	headline: "Poppy"
 	price:    43.85
+	support: ["Fox Lake", "Ocean Grove"]
+	text: """
+		I guess this was a metal night?
+		Honestly couldn't make out much of what [Fox Lake]
+		and [Ocean Grove] were singing.
+		[Poppy] I recognized some songs,
+		but I don't think it felt as good as the last time
+		I saw her...
+		"""
 }, {
 	_date:    "2026-02-20"
 	headline: "Ashnikko"
@@ -85,7 +94,7 @@ Events: [{
 	price:    61.62
 	text: """
 		A 2.5h show, no support acts.
-		A mix of the hits,
+		[Halsey] played a mix of the hits,
 		and quite a few I don't remember,
 		I guess that's what you have after 10 years.
 
@@ -99,7 +108,7 @@ Events: [{
 	price:    29.87
 	text: """
 		Not the usual sugary cuteness you see a lot of in Japan.
-		I thought their music exuded more coolness
+		I thought [ExWHYZ]'s music exuded more coolness
 		and was much easier on the ears.
 		Their style was also more cool beauty than cute.
 		"""
@@ -177,7 +186,7 @@ Events: [{
 
 		The venue felt a bit echoey.
 		Also, with a real band, and quite loud fan chanting,
-		sometimes you wouldn't be able to hear theier voices properly.
+		sometimes you wouldn't be able to hear their voices properly.
 		But we did get to hear their real / unamplified voices
 		at the start and end.
 		For song choice, it felt like a mix of originals vs covers.
@@ -189,7 +198,7 @@ Events: [{
 		and they're so good live.
 		[Usada Pekora] has that cult like magnetism,
 		you can just feel the fan's dedication.
-		[Shirogane Noel] and [Shiranui Flare] felt a little less distintive
+		[Shirogane Noel] and [Shiranui Flare] felt a little less distinctive
 		by comparison, though Noel did show her more quirky side.
 
 		Overall, a solidly produced live music show.
@@ -2613,6 +2622,7 @@ Links: {
 		"Five":                                        "https://www.youtube.com/@itsfiveofficial"
 		"Fletcher":                                    "https://www.youtube.com/@fletcher"
 		"Forever Still":                               "https://www.youtube.com/@ForeverStill"
+		"Fox Lake":                                    "https://www.youtube.com/@FoxLakeBand"
 		"Frayle":                                      "https://www.youtube.com/@frayleband"
 		"Fredrik Svabø":                               "https://www.youtube.com/@fredriksvabo"
 		"From Fall to Spring":                         "https://www.youtube.com/@FromFallToSpring"
@@ -2736,6 +2746,7 @@ Links: {
 		"Ninomae Ina’nis":                             "https://www.youtube.com/@NinomaeInanis"
 		"Nothing, Nowhere":                            "https://www.youtube.com/@nothingnowheremusic"
 		"Nxdia":                                       "https://www.youtube.com/@nxdiamusic"
+		"Ocean Grove":                                 "https://www.youtube.com/@OceanGrove"
 		"Oliver Cronin":                               "https://www.youtube.com/@OliverCronin"
 		"Omar Rudberg":                                "https://www.youtube.com/@OmarRudbergOfficial"
 		"ONE OK ROCK":                                 "https://www.youtube.com/@ONEOKROCK"
