@@ -11,8 +11,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
-
-	"go.seankhliao.com/mono/run"
 )
 
 const (
@@ -32,7 +30,13 @@ function t() {
 var ansi = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
 
 func main() {
-	run.OSExec(run.Func("t", "grep and generate aliases to open nvim", f))
+	err := f(context.Background(), os.Stdin, os.Stdout, os.Stderr, os.DirFS("/"))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	// doesn't handle arguments
+	// run.OSExec(run.Func("t", "grep and generate aliases to open nvim", f))
 }
 
 func f(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
