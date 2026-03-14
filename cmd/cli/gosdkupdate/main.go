@@ -34,7 +34,7 @@ type Config struct {
 	Tools bool
 }
 
-func (c *Config) Flags(fset *flag.FlagSet) error {
+func (c *Config) Flags(fset *flag.FlagSet, args **[]string) error {
 	fset.BoolVar(&c.Go, "go", true, "update go installs")
 	fset.StringVar(&c.Bootstrap, "bootstrap", "/usr/bin/go", "path to a bootstrap go install")
 	fset.IntVar(&c.Releases, "releases", 2, "number of go releases to keep")

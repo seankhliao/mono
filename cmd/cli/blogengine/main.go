@@ -51,7 +51,7 @@ func main() {
 	run.OSExec(run.Simple("blogengine", "custom markdown to html static site generator", &Config{}))
 }
 
-func (c *Config) Flags(fset *flag.FlagSet) error {
+func (c *Config) Flags(fset *flag.FlagSet, args **[]string) error {
 	fset.StringVar(&c.Source, "src", "src", "path to source directory")
 	fset.BoolVar(&c.Compact, "compact", false, "use compact style")
 	fset.StringVar(&c.BaseURL, "base-url", "", "base url for canonicalization")

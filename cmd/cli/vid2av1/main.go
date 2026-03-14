@@ -24,7 +24,7 @@ type Config struct {
 	indir, donedir, outdir, faileddir string
 }
 
-func (c *Config) Flags(fset *flag.FlagSet) error {
+func (c *Config) Flags(fset *flag.FlagSet, args **[]string) error {
 	fset.StringVar(&c.indir, "in", "todo", "input directory")
 	fset.StringVar(&c.donedir, "done", "done", "done directory")
 	fset.StringVar(&c.outdir, "out", "out", "output directory")

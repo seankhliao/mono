@@ -16,7 +16,7 @@ import (
 
 type cleanCmd struct{}
 
-func (c *cleanCmd) Flags(fset *flag.FlagSet) error { return nil }
+func (c *cleanCmd) Flags(fset *flag.FlagSet, args **[]string) error { return nil }
 
 func (c *cleanCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	tmpDir, repos, err := tmpRepos()

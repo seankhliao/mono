@@ -29,7 +29,7 @@ type Trading struct {
 	filename string
 }
 
-func (t *Trading) Flags(fs *flag.FlagSet) error {
+func (t *Trading) Flags(fs *flag.FlagSet, args **[]string) error {
 	fs.StringVar(&t.filename, "file", "trading.csv", "path to trading212 history file")
 	return nil
 }

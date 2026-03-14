@@ -47,7 +47,7 @@ type ConfigSub struct {
 	configFile string
 }
 
-func (c *ConfigSub) Flags(fs *flag.FlagSet) error {
+func (c *ConfigSub) Flags(fs *flag.FlagSet, args **[]string) error {
 	fs.StringVar(&c.configFile, "config", "repos.cue", "path to config file")
 	return nil
 }

@@ -14,7 +14,7 @@ type lastCmd struct {
 	evalFile string
 }
 
-func (c *lastCmd) Flags(fset *flag.FlagSet) error {
+func (c *lastCmd) Flags(fset *flag.FlagSet, args **[]string) error {
 	fset.StringVar(&c.evalFile, "eval-file", "", "path to a file to output commands to eval")
 	return nil
 }

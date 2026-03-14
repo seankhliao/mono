@@ -62,7 +62,7 @@ func (c *Convert) register(fs *flag.FlagSet) {
 	fs.StringVar(&c.hsbcCard, "hsbc", "debit", "hsbc account debit or credit")
 }
 
-func (c *Convert) Flags(fset *flag.FlagSet) error {
+func (c *Convert) Flags(fset *flag.FlagSet, args **[]string) error {
 	c.register(fset)
 	return nil
 }
@@ -92,7 +92,7 @@ type View struct {
 	configPath string
 }
 
-func (v *View) Flags(fset *flag.FlagSet) error {
+func (v *View) Flags(fset *flag.FlagSet, args **[]string) error {
 	fset.StringVar(&v.configPath, "config", "gbp.fin.cue", "path to config file")
 	return nil
 }
@@ -113,7 +113,7 @@ type Push struct {
 	localGlob  string
 }
 
-func (p *Push) Flags(fset *flag.FlagSet) error {
+func (p *Push) Flags(fset *flag.FlagSet, args **[]string) error {
 	fset.StringVar(&p.bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
 	fset.StringVar(&p.localGlob, "glob", "*.fin.cue", "a glob pattern patching local files")
 	return nil
@@ -172,7 +172,7 @@ type Pull struct {
 	bucketName string
 }
 
-func (p *Pull) Flags(fset *flag.FlagSet) error {
+func (p *Pull) Flags(fset *flag.FlagSet, args **[]string) error {
 	fset.StringVar(&p.bucketName, "bucket", "gs://fin-liao-dev", "bucket identifier")
 	return nil
 }

@@ -63,7 +63,7 @@ type ConfigNew struct {
 	evalFile  string
 }
 
-func (c *ConfigNew) Flags(fs *flag.FlagSet) error {
+func (c *ConfigNew) Flags(fs *flag.FlagSet, args **[]string) error {
 	fs.StringVar(&c.modPrefix, "module-prefix", "go.seankhliao.com", "go module prefix")
 	fs.StringVar(&c.srcPrefix, "src-prefix", "https://github.com/seankhliao", "vcs source prefix")
 	fs.StringVar(&c.name, "name", "", "create a named repository in the current directory")

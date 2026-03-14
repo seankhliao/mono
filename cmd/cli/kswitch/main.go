@@ -102,7 +102,7 @@ type App struct {
 	conf     *clientcmdapi.Config
 }
 
-func (a *App) Flags(fset *flag.FlagSet) error {
+func (a *App) Flags(fset *flag.FlagSet, args **[]string) error {
 	a.srcs = append(a.srcs, os.Getenv("KUBECONFG"))
 	home, err := os.UserHomeDir()
 	if err == nil {

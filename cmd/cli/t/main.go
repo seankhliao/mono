@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"flag"
 	"fmt"
 	"io"
 	"io/fs"
@@ -11,6 +12,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+
+	"go.seankhliao.com/mono/run"
 )
 
 const (
@@ -30,22 +33,28 @@ function t() {
 var ansi = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
 
 func main() {
-	err := f(context.Background(), os.Stdin, os.Stdout, os.Stderr, os.DirFS("/"))
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-	// doesn't handle arguments
-	// run.OSExec(run.Func("t", "grep and generate aliases to open nvim", f))
+	run.OSExec(run.Simple("t", "grep and generate aliases to open nvim", &Config{}))
 }
 
-func f(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-	if len(os.Args) > 1 && os.Args[1] == "--help" {
-		fmt.Fprint(stderr, helpText)
-		return nil
+var _ run.Simpler = &Config{}
+
+type Config struct {
+	args []string
+}
+
+// Flags implements [run.Simpler].
+func (c *Config) Flags(fset *flag.FlagSet, args **[]string) error {
+	*args = &c.args
+	return nil
+}
+
+// Run implements [run.Simpler].
+func (c *Config) Run(ctx context.Context, stdin io.Reader, stdout io.Writer, stderr io.Writer, fsys fs.FS) error {
+	if len(c.args) == 0 {
+		return fmt.Errorf("no arguments")
 	}
 
-	cmd := exec.CommandContext(ctx, "rg", append([]string{"--heading", "--column", "--color=always"}, os.Args[1:]...)...)
+	cmd := exec.CommandContext(ctx, "rg", append([]string{"--heading", "--column", "--color=always"}, c.args...)...)
 	cmd.Stderr = stderr
 	rc, err := cmd.StdoutPipe()
 	if err != nil {

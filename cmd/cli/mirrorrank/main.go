@@ -40,7 +40,7 @@ type app struct {
 	exclude         map[string]struct{}
 }
 
-func (a *app) Flags(fset *flag.FlagSet) error {
+func (a *app) Flags(fset *flag.FlagSet, args **[]string) error {
 	a.exclude = map[string]struct{}{
 		"checkdomain.de": {},
 	}

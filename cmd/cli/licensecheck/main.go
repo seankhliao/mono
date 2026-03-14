@@ -21,7 +21,7 @@ func main() {
 	run.OSExec(run.Simple("licensecheck", "run google/licensecheck on the given file", &Config{}))
 }
 
-func (c *Config) Flags(fset *flag.FlagSet) error {
+func (c *Config) Flags(fset *flag.FlagSet, args **[]string) error {
 	fset.StringVar(&c.File, "file", "LICENSE", "path to file to check")
 	return nil
 }

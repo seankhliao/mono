@@ -29,7 +29,8 @@ type CommanderRun interface {
 	Commander
 	// Flags is for registering flags
 	// and doing any other pre initialization.
-	Flags(fset *flag.FlagSet) error
+	// If args points to a slice, arguments will be allowed.
+	Flags(fset *flag.FlagSet, args **[]string) error
 	// Run should run the command.
 	Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error
 }
@@ -104,8 +105,9 @@ func findRun(parents []string, c Commander, args []string) Runner {
 		return nil
 	})
 
+	var argsPtr *[]string
 	if cr, ok := c.(CommanderRun); ok {
-		err := cr.Flags(fset)
+		err := cr.Flags(fset, &argsPtr)
 		if err != nil {
 			return helpFor(c, parents, fset, err)
 		}
@@ -126,31 +128,35 @@ func findRun(parents []string, c Commander, args []string) Runner {
 		}
 	}
 
-	if fset.NArg() == 0 {
-		if _, ok := c.(CommanderGroup); ok {
+	if debugPrintFlags {
+		return printDebugFlags(fset)
+	}
+
+	if _, ok := c.(CommanderGroup); ok {
+		if fset.NArg() == 0 {
 			return helpFor(c, parents, fset, errors.New("no subcommand given"))
 		}
-
-		if debugPrintFlags {
-			return printDebugFlags(fset)
-		}
-
-		if cr, ok := c.(CommanderRun); ok {
-			return cr.Run
-		}
-
-		return helpFor(c, parents, fset, errors.New("not a runnable command"))
-	}
-	subName := fset.Arg(0)
-	if cg, ok := c.(CommanderGroup); ok {
-		for _, sub := range cg.Commands() {
-			if subName == sub.CmdName() {
-				return findRun(append(parents, c.CmdName()), sub, fset.Args())
+		subName := fset.Arg(0)
+		if cg, ok := c.(CommanderGroup); ok {
+			for _, sub := range cg.Commands() {
+				if subName == sub.CmdName() {
+					return findRun(append(parents, c.CmdName()), sub, fset.Args())
+				}
 			}
 		}
 	}
 
-	return helpFor(c, parents, fset, fmt.Errorf("unexpected arguments: %v", fset.Args()))
+	if cr, ok := c.(CommanderRun); ok {
+		if fset.NArg() > 0 {
+			if argsPtr == nil {
+				return helpFor(c, parents, fset, fmt.Errorf("unexpected arguments: %v", fset.Args()))
+			}
+			*argsPtr = append(*argsPtr, fset.Args()...)
+		}
+		return cr.Run
+	}
+
+	return helpFor(c, parents, fset, errors.New("not a runnable command"))
 }
 
 func helpFor(c Commander, parents []string, fset *flag.FlagSet, err error) Runner {

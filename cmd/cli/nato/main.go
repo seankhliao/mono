@@ -2,21 +2,33 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"io"
 	"io/fs"
-	"os"
 
 	"go.seankhliao.com/mono/run"
 )
 
 func main() {
-	run.OSExec(run.Func("nato", "print nato phonetic alphabet", f))
+	run.OSExec(run.Simple("nato", "print nato phonetic alphabet", &Config{}))
 }
 
-func f(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-	args := os.Args[1:]
-	if len(args) == 0 {
+var _ run.Simpler = &Config{}
+
+type Config struct {
+	args []string
+}
+
+// Flags implements [run.Simpler].
+func (c *Config) Flags(fset *flag.FlagSet, args **[]string) error {
+	*args = &c.args
+	return nil
+}
+
+// Run implements [run.Simpler].
+func (c *Config) Run(ctx context.Context, stdin io.Reader, stdout io.Writer, stderr io.Writer, fsys fs.FS) error {
+	if len(c.args) == 0 {
 		for i := range 'Z' - 'A' {
 			r := 'A' + i
 			fmt.Fprintf(stdout, "%c\t%v\n", r, nato[r])
@@ -24,7 +36,7 @@ func f(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.F
 		return nil
 	}
 
-	for _, arg := range args {
+	for _, arg := range c.args {
 		for _, r := range arg {
 			switch {
 			case r == ' ':
