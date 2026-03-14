@@ -31,7 +31,6 @@ func (s *testSimpler) Run(ctx context.Context, stdin io.Reader, stdout, stderr i
 func TestSimple(t *testing.T) {
 	tcs := []testCommandCase{{
 		func() Commander {
-			type conf struct{ F string }
 			return Simple("simple", "a description", &testSimpler{
 				run: func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 					fmt.Fprintln(out, "hello world")
@@ -47,7 +46,6 @@ func TestSimple(t *testing.T) {
 		0,
 	}, {
 		func() Commander {
-			type conf struct{ F string }
 			return Simple("help-text", "a description", &testSimpler{
 				run: func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 					fmt.Fprintln(out, "hello world")
@@ -63,7 +61,6 @@ func TestSimple(t *testing.T) {
 		0,
 	}, {
 		func() Commander {
-			type conf struct{ F string }
 			return Simple("unknown-flag", "a description", &testSimpler{
 				run: func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 					fmt.Fprintln(out, "hello world")
@@ -80,7 +77,6 @@ func TestSimple(t *testing.T) {
 		1,
 	}, {
 		func() Commander {
-			type conf struct{ F string }
 			return Simple("unknown-arg", "a description", &testSimpler{
 				run: func(ctx context.Context, in io.Reader, out, err io.Writer, fsys fs.FS) error {
 					fmt.Fprintln(out, "hello world")

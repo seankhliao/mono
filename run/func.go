@@ -25,6 +25,6 @@ func (s *simpleFunc) Run(ctx context.Context, stdin io.Reader, stdout, stderr io
 	return s.f(ctx, stdin, stdout, stderr, fsys)
 }
 
-func Func(name, desc string, f Runner) Commander {
+func Func(name, desc string, f Runner) CommanderRun {
 	return &simpleFunc{name, desc, f}
 }

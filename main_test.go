@@ -27,7 +27,7 @@ func TestLint(t *testing.T) {
 			"govulncheck",
 			[]string{"go", "tool", "govulncheck", "./..."},
 			nil,
-			[]any{"govulncheck doesn't work with GOEXPERIMENT=jsonv2"},
+			nil,
 		}, {
 			"cue vet",
 			[]string{"go", "tool", "cue", "vet", "-c=false", "./..."},

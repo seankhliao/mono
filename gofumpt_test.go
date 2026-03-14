@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"io/fs"
 	"os"
 	"path"
@@ -10,6 +11,7 @@ import (
 	"strings"
 	"testing"
 
+	"go.seankhliao.com/mono/diff"
 	"mvdan.cc/gofumpt/format"
 )
 
@@ -59,19 +61,7 @@ func TestGofumpt(t *testing.T) {
 				t.Fatal("failed to format:", err)
 			}
 			if !bytes.Equal(in, out) {
-				line, col := 1, 1
-				for i, c := range in {
-					if c == '\n' {
-						line++
-						col = 1
-					} else {
-						col++
-					}
-					if in[i] != out[i] {
-						t.Log("diff at index", i, "line", line, "col", col, "got", rune(in[i]), "want", rune(out[i]))
-						break
-					}
-				}
+				fmt.Fprintln(t.Output(), string(diff.HistogramDiff(in, out, "old", "new")))
 				t.Fatal("file not formatted")
 			}
 		})

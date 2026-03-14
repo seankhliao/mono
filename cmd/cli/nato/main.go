@@ -20,14 +20,12 @@ type Config struct {
 	args []string
 }
 
-// Flags implements [run.Simpler].
 func (c *Config) Flags(fset *flag.FlagSet, args **[]string) error {
 	*args = &c.args
 	return nil
 }
 
-// Run implements [run.Simpler].
-func (c *Config) Run(ctx context.Context, stdin io.Reader, stdout io.Writer, stderr io.Writer, fsys fs.FS) error {
+func (c *Config) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	if len(c.args) == 0 {
 		for i := range 'Z' - 'A' {
 			r := 'A' + i

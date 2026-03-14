@@ -34,6 +34,6 @@ func (s *simple) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Wri
 	return s.c.Run(ctx, stdin, stdout, stderr, fsys)
 }
 
-func Simple(name, desc string, c Simpler) Commander {
+func Simple(name, desc string, c Simpler) CommanderRun {
 	return &simple{name, desc, c}
 }

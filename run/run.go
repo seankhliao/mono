@@ -37,6 +37,8 @@ type CommanderRun interface {
 
 // CommanderGroup represents a command with subcommands.
 type CommanderGroup interface {
+	Commander
+
 	Commands() []Commander
 }
 

@@ -15,6 +15,6 @@ func (g *groupCommand) CmdName() string       { return g.name }
 func (g *groupCommand) CmdDesc() string       { return g.desc }
 func (g *groupCommand) Commands() []Commander { return g.cmds }
 
-func Group(name, desc string, cmds ...Commander) Commander {
+func Group(name, desc string, cmds ...Commander) CommanderGroup {
 	return &groupCommand{name, desc, cmds}
 }

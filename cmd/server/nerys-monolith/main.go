@@ -28,7 +28,7 @@ type ServeConfig struct {
 	h        run.HTTP
 }
 
-func (s *ServeConfig) Flags(fset *flag.FlagSet) error {
+func (s *ServeConfig) Flags(fset *flag.FlagSet, args **[]string) error {
 	fset.TextVar(&s.logLevel, "log.level", &s.logLevel, "log level")
 
 	s.h.HostPolicy = hostPolicy
