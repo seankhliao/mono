@@ -82,10 +82,10 @@ func (h *HTTP) Runner(logHandler slog.Handler, register func(*http.ServeMux)) Ru
 		registerDebug(mux)
 		register(mux)
 
-		// var handler http.Handler
-		handler := mux
+		var handler http.Handler
+		handler = mux
+		handler = serverVersion(mux)
 		// TODO: wrap in instrumentation
-		// TODO: register http handlers
 
 		svr := &http.Server{
 			Handler:     handler,
@@ -293,6 +293,22 @@ func listenFlag(addrFlag *[]string) func(string) error {
 		}
 		return nil
 	}
+}
+
+func serverVersion(h http.Handler) http.Handler {
+	var serverVersion string
+	bi, ok := debug.ReadBuildInfo()
+	if ok {
+		serverVersion = bi.Path + "@" + bi.Main.Version
+	}
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if serverVersion != "" {
+			w.Header().Set("server", serverVersion)
+		}
+
+		h.ServeHTTP(w, r)
+	})
 }
 
 func registerDebug(mux *http.ServeMux) {
