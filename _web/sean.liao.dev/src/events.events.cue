@@ -59,6 +59,10 @@ Events: [{
 	headline: "Ari Abdul"
 	price:    27.04
 }, {
+	_date:    "2026-03-19"
+	headline: "Reneé Rapp"
+	price:    90.50
+}, {
 	_date:    "2026-03-17"
 	headline: "KESHA"
 	price:    55.30
