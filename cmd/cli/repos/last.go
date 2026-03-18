@@ -10,16 +10,16 @@ import (
 	"path/filepath"
 )
 
-type lastCmd struct {
+type Last struct {
 	evalFile string
 }
 
-func (c *lastCmd) Flags(fset *flag.FlagSet, args **[]string) error {
-	fset.StringVar(&c.evalFile, "eval-file", "", "path to a file to output commands to eval")
+func (l *Last) Flags(fset *flag.FlagSet, args **[]string) error {
+	fset.StringVar(&l.evalFile, "eval-file", "", "path to a file to output commands to eval")
 	return nil
 }
 
-func (c *lastCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+func (l *Last) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	tmpDir, repos, err := tmpRepos()
 	if err != nil {
 		return fmt.Errorf("repos last: %w", err)
@@ -29,9 +29,9 @@ func (c *lastCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Wr
 
 	repoName := repos[len(repos)-1].Name()
 
-	var eval io.Writer = io.Discard
-	if c.evalFile != "" {
-		f, err := os.OpenFile(c.evalFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o644)
+	eval := io.Discard
+	if l.evalFile != "" {
+		f, err := os.OpenFile(l.evalFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o644)
 		if err != nil {
 			return fmt.Errorf("open eval file: %w", err)
 		}

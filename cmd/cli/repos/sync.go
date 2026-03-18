@@ -21,7 +21,7 @@ import (
 
 	"github.com/briandowns/spinner"
 	"github.com/google/go-github/v74/github"
-	"go.seankhliao.com/mono/cueconf"
+	"go.seankhliao.com/mono/run"
 	"golang.org/x/oauth2"
 )
 
@@ -29,45 +29,32 @@ const (
 	GithubTokenEnv = "GH_TOKEN"
 )
 
-//go:embed schema.cue
-var configSchema string
-
-type Config struct {
-	Parallel int
-
-	Upstream string
-	Origin   string
-
-	ExcludeRegexes []string
-}
-
-type ConfigRemote struct{}
-
-type ConfigSub struct {
+type Sync struct {
+	parallel   int
+	upstream   string
+	origin     string
+	exclude    []*regexp.Regexp
 	configFile string
 }
 
-func (c *ConfigSub) Flags(fs *flag.FlagSet, args **[]string) error {
-	fs.StringVar(&c.configFile, "config", "repos.cue", "path to config file")
-	return nil
+func (s *Sync) Flags(fset *flag.FlagSet, args **[]string) error {
+	fset.IntVar(&s.parallel, "parallel", 10, "parallel pulls")
+	fset.StringVar(&s.upstream, "upstream", "", "upstream url prefix, also the org to sync from")
+	fset.StringVar(&s.origin, "origin", "", "origin url prefix")
+	fset.StringVar(&s.configFile, "config", "repos.cue", "path to config file")
+	fset.Func("exclude", "regex where matching repos are excluded", func(ss string) error {
+		r, err := regexp.Compile(ss)
+		if err != nil {
+			return fmt.Errorf("compile regex for %q: %w", ss, err)
+		}
+		s.exclude = append(s.exclude, r)
+		return nil
+	})
+
+	return run.ChdirToParentFlagFile(fset, "repos.sync.txt")
 }
 
-func (c *ConfigSub) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-	config, err := cueconf.ForFile[Config](configSchema, "#SyncConfig", c.configFile, false)
-	if err != nil {
-		return fmt.Errorf("repos: decode config: %w", err)
-	}
-
-	err = runSync(stdout, config)
-	if err != nil {
-		return fmt.Errorf("repos sync: %w", err)
-	}
-	return nil
-}
-
-func runSync(stdout io.Writer, conf Config) error {
-	ctx := context.Background()
-
+func (s *Sync) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: os.Getenv(GithubTokenEnv)},
 	)
@@ -77,10 +64,10 @@ func runSync(stdout io.Writer, conf Config) error {
 	spin := spinner.New(spinner.CharSets[39], 300*time.Millisecond, spinner.WithWriter(stdout))
 	spin.Start()
 
-	remoteURL := cmp.Or(conf.Upstream, conf.Origin)
+	remoteURL := cmp.Or(s.upstream, s.origin)
 	org := path.Base(remoteURL)
 	spin.Suffix = "listing repos from org " + org
-	remoteRepos, err := allRemoteRepos(client, ctx, org, conf.ExcludeRegexes)
+	remoteRepos, err := s.allRemoteRepos(ctx, client, org)
 	if err != nil {
 		return fmt.Errorf("get remote repos: %w", err)
 	}
@@ -95,7 +82,7 @@ func runSync(stdout io.Writer, conf Config) error {
 	spin.Suffix = fmt.Sprintf("% 4d/% 4d working on repos...", 0, totalWork)
 
 	var wg sync.WaitGroup
-	limiter := make(chan struct{}, conf.Parallel)
+	limiter := make(chan struct{}, s.parallel)
 	resc := make(chan syncResult)
 
 	for _, repo := range download {
@@ -104,7 +91,7 @@ func runSync(stdout io.Writer, conf Config) error {
 			limiter <- struct{}{}
 			defer func() { <-limiter; wg.Done() }()
 
-			resc <- syncResult{"download", repo, downloadRemote(ctx, conf.Upstream, conf.Origin, repo)}
+			resc <- syncResult{"download", repo, downloadRemote(ctx, s.upstream, s.origin, repo)}
 		}(repo)
 	}
 	for _, repo := range update {
@@ -113,7 +100,7 @@ func runSync(stdout io.Writer, conf Config) error {
 			limiter <- struct{}{}
 			defer func() { <-limiter; wg.Done() }()
 
-			resc <- syncResult{"update", repo, updateRemote(ctx, conf.Upstream, conf.Origin, repo)}
+			resc <- syncResult{"update", repo, updateRemote(ctx, s.upstream, s.origin, repo)}
 		}(repo)
 	}
 	for _, repo := range prune {
@@ -156,16 +143,7 @@ type syncResult struct {
 	err    error
 }
 
-func allRemoteRepos(client *github.Client, ctx context.Context, org string, excludes []string) ([]string, error) {
-	excludeRes := make([]*regexp.Regexp, 0, len(excludes))
-	for i, exclude := range excludes {
-		re, err := regexp.Compile(exclude)
-		if err != nil {
-			return nil, fmt.Errorf("error compiling regex %d %q: %v", i, exclude, err)
-		}
-		excludeRes = append(excludeRes, re)
-	}
-
+func (s *Sync) allRemoteRepos(ctx context.Context, client *github.Client, org string) ([]string, error) {
 	var allRepos []string
 
 	pagesForOrg := 0
@@ -189,7 +167,7 @@ func allRemoteRepos(client *github.Client, ctx context.Context, org string, excl
 			if *repo.Archived {
 				continue
 			}
-			for _, re := range excludeRes {
+			for _, re := range s.exclude {
 				if re.MatchString(*repo.Name) {
 					continue nextRepo
 				}

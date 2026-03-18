@@ -16,11 +16,11 @@ func main() {
 	run.OSExec(run.Group(
 		"repos",
 		"tool for managing git repos",
-		run.Simple("sync", "sync repositories with upstream origins", &ConfigSub{}),
-		run.Simple("last", "switches to the newest temporary repository", &lastCmd{}),
-		run.Simple("new", "creates a new repository", &ConfigNew{}),
-		run.Simple("clean", "clean up temporary repositories", &cleanCmd{}),
-		run.Simple("config", "print the config", &configCmd{}),
+		run.Simple("sync", "sync repositories with upstream origins", &Sync{}),
+		run.Simple("last", "switches to the newest temporary repository", &Last{}),
+		run.Simple("new", "creates a new repository", &New{}),
+		run.Simple("clean", "clean up temporary repositories", &Clean{}),
+		run.Simple("config", "print the config", &Wrapper{}),
 	))
 }
 

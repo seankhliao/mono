@@ -14,11 +14,16 @@ import (
 	"github.com/briandowns/spinner"
 )
 
-type cleanCmd struct{}
+type Clean struct {
+	evalFile string
+}
 
-func (c *cleanCmd) Flags(fset *flag.FlagSet, args **[]string) error { return nil }
+func (c *Clean) Flags(fset *flag.FlagSet, args **[]string) error {
+	fset.StringVar(&c.evalFile, "eval-file", "", "path to a file to output commands to eval")
+	return nil
+}
 
-func (c *cleanCmd) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+func (c *Clean) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	tmpDir, repos, err := tmpRepos()
 	if err != nil {
 		return fmt.Errorf("repos clean: %w", err)

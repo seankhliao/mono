@@ -55,7 +55,7 @@ SOFTWARE.
 `
 )
 
-type ConfigNew struct {
+type New struct {
 	modPrefix string
 	srcPrefix string
 	name      string
@@ -63,20 +63,20 @@ type ConfigNew struct {
 	evalFile  string
 }
 
-func (c *ConfigNew) Flags(fs *flag.FlagSet, args **[]string) error {
-	fs.StringVar(&c.modPrefix, "module-prefix", "go.seankhliao.com", "go module prefix")
-	fs.StringVar(&c.srcPrefix, "src-prefix", "https://github.com/seankhliao", "vcs source prefix")
-	fs.StringVar(&c.name, "name", "", "create a named repository in the current directory")
-	fs.BoolVar(&c.jj, "jj", true, "use jj as the vcs tool")
-	fs.StringVar(&c.evalFile, "eval-file", "", "path to a file to output commands to eval")
+func (n *New) Flags(fs *flag.FlagSet, args **[]string) error {
+	fs.StringVar(&n.modPrefix, "module-prefix", "go.seankhliao.com", "go module prefix")
+	fs.StringVar(&n.srcPrefix, "src-prefix", "https://github.com/seankhliao", "vcs source prefix")
+	fs.StringVar(&n.name, "name", "", "create a named repository in the current directory")
+	fs.BoolVar(&n.jj, "jj", true, "use jj as the vcs tool")
+	fs.StringVar(&n.evalFile, "eval-file", "", "path to a file to output commands to eval")
 	return nil
 }
 
-func (c *ConfigNew) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
+func (n *New) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	var base string
-	if c.name == "" {
+	if n.name == "" {
 		var err error
-		c.name, err = newTestrepoVersion()
+		n.name, err = newTestrepoVersion()
 		if err != nil {
 			return fmt.Errorf("repos new: get repo sequence: %w", err)
 		}
@@ -94,9 +94,9 @@ func (c *ConfigNew) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.
 		}
 	}
 
-	var eval io.Writer = io.Discard
-	if c.evalFile != "" {
-		f, err := os.OpenFile(c.evalFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o644)
+	eval := io.Discard
+	if n.evalFile != "" {
+		f, err := os.OpenFile(n.evalFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o644)
 		if err != nil {
 			return fmt.Errorf("open eval file: %w", err)
 		}
@@ -104,7 +104,7 @@ func (c *ConfigNew) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.
 		eval = f
 	}
 
-	err := runNew(eval, base, c.srcPrefix, c.modPrefix, c.name, c.jj)
+	err := runNew(eval, base, n.srcPrefix, n.modPrefix, n.name, n.jj)
 	if err != nil {
 		return fmt.Errorf("repos new: %w", err)
 	}
