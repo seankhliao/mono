@@ -16,7 +16,7 @@ And add the following into shell config:
 
 ```sh
 function t() {
-    command t -i "$@"
+    command t -- -i "$@"
     source /tmp/t_aliases 2>/dev/null
 }
 ```
