@@ -13,6 +13,10 @@ Description: """
 	"""
 
 Events: [{
+	_date:    "2026-12-01"
+	headline: "The Pretty Reckless"
+	price:    50.45
+}, {
 	_date:    "2026-11-12"
 	headline: "Hatsune Miku"
 	price:    91.10
@@ -64,8 +68,21 @@ Events: [{
 	price:    90.50
 }, {
 	_date:    "2026-03-17"
-	headline: "KESHA"
+	headline: "Kesha"
 	price:    55.30
+	support: ["Sizzy Rocket"]
+	text: """
+		We open with [Sizzy Rocket],
+		fine but not super captivating.
+		Then came [Kesha].
+		Music often changes for live shows,
+		but with her previous legal disputes on top of that,
+		it felt like we were only getting fragments of the songs we knew.
+		It's still obvious why her music is popular at clubs,
+		the entire venue felt like one at times.
+		Her vocal prowess felt like it really only shone through
+		for the last song, Praying though.
+		"""
 }, {
 	_date:    "2026-03-10"
 	headline: "Poppy"
@@ -2678,6 +2695,7 @@ Links: {
 		"Karin Ann":                                   "https://www.youtube.com/karinann"
 		"Katelyn Tarver":                              "https://www.youtube.com/@katelyntarver"
 		"Katy Perry":                                  "https://www.youtube.com/@KatyPerry"
+		"Kesha":                                       "https://www.youtube.com/@kesha"
 		"kikuo":                                       "https://www.youtube.com/@kikuo_sound"
 		"Kimbra":                                      "https://www.youtube.com/@kimbramusic"
 		"King Mala":                                   "https://www.youtube.com/@KiNGMALA"
@@ -2792,6 +2810,7 @@ Links: {
 		"Shiori Novella":                              "https://www.youtube.com/@ShioriNovella"
 		"Shiranui Flare":                              "https://www.youtube.com/@ShiranuiFlare"
 		"Shirogane Noel":                              "https://www.youtube.com/@ShiroganeNoel"
+		"Sizzy Rocket":                                "https://www.youtube.com/@SizzyRocket"
 		"Skillet":                                     "https://www.youtube.com/@skilletband"
 		"Snow Wife":                                   "https://www.youtube.com/@ITSSNOWWIFE"
 		"snuggle":                                     "https://www.youtube.com/@snuggleblog"
