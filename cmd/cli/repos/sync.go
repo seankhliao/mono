@@ -25,11 +25,8 @@ import (
 	"golang.org/x/oauth2"
 )
 
-const (
-	GithubTokenEnv = "GH_TOKEN"
-)
-
 type Sync struct {
+	tokenEnv   string
 	parallel   int
 	upstream   string
 	origin     string
@@ -38,6 +35,7 @@ type Sync struct {
 }
 
 func (s *Sync) Flags(fset *flag.FlagSet, args **[]string) error {
+	fset.StringVar(&s.tokenEnv, "tokeb", "GH_TOKEN", "env variable to read github token from")
 	fset.IntVar(&s.parallel, "parallel", 10, "parallel pulls")
 	fset.StringVar(&s.upstream, "upstream", "", "upstream url prefix, also the org to sync from")
 	fset.StringVar(&s.origin, "origin", "", "origin url prefix")
@@ -56,7 +54,7 @@ func (s *Sync) Flags(fset *flag.FlagSet, args **[]string) error {
 
 func (s *Sync) Run(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv(GithubTokenEnv)},
+		&oauth2.Token{AccessToken: os.Getenv(s.tokenEnv)},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
