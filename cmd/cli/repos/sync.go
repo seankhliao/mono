@@ -26,20 +26,20 @@ import (
 )
 
 type Sync struct {
-	tokenEnv   string
-	parallel   int
-	upstream   string
-	origin     string
-	exclude    []*regexp.Regexp
-	configFile string
+	tokenEnv string
+	parallel int
+	upstream string
+	origin   string
+	exclude  []*regexp.Regexp
+	evalFile string
 }
 
 func (s *Sync) Flags(fset *flag.FlagSet, args **[]string) error {
-	fset.StringVar(&s.tokenEnv, "tokeb", "GH_TOKEN", "env variable to read github token from")
+	fset.StringVar(&s.tokenEnv, "token", "GH_TOKEN", "env variable to read github token from")
 	fset.IntVar(&s.parallel, "parallel", 10, "parallel pulls")
 	fset.StringVar(&s.upstream, "upstream", "", "upstream url prefix, also the org to sync from")
 	fset.StringVar(&s.origin, "origin", "", "origin url prefix")
-	fset.StringVar(&s.configFile, "config", "repos.cue", "path to config file")
+	fset.StringVar(&s.evalFile, "eval-file", "", "path to file for printing commands to eval")
 	fset.Func("exclude", "regex where matching repos are excluded", func(ss string) error {
 		r, err := regexp.Compile(ss)
 		if err != nil {
