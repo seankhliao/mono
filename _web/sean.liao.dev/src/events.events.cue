@@ -33,6 +33,10 @@ Events: [{
 	headline: "INNA"
 	price:    67.80
 }, {
+	_date:    "2026-08-02"
+	headline: "Broken by the Scream"
+	price:    34.89
+}, {
 	_date:    "2026-07-19"
 	headline: "ATARASHII GAKKO"
 	price:    57.10
