@@ -70,6 +70,15 @@ Events: [{
 	_date:    "2026-03-19"
 	headline: "Reneé Rapp"
 	price:    90.50
+	support: ["Absolutely"]
+	text: """
+		I think [Absolutely] was good,
+		though not super memorable.
+		Watching [Reneé Rapp] on the other hand
+		felt like watching one long aura farming session...
+		The popular, cool blonde girl vibes were strong,
+		as was the resonance with the screaming audience.
+		"""
 }, {
 	_date:    "2026-03-17"
 	headline: "Kesha"
@@ -2544,6 +2553,7 @@ Links: {
 	]
 	known: {
 		"6arelyhuman":                                 "https://www.youtube.com/@6arelyhuman"
+		"Absolutely":                                  "https://www.youtube.com/@the.absolutely"
 		"Ad Infinitum":                                "https://www.youtube.com/@AdInfinitumOfficial"
 		"Ado":                                         "https://www.youtube.com/@Ado1024"
 		"Against the Current":                         "https://www.youtube.com/@againstthecurrent"
@@ -2797,6 +2807,7 @@ Links: {
 		"Rebecca Black":                               "https://www.youtube.com/@rebecca"
 		"Rebmoe":                                      "https://www.youtube.com/@TheMoestyle"
 		"RedHook":                                     "https://www.youtube.com/@weareredhook"
+		"Reneé Rapp":                                  "https://www.youtube.com/@reneerapp"
 		"renforshort":                                 "https://www.youtube.com/@renforshortofficial"
 		"Rizzle Kicks":                                "https://www.youtube.com/@RizzleKicks"
 		"RØRY":                                        "https://www.youtube.com/@its_r_o_r_y"
