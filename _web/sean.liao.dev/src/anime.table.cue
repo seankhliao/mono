@@ -178,6 +178,7 @@ _completed: [
 	["2025-08-17", 7, 53833, ["Watashi no Oshi wa Akuyaku Reijou", "I'm in Love with the Villainess"]],
 	["2024-06-16", 8, 35968, ["Wotaku ni Koi wa Wotaku", "Wotakoi: Love is Hard for Otaku"]],
 	["2024-06-05", 8, 35968, ["Wotaku ni Koi wa Muzukashii OVA", "Wotakoi: Love is Hard for Otaku OVA"]],
+	["2026-03-29", 8, 59644, ["Yasei no Last Boss ga Arawareta!", "A Wild Last Boss Appeared!"]],
 	["2025-08-27", 8, 32615, ["Youjo Senki", "Saga of Tanya the Evil"]],
 	["2025-08-28", 8, 49236, ["Youjo Senki: Sabaku no Pasta Daisakusen", "Saga of Tanya the Evil: Operation Desert Pasta"]],
 	["2025-08-28", 8, 37055, ["Youjo Senki Movie", "Saga of Tanya the Evil: The Movie"]],
