@@ -55,17 +55,13 @@ Events: [{
 	price_jpy: 19000
 	price:     88.81
 }, {
-	_date:    "2026-05-13"
-	headline: "Au/Ra"
-	price:    27.25
-}, {
 	_date:    "2026-04-20"
 	headline: "Maggie Lindemann"
 	price:    34.60
 }, {
-	_date:    "2026-03-22"
-	headline: "Ari Abdul"
-	price:    27.04
+	_date:    "2026-04-12"
+	headline: "Kiki Rockwell"
+	price:    23.35
 }, {
 	_date:    "2026-03-19"
 	headline: "Reneé Rapp"
