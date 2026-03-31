@@ -57,6 +57,7 @@ _completed: [
 	["2024-09-27", 8, 52701, ["Dungeon Meshi", "Delicious in Dungeon"]],
 	["2025-12-25", 8, 57334, ["Dandada", "Dandadan"]],
 	["2024-05-27", 6, 52081, ["Edomae Elf", "Otaku Elf"]],
+	["2026-03-31", 7, 57859, ["Egao no Taenai Shokuba desu", "A Mangaka's Weirdly Wonderful Workplace"]],
 	["2025-10-01", 7, 60508, ["Food Court de, Mata Ashita", "See You Tomorrow at the Food Court"]],
 	["2025-10-19", 8, 39545, ["Fragtime", "Fragtime"]],
 	["2024-10-08", 6, 51212, ["Futoku no Guild", "Immoral Guild"]],
