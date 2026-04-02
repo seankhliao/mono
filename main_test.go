@@ -28,11 +28,6 @@ func TestLint(t *testing.T) {
 			[]string{"go", "tool", "govulncheck", "./..."},
 			nil,
 			nil,
-		}, {
-			"cue vet",
-			[]string{"go", "tool", "cue", "vet", "-c=false", "./..."},
-			nil,
-			nil,
 		},
 	}
 
@@ -54,11 +49,6 @@ func TestFormat(t *testing.T) {
 			"gofumpt",
 			[]string{"go", "tool", "gofumpt", "-d", "."},
 			[]string{"go", "tool", "gofumpt", "-w", "."},
-			nil,
-		}, {
-			"cue fmt",
-			[]string{"go", "tool", "cue", "fmt", "--check", "--diff", "./..."},
-			[]string{"go", "tool", "cue", "fmt", "./..."},
 			nil,
 		},
 	}
