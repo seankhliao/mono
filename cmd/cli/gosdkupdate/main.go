@@ -161,32 +161,77 @@ func updateGo(ctx context.Context, c *Config, stdout io.Writer) error {
 	if c.Tip {
 		spin.Suffix = fmt.Sprintf("%2d/%2d installing tip", toUpdate, toUpdate)
 
-		cmd := exec.CommandContext(ctx, c.Bootstrap, "install", "golang.org/dl/gotip@latest")
-		cmd.Env = baseEnv
-		out, err := cmd.CombinedOutput()
+		home, err := os.UserHomeDir()
 		if err != nil {
-			return fmt.Errorf("download gotip: %w\n%s", err, out)
+			return fmt.Errorf("get home dir: %w", err)
 		}
 
-		gotip := filepath.Join(gobin, "gotip")
-		cmd = exec.CommandContext(ctx, gotip, "download")
-		cmd.Env = baseEnv
-		out, err = cmd.CombinedOutput()
-		if err != nil {
-			return fmt.Errorf("gotip download: %w\n%s", err, out)
+		gotipDir := filepath.Join(home, "sdk/go")
+
+		var isJJ, isGit bool
+		vcsJJ, vcsGit := filepath.Join(gotipDir, ".jj"), filepath.Join(".git")
+		_, err = os.Stat(vcsJJ)
+		if err == nil {
+			isJJ = true
+		}
+		_, err = os.Stat(vcsGit)
+		if err == nil {
+			isGit = true
 		}
 
-		cmd = exec.CommandContext(ctx, gotip, "env", "GOROOT")
-		cmd.Env = baseEnv
-		out, err = cmd.CombinedOutput()
-		if err != nil {
-			return fmt.Errorf("gotip env GOROOT: %w\n%s", err, out)
+		if isJJ {
+			cmd := exec.CommandContext(ctx, "jj", "git", "fetch")
+			cmd.Dir = gotipDir
+			_, err := cmd.CombinedOutput()
+			if err != nil {
+				return fmt.Errorf("update go repo: %w", err)
+			}
+			cmd = exec.CommandContext(ctx, "jj", "new", "master")
+			cmd.Dir = gotipDir
+			_, err = cmd.CombinedOutput()
+			if err != nil {
+				return fmt.Errorf("move workspace ref: %w", err)
+			}
+
+		} else if isGit {
+			cmd := exec.CommandContext(ctx, "git", "checkout", "master")
+			cmd.Dir = gotipDir
+			_, err := cmd.CombinedOutput()
+			if err != nil {
+				return fmt.Errorf("checkout master: %w", err)
+			}
+			cmd = exec.CommandContext(ctx, "git", "pull", "--ff-only")
+			cmd.Dir = gotipDir
+			_, err = cmd.CombinedOutput()
+			if err != nil {
+				return fmt.Errorf("git pull: %w", err)
+			}
+
+		} else {
+			cmd := exec.CommandContext(ctx, "jj", "git", "clone", "https://go.googlesource.com/go", gotipDir)
+			_, err := cmd.CombinedOutput()
+			if err != nil {
+				return fmt.Errorf("clone go repo: %w", err)
+			}
 		}
-		p := filepath.Join(string(bytes.TrimSpace(out)), "bin/go")
-		np := filepath.Join(gobin, "go")
-		err = os.Symlink(p, np)
+
+		srcDir := filepath.Join(gotipDir, "src")
+		cmd := exec.CommandContext(ctx, "bash", "./make.bash")
+		cmd.Dir = srcDir
+		_, err = cmd.CombinedOutput()
 		if err != nil {
-			return fmt.Errorf("symlink %s => %s: %w", np, p, err)
+			return fmt.Errorf("build go: %w", err)
+		}
+
+		gotipGo := filepath.Join(gotipDir, "bin/go")
+		gopath := os.Getenv("GOPATH")
+		if gopath == "" {
+			return fmt.Errorf("GOPATH not set in env")
+		}
+		gobinGo := filepath.Join(gopath, "bin/go")
+		err = os.Symlink(gotipDir, gobinGo)
+		if err != nil {
+			return fmt.Errorf("symlink %s => %s: %w", gobinGo, gotipGo, err)
 		}
 	}
 
