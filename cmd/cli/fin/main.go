@@ -4,13 +4,11 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
-	"encoding/csv"
 	"flag"
 	"fmt"
 	"io"
 	"io/fs"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -29,63 +27,6 @@ func main() {
 		ConvertCommand(),
 		TradingCommand(),
 	))
-}
-
-func runWrap(f func(stdout, stderr io.Writer) error) run.Runner {
-	return func(ctx context.Context, stdin io.Reader, stdout, stderr io.Writer, fsys fs.FS) error {
-		return f(stdout, stderr)
-	}
-}
-
-type Convert struct {
-	filepath string
-	hsbcCard string
-}
-
-func ConvertCommand() run.Commander {
-	c := &Convert{}
-	return run.Group(
-		"convert",
-		"convert card statements to fin data",
-		run.Func("amex", "convert amex statements", runWrap(c.amex)),
-		run.Func("chase", "convert chase statements", runWrap(c.chase)),
-		run.Func("hsbc", "convert hsbc statements", runWrap(c.hsbc)),
-		run.Func("trading", "convert trading212 statements", runWrap(c.trading)),
-		run.Func("chasetxt", "convert copied chase pdf statements", runWrap(c.chasetxt)),
-		run.Func("chasesave", "convert chase saver statements", runWrap(c.chasesave)),
-		run.Func("virgin", "convert virgin credit card transactions", runWrap(c.virgin)),
-	)
-}
-
-func (c *Convert) register(fs *flag.FlagSet) {
-	fs.StringVar(&c.filepath, "file", "", "path to statement file")
-	fs.StringVar(&c.hsbcCard, "hsbc", "debit", "hsbc account debit or credit")
-}
-
-func (c *Convert) Flags(fset *flag.FlagSet, args **[]string) error {
-	c.register(fset)
-	return nil
-}
-
-func (c *Convert) reader() ([][]string, error) {
-	if c.filepath == "" {
-		return nil, fmt.Errorf("no file given")
-	}
-	b, err := os.ReadFile(c.filepath)
-	if err != nil {
-		return nil, fmt.Errorf("read file: %w", err)
-	}
-	cr := csv.NewReader(bytes.NewReader(b))
-
-	if path.Ext(c.filepath) == ".tsv" {
-		cr.Comma = '\t'
-	}
-
-	records, err := cr.ReadAll()
-	if err != nil {
-		return nil, fmt.Errorf("read all records: %w", err)
-	}
-	return records, nil
 }
 
 type View struct {

@@ -8,7 +8,7 @@ var categories = []struct {
 	category []string // vendor provided category
 }{
 	{
-		"AMX",
+		"AMC",
 		[]string{
 			"american exp",
 		},
