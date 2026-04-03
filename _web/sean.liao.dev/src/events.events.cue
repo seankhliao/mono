@@ -55,6 +55,10 @@ Events: [{
 	price_jpy: 19000
 	price:     88.81
 }, {
+	_date:    "2026-04-24"
+	headline: "YUNGBLUD"
+	price:    69.10
+}, {
 	_date:    "2026-04-20"
 	headline: "Maggie Lindemann"
 	price:    34.60
