@@ -44,20 +44,59 @@ that iterates over the other directories
 of the repo, which map to `$cluster/$application_instance` directory trees,
 generating an Application each.
 
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+spec:
+  generators:
+    - git:
+        files:
+          - "clusters/**/kustomization.yaml"
+        repoURL: https://github.com/my/repo
+        revision: main
+        values:
+          account: "{{path[1]}}"
+          region: "{{path[2]}}"
+          cluster: "{{path[3]}}"
+          app: "{{path[4]}}"
+```
+
 ##### _mgmt1-argocd-kustomize_ Application
 
 Targeting the management cluster where argocd lives is an application for extra argocd configs.
 This contains an appset with the
-[merge generator](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Merge/)
+[matrix generator](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Matrix/)
 configured with the
 [scm generator](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-SCM-Provider/)
-to find labeled repos, and the
+to find labeled repos with the manifest file, and the
 [git files generator](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Git/#git-generator-files)
-to only select repos with the correct manifest file.
+to read some data out of the file.
 
 While in theory the labels aren't strictly necessary,
 with over a thousand repos in the org,
 performance degrades quickly, so labels exist as a first layer filter.
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+spec:
+  generators:
+    - matrix:
+        - generators:
+            - scmProvider:
+                github:
+                  organization: my-org
+                  appSecretName: ...
+                filters:
+                  - labelMatch: "^argo-apps$"
+                    pathExists:
+                      - argo-apps.yaml
+            - git:
+                repoURL: https://github.com/{{ .organization }}/{{ .repository }}
+                revision: "{{ .branch }}"
+                files:
+                  - path: argo-apps.yaml
+```
 
 ##### _repo1-apps_ Application
 
@@ -67,17 +106,36 @@ It's used as a remote values file for a shared helm chart
 using argocd's [multi source support](https://argo-cd.readthedocs.io/en/latest/user-guide/multiple_sources/#helm-value-files-from-external-git-repository).
 
 This application contains an appset per application (repos can have multiple),
-again using the
-[merge generator](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Merge/)
-but this time with a
-[list generator](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-List/)
-for declaring the environments, merging with the
+using multiple instances of the
 [cluster generator](https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Cluster/)
 to map to specific clusters for each environment.
 
 This is possible as our clusters are generally dedicated to one environment each
 and we labeled them appropriately.
 Labels go on the [Secret containing cluster credentials for argocd](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#clusters).
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+spec:
+  generators:
+    # this is actually helm chart for loop over the defined environments
+    - clusters:
+        selector:
+          matchExpressions:
+            ...
+      values:
+        envName: stg
+        ...
+    - clusters:
+        selector:
+          matchExpressions:
+            ...
+      values:
+        envName: prod
+        ...
+    ...
+```
 
 ##### _repo1-app1-cluster1_ Application
 
