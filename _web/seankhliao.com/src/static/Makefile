@@ -76,3 +76,18 @@ pruned-module-graph.avif: pruned-module-graph.png
 appset-hierarchy: appset-hierarchy.excalidraw.avif
 appset-hierarchy.excalidraw.avif: appset-hierarchy.excalidraw.png
 	magick $? $@
+
+.PHONY: promoter-1env
+promoter-1env: promoter-1env.excalidraw.avif
+promoter-1env.excalidraw.avif: promoter-1env.excalidraw.png
+	magick $? $@
+
+.PHONY: promoter-resources
+promoter-resources: promoter-resources.excalidraw.avif
+promoter-resources.excalidraw.avif: promoter-resources.excalidraw.png
+	magick $? $@
+
+.PHONY: promoter-xenv
+promoter-xenv: promoter-xenv.excalidraw.avif
+promoter-xenv.excalidraw.avif: promoter-xenv.excalidraw.png
+	magick $? $@

@@ -31,6 +31,8 @@ and my app should automagically be deployed everywhere.
 
 ![appset hierarchy](/static/appset-hierarchy.excalidraw.png)
 
+#### _application_ hierarchy
+
 ##### _bootstrap_ Application
 
 We deploy argocd itself as a helm chart in terraform....
