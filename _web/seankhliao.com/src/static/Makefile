@@ -71,3 +71,8 @@ github-merge-queue.avif: github-merge-queue.png
 pruned-module-graph: pruned-module-graph.avif
 pruned-module-graph.avif: pruned-module-graph.png
 	magick $? $@
+
+.PHONY: appset-hierarchy
+appset-hierarchy: appset-hierarchy.excalidraw.avif
+appset-hierarchy.excalidraw.avif: appset-hierarchy.excalidraw.png
+	magick $? $@
