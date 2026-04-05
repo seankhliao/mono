@@ -22,7 +22,7 @@ While some of our infrastrcture used [ApplicationSet](https://argo-cd.readthedoc
 driven from files in a single repo.
 
 Since our application definitions were sufficiently different from regular services,
-plus the fact that we needed some extra manifests,
+plus the fact that we needed some extra manifests [for promotion](/blog/12026-04-06-gitops-promoter/)
 I started from scratch.
 
 My goal: just label a repo,
