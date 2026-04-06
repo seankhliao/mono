@@ -155,6 +155,7 @@ _completed: [
 	["2025-10-21", 8, 59459, ["Silent Witch: Chinmoku no Majo no Kakushigoto", "Secrets of the Silent Witch"], "**Monica** is so cool"],
 	["2024-05-07", 10, 52991, ["Sousou no Frieren", "Frieren: Beyond Journey's End"]],
 	["2024-05-18", 8, 56885, ["Sousou no Frieren: ●● no Mahou", "Frieren: Beyond Journey's End Mini Anime"]],
+	["2026-04-06", 9, 59978, ["Sousou no Frieren 2nd Season", "Frieren: Beyond Journey's End Season 2"]],
 	["2024-07-02", 7, 50265, ["Spy x Family", "SPY×FAMILY"]],
 	["2024-08-08", 7, 50602, ["Spy x Family Part 2", "SPY×FAMILY"]],
 	["2025-02-02", 7, 53887, ["Spy x Family Season 2", "SPY×FAMILY Season 2"]],
