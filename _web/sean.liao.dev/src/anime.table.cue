@@ -109,6 +109,7 @@ _completed: [
 	["2024-06-29", 7, 40571, ["Majo no Tabitabi", "Wandering Witch: The Journey of Elaina"], "**Elaina** is confidently cute"],
 	["2024-12-19", 8, 57524, ["Make Heroine ga Oosugiru!", "Makeine: Too Many Losing Heroines!"]],
 	["2025-03-27", 7, 49470, ["Mamahaha no Tsurego ga Motokano datta", "My Stepmom's Daughter Is My Ex"]],
+	["2026-04-07", 7, 61211, ["Mayonaka Heart Tune", "Tune In to the Midnight Heart"]],
 	["2024-10-28", 7, 52973, ["Megami no Café Terrace", "The Café Terrace and Its Goddesses"]],
 	["2024-06-21", 8, 39535, ["Mushoku Tensei: Isekai Ittara Honki Dasu", "Mushoku Tensei: Jobless Reincarnation"], "**Roxy** is cute (and surrounded by creeps), **Eris** is wild in a cute way"],
 	["2024-06-22", 8, 45576, ["Mushoku Tensei: Isekai Ittara Honki Dasu Part 2", "Mushoku Tensei: Jobless Reincarnation Part 2"]],
