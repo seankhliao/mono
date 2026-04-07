@@ -81,7 +81,7 @@ _completed: [
 	["2026-03-22", 8, 61903, ["Kaguya-sama wa Kokurasetai: Otona e no Kaidan", "Kaguya-sama: Love Is War - Stairway to Adulthood"]],
 	["2024-05-11", 8, 40221, ["Kami no Tou", "Tower of God"]],
 	["2024-12-11", 7, 52635, ["Kami no Tou: Ouji no Kikan", "Tower of God Season 2: Return of the Prince"]],
-	["2026-04-3", 7, 61782, ["Kirei ni Shitemoraemasu ka", "Wash It All Away"]],
+	["2026-04-03", 7, 61782, ["Kirei ni Shitemoraemasu ka", "Wash It All Away"]],
 	["2024-07-22", 7, 5042, ["Kiss x Sis (OVA)", "Kiss x Sis"]],
 	["2024-09-02", 6, 7593, ["Kiss x Sis (TV)", "Kiss x Sis"]],
 	["2024-05-31", 7, 14713, ["Kamisama Hajimemashita", "Kamisama Kiss"]],
