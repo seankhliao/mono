@@ -323,11 +323,11 @@ func (a *App) selectNamespace() error {
 		}
 		b, err = json.Marshal(nsCache)
 		if err != nil {
-			a.lg.Debug("marshal ns cache file", slog.String("err", err.Error()))
+			a.lg.Error("marshal ns cache file", slog.String("err", err.Error()))
 		} else {
 			err = os.WriteFile(cacheFile, b, 0o644)
 			if err != nil {
-				a.lg.Debug("write ns cache file", slog.String("file", cacheFile), slog.String("err", err.Error()))
+				a.lg.Error("write ns cache file", slog.String("file", cacheFile), slog.String("err", err.Error()))
 			}
 		}
 	}
