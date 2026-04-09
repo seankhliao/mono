@@ -68,6 +68,7 @@ _completed: [
 	["2024-08-26", 7, 17729, ["Grisaia no Kajitsu", "The Fruit of Grisaia"]],
 	["2025-08-12", 7, 55997, ["Guild no Uketsukejou desu ga, Zangyou wa Iya nanode Boss wo Solo Toubatsu Shiyou to Omoimasu", "I May Be a Guild Receptionist, but I'll Solo Any Boss to Clock Out on Time"]],
 	["2026-02-01", 7, 60658, ["Hibi wa Sugiredo Meshi Umashi", "Food for the Soul"]],
+	["2026-04-09", 7, 55774, ["Himesama \"Goumon\" no Jikan desu", "'Tis Time for \"Torture,\" Princess"]],
 	["2024-05-27", 5, 51265, ["Inu ni Nattara Suki na Hito ni Hirowareta", "My Life as Inukai-san's Dog"]],
 	["2024-05-27", 5, 54225, ["Inu ni Nattara Suki na Hito ni Hirowareta Special", "My Life as Inukai-sanâs Dog. OVA"]],
 	["2025-01-19", 7, 44524, ["Isekai Meikyuu de Harem wo", "Harem in the Labyrinth of Another World"]],
