@@ -229,7 +229,7 @@ func updateGo(ctx context.Context, c *Config, stdout io.Writer) error {
 			return fmt.Errorf("GOPATH not set in env")
 		}
 		gobinGo := filepath.Join(gopath, "bin/go")
-		err = os.Symlink(gotipDir, gobinGo)
+		err = os.Symlink(gotipGo, gobinGo)
 		if err != nil {
 			return fmt.Errorf("symlink %s => %s: %w", gobinGo, gotipGo, err)
 		}
