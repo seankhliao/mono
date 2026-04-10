@@ -217,6 +217,7 @@ func updateGo(ctx context.Context, c *Config, stdout io.Writer) error {
 
 		srcDir := filepath.Join(gotipDir, "src")
 		cmd := exec.CommandContext(ctx, "bash", "./make.bash")
+		cmd.Env = append(cmd.Env, "GOENV=off")
 		cmd.Dir = srcDir
 		_, err = cmd.CombinedOutput()
 		if err != nil {
