@@ -213,14 +213,12 @@ func (g *GitHost) authState(r *http.Request) UserID {
 
 	var token AuthToken
 	user, pass, ok := r.BasicAuth()
+	g.log.Info("basic_auth", "user", user, "pass", pass, "ok", ok)
 	if strings.HasPrefix(cookiePrefix, pass) {
 		token = AuthToken(pass)
 	} else if ok {
 		got := argon2.IDKey([]byte(pass), []byte(user), 1, 64*1024, 4, 32)
 		wantHex := g.users[UserID(user)].Argon2ID
-
-		g.log.Info("authstate", "user", user, "wantHex", wantHex)
-
 		want, err := hex.DecodeString(wantHex)
 		if err == nil && subtle.ConstantTimeCompare(got, []byte(want)) == 1 {
 			return UserID(user)
