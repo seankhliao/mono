@@ -67,7 +67,7 @@ func (g *GitHost) Flags(fset *flag.FlagSet) error {
 }
 
 func (g *GitHost) Register(mux *http.ServeMux, logh slog.Handler) error {
-	mux.Handle(fmt.Sprintf("GET %s /static/cgit/", g.Host), http.StripPrefix("/static/cgit", http.FileServer(http.Dir(g.cgitStatic))))
+	mux.Handle(fmt.Sprintf("GET %s/static/cgit/", g.Host), http.StripPrefix("/static/cgit", http.FileServer(http.Dir(g.cgitStatic))))
 
 	mux.HandleFunc(fmt.Sprintf("GET %s/", g.Host), g.handleCgit)
 
@@ -97,9 +97,6 @@ func (g *GitHost) Register(mux *http.ServeMux, logh slog.Handler) error {
 func (g *GitHost) handleCgit(rw http.ResponseWriter, r *http.Request) {
 	userID := g.authState(r)
 	cgitrcPath := g.users[userID].cgitrcPath
-
-	b, _ := os.ReadFile(cgitrcPath)
-	fmt.Println(string(cgitrcPath), "contents:\n", string(b))
 
 	c := &cgi.Handler{
 		Path: g.cgitPath,
