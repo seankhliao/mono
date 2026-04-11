@@ -86,6 +86,11 @@ func (g *GitHost) Register(mux *http.ServeMux, logh slog.Handler) error {
 		return fmt.Errorf("prepare config: %w", err)
 	}
 
+	err = os.MkdirAll(g.Dir, 0o755)
+	if err != nil {
+		return fmt.Errorf("ensure dir: %w", err)
+	}
+
 	return nil
 }
 
