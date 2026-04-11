@@ -198,7 +198,7 @@ func (g *GitHost) readConfig() error {
 			os.MkdirAll(d, 0o755)
 			cmd := exec.CommandContext(context.TODO(), g.gitPath, "init", "--bare")
 			cmd.Dir = d
-			err := cmd.Run()
+			err = cmd.Run()
 			if err != nil {
 				return fmt.Errorf("git init %s: %w", repo.ID, err)
 			}
@@ -207,6 +207,18 @@ func (g *GitHost) readConfig() error {
 			err = os.WriteFile(filepath.Join(d, "git-daemon-export-ok"), []byte("ok"), 0o644)
 			if err != nil {
 				return fmt.Errorf("touch %s git-daemon-export-ok: %w", repo.ID, err)
+			}
+		}
+
+		cmd := exec.CommandContext(context.TODO(), g.gitPath, "config", "get", "http.receivepack")
+		cmd.Dir = d
+		out, err := cmd.CombinedOutput()
+		if err != nil || string(bytes.TrimSpace(out)) != "true" {
+			cmd = exec.CommandContext(context.TODO(), g.gitPath, "config", "set", "http.receivepack", "true")
+			cmd.Dir = d
+			err = cmd.Run()
+			if err != nil {
+				return fmt.Errorf("enable repo write %s: %w", repo.ID, err)
 			}
 		}
 
