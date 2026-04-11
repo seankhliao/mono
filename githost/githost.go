@@ -193,7 +193,7 @@ func (g *GitHost) readConfig() error {
 		g.repos[repo.ID] = repo
 
 		d := filepath.Join(g.Dir, string(repo.ID))
-		_, err := os.Stat(d)
+		des, err := os.ReadDir(d)
 		if errors.Is(err, fs.ErrNotExist) {
 			os.MkdirAll(d, 0o755)
 			cmd := exec.CommandContext(context.TODO(), g.gitPath, "init", "--bare")
@@ -202,7 +202,12 @@ func (g *GitHost) readConfig() error {
 			if err != nil {
 				return fmt.Errorf("git init %s: %w", repo.ID, err)
 			}
-
+		}
+		if !slices.ContainsFunc(des, func(d os.DirEntry) bool { return d.Name() == "git-daemon-export-ok" }) {
+			err = os.WriteFile(filepath.Join(d, "git-daemon-export-ok"), []byte("ok"), 0o644)
+			if err != nil {
+				return fmt.Errorf("touch %s git-daemon-export-ok: %w", repo.ID, err)
+			}
 		}
 
 	}
