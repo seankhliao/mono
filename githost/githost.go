@@ -35,7 +35,7 @@ virtual-root=/
 js=/static/cgit/cgit.js
 css=/static/cgit/cgit.css
 favicon=/static/cgit/favicon.ico
-logo=https://seankhliao.com/static/icon-192.png
+logo=https://seankhliao.com/static/icon-96.png
 `
 )
 
