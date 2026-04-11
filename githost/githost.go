@@ -99,6 +99,9 @@ func (g *GitHost) handleCgit(rw http.ResponseWriter, r *http.Request) {
 	userID := g.authState(r)
 	cgitrcPath := g.users[userID].cgitrcPath
 
+	b, _ := os.ReadFile(cgitrcPath)
+	fmt.Println(string(cgitrcPath), "contents:\n", string(b))
+
 	c := &cgi.Handler{
 		Path: g.cgitPath,
 		Dir:  g.Dir,
@@ -120,8 +123,6 @@ func (g *GitHost) handleGit(rw http.ResponseWriter, r *http.Request) {
 	if path.Base(r.URL.Path) == recv || slices.Contains(r.URL.Query()["service"], recv) {
 		allowed = g.allowWrite(repoID, userID)
 	}
-
-	g.log.Info("handle git", "user", userID, "repo", repoID, "allowed", allowed)
 
 	if !allowed {
 		if userID != UserAnonymous {
@@ -212,9 +213,6 @@ const (
 
 func (g *GitHost) authState(r *http.Request) UserID {
 	userID := UserAnonymous
-
-	b, _ := httputil.DumpRequest(r, true)
-	fmt.Println(string(b))
 
 	var token AuthToken
 	user, pass, ok := r.BasicAuth()
