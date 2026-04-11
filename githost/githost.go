@@ -12,7 +12,6 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/cgi"
-	"net/http/httputil"
 	"os"
 	"path"
 	"path/filepath"
