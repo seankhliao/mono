@@ -128,7 +128,8 @@ func (g *GitHost) handleGit(rw http.ResponseWriter, r *http.Request) {
 			http.Error(rw, "permission denied", http.StatusForbidden)
 			return
 		}
-		rw.Header().Set("www-authenticate", "Bearer")
+		// rw.Header().Set("www-authenticate", "Bearer")
+		rw.Header().Set("www-authenticate", `Basic realm="git"`)
 		http.Error(rw, "requires auth", http.StatusUnauthorized)
 		return
 	}
