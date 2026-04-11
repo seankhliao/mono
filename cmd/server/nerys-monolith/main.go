@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strings"
 
+	"go.seankhliao.com/mono/githost"
 	"go.seankhliao.com/mono/run"
 )
 
@@ -26,14 +27,21 @@ var _ run.Simpler = &ServeConfig{}
 type ServeConfig struct {
 	logLevel slog.LevelVar
 	h        run.HTTP
+
+	githost githost.GitHost
 }
 
 func (s *ServeConfig) Flags(fset *flag.FlagSet, args **[]string) error {
+	s.h.HostPolicy = hostPolicy
+	s.h.Flags(fset)
+
 	fset.TextVar(&s.logLevel, "log.level", &s.logLevel, "log level")
 
-	s.h.HostPolicy = hostPolicy
+	err := s.githost.Flags(fset)
+	if err != nil {
+		return fmt.Errorf("register githost flags: %w", err)
+	}
 
-	s.h.Flags(fset)
 	return nil
 }
 
@@ -41,10 +49,16 @@ func (s *ServeConfig) Run(ctx context.Context, stdin io.Reader, stdout, stderr i
 	logHandler := slog.NewTextHandler(stderr, &slog.HandlerOptions{
 		Level: &s.logLevel,
 	})
+	log := slog.New(logHandler)
 	register := func(mux *http.ServeMux) {
 		mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintln(w, "hello world")
 		})
+
+		err := s.githost.Register(mux, logHandler)
+		if err != nil {
+			log.Error("register githost", slog.String("err", err.Error()))
+		}
 	}
 
 	runner := s.h.Runner(logHandler, register)
