@@ -5,7 +5,7 @@ import (
 	"crypto/rand"
 	"crypto/subtle"
 	"encoding/hex"
-	"encoding/json"
+	"encoding/json/v2"
 	"flag"
 	"fmt"
 	"log"
@@ -97,6 +97,8 @@ func (g *GitHost) Register(mux *http.ServeMux, logh slog.Handler) error {
 func (g *GitHost) handleCgit(rw http.ResponseWriter, r *http.Request) {
 	userID := g.authState(r)
 	cgitrcPath := g.users[userID].cgitrcPath
+
+	slog.Info("got", "user", userID, "path", cgitrcPath)
 
 	c := &cgi.Handler{
 		Path: g.cgitPath,
