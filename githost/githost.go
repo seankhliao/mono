@@ -98,8 +98,6 @@ func (g *GitHost) handleCgit(rw http.ResponseWriter, r *http.Request) {
 	userID := g.authState(r)
 	cgitrcPath := g.users[userID].cgitrcPath
 
-	slog.Info("got", "user", userID, "path", cgitrcPath)
-
 	c := &cgi.Handler{
 		Path: g.cgitPath,
 		Dir:  g.Dir,
@@ -176,7 +174,7 @@ func (g *GitHost) readConfig() error {
 		if err != nil {
 			return fmt.Errorf("create gitrc file for %s: %w", user.ID, err)
 		}
-		user.cgitrcPath = filepath.Join(tmpDir, f.Name())
+		user.cgitrcPath = f.Name()
 		_, err = buf.WriteTo(f)
 		if err != nil {
 			return fmt.Errorf("write gitrc file for %s: %w", user.ID, err)
