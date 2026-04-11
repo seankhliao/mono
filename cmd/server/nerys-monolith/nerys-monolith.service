@@ -13,6 +13,8 @@ AmbientCapabilities=CAP_NET_BIND_SERVICE
 Nice=5
 StateDirectory=nerys-monolith
 ExecStart=/usr/local/bin/nerys-monolith serve \
+    -git.dir /var/lib/nerys-monolith/git \
+    -git.config /var/lib/nerys-monolith/githost.json \
     -http.plain private:80 \
     -http.tls public:443 \
     -tls.acme \

@@ -69,7 +69,7 @@ func (g *GitHost) Flags(fset *flag.FlagSet) error {
 func (g *GitHost) Register(mux *http.ServeMux, logh slog.Handler) error {
 	mux.Handle(fmt.Sprintf("GET %s /static/cgit/", g.Host), http.StripPrefix("/static/cgit", http.FileServer(http.Dir(g.cgitStatic))))
 
-	mux.HandleFunc(fmt.Sprintf("GET %s /", g.Host), g.handleCgit)
+	mux.HandleFunc(fmt.Sprintf("GET %s/", g.Host), g.handleCgit)
 
 	mux.HandleFunc(fmt.Sprintf("GET %s/{repo}/info/refs", g.Host), g.handleGit)
 	mux.HandleFunc(fmt.Sprintf("POST %s/{repo}/git-upload-pack", g.Host), g.handleGit)

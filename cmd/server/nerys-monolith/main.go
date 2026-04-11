@@ -19,6 +19,7 @@ func main() {
 		"nerys-monolith",
 		"a bundle of all the servers to run on nerys.",
 		run.Simple("serve", "run a http server", &ServeConfig{}),
+		run.Simple("argon2id", "generate argon2id hash", &Argon2ID{}),
 	))
 }
 
