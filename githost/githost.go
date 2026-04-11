@@ -12,6 +12,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/cgi"
+	"net/http/httputil"
 	"os"
 	"path"
 	"path/filepath"
@@ -211,9 +212,11 @@ const (
 func (g *GitHost) authState(r *http.Request) UserID {
 	userID := UserAnonymous
 
+	b, _ := httputil.DumpRequest(r, true)
+	fmt.Println(string(b))
+
 	var token AuthToken
 	user, pass, ok := r.BasicAuth()
-	g.log.Info("basic_auth", "user", user, "pass", pass, "ok", ok)
 	if strings.HasPrefix(cookiePrefix, pass) {
 		token = AuthToken(pass)
 	} else if ok {
