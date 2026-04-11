@@ -12,6 +12,7 @@ import (
 
 	"go.seankhliao.com/mono/githost"
 	"go.seankhliao.com/mono/run"
+	"go.seankhliao.com/mono/webstyle/webstatic"
 )
 
 func main() {
@@ -52,6 +53,8 @@ func (s *ServeConfig) Run(ctx context.Context, stdin io.Reader, stdout, stderr i
 	})
 	log := slog.New(logHandler)
 	register := func(mux *http.ServeMux) {
+		webstatic.Register(mux)
+
 		mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintln(w, "hello world")
 		})
