@@ -120,6 +120,8 @@ func (g *GitHost) handleGit(rw http.ResponseWriter, r *http.Request) {
 		allowed = g.allowWrite(repoID, userID)
 	}
 
+	g.log.Info("handle git", "user", userID, "repo", repoID, "allowed", allowed)
+
 	if !allowed {
 		if userID != UserAnonymous {
 			http.Error(rw, "permission denied", http.StatusForbidden)
@@ -210,9 +212,15 @@ func (g *GitHost) authState(r *http.Request) UserID {
 	userID := UserAnonymous
 
 	var token AuthToken
-	_, pass, _ := r.BasicAuth()
+	user, pass, ok := r.BasicAuth()
 	if strings.HasPrefix(cookiePrefix, pass) {
 		token = AuthToken(pass)
+	} else if ok {
+		got := argon2.IDKey([]byte(pass), []byte(user), 1, 64*1024, 4, 32)
+		want, err := hex.DecodeString(g.users[UserID(user)].Argon2ID)
+		if err == nil && subtle.ConstantTimeCompare(got, []byte(want)) == 1 {
+			return UserID(user)
+		}
 	}
 
 	if token == "" {
