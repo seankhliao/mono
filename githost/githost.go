@@ -2,17 +2,21 @@ package githost
 
 import (
 	"bytes"
+	"context"
 	"crypto/rand"
 	"crypto/subtle"
 	"encoding/hex"
 	"encoding/json/v2"
+	"errors"
 	"flag"
 	"fmt"
+	"io/fs"
 	"log"
 	"log/slog"
 	"net/http"
 	"net/http/cgi"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"slices"
@@ -187,6 +191,20 @@ func (g *GitHost) readConfig() error {
 	g.repos = make(map[RepoID]ConfigRepo)
 	for _, repo := range config.Repos {
 		g.repos[repo.ID] = repo
+
+		d := filepath.Join(g.Dir, string(repo.ID))
+		_, err := os.Stat(d)
+		if errors.Is(err, fs.ErrNotExist) {
+			os.MkdirAll(d, 0o755)
+			cmd := exec.CommandContext(context.TODO(), g.gitPath, "init", "--bare")
+			cmd.Dir = d
+			err := cmd.Run()
+			if err != nil {
+				return fmt.Errorf("git init %s: %w", repo.ID, err)
+			}
+
+		}
+
 	}
 
 	g.token = make(map[AuthToken]UserID)
