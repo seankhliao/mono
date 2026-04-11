@@ -161,6 +161,7 @@ _completed: [
 	["2024-07-02", 7, 50265, ["Spy x Family", "SPY×FAMILY"]],
 	["2024-08-08", 7, 50602, ["Spy x Family Part 2", "SPY×FAMILY"]],
 	["2025-02-02", 7, 53887, ["Spy x Family Season 2", "SPY×FAMILY Season 2"]],
+	["2026-04-09", 6, 36943, ["Tachibanakan Triangle", "Love To-LIE-Angle"]],
 	["2024-11-28", 8, 52736, ["Tensei Oujo to Tensai Reijou no Mahou Kakumei", "The Magical Revolution of the Reincarnated Princess and the Genius Young Lady"], "**Anis**'s cheery side is warming"],
 	["2025-02-16", 8, 54744, ["Tokidoki Bosotto Russia-go de Dereru Tonari no Alya-san", "Alya Sometimes Hides Her Feelings in Russian"], "**Yuki** is the best sister"],
 	["2024-06-23", 7, 52305, ["Tomo-chan wa Onnanoko!", "Tomo-chan Is a Girl!"]],
